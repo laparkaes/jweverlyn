@@ -2,7 +2,7 @@
 	<div class="container position-relative">
 		<div class="row d-flex justify-content-center">
 			<div class="col-lg-12 text-center">
-				<h2>Bota walker con férula de aire para fracturas (17 pulgadas)</h2>
+				<h2>Bota walker con férula de aire para fracturas</h2>
 				<h4>DR-A101</h4>
 			</div>
 		</div>

@@ -349,7 +349,6 @@ h6 {
 }
 
 .header .header-social-links {
-  padding-right: 15px;
   text-align: right;
   width: 30%;
 }
@@ -401,11 +400,11 @@ h6 {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 10px 15px;
+    padding: 10px 25px 10px 0;
     font-family: var(--font-primary);
     text-transform: uppercase;
     letter-spacing: 1px;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 500;
     color: rgba(0, 0, 0, 0.8);
     white-space: nowrap;
@@ -533,7 +532,7 @@ h6 {
     justify-content: space-between;
     padding: 10px 20px;
     font-family: var(--font-primary);
-    font-size: 13px;
+    font-size: 16px;
     text-transform: uppercase;
     font-weight: 400;
     color: var(--color-secondary);
@@ -578,7 +577,7 @@ h6 {
     line-height: 0;
     transition: 0.5s;
     z-index: 9999;
-    margin: 0 10px 0 10px;
+    margin: 0;
   }
 
   .mobile-nav-hide {

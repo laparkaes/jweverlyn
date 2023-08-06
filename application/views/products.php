@@ -221,7 +221,7 @@
 					<div class="gallery-links d-flex align-items-center justify-content-center">
 						<a href="product?c=DR-A101" class="details-link">
 							<div>DR-A101</div>
-							<div class="name">Bota walker con férula de aire para fracturas (17 pulgadas)</div>
+							<div class="name">Bota walker con férula de aire para fracturas</div>
 							<div><i class="bi bi-search"></i></div>
 						</a>
 					</div>

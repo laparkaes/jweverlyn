@@ -21,11 +21,8 @@
 </head>
 <body>
 	<header id="header" class="header d-flex align-items-center fixed-top">
-		<div class="container-fluid d-flex align-items-center justify-content-between">
-			<a href="index.html" class="logo d-flex align-items-center me-auto me-lg-0">
-				<img src="resources/assets/img/logo.svg" alt="">
-				<h1 class="text-nowrap">JW Everlyn</h1>
-			</a>
+		<div class="container d-flex align-items-center justify-content-between">
+			<i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
 			<nav id="navbar" class="navbar">
 				<ul>
 					<li><a href="#hero" class="active">Inicio</a></li>
@@ -34,11 +31,10 @@
 				</ul>
 			</nav>
 			<div class="header-social-links">
-				<a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
-				<a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
-				<a href="#" class="tiktok"><i class="bi bi-tiktok"></i></i></a>
+				<a href="https://www.facebook.com/profile.php?id=100095467445720" class="facebook" target="_blank"><i class="bi bi-facebook"></i></a>
+				<a href="https://www.instagram.com/jweverlyn" class="instagram" target="_blank"><i class="bi bi-instagram"></i></a>
+				<a href="https://www.tiktok.com/@jw.everlyn" class="tiktok" target="_blank"><i class="bi bi-tiktok"></i></i></a>
 			</div>
-			<i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
 			<i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
 		</div>
 	</header>
@@ -46,7 +42,7 @@
 		<div class="container">
 			<div class="row justify-content-between">
 				<div class="col-lg-6 col-md-6">
-					<h2>Bienvenido a <span>JW Everlyn</span><br/>Velamos por su bienestar con la última tecnología coreana.</h2>
+					<h2>Bienvenido a <span>JW Everlyn</span><br/><br/>Velamos por su bienestar con la última tecnología coreana.</h2>
 					<p>Importamos productos ortopédicos desde Corea del Sur hasta la puerta de su hogar.</p>
 					<a href="#products" class="btn-get-started">Ver catálogo de productos</a>
 				</div>
@@ -83,7 +79,7 @@
 						<i class="bi bi-whatsapp flex-shrink-0"></i>
 						<div>
 							<h4>Whatsapp</h4>
-							<p>+51 992 533 099</p>
+							<p>+51 906 208 632</p>
 						</div>
 					</div>
 				</div>
