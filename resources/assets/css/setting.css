@@ -1,0 +1,15 @@
+/* Colors */
+:root {
+  --color-default: #c2d1ee;
+  --color-primary: #233774;
+  --color-secondary: #779fe4;
+}
+
+body {
+  font-family: var(--font-default);
+  color: var(--color-primary);
+  background-color: #fff;
+}
+
+.header{ background-color: inherit; }
+.header .logo h1{ color: inherit; }
