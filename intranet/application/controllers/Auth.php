@@ -15,30 +15,41 @@ class Auth extends CI_Controller {
 	}
 	
 	public function login_validation(){
-		$type = "error"; $msgs = []; $msg = "";
 		$data = $this->input->post();
 		
-		print_r($data);
+		$this->load->library('my_val');
+		$result = $this->my_val->login($data);
 		
+		if ($result["type"] === "success"){
+			//set session data
+		}
+		
+		header('Content-Type: application/json');
+		echo json_encode($result);
 	}
 	
 	public function create_first_admin(){
 		$role = $this->gm->unique("role", "role", "Admin");
 		
-		if ($this->gm->unique("account", "role_id", $role->role_id)) echo "Existe usuario admin en sistema.";
-		else{
+		if (!$this->gm->unique("account", "role_id", $role->role_id)){
+			$account = [
+				"username" => "laparkaes@gmail.com",
+				"password" => "wjddn0315",
+				"name" => "Georgio Park",
+			];
+			
 			$data = [
 				"role_id" => $role->role_id, 
-				"username" => "laparkaes@gmail.com",
-				"password" => password_hash("wjddn0315", PASSWORD_BCRYPT),
-				"name" => "Georgio Park",
+				"username" => $account["username"],
+				"password" => password_hash($account["password"], PASSWORD_BCRYPT),
+				"name" => $account["name"],
 				"updated_at" => date("Y-m-d H:i:s"),
 				"registed_at" => date("Y-m-d H:i:s"),
 			];
 			
-			print_R($data);
-		}
-		
-		echo $this->lang->line('e_required_field');
+			if ($this->gm->insert("account", $data)){
+				$this->load->view('auth/admin_create', $account);
+			}else echo $this->lang->line('e_internal_again');
+		}else echo $this->lang->line('e_admin_exists');
 	}
 }

@@ -4,13 +4,19 @@ class General_model extends CI_Model{
 
 	function unique($tablename, $field, $value){
 		$this->db->where($field, $value);
+		$this->db->where("valid", true);
 		$query = $this->db->get($tablename);
 		$result = $query->result();
 		if ($result) return $result[0]; else return null;
 	}
-
+	
+	function insert($tablename, $data){
+		$this->db->insert($tablename, $data);
+		return $this->db->insert_id();
+	}
 
 	function qty($tablename, $w = null, $l = null, $w_in = null, $group_by = null){
+		$this->db->where("valid", true);
 		if ($w){ $this->db->group_start(); $this->db->where($w); $this->db->group_end(); }
 		if ($l){ $this->db->group_start(); $this->db->or_like($l); $this->db->group_end(); }
 		if ($w_in){
@@ -163,11 +169,6 @@ class General_model extends CI_Model{
 		$query = $this->db->get();
 		$result = $query->result();
 		return $result;
-	}
-	
-	function insert($tablename, $data){
-		$this->db->insert($tablename, $data);
-		return $this->db->insert_id();
 	}
 	
 	function insert_multi($tablename, $data){

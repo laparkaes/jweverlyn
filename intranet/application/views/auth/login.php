@@ -6,16 +6,16 @@
 	<title>Ingresar - JW Everlyn</title>
 	<meta content="" name="description">
 	<meta content="" name="keywords">
-	<link href="assets/img/favicon.png" rel="icon">
-	<link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+	<link href="<?= base_url() ?>assets/img/favicon.png" rel="icon">
+	<link href="<?= base_url() ?>assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 	<link href="https://fonts.gstatic.com" rel="preconnect">
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
-	<link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-	<link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-	<link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
-	<link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
-	<link href="assets/vendor/sweetalert2/dist/sweetalert2.min.css" rel="stylesheet">
-	<link href="assets/css/style.css" rel="stylesheet">
+	<link href="<?= base_url() ?>assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<link href="<?= base_url() ?>assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+	<link href="<?= base_url() ?>assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+	<link href="<?= base_url() ?>assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+	<link href="<?= base_url() ?>assets/vendor/sweetalert2/dist/sweetalert2.min.css" rel="stylesheet">
+	<link href="<?= base_url() ?>assets/css/style.css" rel="stylesheet">
 </head>
 <body>
 	<main>
@@ -25,7 +25,7 @@
 					<div class="row justify-content-center">
 						<div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
 							<div class="d-flex justify-content-center py-4">
-								<a href="./" class="logo d-flex align-items-center w-auto">
+								<a href="<?= base_url() ?>" class="logo d-flex align-items-center w-auto">
 									<img src="assets/img/logo.png" alt="">
 									<span class="d-none d-lg-block">JW Everlyn</span>
 								</a>
@@ -39,20 +39,17 @@
 									<?php if ($this->gm->qty("account")){ ?>
 									<form class="row g-3" id="form_login_validation">
 										<div class="col-12">
-											<label for="yourUsername" class="form-label">Username</label>
+											<label class="form-label">Usuario</label>
 											<input type="text" name="username" class="form-control">
 											<div class="invalid-feedback">Please enter your username.</div>
 										</div>
 										<div class="col-12">
-											<label for="yourPassword" class="form-label">Password</label>
+											<label class="form-label">Contraseña</label>
 											<input type="password" name="password" class="form-control">
 											<div class="invalid-feedback">Please enter your password!</div>
 										</div>
-										<div class="col-12 pt-3">
+										<div class="col-12 py-3">
 											<button class="btn btn-primary w-100" type="submit">Login</button>
-										</div>
-										<div class="col-12">
-											<p class="small mb-0">Tiene problema de acceso? <a href="pages-register.html">Reestablecer clave</a></p>
 										</div>
 									</form>
 									<?php }else{ ?>
@@ -73,14 +70,14 @@
 	
 	<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 	
-	<script src="assets/vendor/jquery-3.7.0.min.js"></script>
-	<script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-	<script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
-	<script src="assets/vendor/sweetalert2/dist/sweetalert2.all.min.js"></script>
-	<script src="assets/js/main.js"></script>
-	<script src="assets/js/func.js"></script>
+	<script src="<?= base_url() ?>assets/vendor/jquery-3.7.0.min.js"></script>
+	<script src="<?= base_url() ?>assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<script src="<?= base_url() ?>assets/vendor/apexcharts/apexcharts.min.js"></script>
+	<script src="<?= base_url() ?>assets/vendor/sweetalert2/dist/sweetalert2.all.min.js"></script>
+	<script src="<?= base_url() ?>assets/js/main.js"></script>
+	<script src="<?= base_url() ?>assets/js/func.js"></script>
 	<?php if ($this->init_js){ ?>
-	<script src="assets/js/init/<?= $this->init_js ?>"></script>
+	<script src="<?= base_url() ?>assets/js/init/<?= $this->init_js ?>"></script>
 	<?php } ?>
 </body>
 </html>

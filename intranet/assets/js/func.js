@@ -3,6 +3,18 @@ const sp_words = {
 	success: "Éxito",
 }
 
+function set_msgs(form_id, msgs){
+	$(msgs).each(function (index, element) {
+		let dom = $(form_id).find("[name=" + element.name + "]");
+		
+		dom.removeClass("is-invalid").removeClass("is-valid");
+		dom.next().html(element.msg);
+		
+		if (element.msg == "") dom.addClass("is-valid");
+		else dom.addClass("is-invalid");
+	});
+}
+
 function swal(type, msg){
 	Swal.fire({
 		title: sp_words[type].toUpperCase() + " !!",
