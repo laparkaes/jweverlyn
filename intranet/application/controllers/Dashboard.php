@@ -8,13 +8,13 @@ class Dashboard extends CI_Controller {
 		if (!$this->session->userdata('username')) redirect("auth/login");
 		$this->lang->load("message", "spanish");
 		$this->load->model('general_model','gm');
-		$this->nav_menu = "dashboard";
+		$this->nav_menu = ["dashboard", ""];
 	}
 
 	public function index(){
 		
 		$data = [
-			"main" => "dashboard/master",
+			"main" => "dashboard/admin",
 		];
 		$this->load->view('layout', $data);
 	}
