@@ -11,6 +11,7 @@ class Auth extends CI_Controller {
 	}
 
 	public function login(){
+		if ($this->session->userdata('username')) redirect("dashboard");
 		$this->load->view('auth/login');
 	}
 	
@@ -22,6 +23,13 @@ class Auth extends CI_Controller {
 		
 		if ($result["type"] === "success"){
 			//set session data
+			$account = $this->gm->unique("account", "username", $data["username"]);
+			$udata = [
+				"username" => $account->username,
+				"name" => $account->name,
+				"role" => $this->gm->unique("role", "role_id", $account->role_id, false)->role,
+			];
+			$this->session->set_userdata($udata);
 		}
 		
 		header('Content-Type: application/json');
@@ -29,8 +37,9 @@ class Auth extends CI_Controller {
 	}
 	
 	public function create_first_admin(){
-		$role = $this->gm->unique("role", "role", "Admin");
+		$role = $this->gm->unique("role", "role", "Admin", false);
 		
+		$account = null;
 		if (!$this->gm->unique("account", "role_id", $role->role_id)){
 			$account = [
 				"username" => "laparkaes@gmail.com",
@@ -47,9 +56,16 @@ class Auth extends CI_Controller {
 				"registed_at" => date("Y-m-d H:i:s"),
 			];
 			
-			if ($this->gm->insert("account", $data)){
-				$this->load->view('auth/admin_create', $account);
-			}else echo $this->lang->line('e_internal_again');
-		}else echo $this->lang->line('e_admin_exists');
+			if ($this->gm->insert("account", $data)) 
+				$msg = $this->lang->line('s_admin_create');
+			else $msg = $this->lang->line('e_internal_again');
+		}else $msg = $this->lang->line('e_admin_exists');
+		
+		$this->load->view('auth/admin_create', ["account" => $account, "msg" => $msg]);
+	}
+	
+	public function logout(){
+		$this->session->sess_destroy();
+		redirect("auth/login");
 	}
 }

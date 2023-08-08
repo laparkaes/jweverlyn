@@ -11,10 +11,15 @@ class My_val{
 	}
 	
 	public function set_msg($msgs, $name, $code = ""){
-		if ($code) $msg = $this->CI->lang->line($code);
-		else $msg = "";
+		if ($code){
+			$msg = $this->CI->lang->line($code);
+			$class = "is-invalid";
+		}else{
+			$msg = "";
+			$class = "is-valid";
+		}
 		
-		$msgs[] = ["name" => $name, "msg" => $msg];
+		$msgs[] = ["name" => $name, "class" => $class, "msg" => $msg];
 		
 		return $msgs;
 	}

@@ -5,7 +5,9 @@ class Dashboard extends CI_Controller {
 	
 	public function __construct(){
 		parent::__construct();
-		//$this->load->model('general_model','general');
+		if (!$this->session->userdata('username')) redirect("auth/login");
+		$this->lang->load("message", "spanish");
+		$this->load->model('general_model','gm');
 		$this->nav_menu = "dashboard";
 	}
 

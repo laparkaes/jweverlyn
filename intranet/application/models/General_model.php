@@ -2,9 +2,9 @@
 
 class General_model extends CI_Model{
 
-	function unique($tablename, $field, $value){
+	function unique($tablename, $field, $value, $check_valid = true){
 		$this->db->where($field, $value);
-		$this->db->where("valid", true);
+		if ($check_valid) $this->db->where("valid", true);
 		$query = $this->db->get($tablename);
 		$result = $query->result();
 		if ($result) return $result[0]; else return null;

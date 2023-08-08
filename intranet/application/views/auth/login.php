@@ -1,3 +1,4 @@
+<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -55,7 +56,7 @@
 									<?php }else{ ?>
 									<div class="row">
 										<div class="col-12 text-center">
-											<a href="auth/create_first_admin" target="_blank">Crear usuario admin</a>
+											<a href="<?= base_url() ?>auth/create_first_admin">Crear usuario admin</a>
 										</div>
 									</div>
 									<?php } ?>

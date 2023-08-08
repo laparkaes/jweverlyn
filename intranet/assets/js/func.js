@@ -1,17 +1,17 @@
+const base_url = "/jweverlyn/intranet/";
+
 const sp_words = {
 	error: "Error",
 	success: "Éxito",
+	warning: "Advertencia",
 }
 
 function set_msgs(form_id, msgs){
+	$(form_id + " [name]").removeClass("is-invalid").removeClass("is-valid");
 	$(msgs).each(function (index, element) {
 		let dom = $(form_id).find("[name=" + element.name + "]");
-		
-		dom.removeClass("is-invalid").removeClass("is-valid");
+		dom.addClass(element.class);
 		dom.next().html(element.msg);
-		
-		if (element.msg == "") dom.addClass("is-valid");
-		else dom.addClass("is-invalid");
 	});
 }
 
@@ -36,7 +36,7 @@ function swal_redirection(type, msg, move_to){
 function ajax_form(dom, url){
 	var deferred = $.Deferred();
 	$.ajax({
-		url: url,
+		url: base_url + url,
 		type: "POST",
 		data: new FormData(dom),
 		contentType: false,
