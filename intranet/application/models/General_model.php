@@ -14,9 +14,24 @@ class General_model extends CI_Model{
 		$this->db->insert($tablename, $data);
 		return $this->db->insert_id();
 	}
+	
+	function filter($tablename, $w, $l = null, $w_in = null, $orders = [], $limit = "", $offset = "", $check_valid = true){
+		if ($check_valid) $this->db->where("valid", true);
+		if ($w){ $this->db->group_start(); $this->db->where($w); $this->db->group_end(); }
+		if ($l){ $this->db->group_start(); $this->db->or_like($l); $this->db->group_end(); }
+		if ($w_in){
+			$this->db->group_start();
+			foreach($w_in as $item) $this->db->where_in($item["field"], $item["values"]);
+			$this->db->group_end();
+		}
+		if ($orders) foreach($orders as $o) $this->db->order_by($o[0], $o[1]);
+		$query = $this->db->get($tablename, $limit, $offset);
+		$result = $query->result();
+		return $result;
+	}
 
-	function qty($tablename, $w = null, $l = null, $w_in = null, $group_by = null){
-		$this->db->where("valid", true);
+	function qty($tablename, $w = null, $l = null, $w_in = null, $group_by = null, $check_valid = true){
+		if ($check_valid) $this->db->where("valid", true);
 		if ($w){ $this->db->group_start(); $this->db->where($w); $this->db->group_end(); }
 		if ($l){ $this->db->group_start(); $this->db->or_like($l); $this->db->group_end(); }
 		if ($w_in){
@@ -27,6 +42,14 @@ class General_model extends CI_Model{
 		if ($group_by) $this->db->group_by($group_by);
 		$query = $this->db->get($tablename);
 		return $query->num_rows();
+	}
+	
+	function all($tablename, $orders = [], $limit = "", $offset = "", $check_valid = true){
+		if ($check_valid) $this->db->where("valid", true);
+		if ($orders) foreach($orders as $o) $this->db->order_by($o[0], $o[1]);
+		$query = $this->db->get($tablename, $limit, $offset);
+		$result = $query->result();
+		return $result;
 	}
 
 	////////////////////////////////////////////
@@ -44,20 +67,6 @@ class General_model extends CI_Model{
 			$result = $query->result();
 			return $result;
 		}else return array();
-	}
-	
-	function filter($tablename, $where, $like = null, $filter_in = null, $order_by = "", $order = "", $limit = "", $offset = ""){
-		if ($where){ $this->db->group_start(); $this->db->where($where); $this->db->group_end(); }
-		if ($like){ $this->db->group_start(); $this->db->or_like($like); $this->db->group_end(); }
-		if ($filter_in){
-			$this->db->group_start();
-			foreach($filter_in as $f) if ($f["values"]) $this->db->where_in($f["field"], $f["values"]);
-			$this->db->group_end();
-		}
-		if ($order_by) $this->db->order_by($order_by, $order);
-		$query = $this->db->get($tablename, $limit, $offset);
-		$result = $query->result();
-		return $result;
 	}
 	
 	function sum($tablename, $col, $filter = null){
@@ -82,13 +91,6 @@ class General_model extends CI_Model{
 		$this->db->or_where_in($field2, $filter);
 		$query = $this->db->get($tablename);
 		return $query->num_rows();
-	}
-	
-	function all($tablename, $order_by = "id", $order = "desc", $limit = "", $offset = ""){
-		if ($order_by) $this->db->order_by($order_by, $order);
-		$query = $this->db->get($tablename, $limit, $offset);
-		$result = $query->result();
-		return $result;
 	}
 	
 	function only($tablename, $field, $where = null){

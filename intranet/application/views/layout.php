@@ -42,7 +42,7 @@
 				<li class="nav-item dropdown">
 					<a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
 						<i class="bi bi-bell"></i>
-						<span class="badge bg-primary badge-number">4</span>
+						<span class="badge bg-danger badge-number">4</span>
 					</a>
 					<ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
 						<li class="dropdown-header">
@@ -94,7 +94,7 @@
 				<li class="nav-item dropdown">
 					<a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
 						<i class="bi bi-chat-left-text"></i>
-						<span class="badge bg-primary badge-number">3</span>
+						<span class="badge bg-danger badge-number">3</span>
 					</a>
 					<ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
 						<li class="dropdown-header">
@@ -185,28 +185,28 @@
 				</a>
 			</li>
 			<li class="nav-item">
-				<?php if ($this->nav_menu[0] === "accounts"){ $c = ""; $c_ul = "show"; }else{ $c = "collapsed"; $c_ul = ""; } ?>
-				<a class="nav-link <?= $c ?>" data-bs-target="#accounts-nav" data-bs-toggle="collapse" href="#">
+				<?php if ($this->nav_menu[0] === "authentication"){ $c = ""; $c_ul = "show"; }else{ $c = "collapsed"; $c_ul = ""; } ?>
+				<a class="nav-link <?= $c ?>" data-bs-target="#authentication-nav" data-bs-toggle="collapse" href="#">
 					<i class="bi bi-person-vcard"></i>
-					<span>Usuarios</span>
+					<span>Autenticación</span>
 					<i class="bi bi-chevron-down ms-auto"></i>
 				</a>
-				<ul id="accounts-nav" class="nav-content collapse <?= $c_ul ?>" data-bs-parent="#sidebar-nav">
+				<ul id="authentication-nav" class="nav-content collapse <?= $c_ul ?>" data-bs-parent="#sidebar-nav">
 					<li>
-						<?php if ($this->nav_menu[1] === "accounts_index") $c1 = "active"; else $c1 = ""; ?>
-						<a href="<?= base_url() ?>accounts" class="<?= $c1 ?>">
+						<?php if ($this->nav_menu[1] === "account") $c1 = "active"; else $c1 = ""; ?>
+						<a href="<?= base_url() ?>authentication/account" class="<?= $c1 ?>">
 							<i class="bi bi-circle"></i><span>Usuarios</span>
 						</a>
 					</li>
 					<li>
-						<?php if ($this->nav_menu[1] === "accounts_roles") $c1 = "active"; else $c1 = ""; ?>
-						<a href="<?= base_url() ?>accounts/roles" class="<?= $c1 ?>">
+						<?php if ($this->nav_menu[1] === "role") $c1 = "active"; else $c1 = ""; ?>
+						<a href="<?= base_url() ?>authentication/role" class="<?= $c1 ?>">
 							<i class="bi bi-circle"></i><span>Roles</span>
 						</a>
 					</li>
 					<li>
-						<?php if ($this->nav_menu[1] === "accounts_access") $c1 = "active"; else $c1 = ""; ?>
-						<a href="<?= base_url() ?>accounts/access" class="<?= $c1 ?>">
+						<?php if ($this->nav_menu[1] === "access") $c1 = "active"; else $c1 = ""; ?>
+						<a href="<?= base_url() ?>authentication/access" class="<?= $c1 ?>">
 							<i class="bi bi-circle"></i><span>Accesos</span>
 						</a>
 					</li>
