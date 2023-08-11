@@ -37,7 +37,7 @@ class Auth extends CI_Controller {
 	}
 	
 	public function create_first_admin(){
-		$role = $this->gm->unique("role", "role", "Admin", false);
+		$role = $this->gm->unique("role", "role", "Admin");
 		
 		$account = null;
 		if (!$this->gm->unique("account", "role_id", $role->role_id)){

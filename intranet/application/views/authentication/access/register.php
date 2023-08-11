@@ -6,7 +6,7 @@
 				<ol class="breadcrumb">
 					<li class="breadcrumb-item">Autenticación</li>
 					<li class="breadcrumb-item">Accesos</li>
-					<li class="breadcrumb-item active">Register</li>
+					<li class="breadcrumb-item active">Nuevo</li>
 				</ol>
 			</nav>
 		</div>
@@ -22,13 +22,13 @@
 		<div class="card">
 			<div class="card-body">
 				<h5 class="card-title">Agregar Módulo</h5>
-				<form class="row g-3" id="form_insert_module">
+				<form class="row g-3" id="form_add_module">
 					<div class="col-12">
 						<label for="inputModuleName" class="form-label">Nombre de Módulo</label>
 						<input type="text" class="form-control" id="inputModuleName" name="module">
 						<div class="invalid-feedback"></div>
 					</div>
-					<div class="pt-3">
+					<div class="text-center pt-3">
 						<button type="submit" class="btn btn-primary">Agregar</button>
 					</div>
 				</form>
@@ -36,11 +36,11 @@
 		</div>
 	</div>
 	<div class="col-lg-6">
-		<div class="card">
+		<?php $m_id = $this->input->get("m_id"); if ($m_id) $border = "border border-success"; else $border = ""; ?>
+		<div class="card <?= $border ?>">
 			<div class="card-body">
 				<h5 class="card-title">Agregar Acceso</h5>
-				<form class="row g-3" id="form_insert_access">
-					<?php $m_id = $this->input->get("m_id"); ?>
+				<form class="row g-3" id="form_add_access">
 					<div class="col-md-6">
 						<label for="inputModule" class="form-label">Módulo</label>
 						<select id="inputModule" class="form-select" name="module_id">
@@ -61,7 +61,7 @@
 						<input type="text" class="form-control" id="inputCode" name="code">
 						<div class="invalid-feedback"></div>
 					</div>
-					<div class="pt-3">
+					<div class="text-center pt-3">
 						<button type="submit" class="btn btn-primary">Agregar</button>
 					</div>
 				</form>

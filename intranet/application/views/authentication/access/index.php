@@ -26,14 +26,7 @@
 						<div class="col-md-8 col-12">
 							<h5 class="card-title">Lista de Accesos</h5>
 						</div>
-						<div class="col-md-4 col-12">
-							<div class="input-group mt-md-3 mb-3">
-								<input type="text" class="form-control" placeholder="Keyword">
-								<button type="button" class="btn btn-primary"><i class="bi bi-funnel-fill"></i></button>
-							</div>
-						</div>
 					</div>
-					<?php print_r($modules); ?>
 					<div class="table-responsive">
 						<table class="table">
 							<thead>
@@ -53,10 +46,12 @@
 									<td></td>
 									<td></td>
 									<td class="text-end">
-										<a href="<?= base_url() ?>authentication/access/register?m_id=<?= $m->module_id ?>" type="button" class="btn btn-success btn-sm">
+										<a href="<?= base_url() ?>authentication/access/register?m_id=<?= $m->module_id ?>" type="button" class="btn btn-success btn-sm border-0">
 											<i class="bi bi-plus-lg"></i>
 										</a>
-										<button type="button" class="btn btn-danger btn-sm"><i class="bi bi-x-lg"></i></button>
+										<button type="button" class="btn btn-danger btn-sm border-0 btn_delete_module" value="<?= $m->module_id ?>">
+											<i class="bi bi-x-lg"></i>
+										</button>
 									</td>
 								</tr>
 								<?php $access = $m->access; foreach($access as $i_a => $a){ ?>
@@ -66,7 +61,9 @@
 									<td><?= $a->access ?></td>
 									<td><?= $a->code ?></td>
 									<td class="text-end">
-										<button type="button" class="btn btn-danger btn-sm"><i class="bi bi-x-lg"></i></button>
+										<button type="button" class="btn btn-outline-danger btn-sm border-0 btn_delete_access" value="<?= $a->access_id ?>">
+											<i class="bi bi-x-lg"></i>
+										</button>
 									</td>
 								</tr>
 								<?php }} ?>
@@ -75,27 +72,6 @@
 					</div>
 				</div>
 			</div>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col">
-			<ul class="pagination">
-				<li class="page-item">
-				<a class="page-link" href="#" aria-label="Previous">
-				<span aria-hidden="true">«</span>
-				</a>
-				</li>
-				<li class="page-item active"><a class="page-link" href="#">1</a></li>
-				<li class="page-item"><a class="page-link" href="#">2</a></li>
-				<li class="page-item"><a class="page-link" href="#">3</a></li>
-				<li class="page-item"><a class="page-link" href="#">4</a></li>
-				<li class="page-item"><a class="page-link" href="#">5</a></li>
-				<li class="page-item">
-				<a class="page-link" href="#" aria-label="Next">
-				<span aria-hidden="true">»</span>
-				</a>
-				</li>
-			</ul>
 		</div>
 	</div>
 </section>

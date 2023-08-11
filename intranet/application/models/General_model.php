@@ -51,6 +51,11 @@ class General_model extends CI_Model{
 		$result = $query->result();
 		return $result;
 	}
+	
+	function update($tablename, $filter, $data){ 
+		$this->db->where($filter);
+		return $this->db->update($tablename, $data);
+	}
 
 	////////////////////////////////////////////
     function id($tablename, $id){
@@ -177,18 +182,13 @@ class General_model extends CI_Model{
 		return $this->db->insert_batch($tablename, $data);
 	}
 	
-	function update($tablename, $id, $data){ 
+	function update_($tablename, $id, $data){ 
 		$this->db->where('id', $id);
 		return $this->db->update($tablename, $data);
 	}
 	
 	function update_multi($tablename, $data, $field){ 
 		return $this->db->update_batch($tablename, $data, $field);
-	}
-	
-	function update_f($tablename, $filter, $data){ 
-		$this->db->where($filter);
-		return $this->db->update($tablename, $data);
 	}
 	
 	function delete($tablename, $filter){
