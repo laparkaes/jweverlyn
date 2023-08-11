@@ -44,4 +44,49 @@ class My_val{
 		
 		return ["type" => $type, "msgs" => $msgs];
 	}
+	
+	public function module($data){
+		$type = "error"; $msgs = []; $msg = "";
+		
+		if ($data["module"]){
+			if (!$this->CI->gm->unique("module", "module", $data["module"])){
+				$type = "success";
+				$msgs = $this->set_msg($msgs, "module");
+			}else $msgs = $this->set_msg($msgs, "module", "e_module_exists");
+		}else $msgs = $this->set_msg($msgs, "module", "e_required_field");	
+		
+		return ["type" => $type, "msgs" => $msgs, "msg" => $msg];
+	}
+	
+	public function access($data){
+		$type = "error"; $msgs = []; $msg = ""; $results = [];
+		
+		$results["module_id"] = false;
+		if ($data["module_id"]){
+			$results["module_id"] = true;
+			$msgs = $this->set_msg($msgs, "module_id");
+		}else $msgs = $this->set_msg($msgs, "module_id", "e_required_field");	
+		
+		$results["access"] = false;
+		if ($data["access"]){
+			if (!$this->CI->gm->unique("access", "access", $data["access"])){
+				$results["access"] = true;
+				$msgs = $this->set_msg($msgs, "access");
+			}else $msgs = $this->set_msg($msgs, "access", "e_access_exists");
+		}else $msgs = $this->set_msg($msgs, "access", "e_required_field");	
+		
+		$results["code"] = false;
+		if ($data["code"]){
+			$results["code"] = true;
+			$msgs = $this->set_msg($msgs, "code");
+		}else $msgs = $this->set_msg($msgs, "code", "e_required_field");	
+		
+		$result = true;
+		foreach($results as $r) $result = ($result and $r);
+		
+		if ($result) $type = "success";
+		else $type = "error";
+		
+		return ["type" => $type, "msgs" => $msgs, "msg" => $msg];
+	}
 }

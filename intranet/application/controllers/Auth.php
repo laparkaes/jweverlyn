@@ -58,7 +58,6 @@ class Auth extends CI_Controller {
 			
 			if ($this->gm->insert("account", $data)) 
 				$msg = $this->lang->line('s_admin_create');
-			else $msg = $this->lang->line('e_internal_again');
 		}else $msg = $this->lang->line('e_admin_exists');
 		
 		$this->load->view('auth/admin_create', ["account" => $account, "msg" => $msg]);

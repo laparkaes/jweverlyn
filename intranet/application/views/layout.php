@@ -15,6 +15,7 @@
 	<link href="<?= base_url() ?>assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
 	<link href="<?= base_url() ?>assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
 	<link href="<?= base_url() ?>assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+	<link href="<?= base_url() ?>assets/vendor/sweetalert2/dist/sweetalert2.min.css" rel="stylesheet">
 	<link href="<?= base_url() ?>assets/css/style.css" rel="stylesheet">
 </head>
 <body>
@@ -232,8 +233,14 @@
 	<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 	
 	<script src="<?= base_url() ?>assets/vendor/jquery-3.7.0.min.js"></script>
-	<script src="<?= base_url() ?>assets/vendor/apexcharts/apexcharts.min.js"></script>
 	<script src="<?= base_url() ?>assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<script src="<?= base_url() ?>assets/vendor/apexcharts/apexcharts.min.js"></script>
+	<script src="<?= base_url() ?>assets/vendor/sweetalert2/dist/sweetalert2.all.min.js"></script>
 	<script src="<?= base_url() ?>assets/js/main.js"></script>
+	<script src="<?= base_url() ?>assets/js/func.js"></script>
+	<?php if ($this->js_init){ ?>
+	<script src="<?= base_url() ?>assets/js/init/<?= $this->js_init ?>"></script>
+	<?php } ?>
+	
 </body>
 </html>

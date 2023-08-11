@@ -4,6 +4,13 @@ const sp_words = {
 	error: "Error",
 	success: "Éxito",
 	warning: "Advertencia",
+	confirm: "Confirmar",
+	cancel: "Cancelar",
+}
+
+const sp_warning_msg = {
+	insert_module: "¿Desea generar nuevo módulo?",
+	insert_access: "¿Desea generar nuevo acceso?",
 }
 
 function set_msgs(form_id, msgs){
@@ -16,21 +23,26 @@ function set_msgs(form_id, msgs){
 }
 
 function swal(type, msg){
-	Swal.fire({
-		title: sp_words[type].toUpperCase() + " !!",
-		icon: type,
-		html: msg
-	});
+	if (msg != ""){
+		Swal.fire({
+			title: "¡ " + sp_words[type].toUpperCase() + " !",
+			icon: type,
+			html: msg
+		});
+	}
 }
 
 function swal_redirection(type, msg, move_to){
-	Swal.fire({
-		title: sp_words[type].toUpperCase() + " !!",
-		icon: type,
-		html: msg
-	}).then((result) => {
-		if (result.isConfirmed) if (type == "success") location.href = move_to;
-	});
+	if (msg != ""){
+		Swal.fire({
+			title: "¡ " + sp_words[type].toUpperCase() + " !",
+			icon: type,
+			html: msg
+		}).then((result) => {
+			if (result.isConfirmed) if (type == "success") location.href = move_to;
+		});	
+	}
+	
 }
 
 function ajax_form(dom, url){
@@ -44,6 +56,24 @@ function ajax_form(dom, url){
 		success:function(res){
 			deferred.resolve(res);
 		}
+	});
+	
+	return deferred.promise();
+}
+
+function ajax_form_warning(dom, url, msg_index){
+	var deferred = $.Deferred();
+	Swal.fire({
+		title: sp_words["warning"],
+		icon: 'warning',
+		html: sp_warning_msg[msg_index],
+		showCancelButton: true,
+		confirmButtonText: sp_words["confirm"],
+		cancelButtonText: sp_words["cancel"],
+	}).then((result) => {
+		if (result.isConfirmed) ajax_form(dom, url).done(function(res) {
+			deferred.resolve(res);
+		});
 	});
 	
 	return deferred.promise();
