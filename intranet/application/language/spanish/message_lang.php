@@ -19,10 +19,13 @@ $lang['e_module_linked_access'] = 'Existe accesos vinculados con módulo elegido
 $lang['e_access_exists'] = 'Existe nombre de acceso ingresado.';
 $lang['e_code_exists'] = 'Existe código de acceso ingresado.';
 $lang['e_role_exists'] = 'Existe nombre de rol ingresado.';
+$lang['e_role_linked_account'] = 'Existe usuarios vinculados con rol elegido.';
 
 $lang['s_module_insert'] = 'Módulo ha sido generado.';
 $lang['s_module_delete'] = 'Módulo ha sido eliminado.';
 $lang['s_access_insert'] = 'Acceso ha sido generado.';
 $lang['s_access_delete'] = 'Acceso ha sido eliminado.';
 $lang['s_role_insert'] = 'Rol ha sido generado.';
+$lang['s_role_delete'] = 'Rol ha sido eliminado.';
+$lang['s_role_update'] = 'Rol ha sido actualizado.';
 

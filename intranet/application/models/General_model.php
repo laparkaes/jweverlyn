@@ -5,7 +5,7 @@ class General_model extends CI_Model{
 	function unique($tablename, $field, $value, $check_valid = true){
 		$this->db->where($field, $value);
 		if ($check_valid) $this->db->where("valid", true);
-		$query = $this->db->get($tablename);
+		$query = $this->db->get($tablename, 1, 0);
 		$result = $query->result();
 		if ($result) return $result[0]; else return null;
 	}
@@ -52,9 +52,14 @@ class General_model extends CI_Model{
 		return $result;
 	}
 	
-	function update($tablename, $filter, $data){ 
+	function update($tablename, $filter, $data){
 		$this->db->where($filter);
 		return $this->db->update($tablename, $data);
+	}
+	
+	function delete($tablename, $filter){
+		$this->db->where($filter);
+		return $this->db->delete($tablename);
 	}
 
 	////////////////////////////////////////////
@@ -189,11 +194,6 @@ class General_model extends CI_Model{
 	
 	function update_multi($tablename, $data, $field){ 
 		return $this->db->update_batch($tablename, $data, $field);
-	}
-	
-	function delete($tablename, $filter){
-		$this->db->where($filter);
-		return $this->db->delete($tablename);
 	}
 	
 	function delete_multi($tablename, $field, $values){

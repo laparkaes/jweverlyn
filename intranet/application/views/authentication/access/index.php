@@ -56,7 +56,7 @@
 								</tr>
 								<?php $access = $m->access; foreach($access as $i_a => $a){ ?>
 								<tr>
-									<td scope="row"><?= $i_m + 1 ?>. <?= $i_a + 1 ?></td>
+									<td scope="row"><?= $i_m + 1 ?>.<?= $i_a + 1 ?></td>
 									<td><?= $m->module ?></td>
 									<td><?= $a->access ?></td>
 									<td><?= $a->code ?></td>

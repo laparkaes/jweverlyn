@@ -113,8 +113,36 @@ class My_val{
 		if ($data["role"]){
 			if (!$this->CI->gm->unique("role", "role", $data["role"])) $msgs = $this->set_msg($msgs, "role");
 			else $msgs = $this->set_msg($msgs, "role", "e_role_exists");
-		}else $msgs = $this->set_msg($msgs, "role", "e_required_field");	
+		}else $msgs = $this->set_msg($msgs, "role", "e_required_field");
 		
 		return ["type" => $this->get_type($msgs), "msgs" => $msgs, "msg" => $msg];
 	}
+	
+	public function delete_role($data){
+		$type = "error"; $msg = "";
+		
+		if ($data["role_id"]){
+			if (!$this->CI->gm->unique("account", "role_id", $data["role_id"])) $type = "success";
+			else $msg = $this->CI->lang->line("e_role_linked_account");
+		}else $msg = $this->CI->lang->line("e_unknown_refresh");
+		
+		return ["type" => $type, "msg" => $msg];
+	}
+	
+	public function update_role($data){
+		$type = "error"; $msgs = []; $msg = "";
+		
+		if (!$data["role_id"]) $msg = $this->CI->lang->line("e_unknown_refresh");
+		
+		if ($data["role"]){
+			$role = $this->CI->gm->unique("role", "role", $data["role"]);
+			if ((!$role) or ($role->role_id == $data["role_id"])) $msgs = $this->set_msg($msgs, "role");
+			else $msgs = $this->set_msg($msgs, "role", "e_role_exists");
+		}else $msgs = $this->set_msg($msgs, "role", "e_required_field");
+		
+		if (!$msg) $type = $this->get_type($msgs);
+		
+		return ["type" => $type, "msgs" => $msgs, "msg" => $msg];
+	}
+	
 }

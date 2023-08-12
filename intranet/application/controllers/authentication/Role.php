@@ -74,51 +74,74 @@ class Role extends CI_Controller {
 		echo json_encode($result);
 	}
 	
-	public function delete_module(){
+	public function delete_role(){
 		if ($this->session->userdata('username')){
 			$data = $this->input->post();
 			
 			$this->load->library('my_val');
-			$result = $this->my_val->delete_module($data);
+			$result = $this->my_val->delete_role($data);
 			
 			if ($result["type"] === "success")
-				if ($this->gm->update("module", ["module_id" => $data["module_id"]], ["valid" => false]))
-					$result["msg"] = $this->lang->line("s_module_delete");
+				if ($this->gm->update("role", ["role_id" => $data["role_id"]], ["valid" => false]))
+					$result["msg"] = $this->lang->line("s_role_delete");
 		}else $result = ["type" => "error", "msg" => $this->lang->line("e_finished_session")];
 		
 		header('Content-Type: application/json');
 		echo json_encode($result);
 	}
 	
-	public function add_access(){
+	public function edit($role_id){
+		if (!$this->session->userdata('username')) redirect("auth/login");
+		
+		$modules = $this->gm->all("module", [["module", "asc"]]);
+		foreach($modules as $m) $m->access = $this->gm->filter("access", ["module_id" => $m->module_id], null, null, [["access", "asc"]]);
+		
+		$access_ids = [];
+		$access = $this->gm->filter("role_access", ["role_id" => $role_id], null, null, null, [], "", "", false);
+		foreach($access as $a) $access_ids[] = $a->access_id;
+		
+		$data = [
+			"role" => $this->gm->unique("role", "role_id", $role_id),
+			"accounts" => $this->gm->filter("account", ["role_id" => $role_id], null, null, [["username", "asc"]]),
+			"modules" => $modules,
+			"access_ids" => $access_ids,
+			"main" => "authentication/role/edit",
+		];
+		$this->load->view('layout', $data);
+	}
+	
+	public function update_role(){
 		if ($this->session->userdata('username')){
 			$data = $this->input->post();
 			
 			$this->load->library('my_val');
-			$result = $this->my_val->add_access($data);
+			$result = $this->my_val->update_role($data);
 			
-			if ($result["type"] === "success")
-				if ($this->gm->insert("access", $data)) 
-					$result["msg"] = $this->lang->line("s_access_insert");
-		}else $result = ["type" => "error", "msg" => $this->lang->line("e_finished_session")];
-			
+			if ($result["type"] === "success"){
+				$this->gm->update("role", ["role_id" => $data["role_id"]], $data);
+				$result["role_id"] = $data["role_id"];
+				$result["msg"] = $this->lang->line("s_role_update");
+			}
+		}else $result = ["type" => "error", "msgs" => [], "msg" => $this->lang->line("e_finished_session")];
+		
 		header('Content-Type: application/json');
 		echo json_encode($result);
 	}
 	
-	public function delete_access(){
+	public function access_control(){
+		$type = "error"; $msg = null;
+		
 		if ($this->session->userdata('username')){
 			$data = $this->input->post();
+			$action = $data["action"]; unset($data["action"]);
+			if ($action == "add") $result = $this->gm->insert("role_access", $data);
+			else $result = $this->gm->delete("role_access", $data);
 			
-			$this->load->library('my_val');
-			$result = $this->my_val->delete_access($data);
-			
-			if ($result["type"] === "success")
-				if ($this->gm->update("access", ["access_id" => $data["access_id"]], ["valid" => false]))
-					$result["msg"] = $this->lang->line("s_access_delete");
-		}else $result = ["type" => "error", "msg" => $this->lang->line("e_finished_session")];
-			
+			$type = "success";
+		}else $msg = $this->lang->line("e_finished_session");
+		
 		header('Content-Type: application/json');
-		echo json_encode($result);
+		echo json_encode(["type" => $type, "msg" => $msg]);
 	}
+	
 }
