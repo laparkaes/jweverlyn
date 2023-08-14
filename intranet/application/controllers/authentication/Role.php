@@ -81,9 +81,13 @@ class Role extends CI_Controller {
 			$this->load->library('my_val');
 			$result = $this->my_val->delete_role($data);
 			
-			if ($result["type"] === "success")
-				if ($this->gm->update("role", ["role_id" => $data["role_id"]], ["valid" => false]))
+			if ($result["type"] === "success"){
+				$aux = ["role_id" => $data["role_id"]];
+				if ($this->gm->update("role", $aux, ["valid" => false])){
 					$result["msg"] = $this->lang->line("s_role_delete");
+					$this->gm->delete("role_access", $aux);
+				}	
+			}
 		}else $result = ["type" => "error", "msg" => $this->lang->line("e_finished_session")];
 		
 		header('Content-Type: application/json');
@@ -134,8 +138,13 @@ class Role extends CI_Controller {
 		if ($this->session->userdata('username')){
 			$data = $this->input->post();
 			$action = $data["action"]; unset($data["action"]);
-			if ($action == "add") $result = $this->gm->insert("role_access", $data);
-			else $result = $this->gm->delete("role_access", $data);
+			if ($action == "add"){
+				$result = $this->gm->insert("role_access", $data);
+				$msg = $this->lang->line("s_role_access_assigned");
+			}else{
+				$result = $this->gm->delete("role_access", $data);
+				$msg = $this->lang->line("s_role_access_designated");
+			}
 			
 			$type = "success";
 		}else $msg = $this->lang->line("e_finished_session");

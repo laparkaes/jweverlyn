@@ -28,4 +28,6 @@ $lang['s_access_delete'] = 'Acceso ha sido eliminado.';
 $lang['s_role_insert'] = 'Rol ha sido generado.';
 $lang['s_role_delete'] = 'Rol ha sido eliminado.';
 $lang['s_role_update'] = 'Rol ha sido actualizado.';
+$lang['s_role_access_assigned'] = 'Acceso ha sido asignado al rol.';
+$lang['s_role_access_designated'] = 'Acceso ha sido designado al rol.';
 

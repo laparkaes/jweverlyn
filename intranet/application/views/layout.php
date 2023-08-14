@@ -16,6 +16,7 @@
 	<link href="<?= base_url() ?>assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
 	<link href="<?= base_url() ?>assets/vendor/remixicon/remixicon.css" rel="stylesheet">
 	<link href="<?= base_url() ?>assets/vendor/sweetalert2/dist/sweetalert2.min.css" rel="stylesheet">
+	<link href="<?= base_url() ?>assets/vendor/toastr/toastr.min.css" rel="stylesheet">
 	<link href="<?= base_url() ?>assets/css/style.css" rel="stylesheet">
 </head>
 <body>
@@ -236,6 +237,7 @@
 	<script src="<?= base_url() ?>assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 	<script src="<?= base_url() ?>assets/vendor/apexcharts/apexcharts.min.js"></script>
 	<script src="<?= base_url() ?>assets/vendor/sweetalert2/dist/sweetalert2.all.min.js"></script>
+	<script src="<?= base_url() ?>assets/vendor/toastr/toastr.min.js"></script>
 	<script src="<?= base_url() ?>assets/js/main.js"></script>
 	<script src="<?= base_url() ?>assets/js/func.js"></script>
 	<?php if ($this->js_init){ ?>

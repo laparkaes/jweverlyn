@@ -49,6 +49,15 @@ function swal_redirection(type, msg, move_to){
 	
 }
 
+function toastr_(type, msg){
+	toastr.remove();
+	switch (type) {
+        case "success": toastr.success(msg, "¡ " + sp_words["success"] + " !"); break;
+        case "error": toastr.success(msg, "¡ " + sp_words["error"] + " !"); break;
+        case "warning":  toastr.warning(msg, "¡ " + sp_words["warning"] + " !"); break;
+	 }
+}
+
 function ajax_form(dom, url){
 	var deferred = $.Deferred();
 	$.ajax({

@@ -34,48 +34,28 @@
 							<thead>
 								<tr>
 									<th scope="col">#</th>
-									<th scope="col">Name</th>
-									<th scope="col">Position</th>
-									<th scope="col">Age</th>
-									<th scope="col">Start Date</th>
+									<th scope="col">Usuario</th>
+									<th scope="col">Encargado</th>
+									<th scope="col">Rol</th>
+									<th scope="col">Desde</th>
+									<th scope="col"></th>
 								</tr>
 							</thead>
 							<tbody>
+								<?php $base_page = ($params["page"] - 1) * 25; foreach($accounts as $i_a => $a){ ?>
 								<tr>
-									<th scope="row">1</th>
-									<td>Brandon Jacob</td>
-									<td>Designer</td>
-									<td>28</td>
-									<td>2016-05-25</td>
+									<th scope="row"><?= $base_page + $i_a + 1 ?></th>
+									<td><?= $a->username ?></td>
+									<td><?= $a->name ?></td>
+									<td><?= $a->role ?></td>
+									<td><?= date("Y-m-d", strtotime($a->registed_at)) ?></td>
+									<td class="text-end">
+										<a href="<?= base_url() ?>authentication/account/edit/<?= $a->account_id ?>" type="button" class="btn btn-outline-success btn-sm border-0">
+											<i class="bi bi-pencil-fill"></i>
+										</a>
+									</td>
 								</tr>
-								<tr>
-									<th scope="row">2</th>
-									<td>Bridie Kessler</td>
-									<td>Developer</td>
-									<td>35</td>
-									<td>2014-12-05</td>
-								</tr>
-								<tr>
-									<th scope="row">3</th>
-									<td>Ashleigh Langosh</td>
-									<td>Finance</td>
-									<td>45</td>
-									<td>2011-08-12</td>
-								</tr>
-								<tr>
-									<th scope="row">4</th>
-									<td>Angus Grady</td>
-									<td>HR</td>
-									<td>34</td>
-									<td>2012-06-11</td>
-								</tr>
-								<tr>
-									<th scope="row">5</th>
-									<td>Raheem Lehner</td>
-									<td>Dynamic Division Officer</td>
-									<td>47</td>
-									<td>2011-04-19</td>
-								</tr>
+								<?php } ?>
 							</tbody>
 						</table>
 					</div>
@@ -86,21 +66,12 @@
 	<div class="row">
 		<div class="col">
 			<ul class="pagination">
-				<li class="page-item">
-				<a class="page-link" href="#" aria-label="Previous">
-				<span aria-hidden="true">«</span>
-				</a>
-				</li>
-				<li class="page-item active"><a class="page-link" href="#">1</a></li>
-				<li class="page-item"><a class="page-link" href="#">2</a></li>
-				<li class="page-item"><a class="page-link" href="#">3</a></li>
-				<li class="page-item"><a class="page-link" href="#">4</a></li>
-				<li class="page-item"><a class="page-link" href="#">5</a></li>
-				<li class="page-item">
-				<a class="page-link" href="#" aria-label="Next">
-				<span aria-hidden="true">»</span>
-				</a>
-				</li>
+				<?php $base_link = base_url()."authentication/account?"; 
+				foreach($paging as $p){ 
+					$params["page"] = $p[0];
+					$link = $base_link.http_build_query($params); ?>
+				<li class="page-item <?= $p[2] ?>"><a class="page-link" href="<?= $link ?>"><?= $p[1] ?></a></li>
+				<?php } ?>
 			</ul>
 		</div>
 	</div>
