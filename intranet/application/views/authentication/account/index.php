@@ -10,7 +10,11 @@
 				</ol>
 			</nav>
 		</div>
-		<button type="button" class="btn btn-success border-0"><i class="bi bi-plus-lg"></i></button>
+		<div>
+			<a href="<?= base_url() ?>authentication/account/register" type="button" class="btn btn-success">
+				<i class="bi bi-plus-lg"></i>
+			</a>
+		</div>
 	</div>
 </div>
 <section class="section">
@@ -23,14 +27,16 @@
 							<h5 class="card-title">Lista de Usuarios</h5>
 						</div>
 						<div class="col-md-4 col-12">
-							<div class="input-group mt-md-3 mb-3">
-								<input type="text" class="form-control" placeholder="Keyword">
-								<button type="button" class="btn btn-primary"><i class="bi bi-funnel"></i></button>
-							</div>
+							<form>
+								<div class="input-group mt-md-3 mb-3">
+									<input type="text" class="form-control" name="search" placeholder="Buscar" value="<?= $this->input->get("search") ?>">
+									<button type="button" class="btn btn-primary"><i class="bi bi-funnel"></i></button>
+								</div>
+							</form>
 						</div>
 					</div>
 					<div class="table-responsive">
-						<table class="table table-striped">
+						<table class="table">
 							<thead>
 								<tr>
 									<th scope="col">#</th>
@@ -50,7 +56,7 @@
 									<td><?= $a->role ?></td>
 									<td><?= date("Y-m-d", strtotime($a->registed_at)) ?></td>
 									<td class="text-end">
-										<a href="<?= base_url() ?>authentication/account/edit/<?= $a->account_id ?>" type="button" class="btn btn-outline-success btn-sm border-0">
+										<a href="<?= base_url() ?>authentication/account/edit/<?= $a->account_id ?>" type="button" class="btn btn-outline-primary btn-sm border-0">
 											<i class="bi bi-pencil-fill"></i>
 										</a>
 									</td>

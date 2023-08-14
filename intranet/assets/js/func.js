@@ -14,7 +14,11 @@ const sp_warning_msg = {
 	add_access: "¿Desea agregar nuevo acceso?",
 	delete_access: "¿Desea eliminar acceso?",
 	add_role: "¿Desea agregar nuevo rol?",
+	update_role: "¿Desea actualizar rol?",
 	delete_role: "¿Desea eliminar rol?",
+	add_account: "¿Desea agregar nuevo usuario?",
+	update_account: "¿Desea actualizar usuario?",
+	update_password: "¿Desea actualizar contraseña?",
 }
 
 function set_msgs(form_id, msgs){
@@ -50,12 +54,14 @@ function swal_redirection(type, msg, move_to){
 }
 
 function toastr_(type, msg){
-	toastr.remove();
-	switch (type) {
-        case "success": toastr.success(msg, "¡ " + sp_words["success"] + " !"); break;
-        case "error": toastr.success(msg, "¡ " + sp_words["error"] + " !"); break;
-        case "warning":  toastr.warning(msg, "¡ " + sp_words["warning"] + " !"); break;
-	 }
+	if (msg != ""){
+		toastr.remove();
+		switch (type) {
+			case "success": toastr.success(msg, "¡ " + sp_words["success"] + " !"); break;
+			case "error": toastr.success(msg, "¡ " + sp_words["error"] + " !"); break;
+			case "warning":  toastr.warning(msg, "¡ " + sp_words["warning"] + " !"); break;
+		}	
+	}
 }
 
 function ajax_form(dom, url){

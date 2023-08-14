@@ -57,7 +57,7 @@ class Role extends CI_Controller {
 		$this->load->view('layout', $data);
 	}
 	
-	public function add_role(){
+	public function add(){
 		if ($this->session->userdata('username')){
 			$data = $this->input->post();
 			
@@ -74,7 +74,7 @@ class Role extends CI_Controller {
 		echo json_encode($result);
 	}
 	
-	public function delete_role(){
+	public function delete(){
 		if ($this->session->userdata('username')){
 			$data = $this->input->post();
 			
@@ -114,7 +114,7 @@ class Role extends CI_Controller {
 		$this->load->view('layout', $data);
 	}
 	
-	public function update_role(){
+	public function update(){
 		if ($this->session->userdata('username')){
 			$data = $this->input->post();
 			

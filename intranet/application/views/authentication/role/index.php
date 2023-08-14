@@ -54,7 +54,7 @@
 									<td><?= number_format($r->account_qty) ?></td>
 									<td><?= number_format($r->access_qty) ?></td>
 									<td class="text-end">
-										<a href="<?= base_url() ?>authentication/role/edit/<?= $r->role_id ?>" type="button" class="btn btn-outline-success btn-sm border-0">
+										<a href="<?= base_url() ?>authentication/role/edit/<?= $r->role_id ?>" type="button" class="btn btn-outline-primary btn-sm border-0">
 											<i class="bi bi-pencil-fill"></i>
 										</a>
 										<button type="button" class="btn btn-outline-danger btn-sm border-0 btn_delete_role" value="<?= $r->role_id ?>">

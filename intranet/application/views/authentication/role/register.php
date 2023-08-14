@@ -24,8 +24,8 @@
 				<h5 class="card-title">Agregar Rol</h5>
 				<form class="row g-3" id="form_add_role">
 					<div class="col-12">
-						<label for="inputModuleName" class="form-label">Nombre de Rol</label>
-						<input type="text" class="form-control" id="inputModuleName" name="role">
+						<label for="ipName" class="form-label">Nombre de Rol</label>
+						<input type="text" class="form-control" id="ipName" name="role">
 						<div class="invalid-feedback"></div>
 					</div>
 					<div class="text-center pt-3">

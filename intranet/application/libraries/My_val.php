@@ -82,6 +82,7 @@ class My_val{
 	
 	public function add_access($data){
 		$msgs = []; $msg = "";
+		$msgs = $this->check_blank($data, ["module_id"], $msgs);
 		
 		if ($data["access"]){
 			if (!$this->CI->gm->unique("access", "access", $data["access"])) $msgs = $this->set_msg($msgs, "access");
@@ -92,8 +93,6 @@ class My_val{
 			if (!$this->CI->gm->unique("access", "code", $data["code"])) $msgs = $this->set_msg($msgs, "code");
 			else $msgs = $this->set_msg($msgs, "code", "e_code_exists");
 		}else $msgs = $this->set_msg($msgs, "code", "e_required_field");	
-		
-		$msgs = $this->check_blank($data, ["module_id"], $msgs);
 		
 		return ["type" => $this->get_type($msgs), "msgs" => $msgs, "msg" => $msg];
 	}
@@ -145,4 +144,53 @@ class My_val{
 		return ["type" => $type, "msgs" => $msgs, "msg" => $msg];
 	}
 	
+	public function add_account($data){
+		$msgs = []; $msg = "";
+		$msgs = $this->check_blank($data, ["role_id", "name"], $msgs);
+		
+		if ($data["username"]){
+			if (filter_var($data["username"], FILTER_VALIDATE_EMAIL)){
+				if (!$this->CI->gm->unique("account", "username", $data["username"])) 
+					$msgs = $this->set_msg($msgs, "username");
+				else $msgs = $this->set_msg($msgs, "username", "e_username_exists");
+			}else $msgs = $this->set_msg($msgs, "username", "e_username_email");
+		}else $msgs = $this->set_msg($msgs, "username", "e_required_field");
+		
+		if ($data["password"]){
+			if (strlen($data["password"]) >= 6){
+				$msgs = $this->set_msg($msgs, "password");
+				if ($data["password_confirm"]){
+					if ($data["password"] === $data["password_confirm"]){
+						$msgs = $this->set_msg($msgs, "password_confirm");
+					}else $msgs = $this->set_msg($msgs, "password_confirm", "e_password_confirm_wrong");
+				}else $msgs = $this->set_msg($msgs, "password_confirm", "e_required_field");
+			}else $msgs = $this->set_msg($msgs, "password", "e_password_length");
+		}else $msgs = $this->set_msg($msgs, "password", "e_required_field");
+		
+		return ["type" => $this->get_type($msgs), "msgs" => $msgs, "msg" => $msg];
+	}
+	
+	public function update_account($data){
+		$msgs = []; $msg = "";
+		$msgs = $this->check_blank($data, ["role_id", "name"], $msgs);
+		
+		return ["type" => $this->get_type($msgs), "msgs" => $msgs, "msg" => $msg];
+	}
+	
+	public function update_password($data){
+		$msgs = []; $msg = "";
+		
+		if ($data["password"]){
+			if (strlen($data["password"]) >= 6){
+				$msgs = $this->set_msg($msgs, "password");
+				if ($data["password_confirm"]){
+					if ($data["password"] === $data["password_confirm"]){
+						$msgs = $this->set_msg($msgs, "password_confirm");
+					}else $msgs = $this->set_msg($msgs, "password_confirm", "e_password_confirm_wrong");
+				}else $msgs = $this->set_msg($msgs, "password_confirm", "e_required_field");
+			}else $msgs = $this->set_msg($msgs, "password", "e_password_length");
+		}else $msgs = $this->set_msg($msgs, "password", "e_required_field");
+		
+		return ["type" => $this->get_type($msgs), "msgs" => $msgs, "msg" => $msg];
+	}
 }

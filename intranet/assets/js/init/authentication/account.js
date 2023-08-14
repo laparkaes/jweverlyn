@@ -1,21 +1,27 @@
-$("#form_add_role").submit(function(e) {
+$("#form_add_account").submit(function(e) {
 	e.preventDefault();
-	ajax_form_warning(this, "authentication/role/add_role", "add_role").done(function(res) {
-		set_msgs("#form_add_role", res.msgs);
-		swal_redirection(res.type, res.msg, base_url + "authentication/role/edit/" + res.role_id);
+	ajax_form_warning(this, "authentication/account/add", "add_account").done(function(res) {
+		set_msgs("#form_add_account", res.msgs);
+		swal_redirection(res.type, res.msg, base_url + "authentication/account/edit/" + res.account_id);
 	});
 });
 
-$("#form_update_role").submit(function(e) {
+$("#form_update_account").submit(function(e) {
 	e.preventDefault();
-	ajax_form_warning(this, "authentication/role/update_role", "update_role").done(function(res) {
-		set_msgs("#form_update_role", res.msgs);
-		swal_redirection(res.type, res.msg, base_url + "authentication/role/edit/" + res.role_id);
+	ajax_form_warning(this, "authentication/account/update", "update_account").done(function(res) {
+		set_msgs("#form_update_account", res.msgs);
+		swal_redirection(res.type, res.msg, base_url + "authentication/account/edit/" + res.account_id);
 	});
 });
 
-//$("#sl_exam_category").change(function() {filter_exam($(this).val());});
-
+$("#form_update_password").submit(function(e) {
+	e.preventDefault();
+	ajax_form_warning(this, "authentication/account/update_password", "update_password").done(function(res) {
+		set_msgs("#form_update_password", res.msgs);
+		swal_redirection(res.type, res.msg, base_url + "authentication/account/edit/" + res.account_id);
+	});
+});
+///////////////////////////////
 $(".btn_delete_role").on('click',(function(e) {
 	ajax_simple_warning({role_id: $(this).val()}, "authentication/role/delete_role", "delete_role").done(function(res) {
 		swal_redirection(res.type, res.msg, base_url + "authentication/role");

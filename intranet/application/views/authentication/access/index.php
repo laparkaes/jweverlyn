@@ -46,7 +46,7 @@
 									<td></td>
 									<td></td>
 									<td class="text-end">
-										<a href="<?= base_url() ?>authentication/access/register?m_id=<?= $m->module_id ?>" type="button" class="btn btn-success btn-sm border-0">
+										<a href="<?= base_url() ?>authentication/access/register?m_id=<?= $m->module_id ?>" type="button" class="btn btn-primary btn-sm border-0">
 											<i class="bi bi-plus-lg"></i>
 										</a>
 										<button type="button" class="btn btn-danger btn-sm border-0 btn_delete_module" value="<?= $m->module_id ?>">
