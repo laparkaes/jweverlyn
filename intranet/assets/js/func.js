@@ -19,6 +19,13 @@ const sp_warning_msg = {
 	add_account: "¿Desea agregar nuevo usuario?",
 	update_account: "¿Desea actualizar usuario?",
 	update_password: "¿Desea actualizar contraseña?",
+	deactivate_account: "¿Desea desactivar usuario?",
+	activate_account: "¿Desea activar usuario?",
+	add_category: "¿Desea agregar nueva categoría?",
+	delete_category: "¿Desea eliminar categoría?",
+	move_category: "¿Desea mover todos los productos de categoría?",
+	add_product: "¿Desea agregar nuevo producto?",
+	update_product: "¿Desea actualizar producto?",
 }
 
 function set_msgs(form_id, msgs){
@@ -35,7 +42,9 @@ function swal(type, msg){
 		Swal.fire({
 			title: "¡ " + sp_words[type].toUpperCase() + " !",
 			icon: type,
-			html: msg
+			html: msg,
+			confirmButtonText: sp_words["confirm"],
+			cancelButtonText: sp_words["cancel"],
 		});
 	}
 }
@@ -45,7 +54,9 @@ function swal_redirection(type, msg, move_to){
 		Swal.fire({
 			title: "¡ " + sp_words[type].toUpperCase() + " !",
 			icon: type,
-			html: msg
+			html: msg,
+			confirmButtonText: sp_words["confirm"],
+			cancelButtonText: sp_words["cancel"],
 		}).then((result) => {
 			if (result.isConfirmed) if (type == "success") location.href = move_to;
 		});	

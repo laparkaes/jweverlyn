@@ -4,6 +4,20 @@ $lang['e_internal_again'] = 'Ocurrió error interno. Intente nuevamente.';
 $lang['e_unknown_refresh'] = 'Ocurrió error desconocido. Actualice la página y vuelva a intentar.';
 $lang['e_required_field'] = 'Campo requerido.';
 $lang['e_finished_session'] = 'Sesión finalizada. Debe ingresar nuevamente.';
+$lang['e_numeric'] = 'Debe ser un número.';
+$lang['e_numeric_positive'] = 'Debe ser un número positivo.';
+
+//product
+$lang['s_product_insert'] = 'Producto ha sido generado con éxito.';
+$lang['s_product_update'] = 'Producto ha sido actualizado.';
+
+//product category
+$lang['e_category_exists'] = 'Existe nombre de categoría ingresado.';
+$lang['e_category_include_products'] = 'No puede eliminar una categoría con productos.';
+$lang['e_diff_category'] = 'Elija una categoría diferente.';
+$lang['s_category_insert'] = 'Categoría ha sido generada con éxito.';
+$lang['s_category_delete'] = 'Categoría ha sido eliminada.';
+$lang['s_category_move'] = 'Productos de categoría han sido actualizados.';
 
 //account
 $lang['e_admin_exists'] = 'Existe al menos un usuario admin generado.';
@@ -13,9 +27,13 @@ $lang['e_username_wrong'] = 'Usuario no registrado.';
 $lang['e_password_wrong'] = 'Contraseña incorrecta.';
 $lang['e_password_length'] = 'Ingrese al menos 6 letras.';
 $lang['e_password_confirm_wrong'] = 'Confirmación incorrecta.';
+$lang['e_confirm_deactivate_account'] = 'Confirme desactivación del usuario.';
+$lang['e_itself_deactivate_account'] = 'Desactivación por sí mismo no es permitida.';
+$lang['e_confirm_activate_account'] = 'Confirme activación del usuario.';
 $lang['s_admin_create'] = 'Usuario admin ha sido generado con éxito.';
 $lang['s_account_insert'] = 'Usuario ha sido generado con éxito.';
 $lang['s_account_update'] = 'Usuario ha sido actualizado con éxito.';
+$lang['s_account_deactivate'] = 'Usuario ha sido desactivado con éxito.';
 
 //access
 $lang['e_module_exists'] = 'Existe nombre de módulo ingresado.';

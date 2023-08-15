@@ -39,7 +39,7 @@
 							<thead>
 								<tr>
 									<th scope="col">#</th>
-									<th scope="col">Categoria</th>
+									<th scope="col">Categoría</th>
 									<th scope="col">Producto</th>
 									<th scope="col">Vendidos</th>
 									<th scope="col">Desde</th>

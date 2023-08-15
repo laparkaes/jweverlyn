@@ -36,7 +36,7 @@
 						</div>
 					</div>
 					<div class="table-responsive">
-						<table class="table">
+						<table class="table align-middle">
 							<thead>
 								<tr>
 									<th scope="col">#</th>
@@ -44,6 +44,7 @@
 									<th scope="col">Encargado</th>
 									<th scope="col">Rol</th>
 									<th scope="col">Desde</th>
+									<th scope="col"></th>
 									<th scope="col"></th>
 								</tr>
 							</thead>
@@ -55,6 +56,7 @@
 									<td><?= $a->name ?></td>
 									<td><?= $a->role ?></td>
 									<td><?= date("Y-m-d", strtotime($a->registed_at)) ?></td>
+									<td><i class="bi bi-circle-fill text-<?= $a->color ?>"></i></td>
 									<td class="text-end">
 										<a href="<?= base_url() ?>authentication/account/edit/<?= $a->account_id ?>" type="button" class="btn btn-outline-primary btn-sm border-0">
 											<i class="bi bi-pencil-fill"></i>

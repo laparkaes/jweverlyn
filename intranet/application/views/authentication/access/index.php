@@ -28,7 +28,7 @@
 						</div>
 					</div>
 					<div class="table-responsive">
-						<table class="table">
+						<table class="table align-middle">
 							<thead>
 								<tr>
 									<th scope="col">#</th>

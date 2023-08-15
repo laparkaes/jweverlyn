@@ -34,7 +34,10 @@ class Account extends CI_Controller {
 		}else unset($params["search"]);
 		
 		$accounts = $this->gm->filter("account", $w, $l, $w_in, [["username", "asc"]], 25, 25 * ($params["page"] - 1), false);
-		foreach($accounts as $a) $a->role = $this->gm->unique("role", "role_id", $a->role_id)->role;
+		foreach($accounts as $a){
+			$a->role = $this->gm->unique("role", "role_id", $a->role_id)->role;
+			if ($a->valid) $a->color = "success"; else $a->color = "danger";
+		}
 		
 		$data = [
 			"params" => $params,
@@ -81,7 +84,7 @@ class Account extends CI_Controller {
 		
 		$data = [
 			"roles" => $this->gm->all("role", [["role", "asc"]]),
-			"account" => $this->gm->unique("account", "account_id", $account_id),
+			"account" => $this->gm->unique("account", "account_id", $account_id, false),
 			"main" => "authentication/account/edit",
 		];
 		$this->load->view('layout', $data);
@@ -122,6 +125,54 @@ class Account extends CI_Controller {
 				$this->gm->update("account", ["account_id" => $data["account_id"]], $aux_data);
 				$result["account_id"] = $data["account_id"];
 				$result["msg"] = $this->lang->line("s_account_update");
+			}
+		}else $result = ["type" => "error", "msgs" => [], "msg" => $this->lang->line("e_finished_session")];
+		
+		header('Content-Type: application/json');
+		echo json_encode($result);
+	}
+	
+	public function deactivate(){
+		if ($this->session->userdata('username')){
+			$data = $this->input->post();
+			$data["is_confirmed"] = $this->input->post("is_confirmed");
+			
+			$this->load->library('my_val');
+			$result = $this->my_val->deactivate_account($data);
+			
+			if ($result["type"] === "success"){
+				$aux_data = [
+					"valid" => false,
+					"updated_at" => date("Y-m-d H:i:s"),
+				];
+				
+				$this->gm->update("account", ["account_id" => $data["account_id"]], $aux_data);
+				$result["account_id"] = $data["account_id"];
+				$result["msg"] = $this->lang->line("s_account_deactivate");
+			}
+		}else $result = ["type" => "error", "msgs" => [], "msg" => $this->lang->line("e_finished_session")];
+		
+		header('Content-Type: application/json');
+		echo json_encode($result);
+	}
+	
+	public function activate(){
+		if ($this->session->userdata('username')){
+			$data = $this->input->post();
+			$data["is_confirmed"] = $this->input->post("is_confirmed");
+			
+			$this->load->library('my_val');
+			$result = $this->my_val->activate_account($data);
+			
+			if ($result["type"] === "success"){
+				$aux_data = [
+					"valid" => true,
+					"updated_at" => date("Y-m-d H:i:s"),
+				];
+				
+				$this->gm->update("account", ["account_id" => $data["account_id"]], $aux_data);
+				$result["account_id"] = $data["account_id"];
+				$result["msg"] = $this->lang->line("s_account_deactivate");
 			}
 		}else $result = ["type" => "error", "msgs" => [], "msg" => $this->lang->line("e_finished_session")];
 		

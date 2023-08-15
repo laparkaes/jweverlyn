@@ -18,7 +18,7 @@
 	</div>
 </div>
 <div class="row justify-content-center">
-	<div class="col-md-6">
+	<div class="col-lg-6">
 		<div class="card">
 			<div class="card-body">
 				<h5 class="card-title">Actualizar Rol</h5>
@@ -66,7 +66,7 @@
 		</div>
 		<?php } ?>
 	</div>
-	<div class="col-md-6">
+	<div class="col-lg-6">
 		<div class="card">
 			<div class="card-body">
 				<h5 class="card-title">Accesos</h5>

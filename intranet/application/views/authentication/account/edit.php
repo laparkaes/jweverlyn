@@ -18,7 +18,8 @@
 	</div>
 </div>
 <div class="row justify-content-center">
-	<div class="col-lg-8">
+	<div class="col-md-8">
+		<?php if ($account->valid){ ?>
 		<div class="card">
 			<div class="card-body">
 				<h5 class="card-title">Datos de Usuario</h5>
@@ -73,22 +74,72 @@
 		</div>
 		<div class="card">
 			<div class="card-body">
-				<h5 class="card-title">Eliminar Usuario</h5>
-				<form class="row g-3" id="form_delete_account">
+				<h5 class="card-title">Desactivar Usuario</h5>
+				<form class="row g-3" id="form_deactivate_account">
 					<input type="hidden" name="account_id" value="<?= $account->account_id ?>">
 					<div class="col-md-12">
 						<div class="form-check mb-0">
-							<input class="form-check-input" type="checkbox" id="chkConfirm">
-							<label class="form-check-label" for="chkConfirm">
-								Confirmo eliminar este usuario.
+							<input class="form-check-input" type="checkbox" id="is_confirmed" name="is_confirmed">
+							<label class="form-check-label" for="is_confirmed">
+								Confirmo desactivar este usuario.
 							</label>
 						</div>
+						
 					</div>
 					<div class="text-center pt-3">
-						<button type="submit" class="btn btn-danger">Eliminar</button>
+						<button type="submit" class="btn btn-danger">Desactivar</button>
 					</div>
 				</form>
 			</div>
 		</div>
+		<?php }else{ ?>
+		<div class="card">
+			<div class="card-body">
+				<h5 class="card-title">Datos de Usuario</h5>
+				<div class="row g-3">
+					<div class="col-md-6">
+						<label for="slRole" class="form-label">Rol</label>
+						<select class="form-select" id="slRole" name="role_id" disabled>
+							<option value="">Elegir</option>
+							<?php foreach($roles as $r){ if ($r->role_id == $account->role_id) $s = "selected"; else $s = ""; ?>
+							<option value="<?= $r->role_id ?>" <?= $s ?>><?= $r->role ?></option>
+							<?php } ?>
+						</select>
+						<div class="invalid-feedback"></div>
+					</div>
+					<div class="col-md-6">
+						<label for="inputName" class="form-label">Nombre</label>
+						<input type="text" class="form-control" id="inputName" name="name" value="<?= $account->name ?>" disabled>
+						<div class="invalid-feedback"></div>
+					</div>
+					<div class="col-12">
+						<label for="inputUsername" class="form-label">Usuario</label>
+						<input type="email" class="form-control" id="inputUsername" value="<?= $account->username ?>" disabled>
+						<div class="invalid-feedback"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="card">
+			<div class="card-body">
+				<h5 class="card-title">Activar Usuario</h5>
+				<form class="row g-3" id="form_activate_account">
+					<input type="hidden" name="account_id" value="<?= $account->account_id ?>">
+					<div class="col-md-12">
+						<div class="form-check mb-0">
+							<input class="form-check-input" type="checkbox" id="is_confirmed" name="is_confirmed">
+							<label class="form-check-label" for="is_confirmed">
+								Confirmo activar este usuario.
+							</label>
+						</div>
+						
+					</div>
+					<div class="text-center pt-3">
+						<button type="submit" class="btn btn-primary">Activar</button>
+					</div>
+				</form>
+			</div>
+		</div>
+		<?php } ?>
 	</div>
 </div>

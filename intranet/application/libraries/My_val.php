@@ -193,4 +193,82 @@ class My_val{
 		
 		return ["type" => $this->get_type($msgs), "msgs" => $msgs, "msg" => $msg];
 	}
+	
+	public function deactivate_account($data){
+		$type = "error"; $msgs = []; $msg = "";
+		
+		if ($data["account_id"]){
+			if ($data["is_confirmed"]){
+				$account = $this->CI->gm->unique("account", "account_id", $data["account_id"]);
+				if ($account->username !== $this->CI->session->userdata('username')) $type = "success";
+				else $msg = $this->CI->lang->line("e_itself_deactivate_account");
+			}else $msg = $this->CI->lang->line("e_confirm_deactivate_account");
+		}else $msg = $this->CI->lang->line("e_unknown_refresh");
+		
+		return ["type" => $type, "msgs" => $msgs, "msg" => $msg];
+	}
+	
+	public function activate_account($data){
+		$type = "error"; $msgs = []; $msg = "";
+		
+		if ($data["account_id"]){
+			if ($data["is_confirmed"]) $type = "success";
+			else $msg = $this->CI->lang->line("e_confirm_activate_account");
+		}else $msg = $this->CI->lang->line("e_unknown_refresh");
+		
+		return ["type" => $type, "msgs" => $msgs, "msg" => $msg];
+	}
+	
+	public function add_category($data){
+		$msgs = []; $msg = "";
+		
+		if ($data["category"]){
+			if (!$this->CI->gm->unique("product_category", "category", $data["category"])){
+				$msgs = $this->set_msg($msgs, "category");
+			}else $msgs = $this->set_msg($msgs, "category", "e_category_exists");
+		}else $msgs = $this->set_msg($msgs, "category", "e_required_field");
+		
+		return ["type" => $this->get_type($msgs), "msgs" => $msgs, "msg" => $msg];
+	}
+	
+	
+	public function delete_category($data){
+		$msgs = []; $msg = "";
+		
+		if ($data["category_id"]){
+			if (!$this->CI->gm->filter("product", $data)){
+				$msgs = $this->set_msg($msgs, "category_id");
+			}else $msgs = $this->set_msg($msgs, "category_id", "e_category_include_products");
+		}else $msgs = $this->set_msg($msgs, "category_id", "e_required_field");
+		
+		return ["type" => $this->get_type($msgs), "msgs" => $msgs, "msg" => $msg];
+	}
+	
+	public function move_category($data){
+		$msgs = []; $msg = "";
+		$msgs = $this->check_blank($data, ["from_id"], $msgs);
+		
+		if ($data["to_id"]){
+			if ($data["from_id"] != $data["to_id"]){
+				$msgs = $this->set_msg($msgs, "to_id");
+			}else $msgs = $this->set_msg($msgs, "to_id", "e_diff_category");
+		}else $msgs = $this->set_msg($msgs, "to_id", "e_required_field");
+		
+		return ["type" => $this->get_type($msgs), "msgs" => $msgs, "msg" => $msg];
+	}
+	
+	public function add_product($data){
+		$msgs = []; $msg = "";
+		$msgs = $this->check_blank($data, ["category_id", "product"], $msgs);
+		
+		if ($data["price"]){
+			if (is_numeric($data["price"])){
+				if ($data["price"] > 0){
+					$msgs = $this->set_msg($msgs, "price");
+				}else $msgs = $this->set_msg($msgs, "price", "e_numeric_positive");
+			}else $msgs = $this->set_msg($msgs, "price", "e_numeric");
+		}else $msgs = $this->set_msg($msgs, "price", "e_required_field");
+		
+		return ["type" => $this->get_type($msgs), "msgs" => $msgs, "msg" => $msg];
+	}
 }

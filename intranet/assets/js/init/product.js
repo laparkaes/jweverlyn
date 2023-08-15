@@ -1,3 +1,50 @@
+$("#form_add_category").submit(function(e) {
+	e.preventDefault();
+	ajax_form_warning(this, "product/add_category", "add_category").done(function(res) {
+		set_msgs("#form_add_category", res.msgs);
+		swal_redirection(res.type, res.msg, base_url + "product/register");
+	});
+});
+
+$("#form_delete_category").submit(function(e) {
+	e.preventDefault();
+	ajax_form_warning(this, "product/delete_category", "delete_category").done(function(res) {
+		set_msgs("#form_delete_category", res.msgs);
+		swal_redirection(res.type, res.msg, base_url + "product/register");
+	});
+});
+
+$("#form_move_category").submit(function(e) {
+	e.preventDefault();
+	ajax_form_warning(this, "product/move_category", "move_category").done(function(res) {
+		set_msgs("#form_move_category", res.msgs);
+		swal_redirection(res.type, res.msg, base_url + "product/register");
+	});
+});
+
+$("#form_add_product").submit(function(e) {
+	e.preventDefault();
+	ajax_form_warning(this, "product/add", "add_product").done(function(res) {
+		set_msgs("#form_add_product", res.msgs);
+		swal_redirection(res.type, res.msg, base_url + "product/detail/" + res.product_id);
+	});
+});
+
+$("#form_update_product").submit(function(e) {
+	e.preventDefault();
+	ajax_form_warning(this, "product/update", "update_product").done(function(res) {
+		set_msgs("#form_update_product", res.msgs);
+		swal_redirection(res.type, res.msg, base_url + "product/detail/" + res.product_id);
+	});
+});
+
+
+
+
+
+
+
+///////////////////////////////
 $("#form_add_role").submit(function(e) {
 	e.preventDefault();
 	ajax_form_warning(this, "authentication/role/add", "add_role").done(function(res) {

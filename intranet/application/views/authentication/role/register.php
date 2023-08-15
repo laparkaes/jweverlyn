@@ -18,7 +18,7 @@
 	</div>
 </div>
 <div class="row justify-content-center">
-	<div class="col-lg-6">
+	<div class="col-md-6">
 		<div class="card">
 			<div class="card-body">
 				<h5 class="card-title">Agregar Rol</h5>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- 생성 시간: 23-08-15 09:32
+-- 생성 시간: 23-08-15 18:57
 -- 서버 버전: 10.4.24-MariaDB
 -- PHP 버전: 7.4.29
 
@@ -183,7 +183,7 @@ INSERT INTO `account` (`account_id`, `role_id`, `username`, `password`, `name`, 
 (108, 5018, 'brown.liam@gmail.com', '$2y$10$YUfji4avOfBPRJD79IBjP.QpP5ggPNEOVF78HJZEyFSV0WxMjuG2G', 'Brown Liam', 1, NULL, '2023-08-15 04:43:43', '2023-08-15 04:43:43'),
 (109, 5011, 'brown.mia@gmail.com', '$2y$10$QmtRZe9VU/07oUubSAC1GuHNuMK99DPosTsMcUp.hFQpZ9./vBPIm', 'Brown Mia', 1, NULL, '2023-08-15 04:43:43', '2023-08-15 04:43:43'),
 (110, 5021, 'brown.noah@gmail.com', '$2y$10$YgV.LQi7DWpwmTp6SWH99exyFjkiYZX7QVZJASOCC2m2GNEJQOMjC', 'Brown Noah', 1, NULL, '2023-08-15 04:43:43', '2023-08-15 04:43:43'),
-(111, 5027, 'brown.olivia@gmail.com', '$2y$10$hz20W8OUT6zCUBOEqSyeKeoiVTMqVLuQGtO5kxD7Tynq7aMzhJeDG', 'Brown Olivia', 1, NULL, '2023-08-15 04:43:43', '2023-08-15 04:43:43'),
+(111, 5027, 'brown.olivia@gmail.com', '$2y$10$hz20W8OUT6zCUBOEqSyeKeoiVTMqVLuQGtO5kxD7Tynq7aMzhJeDG', 'Brown Olivia', 0, NULL, '2023-08-15 16:22:31', '2023-08-15 04:43:43'),
 (112, 5025, 'brown.penelope@gmail.com', '$2y$10$0rZR6TkFd.ZImGsddWZJT.46SF.cCYXXPE/ALsz7RAbHbJKlf/PRu', 'Brown Penelope', 1, NULL, '2023-08-15 04:43:43', '2023-08-15 04:43:43'),
 (113, 5005, 'brown.quinn@gmail.com', '$2y$10$Ox6ves4Rst9BTMyrUJb4zeG7cJABiqwXi.ob4e/mZBTJdOkpjsMsW', 'Brown Quinn', 1, NULL, '2023-08-15 04:43:43', '2023-08-15 04:43:43'),
 (114, 5017, 'brown.ryan@gmail.com', '$2y$10$gEBB9Kp9yB///YAmH7k75epM2vlrXZ8.pLGAufbrLuv0ADzkQkIEK', 'Brown Ryan', 1, NULL, '2023-08-15 04:43:43', '2023-08-15 04:43:43'),
@@ -262,7 +262,7 @@ INSERT INTO `account` (`account_id`, `role_id`, `username`, `password`, `name`, 
 (187, 5019, 'miller.chloe@gmail.com', '$2y$10$v2IRSnJHJDiJm41l6M5dJeq6gQtLBk8UuMLloQVXJR0T0xJNdVO.2', 'Miller Chloe', 1, NULL, '2023-08-15 04:43:47', '2023-08-15 04:43:47'),
 (188, 5017, 'miller.daniel@gmail.com', '$2y$10$zQa10jNPV0og1wPQHY4SCuJpJElDTYdaXHq0o0Gs0YFUYBIS3eQ5u', 'Miller Daniel', 1, NULL, '2023-08-15 04:43:47', '2023-08-15 04:43:47'),
 (189, 5016, 'miller.emma@gmail.com', '$2y$10$9zdA29FK2ysqyCCp1qIBtuF2Os1UugZVrN03CoBOVRWWWeMBr0b4y', 'Miller Emma', 1, NULL, '2023-08-15 04:43:47', '2023-08-15 04:43:47'),
-(190, 5015, 'davis.alice@gmail.com', '$2y$10$o9UymZL5uKCfVpTK8M63DODNUHUvvBhdvZTLlbQoafMcvI1a6N5hO', 'Davis Alice', 1, NULL, '2023-08-15 04:43:48', '2023-08-15 04:43:48'),
+(190, 5015, 'davis.alice@gmail.com', '$2y$10$o9UymZL5uKCfVpTK8M63DODNUHUvvBhdvZTLlbQoafMcvI1a6N5hO', 'Davis Alice', 0, NULL, '2023-08-15 16:13:30', '2023-08-15 04:43:48'),
 (191, 5009, 'davis.bob@gmail.com', '$2y$10$C.oHCm78NRUiyUdrkwlIuu.Dbho7J1VLnyJCk/1/twC10KvKMnzBi', 'Davis Bob', 1, NULL, '2023-08-15 04:43:48', '2023-08-15 04:43:48'),
 (192, 5016, 'davis.charlie@gmail.com', '$2y$10$bpnMw6SUrEvWYdo6Yguy5.9W8NY7TzlpShJ4n.bpVZxU.TVl057Ei', 'Davis Charlie', 1, NULL, '2023-08-15 04:43:48', '2023-08-15 04:43:48'),
 (193, 5006, 'davis.david@gmail.com', '$2y$10$n.LzOX3jPEu/pQTNqZkHuOjPO.nUjQo2dD3ghc9WoReVGrL1L1.Pi', 'Davis David', 1, NULL, '2023-08-15 04:43:48', '2023-08-15 04:43:48'),
@@ -543,8 +543,8 @@ INSERT INTO `account` (`account_id`, `role_id`, `username`, `password`, `name`, 
 (467, 5022, 'wilson.daniel@gmail.com', '$2y$10$POFFVNK0EFCPKNF7cuM06.XMf9mx.e0MR8BPyUHdn69m4jZ9IpXwm', 'Wilson Daniel', 1, NULL, '2023-08-15 04:44:02', '2023-08-15 04:44:02'),
 (468, 5020, 'wilson.emma@gmail.com', '$2y$10$tfd6ytgVEtes3eDciXZFTeGwhVBZAu6SEXqtnMm6fGRQ1HOtDLjCK', 'Wilson Emma', 1, NULL, '2023-08-15 04:44:02', '2023-08-15 04:44:02'),
 (469, 5013, 'anderson.alice@gmail.com', '$2y$10$1l1NFim3oQ4qq1NE6mnXzOjHAKqoa3ZxXILGg21ZhKUJi/k/1W2Ci', 'Anderson Alice', 1, NULL, '2023-08-15 04:44:02', '2023-08-15 04:44:02'),
-(470, 5020, 'anderson.bob@gmail.com', '$2y$10$fOWBxN6TgmvWuEygkg70lu/THZP2HoGGxyi91cm30XkcBC5MoqU5C', 'Anderson Bob', 1, NULL, '2023-08-15 04:44:02', '2023-08-15 04:44:02'),
-(471, 5028, 'anderson.charlie@gmail.com', '$2y$10$5j7tFVwbBEXvQMI.6m9N7.5MwWYG0vzoWITiv7MHIk2XTsS8abywG', 'Anderson Charlie', 1, NULL, '2023-08-15 04:44:02', '2023-08-15 04:44:02'),
+(470, 5020, 'anderson.bob@gmail.com', '$2y$10$fOWBxN6TgmvWuEygkg70lu/THZP2HoGGxyi91cm30XkcBC5MoqU5C', 'Anderson Bob', 1, NULL, '2023-08-15 17:05:31', '2023-08-15 04:44:02'),
+(471, 5028, 'anderson.charlie@gmail.com', '$2y$10$5j7tFVwbBEXvQMI.6m9N7.5MwWYG0vzoWITiv7MHIk2XTsS8abywG', 'Anderson Charlie', 0, NULL, '2023-08-15 16:11:55', '2023-08-15 04:44:02'),
 (472, 5021, 'anderson.david@gmail.com', '$2y$10$bCD/RHj7hZM8/8CMFvHooObWJ.Gs49Na2LaqbnOSdhvf7Zt7XZvAC', 'Anderson David', 1, NULL, '2023-08-15 04:44:03', '2023-08-15 04:44:03'),
 (473, 5003, 'anderson.emily@gmail.com', '$2y$10$c0jNtKnR2C0E/p/E6IlxIOysXFTe6uFPkO9rkZUY0GS0/DD3DE/U.', 'Anderson Emily', 1, NULL, '2023-08-15 04:44:03', '2023-08-15 04:44:03'),
 (474, 5010, 'anderson.frank@gmail.com', '$2y$10$6/gLcHD0m3b5St369FsTSecltscedgGReZ5WutlLbUu3GFjF4FoPy', 'Anderson Frank', 1, NULL, '2023-08-15 04:44:03', '2023-08-15 04:44:03'),
@@ -568,7 +568,7 @@ INSERT INTO `account` (`account_id`, `role_id`, `username`, `password`, `name`, 
 (492, 5003, 'anderson.xander@gmail.com', '$2y$10$dFm2HcczSQhIcQzBN/NlkOBkCCh5UKHokmBOlwtD7SBHSGcYiy.3O', 'Anderson Xander', 1, NULL, '2023-08-15 04:44:04', '2023-08-15 04:44:04'),
 (493, 5026, 'anderson.yasmine@gmail.com', '$2y$10$jMJkkuUojr66lBHJ1dUysO3pZIu.rbcXkEZA8zfVpTCcFMqE0f.ga', 'Anderson Yasmine', 1, NULL, '2023-08-15 04:44:04', '2023-08-15 04:44:04'),
 (494, 5009, 'anderson.zachary@gmail.com', '$2y$10$rH1oxJXqoJhg3GwRtb2zxO2ouS.8t/DOdtsq6PGm81F94C5mMpas6', 'Anderson Zachary', 1, NULL, '2023-08-15 04:44:04', '2023-08-15 04:44:04'),
-(495, 5024, 'anderson.ava@gmail.com', '$2y$10$LqNurjWnZYO8KyAdfuraXOcV0rx1lp72LY2oHPK79NCNQZY0sMaGq', 'Anderson Ava', 1, NULL, '2023-08-15 04:44:04', '2023-08-15 04:44:04'),
+(495, 5024, 'anderson.ava@gmail.com', '$2y$10$LqNurjWnZYO8KyAdfuraXOcV0rx1lp72LY2oHPK79NCNQZY0sMaGq', 'Anderson Ava', 1, NULL, '2023-08-15 16:13:09', '2023-08-15 04:44:04'),
 (496, 5006, 'anderson.benjamin@gmail.com', '$2y$10$HrK5zCkoQqspqmCrua/wAud//Z6hMQ1l3ctzXnx4jHq45iqBvWXYO', 'Anderson Benjamin', 1, NULL, '2023-08-15 04:44:04', '2023-08-15 04:44:04'),
 (497, 5027, 'anderson.chloe@gmail.com', '$2y$10$0R7YFKw2jjh7hBMvwZT4PulR28d3afFWglej.VzGhY9owrt5oXdQu', 'Anderson Chloe', 1, NULL, '2023-08-15 04:44:04', '2023-08-15 04:44:04'),
 (498, 5022, 'anderson.daniel@gmail.com', '$2y$10$1TkPdmwdU2i2iie//tsjPOtMwroCCA4po6WeZtHafqoXKgUs/G7xa', 'Anderson Daniel', 1, NULL, '2023-08-15 04:44:04', '2023-08-15 04:44:04'),
@@ -1074,10 +1074,43 @@ CREATE TABLE `product` (
   `product_id` int(11) NOT NULL,
   `category_id` int(11) NOT NULL,
   `product` varchar(200) NOT NULL,
+  `price` float NOT NULL,
+  `thumb` varchar(100) DEFAULT NULL,
   `valid` tinyint(1) NOT NULL DEFAULT 1,
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `registed_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- 테이블의 덤프 데이터 `product`
+--
+
+INSERT INTO `product` (`product_id`, `category_id`, `product`, `price`, `thumb`, `valid`, `updated_at`, `registed_at`) VALUES
+(1, 4, 'otra prueba', 0.3, NULL, 1, '2023-08-15 23:22:41', '2023-08-15 21:40:42');
+
+-- --------------------------------------------------------
+
+--
+-- 테이블 구조 `product_category`
+--
+
+CREATE TABLE `product_category` (
+  `category_id` int(11) NOT NULL,
+  `category` varchar(200) NOT NULL,
+  `valid` tinyint(1) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- 테이블의 덤프 데이터 `product_category`
+--
+
+INSERT INTO `product_category` (`category_id`, `category`, `valid`) VALUES
+(2, 'Ortopedico', 0),
+(3, 'Ortopedico', 0),
+(4, 'Ortopedico', 1),
+(5, 'otra categoria', 1),
+(6, 'probando una mas', 1),
+(7, 'hola coo estas?', 0);
 
 -- --------------------------------------------------------
 
@@ -1185,6 +1218,12 @@ ALTER TABLE `product`
   ADD PRIMARY KEY (`product_id`);
 
 --
+-- 테이블의 인덱스 `product_category`
+--
+ALTER TABLE `product_category`
+  ADD PRIMARY KEY (`category_id`);
+
+--
 -- 테이블의 인덱스 `role`
 --
 ALTER TABLE `role`
@@ -1223,7 +1262,13 @@ ALTER TABLE `module`
 -- 테이블의 AUTO_INCREMENT `product`
 --
 ALTER TABLE `product`
-  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- 테이블의 AUTO_INCREMENT `product_category`
+--
+ALTER TABLE `product_category`
+  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- 테이블의 AUTO_INCREMENT `role`

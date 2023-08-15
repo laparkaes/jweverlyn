@@ -40,14 +40,6 @@ class Role extends CI_Controller {
 		$this->load->view('layout', $data);
 	}
 	
-	/* public function generate(){
-		for($i = 0; $i < 26; $i++){
-			$aux = $this->my_func->randomString(10);
-			if (!$this->gm->filter("role", ["role" => $aux])) $this->gm->insert("role", ["role" => $aux]);
-			echo $aux."<br/>";
-		}
-	} */
-	
 	public function register(){
 		if (!$this->session->userdata('username')) redirect("auth/login");
 		
@@ -152,5 +144,13 @@ class Role extends CI_Controller {
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msg" => $msg]);
 	}
+	
+	/* public function generate(){
+		for($i = 0; $i < 26; $i++){
+			$aux = $this->my_func->randomString(10);
+			if (!$this->gm->filter("role", ["role" => $aux])) $this->gm->insert("role", ["role" => $aux]);
+			echo $aux."<br/>";
+		}
+	} */
 	
 }
