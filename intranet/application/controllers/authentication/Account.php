@@ -128,4 +128,37 @@ class Account extends CI_Controller {
 		header('Content-Type: application/json');
 		echo json_encode($result);
 	}
+	
+	/* public function generate(){
+		$names = [
+			"Alice", "Bob", "Charlie", "David", "Emily", "Frank", "Grace", "Henry", "Isabella",
+			"Jack", "Katherine", "Liam", "Mia", "Noah", "Olivia", "Penelope", "Quinn", "Ryan",
+			"Sophia", "Thomas", "Uma", "Victoria", "William", "Xander", "Yasmine", "Zachary",
+			"Ava", "Benjamin", "Chloe", "Daniel", "Emma"
+		];
+		
+		$surnames = [
+			"Smith", "Johnson", "Williams", "Brown", "Jones", "Miller", "Davis", "Garcia", "Rodriguez",
+			"Martinez", "Hernandez", "Lopez", "Gonzalez", "Perez", "Wilson", "Anderson", "Thomas", "Lee",
+			"Moore", "Jackson", "White", "Harris", "Martin", "Thompson", "Garcia", "Young", "Hall", "King",
+			"Scott", "Morris", "Turner"
+		];
+		
+		$roles = $this->gm->all("role");
+		foreach($surnames as $s){
+			foreach($names as $n){
+				$now = date("Y-m-d H:i:s");
+				$data = [
+					"role_id" => $roles[array_rand($roles)]->role_id,
+					"name" => $s." ".$n,
+					"username" => strtolower($s.".".$n)."@gmail.com",
+					"password" => password_hash($n, PASSWORD_BCRYPT),
+					"updated_at" => $now,
+					"registed_at" => $now,
+				];
+				
+				$this->gm->insert("account", $data);
+			}	
+		}
+	} */
 }

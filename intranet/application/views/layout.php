@@ -187,6 +187,13 @@
 				</a>
 			</li>
 			<li class="nav-item">
+				<?php if ($this->nav_menu[0] === "products") $c = ""; else $c = "collapsed"; ?>
+				<a class="nav-link <?= $c ?>" href="<?= base_url() ?>product">
+					<i class="bi bi-box"></i>
+					<span>Productos</span>
+				</a>
+			</li>
+			<li class="nav-item">
 				<?php if ($this->nav_menu[0] === "authentication"){ $c = ""; $c_ul = "show"; }else{ $c = "collapsed"; $c_ul = ""; } ?>
 				<a class="nav-link <?= $c ?>" data-bs-target="#authentication-nav" data-bs-toggle="collapse" href="#">
 					<i class="bi bi-person-vcard"></i>

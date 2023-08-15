@@ -18,10 +18,10 @@
 	</div>
 </div>
 <div class="row justify-content-center">
-	<div class="col-lg-6">
+	<div class="col-lg-8">
 		<div class="card">
 			<div class="card-body">
-				<h5 class="card-title">Detalle de Usuario</h5>
+				<h5 class="card-title">Datos de Usuario</h5>
 				<form class="row g-3" id="form_update_account">
 					<input type="hidden" name="account_id" value="<?= $account->account_id ?>">
 					<div class="col-md-6">
@@ -50,25 +50,42 @@
 				</form>
 			</div>
 		</div>
-	</div>
-	<div class="col-lg-6">
 		<div class="card">
 			<div class="card-body">
 				<h5 class="card-title">Cambiar Contraseña</h5>
 				<form class="row g-3" id="form_update_password">
 					<input type="hidden" name="account_id" value="<?= $account->account_id ?>">
-					<div class="col-12">
+					<div class="col-6">
 						<label for="inputPasswordNew" class="form-label">Contraseña Nueva</label>
 						<input type="password" class="form-control" id="inputPasswordNew" name="password">
 						<div class="invalid-feedback"></div>
 					</div>
-					<div class="col-12">
+					<div class="col-6">
 						<label for="inputPasswordConfirm" class="form-label">Confirmación</label>
 						<input type="password" class="form-control" id="inputPasswordConfirm" name="password_confirm">
 						<div class="invalid-feedback"></div>
 					</div>
 					<div class="text-center pt-3">
 						<button type="submit" class="btn btn-primary">Actualizar</button>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="card">
+			<div class="card-body">
+				<h5 class="card-title">Eliminar Usuario</h5>
+				<form class="row g-3" id="form_delete_account">
+					<input type="hidden" name="account_id" value="<?= $account->account_id ?>">
+					<div class="col-md-12">
+						<div class="form-check mb-0">
+							<input class="form-check-input" type="checkbox" id="chkConfirm">
+							<label class="form-check-label" for="chkConfirm">
+								Confirmo eliminar este usuario.
+							</label>
+						</div>
+					</div>
+					<div class="text-center pt-3">
+						<button type="submit" class="btn btn-danger">Eliminar</button>
 					</div>
 				</form>
 			</div>

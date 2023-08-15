@@ -53,8 +53,8 @@
 							<th scope="row"><?= $i + 1 ?></th>
 							<td><?= $a->username ?></td>
 							<td class="text-end">
-								<a href="<?= base_url() ?>authentication/account/detail/<?= $a->account_id ?>" type="button" class="btn btn-outline-success btn-sm border-0">
-									<i class="bi bi-search"></i>
+								<a href="<?= base_url() ?>authentication/account/edit/<?= $a->account_id ?>" type="button" class="btn btn-outline-primary btn-sm border-0">
+									<i class="bi bi-pencil-fill"></i>
 								</a>
 							</td>
 						</tr>
