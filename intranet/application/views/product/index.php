@@ -44,6 +44,7 @@
 									<th scope="col">Vendidos</th>
 									<th scope="col">Desde</th>
 									<th scope="col"></th>
+									<th scope="col"></th>
 								</tr>
 							</thead>
 							<tbody>
@@ -52,11 +53,12 @@
 									<th scope="row"><?= $base_page + $i_p + 1 ?></th>
 									<td><?= $p->category ?></td>
 									<td><?= $p->product ?></td>
-									<td><?= $p->sold_qty ?></td>
+									<td><?= number_format($p->sold_qty) ?></td>
 									<td><?= date("Y-m-d", strtotime($p->registed_at)) ?></td>
+									<td><i class="bi bi-circle-fill text-<?= $p->color ?>"></i></td>
 									<td class="text-end">
-										<a href="<?= base_url() ?>product/edit/<?= $p->product_id ?>" type="button" class="btn btn-outline-primary btn-sm border-0">
-											<i class="bi bi-pencil-fill"></i>
+										<a href="<?= base_url() ?>product/detail/<?= $p->product_id ?>" type="button" class="btn btn-outline-primary btn-sm border-0">
+											<i class="bi bi-search"></i>
 										</a>
 									</td>
 								</tr>

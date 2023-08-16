@@ -27,6 +27,8 @@ const sp_warning_msg = {
 	add_product: "¿Desea agregar nuevo producto?",
 	update_product: "¿Desea actualizar producto?",
 	add_option: "¿Desea agregar nueva opción?",
+	update_option: "¿Desea actualizar opción?",
+	delete_option: "¿Desea eliminar opción?",
 }
 
 function set_msgs(form_id, msgs){

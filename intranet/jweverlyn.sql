@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- 생성 시간: 23-08-15 18:57
+-- 생성 시간: 23-08-16 18:22
 -- 서버 버전: 10.4.24-MariaDB
 -- PHP 버전: 7.4.29
 
@@ -1073,6 +1073,7 @@ INSERT INTO `module` (`module_id`, `module`, `valid`) VALUES
 CREATE TABLE `product` (
   `product_id` int(11) NOT NULL,
   `category_id` int(11) NOT NULL,
+  `code` varchar(50) NOT NULL,
   `product` varchar(200) NOT NULL,
   `price` float NOT NULL,
   `thumb` varchar(100) DEFAULT NULL,
@@ -1085,8 +1086,9 @@ CREATE TABLE `product` (
 -- 테이블의 덤프 데이터 `product`
 --
 
-INSERT INTO `product` (`product_id`, `category_id`, `product`, `price`, `thumb`, `valid`, `updated_at`, `registed_at`) VALUES
-(1, 4, 'otra prueba', 0.3, NULL, 1, '2023-08-15 23:22:41', '2023-08-15 21:40:42');
+INSERT INTO `product` (`product_id`, `category_id`, `code`, `product`, `price`, `thumb`, `valid`, `updated_at`, `registed_at`) VALUES
+(1, 4, 'asdf-2321', 'otra prueba', 15.3, NULL, 1, '2023-08-16 22:48:15', '2023-08-15 21:40:42'),
+(2, 5, 'asdf-232', 'Un producto con codigo', 33.57, NULL, 1, '2023-08-16 16:56:20', '2023-08-16 16:48:54');
 
 -- --------------------------------------------------------
 
@@ -1111,6 +1113,38 @@ INSERT INTO `product_category` (`category_id`, `category`, `valid`) VALUES
 (5, 'otra categoria', 1),
 (6, 'probando una mas', 1),
 (7, 'hola coo estas?', 0);
+
+-- --------------------------------------------------------
+
+--
+-- 테이블 구조 `product_option`
+--
+
+CREATE TABLE `product_option` (
+  `option_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `option` varchar(100) NOT NULL,
+  `stock` int(11) NOT NULL,
+  `valid` tinyint(1) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- 테이블의 덤프 데이터 `product_option`
+--
+
+INSERT INTO `product_option` (`option_id`, `product_id`, `option`, `stock`, `valid`) VALUES
+(1, 1, 'Rosado', 123, 1),
+(2, 1, 'Negro', 13, 1),
+(3, 1, 'Verde', 123, 0),
+(4, 1, 'Azul', 123, 1),
+(5, 1, 'testing123', 123, 0),
+(6, 1, 'hola', 12348, 0),
+(7, 1, 'testing', 2222, 0),
+(8, 1, 'otra cosa', 3321, 0),
+(9, 1, 'testing3', 123123, 0),
+(10, 1, 'talla S - Rosado', 1123, 0),
+(11, 1, 'nyev', 1295, 0),
+(12, 1, 'Amarillo', 5, 1);
 
 -- --------------------------------------------------------
 
@@ -1224,6 +1258,13 @@ ALTER TABLE `product_category`
   ADD PRIMARY KEY (`category_id`);
 
 --
+-- 테이블의 인덱스 `product_option`
+--
+ALTER TABLE `product_option`
+  ADD PRIMARY KEY (`option_id`),
+  ADD KEY `fk_option_product` (`product_id`);
+
+--
 -- 테이블의 인덱스 `role`
 --
 ALTER TABLE `role`
@@ -1262,13 +1303,19 @@ ALTER TABLE `module`
 -- 테이블의 AUTO_INCREMENT `product`
 --
 ALTER TABLE `product`
-  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- 테이블의 AUTO_INCREMENT `product_category`
 --
 ALTER TABLE `product_category`
   MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- 테이블의 AUTO_INCREMENT `product_option`
+--
+ALTER TABLE `product_option`
+  MODIFY `option_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- 테이블의 AUTO_INCREMENT `role`
@@ -1291,6 +1338,12 @@ ALTER TABLE `access`
 --
 ALTER TABLE `account`
   ADD CONSTRAINT `account_role` FOREIGN KEY (`role_id`) REFERENCES `role` (`role_id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- 테이블의 제약사항 `product_option`
+--
+ALTER TABLE `product_option`
+  ADD CONSTRAINT `fk_option_product` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- 테이블의 제약사항 `role_access`

@@ -42,18 +42,40 @@ $("#form_add_option").submit(function(e) {
 	e.preventDefault();
 	ajax_form_warning(this, "product/add_option", "add_option").done(function(res) {
 		set_msgs("#form_add_option", res.msgs);
-		if (res.type == "success"){
-			swal(res.type, res.msg);
-			$("#md_add_option").modal("hide");
-			$("#form_add_option [name]").removeClass("is-invalid").removeClass("is-valid");
-			document.getElementById("form_add_option").reset();
-		}
+		swal_redirection(res.type, res.msg, base_url + "product/detail/" + res.product_id);
 	});
 });
 
+$("#form_update_option").submit(function(e) {
+	e.preventDefault();
+	ajax_form_warning(this, "product/update_option", "update_option").done(function(res) {
+		set_msgs("#form_update_option", res.msgs);
+		swal_redirection(res.type, res.msg, base_url + "product/detail/" + res.product_id);
+	});
+});
 
 $("#btn_add_option").on('click',(function(e) {
 	$("#form_add_option").submit();
+}));
+
+$(".btn_edit_option").on('click',(function(e) {
+	ajax_simple({option_id: $(this).val()}, "product/load_option").done(function(res) {
+		if (res.type == "success"){
+			$("#form_update_option input[name=option_id]").val(res.option.option_id);
+			$("#form_update_option input[name=option]").val(res.option.option);
+			$("#form_update_option input[name=stock]").val(res.option.stock);
+		}else swal(res.type, res.msg);
+	});
+}));
+
+$("#btn_update_option").on('click',(function(e) {
+	$("#form_update_option").submit();
+}));
+
+$(".btn_delete_option").on('click',(function(e) {
+	ajax_simple_warning({option_id: $(this).val()}, "product/delete_option", "delete_option").done(function(res) {
+		swal_redirection(res.type, res.msg, base_url + "product/detail/" + res.product_id);
+	});
 }));
 
 

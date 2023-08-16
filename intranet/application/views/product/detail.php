@@ -33,7 +33,7 @@
 				<div class="card-body pt-3">
 					<ul class="nav nav-tabs nav-tabs-bordered">
 						<li class="nav-item">
-							<button class="nav-link active" data-bs-toggle="tab" data-bs-target="#detail">Resumen</button>
+							<button class="nav-link active" data-bs-toggle="tab" data-bs-target="#detail">Detalle</button>
 						</li>
 						<li class="nav-item">
 							<button class="nav-link" data-bs-toggle="tab" data-bs-target="#edit">Editar</button>
@@ -41,15 +41,16 @@
 						<li class="nav-item">
 							<button class="nav-link" data-bs-toggle="tab" data-bs-target="#options">Opciones</button>
 						</li>
-
-                <li class="nav-item">
-                  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password">Change Password</button>
-                </li>
-
+						<li class="nav-item">
+							<button class="nav-link" data-bs-toggle="tab" data-bs-target="#images">Imagenes</button>
+						</li>
 					</ul>
-					<div class="tab-content pt-2">
+					<div class="tab-content pt-4">
 						<div class="tab-pane fade show active profile-overview" id="detail">
-							<h5 class="card-title">Detalle de Producto</h5>
+							<div class="row">
+								<div class="col-lg-3 col-md-4 label">Código</div>
+								<div class="col-lg-9 col-md-8"><?= $product->code ?></div>
+							</div>
 							<div class="row">
 								<div class="col-lg-3 col-md-4 label">Nombre</div>
 								<div class="col-lg-9 col-md-8"><?= $product->product ?></div>
@@ -78,7 +79,14 @@
 						<div class="tab-pane fade profile-edit" id="edit">
 							<form id="form_update_product">
 								<input type="hidden" name="product_id" value="<?= $product->product_id ?>">
-								<div class="row pt-3 mb-3">
+								<div class="row mb-3">
+									<label class="col-md-4 col-lg-3 col-form-label">Código</label>
+									<div class="col-md-8 col-lg-9">
+										<input name="code" type="text" class="form-control" value="<?= $product->code ?>">
+										<div class="invalid-feedback"></div>
+									</div>
+								</div>
+								<div class="row mb-3">
 									<label class="col-md-4 col-lg-3 col-form-label">Producto</label>
 									<div class="col-md-8 col-lg-9">
 										<input name="product" type="text" class="form-control" value="<?= $product->product ?>">
@@ -121,40 +129,11 @@
 											<th scope="col">#</th>
 											<th scope="col">Opción</th>
 											<th scope="col">Stock</th>
-											<td scope="col" class="text-end">
-												<button type="button" class="btn btn-primary btn-sm border-0" data-bs-toggle="modal" data-bs-target="#md_add_option">
+											<th scope="col" class="text-end">
+												<button type="button" class="btn btn-success btn-sm border-0" data-bs-toggle="modal" data-bs-target="#md_add_option">
 													<i class="bi bi-plus-lg"></i>
 												</button>
-												<div class="modal fade" id="md_add_option" tabindex="-1">
-													<div class="modal-dialog">
-														<div class="modal-content">
-															<div class="modal-header">
-																<h5 class="modal-title">Agregar Opcion</h5>
-																<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-															</div>
-															<div class="modal-body text-start">
-																<form class="row g-3" id="form_add_option">
-																	<input type="hidden" name="product_id" value="<?= $product->product_id ?>">
-																	<div class="col-6">
-																		<label class="form-label">Opción</label>
-																		<input type="text" class="form-control" name="option">
-																		<div class="invalid-feedback"></div>
-																	</div>
-																	<div class="col-6">
-																		<label class="form-label">Stock</label>
-																		<input type="text" class="form-control" name="stock">
-																		<div class="invalid-feedback"></div>
-																	</div>
-																</form>
-															</div>
-															<div class="modal-footer">
-																<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-																<button type="button" class="btn btn-primary" id="btn_add_option">Agregar</button>
-															</div>
-														</div>
-													</div>
-												</div>
-											</td>
+											</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -162,10 +141,13 @@
 										<tr>
 											<th scope="row"><?= $i_o + 1 ?></th>
 											<td><?= $o->option ?></td>
-											<td><?= $o->stock ?></td>
+											<td><?= number_format($o->stock) ?></td>
 											<td class="text-end">
-												<button type="button" class="btn btn-outline-primary btn-sm border-0">
+												<button type="button" class="btn btn-outline-primary btn-sm border-0 btn_edit_option" data-bs-toggle="modal" data-bs-target="#md_edit_option" value="<?= $o->option_id ?>">
 													<i class="bi bi-pencil-fill"></i>
+												</button>
+												<button type="button" class="btn btn-outline-danger btn-sm border-0 btn_delete_option" value="<?= $o->option_id ?>">
+													<i class="bi bi-x-lg"></i>
 												</button>
 											</td>
 										</tr>
@@ -174,44 +156,152 @@
 								</table>
 							</div>
 						</div>
+						<div class="tab-pane fade" id="images">
+							<h5 class="card-title pt-0">Imagen Principal</h5>
+							<form class="row">
+								<div class="col">
+									<div class="input-group mb-3">
+										<input class="form-control" type="file" name="filename">
+										<button class="btn btn-primary" type="submit">Agregar</button>
+									</div>
+								</div>
+							</form>
+							<div class="row">
+								<?php for($i = 1; $i < 10; $i++){ ?>
+								<div class="col-auto mb-3">
+									<img src="https://cdn.hobbyconsolas.com/sites/navi.axelspringer.es/public/media/image/2014/02/281537-critica-lego-pelicula.jpg?tf=3840x" style="height: 80px;">
+								</div>
+								<?php } ?>
+							</div>
+							<h5 class="card-title">Modo de Uso</h5>
+							<form class="row">
+								<div class="col">
+									<div class="input-group mb-3">
+										<input class="form-control" type="file" name="filename">
+										<button class="btn btn-primary" type="submit">Agregar</button>
+									</div>
+								</div>
+							</form>
+							<div class="row">
+								<?php for($i = 1; $i < 10; $i++){ ?>
+								<div class="col-auto mb-3">
+									<img src="https://cdn.hobbyconsolas.com/sites/navi.axelspringer.es/public/media/image/2014/02/281537-critica-lego-pelicula.jpg?tf=3840x" style="height: 80px;">
+								</div>
+								<?php } ?>
+							</div>
+							<h5 class="card-title">Tallas</h5>
+							<form class="row">
+								<div class="col">
+									<div class="input-group mb-3">
+										<input class="form-control" type="file" name="filename">
+										<button class="btn btn-primary" type="submit">Agregar</button>
+									</div>
+								</div>
+							</form>
+							<div class="row">
+								<?php for($i = 1; $i < 10; $i++){ ?>
+								<div class="col-auto mb-3">
+									<img src="https://cdn.hobbyconsolas.com/sites/navi.axelspringer.es/public/media/image/2014/02/281537-critica-lego-pelicula.jpg?tf=3840x" style="height: 80px;">
+								</div>
+								<?php } ?>
+							</div>
+							<h5 class="card-title">Detalle 1 (3 imagenes por fila)</h5>
+							<form class="row">
+								<div class="col">
+									<div class="input-group mb-3">
+										<input class="form-control" type="file" name="filename">
+										<button class="btn btn-primary" type="submit">Agregar</button>
+									</div>
+								</div>
+							</form>
+							<div class="row">
+								<?php for($i = 1; $i < 10; $i++){ ?>
+								<div class="col-auto mb-3">
+									<img src="https://cdn.hobbyconsolas.com/sites/navi.axelspringer.es/public/media/image/2014/02/281537-critica-lego-pelicula.jpg?tf=3840x" style="height: 80px;">
+								</div>
+								<?php } ?>
+							</div>
+							<h5 class="card-title">Detalle 2 (1 imagen por fila)</h5>
+							<form class="row">
+								<div class="col">
+									<div class="input-group mb-3">
+										<input class="form-control" type="file" name="filename">
+										<button class="btn btn-primary" type="submit">Agregar</button>
+									</div>
+								</div>
+							</form>
+							<div class="row">
+								<?php for($i = 1; $i < 10; $i++){ ?>
+								<div class="col-auto mb-3">
+									<img src="https://cdn.hobbyconsolas.com/sites/navi.axelspringer.es/public/media/image/2014/02/281537-critica-lego-pelicula.jpg?tf=3840x" style="height: 80px;">
+								</div>
+								<?php } ?>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
 
-                <div class="tab-pane fade pt-3" id="profile-change-password">
-                  <!-- Change Password Form -->
-                  <form>
-
-                    <div class="row mb-3">
-                      <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current Password</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input name="password" type="password" class="form-control" id="currentPassword">
-                      </div>
-                    </div>
-
-                    <div class="row mb-3">
-                      <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">New Password</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input name="newpassword" type="password" class="form-control" id="newPassword">
-                      </div>
-                    </div>
-
-                    <div class="row mb-3">
-                      <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Re-enter New Password</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input name="renewpassword" type="password" class="form-control" id="renewPassword">
-                      </div>
-                    </div>
-
-                    <div class="text-center">
-                      <button type="submit" class="btn btn-primary">Change Password</button>
-                    </div>
-                  </form><!-- End Change Password Form -->
-
-                </div>
-
-              </div><!-- End Bordered Tabs -->
-
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </section>
+<!-- modals -->
+<div class="modal fade" id="md_add_option" tabindex="-1">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Agregar Opción</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+			</div>
+			<div class="modal-body text-start">
+				<form class="row g-3" id="form_add_option">
+					<input type="hidden" name="product_id" value="<?= $product->product_id ?>">
+					<div class="col-6">
+						<label class="form-label">Opción</label>
+						<input type="text" class="form-control" name="option">
+						<div class="invalid-feedback"></div>
+					</div>
+					<div class="col-6">
+						<label class="form-label">Stock</label>
+						<input type="text" class="form-control" name="stock">
+						<div class="invalid-feedback"></div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+				<button type="button" class="btn btn-primary" id="btn_add_option">Agregar</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="md_edit_option" tabindex="-1">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Editar Opción</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+			</div>
+			<div class="modal-body text-start">
+				<form class="row g-3" id="form_update_option">
+					<input type="hidden" name="option_id">
+					<input type="hidden" name="product_id" value="<?= $product->product_id ?>">
+					<div class="col-6">
+						<label class="form-label">Opción</label>
+						<input type="text" class="form-control" name="option">
+						<div class="invalid-feedback"></div>
+					</div>
+					<div class="col-6">
+						<label class="form-label">Stock</label>
+						<input type="text" class="form-control" name="stock">
+						<div class="invalid-feedback"></div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+				<button type="button" class="btn btn-primary" id="btn_update_option">Actualizar</button>
+			</div>
+		</div>
+	</div>
+</div>

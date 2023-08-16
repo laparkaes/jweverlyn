@@ -4,13 +4,20 @@ $lang['e_internal_again'] = 'Ocurrió error interno. Intente nuevamente.';
 $lang['e_unknown_refresh'] = 'Ocurrió error desconocido. Actualice la página y vuelva a intentar.';
 $lang['e_required_field'] = 'Campo requerido.';
 $lang['e_finished_session'] = 'Sesión finalizada. Debe ingresar nuevamente.';
+$lang['e_integer'] = 'Debe ser un número entero.';
 $lang['e_numeric'] = 'Debe ser un número.';
 $lang['e_numeric_positive'] = 'Debe ser un número positivo.';
 
+//product option
+$lang['e_duplicate_option'] = 'Opción esta registrada en el sistema.';
+$lang['s_option_insert'] = 'Opción de producto ha sido generada con éxito.';
+$lang['s_option_update'] = 'Opción ha sido actualizada.';
+$lang['s_option_delete'] = 'Opción ha sido eliminada.';
+
 //product
+$lang['e_duplicate_code'] = 'Código existente en el sistema.';
 $lang['s_product_insert'] = 'Producto ha sido generado con éxito.';
 $lang['s_product_update'] = 'Producto ha sido actualizado.';
-$lang['s_option_insert'] = 'Opción de producto ha sido generada con éxito.';
 
 //product category
 $lang['e_category_exists'] = 'Existe nombre de categoría ingresado.';

@@ -269,19 +269,77 @@ class My_val{
 			}else $msgs = $this->set_msg($msgs, "price", "e_numeric");
 		}else $msgs = $this->set_msg($msgs, "price", "e_required_field");
 		
+		if ($data["code"]){
+			if (!$this->CI->gm->unique("product", "code", $data["code"], false)){
+				$msgs = $this->set_msg($msgs, "code");
+			}else $msgs = $this->set_msg($msgs, "code", "e_duplicate_code");
+		}else $msgs = $this->set_msg($msgs, "code", "e_required_field");
+		
+		return ["type" => $this->get_type($msgs), "msgs" => $msgs, "msg" => $msg];
+	}
+	
+	public function update_product($data){
+		$msgs = []; $msg = "";
+		$msgs = $this->check_blank($data, ["category_id", "product"], $msgs);
+		
+		if ($data["price"]){
+			if (is_numeric($data["price"])){
+				if ($data["price"] > 0){
+					$msgs = $this->set_msg($msgs, "price");
+				}else $msgs = $this->set_msg($msgs, "price", "e_numeric_positive");
+			}else $msgs = $this->set_msg($msgs, "price", "e_numeric");
+		}else $msgs = $this->set_msg($msgs, "price", "e_required_field");
+		
+		if ($data["code"]){
+			$product = $this->CI->gm->unique("product", "code", $data["code"], false);
+			if ($product) $aux = ($product->product_id == $data["product_id"]); else $aux = true;
+			
+			if ($aux){
+				$msgs = $this->set_msg($msgs, "code");
+			}else $msgs = $this->set_msg($msgs, "code", "e_duplicate_code");
+		}else $msgs = $this->set_msg($msgs, "code", "e_required_field");
+		
 		return ["type" => $this->get_type($msgs), "msgs" => $msgs, "msg" => $msg];
 	}
 	
 	public function add_option($data){
 		$msgs = []; $msg = "";
-		$msgs = $this->check_blank($data, ["option"], $msgs);
+		
+		if ($data["option"]){
+			if (!$this->CI->gm->unique("product_option", "option", $data["option"])){
+				$msgs = $this->set_msg($msgs, "option");
+			}else $msgs = $this->set_msg($msgs, "option", "e_duplicate_option");
+		}else $msgs = $this->set_msg($msgs, "option", "e_required_field");
 		
 		if ($data["stock"]){
-			if (is_numeric($data["stock"])){
+			if (filter_var($data["stock"], FILTER_VALIDATE_INT) !== false){
 				if ($data["stock"] > 0){
 					$msgs = $this->set_msg($msgs, "stock");
 				}else $msgs = $this->set_msg($msgs, "stock", "e_numeric_positive");
-			}else $msgs = $this->set_msg($msgs, "stock", "e_numeric");
+			}else $msgs = $this->set_msg($msgs, "stock", "e_integer");
+		}else $msgs = $this->set_msg($msgs, "stock", "e_required_field");
+		
+		return ["type" => $this->get_type($msgs), "msgs" => $msgs, "msg" => $msg];
+	}
+	
+	public function update_option($data){
+		$msgs = []; $msg = "";
+		
+		if ($data["option"]){
+			$option = $this->CI->gm->unique("product_option", "option", $data["option"]);
+			if ($option) $aux = ($option->option_id == $data["option_id"]); else $aux = true;
+			
+			if ($aux){
+				$msgs = $this->set_msg($msgs, "option");
+			}else $msgs = $this->set_msg($msgs, "option", "e_duplicate_option");
+		}else $msgs = $this->set_msg($msgs, "option", "e_required_field");
+		
+		if ($data["stock"]){
+			if (filter_var($data["stock"], FILTER_VALIDATE_INT) !== false){
+				if ($data["stock"] >= 0){
+					$msgs = $this->set_msg($msgs, "stock");
+				}else $msgs = $this->set_msg($msgs, "stock", "e_numeric_positive");
+			}else $msgs = $this->set_msg($msgs, "stock", "e_integer");
 		}else $msgs = $this->set_msg($msgs, "stock", "e_required_field");
 		
 		return ["type" => $this->get_type($msgs), "msgs" => $msgs, "msg" => $msg];
