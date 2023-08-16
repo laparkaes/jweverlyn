@@ -26,6 +26,7 @@ const sp_warning_msg = {
 	move_category: "¿Desea mover todos los productos de categoría?",
 	add_product: "¿Desea agregar nuevo producto?",
 	update_product: "¿Desea actualizar producto?",
+	add_option: "¿Desea agregar nueva opción?",
 }
 
 function set_msgs(form_id, msgs){

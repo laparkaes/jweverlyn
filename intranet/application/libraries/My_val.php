@@ -271,4 +271,19 @@ class My_val{
 		
 		return ["type" => $this->get_type($msgs), "msgs" => $msgs, "msg" => $msg];
 	}
+	
+	public function add_option($data){
+		$msgs = []; $msg = "";
+		$msgs = $this->check_blank($data, ["option"], $msgs);
+		
+		if ($data["stock"]){
+			if (is_numeric($data["stock"])){
+				if ($data["stock"] > 0){
+					$msgs = $this->set_msg($msgs, "stock");
+				}else $msgs = $this->set_msg($msgs, "stock", "e_numeric_positive");
+			}else $msgs = $this->set_msg($msgs, "stock", "e_numeric");
+		}else $msgs = $this->set_msg($msgs, "stock", "e_required_field");
+		
+		return ["type" => $this->get_type($msgs), "msgs" => $msgs, "msg" => $msg];
+	}
 }

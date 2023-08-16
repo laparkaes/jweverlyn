@@ -159,5 +159,20 @@ class Product extends CI_Controller {
 		echo json_encode($result);
 	}
 	
-	
+	public function add_option(){
+		if ($this->session->userdata('username')){
+			$data = $this->input->post();
+			
+			$this->load->library('my_val');
+			$result = $this->my_val->add_option($data);
+			
+			if ($result["type"] === "success"){
+				//$this->gm->update("product", ["category_id" => $data["from_id"]], ["category_id" => $data["to_id"]]);
+				$result["msg"] = $this->lang->line("s_option_insert");
+			}
+		}else $result = ["type" => "error", "msg" => $this->lang->line("e_finished_session")];
+		
+		header('Content-Type: application/json');
+		echo json_encode($result);
+	}
 }

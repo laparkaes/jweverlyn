@@ -38,6 +38,24 @@ $("#form_update_product").submit(function(e) {
 	});
 });
 
+$("#form_add_option").submit(function(e) {
+	e.preventDefault();
+	ajax_form_warning(this, "product/add_option", "add_option").done(function(res) {
+		set_msgs("#form_add_option", res.msgs);
+		if (res.type == "success"){
+			swal(res.type, res.msg);
+			$("#md_add_option").modal("hide");
+			$("#form_add_option [name]").removeClass("is-invalid").removeClass("is-valid");
+			document.getElementById("form_add_option").reset();
+		}
+	});
+});
+
+
+$("#btn_add_option").on('click',(function(e) {
+	$("#form_add_option").submit();
+}));
+
 
 
 

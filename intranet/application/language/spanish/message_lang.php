@@ -10,6 +10,7 @@ $lang['e_numeric_positive'] = 'Debe ser un número positivo.';
 //product
 $lang['s_product_insert'] = 'Producto ha sido generado con éxito.';
 $lang['s_product_update'] = 'Producto ha sido actualizado.';
+$lang['s_option_insert'] = 'Opción de producto ha sido generada con éxito.';
 
 //product category
 $lang['e_category_exists'] = 'Existe nombre de categoría ingresado.';

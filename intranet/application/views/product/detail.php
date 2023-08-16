@@ -114,53 +114,64 @@
 							</form>
 						</div>
 						<div class="tab-pane fade" id="options">
-							<div class="row">
-								<div class="col">
-									<div class="table-responsive">
-										<table class="table">
-											<thead>
-												<tr>
-													<th scope="col">#</th>
-													<th scope="col">Opción</th>
-													<th scope="col">Stock</th>
-													<th scope="col"></th>
-												</tr>
-											</thead>
-											<tbody>
-												<form id="form_add_option">
-													<tr>
-														<th scope="row"></th>
-														<td>
-															<input type="text" class="form-control form-control-sm" name="option" placeholder="Nombre">
-															<div class="invalid-feedback"></div>
-														</td>
-														<td>
-															<input type="text" class="form-control form-control-sm" name="stock" placeholder="Stock">
-															<div class="invalid-feedback"></div>
-														</td>
-														<td class="text-end">
-															<button type="submit" class="btn btn-primary btn-sm">
-																<i class="bi bi-plus-lg"></i>
-															</button>
-														</td>
-													</tr>
-												</form>
-												<?php foreach($options as $i_o => $o){ ?>
-												<tr>
-													<th scope="row"><?= $i_o + 1 ?></th>
-													<td><?= $o->option ?></td>
-													<td><?= $o->stock ?></td>
-													<td class="text-end">
-														<button type="button" class="btn btn-outline-primary btn-sm border-0">
-															<i class="bi bi-pencil-fill"></i>
-														</button>
-													</td>
-												</tr>
-												<?php } ?>
-											</tbody>
-										</table>
-									</div>
-								</div>
+							<div class="table-responsive">
+								<table class="table align-middle">
+									<thead>
+										<tr>
+											<th scope="col">#</th>
+											<th scope="col">Opción</th>
+											<th scope="col">Stock</th>
+											<td scope="col" class="text-end">
+												<button type="button" class="btn btn-primary btn-sm border-0" data-bs-toggle="modal" data-bs-target="#md_add_option">
+													<i class="bi bi-plus-lg"></i>
+												</button>
+												<div class="modal fade" id="md_add_option" tabindex="-1">
+													<div class="modal-dialog">
+														<div class="modal-content">
+															<div class="modal-header">
+																<h5 class="modal-title">Agregar Opcion</h5>
+																<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+															</div>
+															<div class="modal-body text-start">
+																<form class="row g-3" id="form_add_option">
+																	<input type="hidden" name="product_id" value="<?= $product->product_id ?>">
+																	<div class="col-6">
+																		<label class="form-label">Opción</label>
+																		<input type="text" class="form-control" name="option">
+																		<div class="invalid-feedback"></div>
+																	</div>
+																	<div class="col-6">
+																		<label class="form-label">Stock</label>
+																		<input type="text" class="form-control" name="stock">
+																		<div class="invalid-feedback"></div>
+																	</div>
+																</form>
+															</div>
+															<div class="modal-footer">
+																<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+																<button type="button" class="btn btn-primary" id="btn_add_option">Agregar</button>
+															</div>
+														</div>
+													</div>
+												</div>
+											</td>
+										</tr>
+									</thead>
+									<tbody>
+										<?php foreach($options as $i_o => $o){ ?>
+										<tr>
+											<th scope="row"><?= $i_o + 1 ?></th>
+											<td><?= $o->option ?></td>
+											<td><?= $o->stock ?></td>
+											<td class="text-end">
+												<button type="button" class="btn btn-outline-primary btn-sm border-0">
+													<i class="bi bi-pencil-fill"></i>
+												</button>
+											</td>
+										</tr>
+										<?php } ?>
+									</tbody>
+								</table>
 							</div>
 						</div>
 
