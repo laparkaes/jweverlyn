@@ -270,7 +270,7 @@
 					<input type="hidden" name="product_id" value="<?= $product->product_id ?>">
 					<div class="col-12">
 						<label class="form-label">Imagen</label>
-						<input type="file" class="form-control" name="image">
+						<input type="file" class="form-control" name="image" accept=".jpg, .jpeg, .png, .gif">
 						<div class="invalid-feedback"></div>
 					</div>
 				</form>
