@@ -29,6 +29,7 @@ const sp_warning_msg = {
 	add_option: "¿Desea agregar nueva opción?",
 	update_option: "¿Desea actualizar opción?",
 	delete_option: "¿Desea eliminar opción?",
+	add_image: "¿Desea agregar nueva imagen?",
 }
 
 function set_msgs(form_id, msgs){

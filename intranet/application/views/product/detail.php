@@ -157,85 +157,38 @@
 							</div>
 						</div>
 						<div class="tab-pane fade" id="images">
-							<h5 class="card-title pt-0">Imagen Principal</h5>
-							<form class="row">
-								<div class="col">
-									<div class="input-group mb-3">
-										<input class="form-control" type="file" name="filename">
-										<button class="btn btn-primary" type="submit">Agregar</button>
-									</div>
-								</div>
-							</form>
-							<div class="row">
-								<?php for($i = 1; $i < 10; $i++){ ?>
-								<div class="col-auto mb-3">
-									<img src="https://cdn.hobbyconsolas.com/sites/navi.axelspringer.es/public/media/image/2014/02/281537-critica-lego-pelicula.jpg?tf=3840x" style="height: 80px;">
-								</div>
-								<?php } ?>
-							</div>
-							<h5 class="card-title">Modo de Uso</h5>
-							<form class="row">
-								<div class="col">
-									<div class="input-group mb-3">
-										<input class="form-control" type="file" name="filename">
-										<button class="btn btn-primary" type="submit">Agregar</button>
-									</div>
-								</div>
-							</form>
-							<div class="row">
-								<?php for($i = 1; $i < 10; $i++){ ?>
-								<div class="col-auto mb-3">
-									<img src="https://cdn.hobbyconsolas.com/sites/navi.axelspringer.es/public/media/image/2014/02/281537-critica-lego-pelicula.jpg?tf=3840x" style="height: 80px;">
-								</div>
-								<?php } ?>
-							</div>
-							<h5 class="card-title">Tallas</h5>
-							<form class="row">
-								<div class="col">
-									<div class="input-group mb-3">
-										<input class="form-control" type="file" name="filename">
-										<button class="btn btn-primary" type="submit">Agregar</button>
-									</div>
-								</div>
-							</form>
-							<div class="row">
-								<?php for($i = 1; $i < 10; $i++){ ?>
-								<div class="col-auto mb-3">
-									<img src="https://cdn.hobbyconsolas.com/sites/navi.axelspringer.es/public/media/image/2014/02/281537-critica-lego-pelicula.jpg?tf=3840x" style="height: 80px;">
-								</div>
-								<?php } ?>
-							</div>
-							<h5 class="card-title">Detalle 1 (3 imagenes por fila)</h5>
-							<form class="row">
-								<div class="col">
-									<div class="input-group mb-3">
-										<input class="form-control" type="file" name="filename">
-										<button class="btn btn-primary" type="submit">Agregar</button>
-									</div>
-								</div>
-							</form>
-							<div class="row">
-								<?php for($i = 1; $i < 10; $i++){ ?>
-								<div class="col-auto mb-3">
-									<img src="https://cdn.hobbyconsolas.com/sites/navi.axelspringer.es/public/media/image/2014/02/281537-critica-lego-pelicula.jpg?tf=3840x" style="height: 80px;">
-								</div>
-								<?php } ?>
-							</div>
-							<h5 class="card-title">Detalle 2 (1 imagen por fila)</h5>
-							<form class="row">
-								<div class="col">
-									<div class="input-group mb-3">
-										<input class="form-control" type="file" name="filename">
-										<button class="btn btn-primary" type="submit">Agregar</button>
-									</div>
-								</div>
-							</form>
-							<div class="row">
-								<?php for($i = 1; $i < 10; $i++){ ?>
-								<div class="col-auto mb-3">
-									<img src="https://cdn.hobbyconsolas.com/sites/navi.axelspringer.es/public/media/image/2014/02/281537-critica-lego-pelicula.jpg?tf=3840x" style="height: 80px;">
-								</div>
-								<?php } ?>
+							<div class="table-responsive">
+								<table class="table align-middle">
+									<thead>
+										<tr>
+											<th scope="col">#</th>
+											<th scope="col">Imagen</th>
+											<th scope="col">Archivo</th>
+											<th scope="col" class="text-end">
+												<button type="button" class="btn btn-success btn-sm border-0" data-bs-toggle="modal" data-bs-target="#md_add_image">
+													<i class="bi bi-plus-lg"></i>
+												</button>
+											</th>
+										</tr>
+									</thead>
+									<tbody>
+										<?php foreach($options as $i_o => $o){ ?>
+										<tr>
+											<th scope="row"><?= $i_o + 1 ?></th>
+											<td><?= $o->option ?></td>
+											<td><?= number_format($o->stock) ?></td>
+											<td class="text-end">
+												<button type="button" class="btn btn-outline-primary btn-sm border-0 btn_edit_option" data-bs-toggle="modal" data-bs-target="#md_edit_option" value="<?= $o->option_id ?>">
+													<i class="bi bi-pencil-fill"></i>
+												</button>
+												<button type="button" class="btn btn-outline-danger btn-sm border-0 btn_delete_option" value="<?= $o->option_id ?>">
+													<i class="bi bi-x-lg"></i>
+												</button>
+											</td>
+										</tr>
+										<?php } ?>
+									</tbody>
+								</table>
 							</div>
 						</div>
 					</div>
@@ -301,6 +254,30 @@
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
 				<button type="button" class="btn btn-primary" id="btn_update_option">Actualizar</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="md_add_image" tabindex="-1">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Agregar Imagen</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+			</div>
+			<div class="modal-body text-start">
+				<form class="row g-3" id="form_add_image">
+					<input type="hidden" name="product_id" value="<?= $product->product_id ?>">
+					<div class="col-12">
+						<label class="form-label">Imagen</label>
+						<input type="file" class="form-control" name="image">
+						<div class="invalid-feedback"></div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+				<button type="button" class="btn btn-primary" id="btn_add_image">Agregar</button>
 			</div>
 		</div>
 	</div>

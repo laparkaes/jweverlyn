@@ -8,6 +8,9 @@ $lang['e_integer'] = 'Debe ser un número entero.';
 $lang['e_numeric'] = 'Debe ser un número.';
 $lang['e_numeric_positive'] = 'Debe ser un número positivo.';
 
+//product image
+$lang['e_file_image'] = 'Elija un archivo de imagen.';
+
 //product option
 $lang['e_duplicate_option'] = 'Opción esta registrada en el sistema.';
 $lang['s_option_insert'] = 'Opción de producto ha sido generada con éxito.';

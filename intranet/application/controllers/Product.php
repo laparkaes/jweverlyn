@@ -234,4 +234,25 @@ class Product extends CI_Controller {
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msg" => $msg, "product_id" => $product_id]);
 	}
+	
+	public function add_image(){
+		if ($this->session->userdata('username')){
+			$data = $this->input->post();
+			$data["image"] = $_FILES["image"]["name"];
+			$data["type"] = $_FILES["image"]["type"];
+			
+			$this->load->library('my_val');
+			$result = $this->my_val->add_image($data);
+			
+			if ($result["type"] === "success"){
+				//$this->gm->insert("product_option", $data);
+				
+				$result["product_id"] = $data["product_id"];
+				$result["msg"] = $this->lang->line("s_option_update");
+			}
+		}else $result = ["type" => "error", "msg" => $this->lang->line("e_finished_session")];
+		
+		header('Content-Type: application/json');
+		echo json_encode($result);
+	}
 }

@@ -344,4 +344,16 @@ class My_val{
 		
 		return ["type" => $this->get_type($msgs), "msgs" => $msgs, "msg" => $msg];
 	}
+	
+	public function add_image($data){
+		$msgs = []; $msg = "";
+		
+		if ($data["image"]){
+			if (explode("/", $data["type"])[0] === "image"){
+				$msgs = $this->set_msg($msgs, "image");
+			}else $msgs = $this->set_msg($msgs, "image", "e_file_image");
+		}else $msgs = $this->set_msg($msgs, "image", "e_required_field");
+		
+		return ["type" => $this->get_type($msgs), "msgs" => $msgs, "msg" => $msg];
+	}
 }
