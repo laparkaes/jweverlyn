@@ -58,8 +58,7 @@ $("#form_add_image").submit(function(e) {
 	e.preventDefault();
 	ajax_form_warning(this, "product/add_image", "add_image").done(function(res) {
 		set_msgs("#form_add_image", res.msgs);
-		//swal_redirection(res.type, res.msg, base_url + "product/detail/" + res.product_id);
-		swal(res.type, res.msg);
+		swal_redirection(res.type, res.msg, base_url + "product/detail/" + res.product_id);
 	});
 });
 

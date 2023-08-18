@@ -9,7 +9,7 @@ $lang['e_numeric'] = 'Debe ser un número.';
 $lang['e_numeric_positive'] = 'Debe ser un número positivo.';
 
 //product image
-$lang['e_file_image'] = 'Elija un archivo de imagen.';
+$lang['s_image_insert'] = 'Imagen de producto ha sido cargada con éxito.';
 
 //product option
 $lang['e_duplicate_option'] = 'Opción esta registrada en el sistema.';

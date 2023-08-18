@@ -22,7 +22,7 @@
 			<div class="card">
 				<div class="card-body profile-card pt-4 d-flex flex-column align-items-center text-center">
 					<?php  ?>
-					<img src="<?= $product->img ?>" alt="Thumb" class="w-100" style="max-width: 80%;">
+					<img src="<?= $product->thumb ?>" alt="Thumb" style="max-width: 80%;">
 					<h2><?= $product->product ?></h2>
 					<h3><?= $product->category ?></h3>
 				</div>
@@ -172,16 +172,16 @@
 										</tr>
 									</thead>
 									<tbody>
-										<?php foreach($options as $i_o => $o){ ?>
+										<?php foreach($images as $i_i => $i){ ?>
 										<tr>
-											<th scope="row"><?= $i_o + 1 ?></th>
-											<td><?= $o->option ?></td>
-											<td><?= number_format($o->stock) ?></td>
+											<th scope="row"><?= $i_i + 1 ?></th>
+											<td><img src="<?= $i->thumb ?>" alt="Thumb" style="max-height: 80px;"></td>
+											<td><?= $i->image ?></td>
 											<td class="text-end">
-												<button type="button" class="btn btn-outline-primary btn-sm border-0 btn_edit_option" data-bs-toggle="modal" data-bs-target="#md_edit_option" value="<?= $o->option_id ?>">
+												<button type="button" class="btn btn-outline-primary btn-sm border-0 btn_edit_image" value="<?= $i->image_id ?>">
 													<i class="bi bi-pencil-fill"></i>
 												</button>
-												<button type="button" class="btn btn-outline-danger btn-sm border-0 btn_delete_option" value="<?= $o->option_id ?>">
+												<button type="button" class="btn btn-outline-danger btn-sm border-0 btn_delete_image" value="<?= $i->image_id ?>">
 													<i class="bi bi-x-lg"></i>
 												</button>
 											</td>

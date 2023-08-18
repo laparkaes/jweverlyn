@@ -1456,7 +1456,7 @@ class CI_Image_lib {
 					return FALSE;
 				}
 
-				return imagecreatefromgif($path);
+				return @imagecreatefromgif($path);
 			case 2:
 				if ( ! function_exists('imagecreatefromjpeg'))
 				{
@@ -1464,7 +1464,7 @@ class CI_Image_lib {
 					return FALSE;
 				}
 
-				return imagecreatefromjpeg($path);
+				return @imagecreatefromjpeg($path);
 			case 3:
 				if ( ! function_exists('imagecreatefrompng'))
 				{
@@ -1472,7 +1472,7 @@ class CI_Image_lib {
 					return FALSE;
 				}
 
-				return imagecreatefrompng($path);
+				return @imagecreatefrompng($path);
 			default:
 				$this->set_error(array('imglib_unsupported_imagecreate'));
 				return FALSE;

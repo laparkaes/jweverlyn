@@ -48,19 +48,33 @@ class Product extends CI_Controller {
 		$product->category = $this->gm->unique("product_category", "category_id", $product->category_id)->category;
 		$product->stock = 0;
 		
-		$path = base_url()."uploaded/imgs/"; 
-		if ($product->thumb){
-			if (file_exists($path.$product->thumb)) $img = $path.$product->thumb;
+		$path = base_url()."uploads/prod/"; 
+		if ($product->image){
+			$aux = explode(".", $product->image);
+			$filepath = $product->product_id."/".$aux[0]."_thumb.".$aux[1];
+			if (file_exists("uploads/prod/".$filepath)) $img = $path.$filepath;
 			else $img = $path."no_img.png";
 		}else $img = $path."no_img.png";
-		$product->img = $img;
+		$product->thumb = $img;
 		
 		$options = $this->gm->filter("product_option", ["product_id" => $product_id], null, null, [["option", "asc"]]);
 		foreach($options as $o) $product->stock += $o->stock;
 		
+		$images = $this->gm->filter("product_image", ["product_id" => $product_id], null, null, [["image", "desc"]]);
+		foreach($images as $i){
+			if ($i->image){
+				$aux = explode(".", $i->image);
+				$filepath = $i->product_id."/".$aux[0]."_thumb.".$aux[1];
+				if (file_exists("uploads/prod/".$filepath)) $img = $path.$filepath;
+				else $img = $path."no_img.png";	
+			}else $img = $path."no_img.png";
+			$i->thumb = $img;
+		}
+		
 		$data = [
 			"product" => $product,
 			"options" => $options,
+			"images" => $images,
 			"categories" => $this->gm->all("product_category", [["category", "asc"]]),
 			"main" => "product/detail",
 		];
@@ -239,16 +253,41 @@ class Product extends CI_Controller {
 		if ($this->session->userdata('username')){
 			$data = $this->input->post();
 			$data["image"] = $_FILES["image"]["name"];
-			$data["type"] = $_FILES["image"]["type"];
 			
 			$this->load->library('my_val');
 			$result = $this->my_val->add_image($data);
 			
 			if ($result["type"] === "success"){
-				//$this->gm->insert("product_option", $data);
+				$path = './uploads/prod/'.$data["product_id"]."/";
+				if (!is_dir($path)) mkdir($path, 0777, true);
 				
-				$result["product_id"] = $data["product_id"];
-				$result["msg"] = $this->lang->line("s_option_update");
+				$config['upload_path'] = $path;
+				$config['allowed_types'] = 'gif|jpg|jpeg|png';
+				$config['file_name'] = date("YmdHis");
+				$this->load->library('upload', $config);
+				
+				if ($this->upload->do_upload('image')){
+					$filedata = array('upload_data' => $this->upload->data());
+					$data["image"] = $filedata['upload_data']['file_name'];
+
+					$this->load->library('image_lib');
+					$config['image_library'] = 'gd2';
+					$config['source_image'] = $path.$data["image"];
+					$config['create_thumb'] = TRUE;
+					$config['maintain_ratio'] = TRUE;
+					$config['width'] = 200;
+					$config['height'] = 200;
+
+					$this->image_lib->initialize($config);
+					$this->image_lib->resize();
+					
+					$this->gm->insert("product_image", $data);
+					if (!$this->gm->unique("product", "product_id", $data["product_id"])->image) 
+						$this->gm->update("product", ["product_id" => $data["product_id"]], ["image" => $data["image"]]);
+					
+					$result["product_id"] = $data["product_id"];
+					$result["msg"] = $this->lang->line("s_image_insert");
+				}else $result = ["type" => "error", "msg" => $this->upload->display_errors()];
 			}
 		}else $result = ["type" => "error", "msg" => $this->lang->line("e_finished_session")];
 		
