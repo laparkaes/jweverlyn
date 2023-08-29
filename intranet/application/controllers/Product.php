@@ -275,8 +275,8 @@ class Product extends CI_Controller {
 					$config['source_image'] = $path.$data["image"];
 					$config['create_thumb'] = TRUE;
 					$config['maintain_ratio'] = TRUE;
-					$config['width'] = 200;
-					$config['height'] = 200;
+					$config['width'] = 300;
+					$config['height'] = 300;
 
 					$this->image_lib->initialize($config);
 					$this->image_lib->resize();

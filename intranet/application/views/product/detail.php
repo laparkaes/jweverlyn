@@ -202,83 +202,89 @@
 <div class="modal fade" id="md_add_option" tabindex="-1">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title">Agregar Opción</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-			</div>
-			<div class="modal-body text-start">
-				<form class="row g-3" id="form_add_option">
-					<input type="hidden" name="product_id" value="<?= $product->product_id ?>">
-					<div class="col-6">
-						<label class="form-label">Opción</label>
-						<input type="text" class="form-control" name="option">
-						<div class="invalid-feedback"></div>
+			<form id="form_add_option">
+				<input type="hidden" name="product_id" value="<?= $product->product_id ?>">
+				<div class="modal-header">
+					<h5 class="modal-title">Agregar Opción</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+				</div>
+				<div class="modal-body text-start">
+					<div class="row g-3">
+						<div class="col-6">
+							<label class="form-label">Opción</label>
+							<input type="text" class="form-control" name="option">
+							<div class="invalid-feedback"></div>
+						</div>
+						<div class="col-6">
+							<label class="form-label">Stock</label>
+							<input type="text" class="form-control" name="stock">
+							<div class="invalid-feedback"></div>
+						</div>
 					</div>
-					<div class="col-6">
-						<label class="form-label">Stock</label>
-						<input type="text" class="form-control" name="stock">
-						<div class="invalid-feedback"></div>
-					</div>
-				</form>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-				<button type="button" class="btn btn-primary" id="btn_add_option">Agregar</button>
-			</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+					<button type="submit" class="btn btn-primary">Agregar</button>
+				</div>
+			</form>
 		</div>
 	</div>
 </div>
 <div class="modal fade" id="md_edit_option" tabindex="-1">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title">Editar Opción</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-			</div>
-			<div class="modal-body text-start">
-				<form class="row g-3" id="form_update_option">
-					<input type="hidden" name="option_id">
-					<input type="hidden" name="product_id" value="<?= $product->product_id ?>">
-					<div class="col-6">
-						<label class="form-label">Opción</label>
-						<input type="text" class="form-control" name="option">
-						<div class="invalid-feedback"></div>
+			<form id="form_update_option">
+				<input type="hidden" name="option_id">
+				<input type="hidden" name="product_id" value="<?= $product->product_id ?>">
+				<div class="modal-header">
+					<h5 class="modal-title">Editar Opción</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+				</div>
+				<div class="modal-body text-start">
+					<div class="row g-3">
+						<div class="col-6">
+							<label class="form-label">Opción</label>
+							<input type="text" class="form-control" name="option">
+							<div class="invalid-feedback"></div>
+						</div>
+						<div class="col-6">
+							<label class="form-label">Stock</label>
+							<input type="text" class="form-control" name="stock">
+							<div class="invalid-feedback"></div>
+						</div>
 					</div>
-					<div class="col-6">
-						<label class="form-label">Stock</label>
-						<input type="text" class="form-control" name="stock">
-						<div class="invalid-feedback"></div>
-					</div>
-				</form>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-				<button type="button" class="btn btn-primary" id="btn_update_option">Actualizar</button>
-			</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+					<button type="submit" class="btn btn-primary">Actualizar</button>
+				</div>
+			</form>
 		</div>
 	</div>
 </div>
 <div class="modal fade" id="md_add_image" tabindex="-1">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title">Agregar Imagen</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-			</div>
-			<div class="modal-body text-start">
-				<form class="row g-3" id="form_add_image">
-					<input type="hidden" name="product_id" value="<?= $product->product_id ?>">
-					<div class="col-12">
-						<label class="form-label">Imagen</label>
-						<input type="file" class="form-control" name="image" accept=".jpg, .jpeg, .png, .gif">
-						<div class="invalid-feedback"></div>
+			<form id="form_add_image">
+				<input type="hidden" name="product_id" value="<?= $product->product_id ?>">
+				<div class="modal-header">
+					<h5 class="modal-title">Agregar Imagen</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+				</div>
+				<div class="modal-body text-start">
+					<div class="row g-3">
+						<div class="col-12">
+							<label class="form-label">Imagen</label>
+							<input type="file" class="form-control" name="image" accept=".jpg, .jpeg, .png, .gif">
+							<div class="invalid-feedback"></div>
+						</div>
 					</div>
-				</form>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-				<button type="button" class="btn btn-primary" id="btn_add_image">Agregar</button>
-			</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+					<button type="submit" class="btn btn-primary">Agregar</button>
+				</div>
+			</form>
 		</div>
 	</div>
 </div>

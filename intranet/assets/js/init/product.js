@@ -62,10 +62,6 @@ $("#form_add_image").submit(function(e) {
 	});
 });
 
-$("#btn_add_option").on('click',(function(e) {
-	$("#form_add_option").submit();
-}));
-
 $(".btn_edit_option").on('click',(function(e) {
 	ajax_simple({option_id: $(this).val()}, "product/load_option").done(function(res) {
 		if (res.type == "success"){
@@ -74,10 +70,6 @@ $(".btn_edit_option").on('click',(function(e) {
 			$("#form_update_option input[name=stock]").val(res.option.stock);
 		}else swal(res.type, res.msg);
 	});
-}));
-
-$("#btn_update_option").on('click',(function(e) {
-	$("#form_update_option").submit();
 }));
 
 $(".btn_delete_option").on('click',(function(e) {
