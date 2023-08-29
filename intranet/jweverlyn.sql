@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- 생성 시간: 23-08-29 00:51
+-- 생성 시간: 23-08-29 18:44
 -- 서버 버전: 10.4.24-MariaDB
 -- PHP 버전: 7.4.29
 
@@ -1087,7 +1087,7 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`product_id`, `category_id`, `code`, `product`, `price`, `image`, `valid`, `updated_at`, `registed_at`) VALUES
-(1, 4, 'asdf-2321', 'otra prueba', 15.3, '20230817120657.png', 1, '2023-08-16 22:48:15', '2023-08-15 21:40:42'),
+(1, 4, 'asdf-2321', 'otra prueba', 15.3, '20230829173001_thumb.png', 1, '2023-08-16 22:48:15', '2023-08-15 21:40:42'),
 (2, 5, 'asdf-232', 'Un producto con codigo', 33.57, NULL, 1, '2023-08-16 16:56:20', '2023-08-16 16:48:54');
 
 -- --------------------------------------------------------
@@ -1111,7 +1111,7 @@ INSERT INTO `product_category` (`category_id`, `category`, `valid`) VALUES
 (3, 'Ortopedico', 0),
 (4, 'Ortopedico', 1),
 (5, 'otra categoria', 1),
-(6, 'probando una mas', 1),
+(6, 'probando una mas', 0),
 (7, 'hola coo estas?', 0);
 
 -- --------------------------------------------------------
@@ -1132,12 +1132,34 @@ CREATE TABLE `product_image` (
 --
 
 INSERT INTO `product_image` (`image_id`, `product_id`, `image`, `valid`) VALUES
-(2, 1, '20230817115625.png', 1),
-(3, 1, '20230817120250.png', 1),
-(4, 1, '20230817120544.png', 1),
-(5, 1, '20230817120548.png', 1),
-(6, 1, '20230817120657.png', 1),
-(7, 1, '20230817122501.png', 1);
+(2, 1, '20230817115625.png', 0),
+(3, 1, '20230817120250.png', 0),
+(4, 1, '20230817120544.png', 0),
+(5, 1, '20230817120548.png', 0),
+(6, 1, '20230817120657.png', 0),
+(7, 1, '20230817122501.png', 0),
+(8, 1, '20230829140809.png', 0),
+(9, 1, '20230829142145.png', 0),
+(10, 1, '20230829142216.png', 0),
+(11, 1, '20230829151131.png', 0),
+(12, 1, '20230829151141.png', 0),
+(13, 1, '20230829151523.png', 0),
+(14, 1, '20230829151855.png', 0),
+(15, 1, '20230829160516.png', 0),
+(16, 1, '20230829160539.png', 0),
+(17, 1, '20230829160558.png', 0),
+(18, 1, '20230829170435.png', 0),
+(19, 1, '20230829170624.png', 0),
+(20, 1, '20230829171427.png', 0),
+(21, 1, '20230829171522.png', 0),
+(22, 1, '20230829171546.png', 0),
+(23, 1, '20230829171753.png', 0),
+(24, 1, '20230829171924.png', 0),
+(25, 1, '20230829172727.png', 0),
+(26, 1, '20230829172923.png', 0),
+(27, 1, '20230829172933.png', 0),
+(28, 1, '20230829173001.png', 1),
+(29, 2, '20230829175952.png', 0);
 
 -- --------------------------------------------------------
 
@@ -1158,10 +1180,10 @@ CREATE TABLE `product_option` (
 --
 
 INSERT INTO `product_option` (`option_id`, `product_id`, `option`, `stock`, `valid`) VALUES
-(1, 1, 'Rosado', 123, 1),
-(2, 1, 'Negro', 13, 1),
+(1, 1, 'Rosado', 123, 0),
+(2, 1, 'Negro', 13, 0),
 (3, 1, 'Verde', 123, 0),
-(4, 1, 'Azul', 123, 1),
+(4, 1, 'Azul', 1500, 0),
 (5, 1, 'testing123', 123, 0),
 (6, 1, 'hola', 12348, 0),
 (7, 1, 'testing', 2222, 0),
@@ -1169,7 +1191,21 @@ INSERT INTO `product_option` (`option_id`, `product_id`, `option`, `stock`, `val
 (9, 1, 'testing3', 123123, 0),
 (10, 1, 'talla S - Rosado', 1123, 0),
 (11, 1, 'nyev', 1295, 0),
-(12, 1, 'Amarillo', 5, 1);
+(12, 1, 'Amarillo', 4, 0),
+(13, 1, 'Rosadoa', 1234, 0),
+(14, 1, 'aaa', 44, 0),
+(15, 1, 'asdf', 111, 0),
+(16, 1, 'sdaf', 11, 0),
+(17, 1, 'aa1', 33, 0),
+(18, 1, 'aa12', 23123, 0),
+(19, 1, 'a111111111', 1234, 0),
+(20, 1, 'a3', 33, 0),
+(21, 1, 'aa', 33, 0),
+(22, 1, 'Negro', 143, 0),
+(23, 1, 'Rosado', 12375, 0),
+(24, 1, 'Talla S', 157, 0),
+(25, 1, 'Rosado', 77, 0),
+(26, 1, 'Negro', 150, 1);
 
 -- --------------------------------------------------------
 
@@ -1347,13 +1383,13 @@ ALTER TABLE `product_category`
 -- 테이블의 AUTO_INCREMENT `product_image`
 --
 ALTER TABLE `product_image`
-  MODIFY `image_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `image_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- 테이블의 AUTO_INCREMENT `product_option`
 --
 ALTER TABLE `product_option`
-  MODIFY `option_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `option_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- 테이블의 AUTO_INCREMENT `role`
