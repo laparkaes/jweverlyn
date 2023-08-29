@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- 생성 시간: 23-08-16 18:22
+-- 생성 시간: 23-08-29 00:51
 -- 서버 버전: 10.4.24-MariaDB
 -- PHP 버전: 7.4.29
 
@@ -1076,7 +1076,7 @@ CREATE TABLE `product` (
   `code` varchar(50) NOT NULL,
   `product` varchar(200) NOT NULL,
   `price` float NOT NULL,
-  `thumb` varchar(100) DEFAULT NULL,
+  `image` varchar(100) DEFAULT NULL,
   `valid` tinyint(1) NOT NULL DEFAULT 1,
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `registed_at` timestamp NOT NULL DEFAULT current_timestamp()
@@ -1086,8 +1086,8 @@ CREATE TABLE `product` (
 -- 테이블의 덤프 데이터 `product`
 --
 
-INSERT INTO `product` (`product_id`, `category_id`, `code`, `product`, `price`, `thumb`, `valid`, `updated_at`, `registed_at`) VALUES
-(1, 4, 'asdf-2321', 'otra prueba', 15.3, NULL, 1, '2023-08-16 22:48:15', '2023-08-15 21:40:42'),
+INSERT INTO `product` (`product_id`, `category_id`, `code`, `product`, `price`, `image`, `valid`, `updated_at`, `registed_at`) VALUES
+(1, 4, 'asdf-2321', 'otra prueba', 15.3, '20230817120657.png', 1, '2023-08-16 22:48:15', '2023-08-15 21:40:42'),
 (2, 5, 'asdf-232', 'Un producto con codigo', 33.57, NULL, 1, '2023-08-16 16:56:20', '2023-08-16 16:48:54');
 
 -- --------------------------------------------------------
@@ -1113,6 +1113,31 @@ INSERT INTO `product_category` (`category_id`, `category`, `valid`) VALUES
 (5, 'otra categoria', 1),
 (6, 'probando una mas', 1),
 (7, 'hola coo estas?', 0);
+
+-- --------------------------------------------------------
+
+--
+-- 테이블 구조 `product_image`
+--
+
+CREATE TABLE `product_image` (
+  `image_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `image` varchar(50) NOT NULL,
+  `valid` tinyint(1) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- 테이블의 덤프 데이터 `product_image`
+--
+
+INSERT INTO `product_image` (`image_id`, `product_id`, `image`, `valid`) VALUES
+(2, 1, '20230817115625.png', 1),
+(3, 1, '20230817120250.png', 1),
+(4, 1, '20230817120544.png', 1),
+(5, 1, '20230817120548.png', 1),
+(6, 1, '20230817120657.png', 1),
+(7, 1, '20230817122501.png', 1);
 
 -- --------------------------------------------------------
 
@@ -1258,6 +1283,13 @@ ALTER TABLE `product_category`
   ADD PRIMARY KEY (`category_id`);
 
 --
+-- 테이블의 인덱스 `product_image`
+--
+ALTER TABLE `product_image`
+  ADD PRIMARY KEY (`image_id`),
+  ADD KEY `fk_image_product` (`product_id`);
+
+--
 -- 테이블의 인덱스 `product_option`
 --
 ALTER TABLE `product_option`
@@ -1312,6 +1344,12 @@ ALTER TABLE `product_category`
   MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
+-- 테이블의 AUTO_INCREMENT `product_image`
+--
+ALTER TABLE `product_image`
+  MODIFY `image_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
 -- 테이블의 AUTO_INCREMENT `product_option`
 --
 ALTER TABLE `product_option`
@@ -1338,6 +1376,12 @@ ALTER TABLE `access`
 --
 ALTER TABLE `account`
   ADD CONSTRAINT `account_role` FOREIGN KEY (`role_id`) REFERENCES `role` (`role_id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- 테이블의 제약사항 `product_image`
+--
+ALTER TABLE `product_image`
+  ADD CONSTRAINT `fk_image_product` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- 테이블의 제약사항 `product_option`
