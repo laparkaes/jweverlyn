@@ -30,7 +30,7 @@
 							<form>
 								<div class="input-group mt-md-3 mb-3">
 									<input type="text" class="form-control" name="search" placeholder="Buscar" value="<?= $this->input->get("search") ?>">
-									<button type="button" class="btn btn-primary"><i class="bi bi-funnel"></i></button>
+									<button type="button" class="btn btn-primary"><i class="bi bi-funnel-fill"></i></button>
 								</div>
 							</form>
 						</div>

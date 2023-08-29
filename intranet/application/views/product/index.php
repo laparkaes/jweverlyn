@@ -29,7 +29,7 @@
 							<form>
 								<div class="input-group mt-md-3 mb-3">
 									<input type="text" class="form-control" name="search" placeholder="Buscar" value="<?= $this->input->get("search") ?>">
-									<button type="button" class="btn btn-primary"><i class="bi bi-funnel"></i></button>
+									<button type="submit" class="btn btn-primary"><i class="bi bi-funnel-fill"></i></button>
 								</div>
 							</form>
 						</div>
@@ -39,6 +39,7 @@
 							<thead>
 								<tr>
 									<th scope="col">#</th>
+									<th scope="col">Imagen</th>
 									<th scope="col">Categoría</th>
 									<th scope="col">Producto</th>
 									<th scope="col">Vendidos</th>
@@ -51,6 +52,7 @@
 								<?php $base_page = ($params["page"] - 1) * 25; foreach($products as $i_p => $p){ ?>
 								<tr>
 									<th scope="row"><?= $base_page + $i_p + 1 ?></th>
+									<td><img src="<?= $p->thumb ?>" style="height: 60px;"></td>
 									<td><?= $p->category ?></td>
 									<td><?= $p->product ?></td>
 									<td><?= number_format($p->sold_qty) ?></td>

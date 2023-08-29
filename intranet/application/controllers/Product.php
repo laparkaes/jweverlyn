@@ -10,6 +10,36 @@ class Product extends CI_Controller {
 		$this->nav_menu = ["products", ""];
 		$this->js_init = "product.js";
 	}
+	
+	private function calculate_stock($product_id){
+		$stock = 0;
+		$options = $this->gm->filter("product_option", ["product_id" => $product_id], null, null, [["option", "asc"]]);
+		foreach($options as $o){
+			$stock += $o->stock;
+			$o->stock = number_format($o->stock);
+		}
+		
+		return ["stock" => number_format($stock), "options" => $options];
+	}
+
+	private function get_images($product_id){
+		$path = base_url()."uploads/prod/";
+		$images = $this->gm->filter("product_image", ["product_id" => $product_id], null, null, [["image", "desc"]]);
+		foreach($images as $i){
+			$i->image_path = $path."no_img.png";
+			if ($i->image){
+				$aux = explode(".", $i->image);
+				$filepath = $i->product_id."/".$aux[0]."_thumb.".$aux[1];
+				if (file_exists("uploads/prod/".$filepath)){
+					$img = $path.$filepath;
+					$i->image_path = $path.$i->product_id."/".$i->image;
+				}else $img = $path."no_img.png";
+			}else $img = $path."no_img.png";
+			$i->thumb = $img;
+		}
+		
+		return $images;
+	}
 
 	public function index(){
 		if (!$this->session->userdata('username')) redirect("auth/login");
@@ -22,11 +52,24 @@ class Product extends CI_Controller {
 		
 		$w = $l = $w_in = [];
 		if ($params["search"]){
+			$l["product"] = $params["search"];
 			
+			$categories = $this->gm->filter("product_category", $w, ["category" => $params["search"]]);
+			if ($categories){
+				$cat_ids = [];
+				foreach($categories as $c) $cat_ids[] = $c->category_id;
+				$w_in[] = ["field" => "category_id", "values" => $cat_ids];	
+			}
 		}else unset($params["search"]);
 		
 		$products = $this->gm->filter("product", $w, $l, $w_in, [["product", "asc"]], 25, 25 * ($params["page"] - 1), false);
 		foreach($products as $p){
+			if ($p->image){
+				$path = "uploads/prod/".$p->product_id."/".$p->image;
+				if (file_exists($path)) $p->thumb = base_url().$path;
+				else $p->thumb = base_url()."uploads/prod/no_img.png";
+			}else $p->thumb = base_url()."uploads/prod/no_img.png";
+			
 			$p->category = $this->gm->unique("product_category", "category_id", $p->category_id)->category;
 			$p->sold_qty = 0;
 			if ($p->valid) $p->color = "success"; else $p->color = "danger";
@@ -46,35 +89,22 @@ class Product extends CI_Controller {
 		
 		$product = $this->gm->unique("product", "product_id", $product_id);
 		$product->category = $this->gm->unique("product_category", "category_id", $product->category_id)->category;
-		$product->stock = 0;
 		
-		$path = base_url()."uploads/prod/"; 
 		if ($product->image){
-			$aux = explode(".", $product->image);
-			$filepath = $product->product_id."/".$aux[0]."_thumb.".$aux[1];
-			if (file_exists("uploads/prod/".$filepath)) $img = $path.$filepath;
-			else $img = $path."no_img.png";
-		}else $img = $path."no_img.png";
-		$product->thumb = $img;
+			$path = "uploads/prod/".$product->product_id."/".$product->image;
+			if (file_exists($path)) $product->thumb = base_url().$path;
+			else $product->thumb = base_url()."uploads/prod/no_img.png";
+		}else $product->thumb = base_url()."uploads/prod/no_img.png";
 		
-		$options = $this->gm->filter("product_option", ["product_id" => $product_id], null, null, [["option", "asc"]]);
-		foreach($options as $o) $product->stock += $o->stock;
 		
-		$images = $this->gm->filter("product_image", ["product_id" => $product_id], null, null, [["image", "desc"]]);
-		foreach($images as $i){
-			if ($i->image){
-				$aux = explode(".", $i->image);
-				$filepath = $i->product_id."/".$aux[0]."_thumb.".$aux[1];
-				if (file_exists("uploads/prod/".$filepath)) $img = $path.$filepath;
-				else $img = $path."no_img.png";	
-			}else $img = $path."no_img.png";
-			$i->thumb = $img;
-		}
+		$op_aux = $this->calculate_stock($product_id);
+		$options = $op_aux["options"];
+		$product->stock = $op_aux["stock"];
 		
 		$data = [
 			"product" => $product,
 			"options" => $options,
-			"images" => $images,
+			"images" => $this->get_images($product_id),
 			"categories" => $this->gm->all("product_category", [["category", "asc"]]),
 			"main" => "product/detail",
 		];
@@ -191,7 +221,9 @@ class Product extends CI_Controller {
 			if ($result["type"] === "success"){
 				$this->gm->insert("product_option", $data);
 				
-				$result["product_id"] = $data["product_id"];
+				$op_aux = $this->calculate_stock($data["product_id"]);
+				$result["stock"] = $op_aux["stock"];
+				$result["options"] = $op_aux["options"];
 				$result["msg"] = $this->lang->line("s_option_insert");
 			}
 		}else $result = ["type" => "error", "msg" => $this->lang->line("e_finished_session")];
@@ -222,7 +254,9 @@ class Product extends CI_Controller {
 			if ($result["type"] === "success"){
 				$this->gm->update("product_option", ["option_id" => $data["option_id"]], $data);
 				
-				$result["product_id"] = $data["product_id"];
+				$op_aux = $this->calculate_stock($data["product_id"]);
+				$result["stock"] = $op_aux["stock"];
+				$result["options"] = $op_aux["options"];
 				$result["msg"] = $this->lang->line("s_option_update");
 			}
 		}else $result = ["type" => "error", "msg" => $this->lang->line("e_finished_session")];
@@ -232,13 +266,16 @@ class Product extends CI_Controller {
 	}
 	
 	public function delete_option(){
-		$type = "error"; $msg = $product_id = null;
+		$type = "error"; $msg = null; $options = []; $stock = null;
 		
 		if ($this->session->userdata('username')){
 			$option = $this->gm->unique("product_option", "option_id", $this->input->post("option_id"));
 			if ($option){
 				if ($this->gm->update("product_option", ["option_id" => $option->option_id], ["valid" => false])){
-					$product_id = $option->product_id;
+					$op_aux = $this->calculate_stock($option->product_id);
+					
+					$stock = $op_aux["stock"];
+					$options = $op_aux["options"];
 					$type = "success";
 					$msg = $this->lang->line("s_option_delete");
 				}else $msg = $this->lang->line("e_internal_again");
@@ -246,7 +283,7 @@ class Product extends CI_Controller {
 		}else $msg = $this->lang->line("e_finished_session");
 		
 		header('Content-Type: application/json');
-		echo json_encode(["type" => $type, "msg" => $msg, "product_id" => $product_id]);
+		echo json_encode(["type" => $type, "msg" => $msg, "options" => $options, "stock" => $stock]);
 	}
 	
 	public function add_image(){
@@ -282,10 +319,13 @@ class Product extends CI_Controller {
 					$this->image_lib->resize();
 					
 					$this->gm->insert("product_image", $data);
-					if (!$this->gm->unique("product", "product_id", $data["product_id"])->image) 
-						$this->gm->update("product", ["product_id" => $data["product_id"]], ["image" => $data["image"]]);
+					if (!$this->gm->unique("product", "product_id", $data["product_id"])->image){
+						$aux = explode(".", $data["image"]);
+						$main_image = $aux[0]."_thumb.".$aux[1];
+						$this->gm->update("product", ["product_id" => $data["product_id"]], ["image" => $main_image]);
+					}
 					
-					$result["product_id"] = $data["product_id"];
+					$result["images"] = $this->get_images($data["product_id"]);
 					$result["msg"] = $this->lang->line("s_image_insert");
 				}else $result = ["type" => "error", "msg" => $this->upload->display_errors()];
 			}
@@ -293,5 +333,56 @@ class Product extends CI_Controller {
 		
 		header('Content-Type: application/json');
 		echo json_encode($result);
+	}
+
+	public function set_main_image(){
+		$type = "error"; $msg = null; $image = "";
+		
+		if ($this->session->userdata('username')){
+			$image = $this->gm->unique("product_image", "image_id", $this->input->post("image_id"));
+			if ($image){
+				$aux = explode(".", $image->image);
+				$main_image = $aux[0]."_thumb.".$aux[1];
+				if ($this->gm->update("product", ["product_id" => $image->product_id], ["image" => $main_image])){
+					$image = base_url()."uploads/prod/".$image->product_id."/".$main_image;
+					$type = "success";
+					$msg = $this->lang->line("s_option_delete");
+				}else $msg = $this->lang->line("e_internal_again");
+			}else $msg = $this->lang->line("e_unknown_refresh");
+		}else $msg = $this->lang->line("e_finished_session");
+		
+		header('Content-Type: application/json');
+		echo json_encode(["type" => $type, "msg" => $msg, "image" => $image]);
+	}
+
+	public function delete_image(){
+		$type = "error"; $msg = null; $images = [];
+		
+		if ($this->session->userdata('username')){
+			$image = $this->gm->unique("product_image", "image_id", $this->input->post("image_id"));
+			if ($image){
+				if ($this->gm->update("product_image", ["image_id" => $image->image_id], ["valid" => false])){
+					$aux = explode(".", $image->image);
+					$thumb = $aux[0]."_thumb.".$aux[1];
+					
+					//removing uploaded files
+					$path = "uploads/prod/".$image->product_id."/"; 
+					if (file_exists($path.$image->image)) unlink($path.$image->image);
+					if (file_exists($path.$thumb)) unlink($path.$thumb);
+					
+					//product main image validation
+					$product = $this->gm->unique("product", "product_id", $image->product_id);
+					if (!file_exists($path.$product->image))
+						$this->gm->update("product", ["product_id" => $image->product_id], ["image" => null]);
+				
+					$images = $this->get_images($image->product_id);
+					$type = "success";
+					$msg = $this->lang->line("s_option_delete");
+				}else $msg = $this->lang->line("e_internal_again");
+			}else $msg = $this->lang->line("e_unknown_refresh");
+		}else $msg = $this->lang->line("e_finished_session");
+		
+		header('Content-Type: application/json');
+		echo json_encode(["type" => $type, "msg" => $msg, "images" => $images]);
 	}
 }

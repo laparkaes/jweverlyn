@@ -10,6 +10,7 @@ $lang['e_numeric_positive'] = 'Debe ser un número positivo.';
 
 //product image
 $lang['s_image_insert'] = 'Imagen de producto ha sido cargada con éxito.';
+$lang['s_image_delete'] = 'Imagen ha sido eliminada.';
 
 //product option
 $lang['e_duplicate_option'] = 'Opción esta registrada en el sistema.';

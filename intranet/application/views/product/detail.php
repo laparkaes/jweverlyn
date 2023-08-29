@@ -22,7 +22,7 @@
 			<div class="card">
 				<div class="card-body profile-card pt-4 d-flex flex-column align-items-center text-center">
 					<?php  ?>
-					<img src="<?= $product->thumb ?>" alt="Thumb" style="max-width: 80%;">
+					<img src="<?= $product->thumb ?>" id="main_image" alt="Thumb" style="max-width: 80%;">
 					<h2><?= $product->product ?></h2>
 					<h3><?= $product->category ?></h3>
 				</div>
@@ -65,7 +65,7 @@
 							</div>
 							<div class="row">
 								<div class="col-lg-3 col-md-4 label">Stock</div>
-								<div class="col-lg-9 col-md-8"><?= number_format($product->stock) ?></div>
+								<div class="col-lg-9 col-md-8" id="num_stock"><?= $product->stock ?></div>
 							</div>
 							<div class="row">
 								<div class="col-lg-3 col-md-4 label">Actualizado</div>
@@ -136,12 +136,12 @@
 											</th>
 										</tr>
 									</thead>
-									<tbody>
+									<tbody id="tbody_options">
 										<?php foreach($options as $i_o => $o){ ?>
 										<tr>
 											<th scope="row"><?= $i_o + 1 ?></th>
 											<td><?= $o->option ?></td>
-											<td><?= number_format($o->stock) ?></td>
+											<td><?= $o->stock ?></td>
 											<td class="text-end">
 												<button type="button" class="btn btn-outline-primary btn-sm border-0 btn_edit_option" data-bs-toggle="modal" data-bs-target="#md_edit_option" value="<?= $o->option_id ?>">
 													<i class="bi bi-pencil-fill"></i>
@@ -163,7 +163,7 @@
 										<tr>
 											<th scope="col">#</th>
 											<th scope="col">Imagen</th>
-											<th scope="col">Archivo</th>
+											<th scope="col">Ruta</th>
 											<th scope="col" class="text-end">
 												<button type="button" class="btn btn-success btn-sm border-0" data-bs-toggle="modal" data-bs-target="#md_add_image">
 													<i class="bi bi-plus-lg"></i>
@@ -171,15 +171,15 @@
 											</th>
 										</tr>
 									</thead>
-									<tbody>
+									<tbody id="tbody_images">
 										<?php foreach($images as $i_i => $i){ ?>
 										<tr>
 											<th scope="row"><?= $i_i + 1 ?></th>
 											<td><img src="<?= $i->thumb ?>" alt="Thumb" style="max-height: 80px;"></td>
-											<td><?= $i->image ?></td>
+											<td><?= $i->image_path ?></td>
 											<td class="text-end">
 												<button type="button" class="btn btn-outline-primary btn-sm border-0 btn_edit_image" value="<?= $i->image_id ?>">
-													<i class="bi bi-pencil-fill"></i>
+													<i class="bi bi-image"></i>
 												</button>
 												<button type="button" class="btn btn-outline-danger btn-sm border-0 btn_delete_image" value="<?= $i->image_id ?>">
 													<i class="bi bi-x-lg"></i>

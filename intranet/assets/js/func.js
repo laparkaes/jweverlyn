@@ -30,6 +30,13 @@ const sp_warning_msg = {
 	update_option: "¿Desea actualizar opción?",
 	delete_option: "¿Desea eliminar opción?",
 	add_image: "¿Desea agregar nueva imagen?",
+	set_main_image: "¿Desea configurar como imagen principal?",
+	delete_image: "¿Desea eliminar imagen?",
+}
+
+function reset_form(form_id){
+	$(form_id)[0].reset();
+	$(form_id + " [name]").removeClass("is-invalid").removeClass("is-valid");
 }
 
 function set_msgs(form_id, msgs){
