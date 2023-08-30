@@ -221,6 +221,22 @@
 					</li>
 				</ul>
 			</li>
+			<li class="nav-item">
+				<?php if ($this->nav_menu[0] === "setting"){ $c = ""; $c_ul = "show"; }else{ $c = "collapsed"; $c_ul = ""; } ?>
+				<a class="nav-link <?= $c ?>" data-bs-target="#setting-nav" data-bs-toggle="collapse" href="#">
+					<i class="bi bi-pc-display"></i>
+					<span>Ajuste</span>
+					<i class="bi bi-chevron-down ms-auto"></i>
+				</a>
+				<ul id="setting-nav" class="nav-content collapse <?= $c_ul ?>" data-bs-parent="#sidebar-nav">
+					<li>
+						<?php if ($this->nav_menu[1] === "company") $c1 = "active"; else $c1 = ""; ?>
+						<a href="<?= base_url() ?>setting/company" class="<?= $c1 ?>">
+							<i class="bi bi-circle"></i><span>Empresa</span>
+						</a>
+					</li>
+				</ul>
+			</li>
 			<li class="nav-heading">Pages</li>
 			<li class="nav-item">
 				<a class="nav-link collapsed" href="users-profile.html">

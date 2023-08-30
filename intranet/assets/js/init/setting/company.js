@@ -1,3 +1,13 @@
+
+
+
+
+
+
+
+
+//end here
+
 /* Category start */
 $("#form_add_category").submit(function(e) {
 	e.preventDefault();
