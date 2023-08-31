@@ -9,6 +9,105 @@ class My_func{
 	public function __construct(){
 		$this->CI = &get_instance();
 	}
+	
+	public function paging($page, $qty){
+		$pages = [];
+		if ($qty){
+			$last = floor($qty / 25); if ($qty % 25) $last++;
+			if (3 < $page) $pages[] = [1, "<<", ""];
+			if (3 < $page) $pages[] = [$page-3, "...", ""];
+			if (2 < $page) $pages[] = [$page-2, $page-2, ""];
+			if (1 < $page) $pages[] = [$page-1, $page-1, ""];
+			$pages[] = [$page, $page, "active"];
+			if ($page+1 <= $last) $pages[] = [$page+1, $page+1, ""];
+			if ($page+2 <= $last) $pages[] = [$page+2, $page+2, ""];
+			if ($page+3 <= $last) $pages[] = [$page+3, "...", ""];
+			if ($page+3 <= $last) $pages[] = [$last, ">>", ""];
+		}
+		
+		return $pages;
+	}
+	
+	public function utildatos_dni($dni){
+		$curl = curl_init();
+		/*
+		curl_setopt_array($curl, array(
+			CURLOPT_URL => 'https://utildatos.com/api/dni',
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_ENCODING => '',
+			CURLOPT_MAXREDIRS => 10,
+			CURLOPT_TIMEOUT => 0,
+			CURLOPT_FOLLOWLOCATION => false,
+			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+			CURLOPT_CUSTOMREQUEST => 'POST',
+			CURLOPT_POSTFIELDS => ['dni' => $dni],
+			CURLOPT_HTTPHEADER => ['Authorization: Bearer {5e973b619e195eed0aea209fcf27e5}']
+		));
+		*/
+		curl_setopt_array($curl, array(
+			CURLOPT_URL => 'https://utildatos.com/bussines/get-random-dni',
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_ENCODING => '',
+			CURLOPT_MAXREDIRS => 10,
+			CURLOPT_TIMEOUT => 0,
+			CURLOPT_FOLLOWLOCATION => false,
+			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+			CURLOPT_CUSTOMREQUEST => 'POST',
+			CURLOPT_POSTFIELDS => ['dni' => $dni],
+		));
+
+		$response = json_decode(curl_exec($curl));
+		curl_close($curl);
+		
+		$res = new stdClass;
+		$res->status = false;
+		$res->data = null;
+		if ($response){
+			if (property_exists($response, 'success')){
+				$res->status = $response->success;
+				$res->data = $response->result;
+			}	
+		}
+		
+		return $res;
+	}
+	
+	public function utildatos_ruc($ruc){
+		$curl = curl_init();
+		
+		curl_setopt_array($curl, [
+			//CURLOPT_URL => 'https://utildatos.com/api/sunat-reducido',
+			CURLOPT_URL => 'https://utildatos.com/bussines/get-sunat-reducido',
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_ENCODING => '',
+			CURLOPT_MAXREDIRS => 10,
+			CURLOPT_TIMEOUT => 0,
+			CURLOPT_FOLLOWLOCATION => false,
+			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+			CURLOPT_CUSTOMREQUEST => 'POST',
+			CURLOPT_POSTFIELDS => ['ruc' => $ruc],
+			//CURLOPT_HTTPHEADER => ['Authorization: Bearer {5e973b619e195eed0aea209fcf27e5}'],
+		]);
+
+		$response = json_decode(curl_exec($curl));
+		curl_close($curl);
+		
+		$res = new stdClass;
+		$res->status = false;
+		$res->data = null;
+		if ($response){
+			if (property_exists($response, 'success')){
+				$res->status = $response->success;
+				$res->data = $response->result;
+			}
+		}
+		
+		return $res;
+		
+		//stdClass Object ( [status] => [message] => No se encontro el ruc ) 
+		//stdClass Object ( [success] => 1 [result] => stdClass Object ( [ruc] => 20557939645 [razon_social] => MOARA PERU E.I.R.L. [estado] => SUSPENSION TEMPORAL [condicion_domicilio] => HABIDO [ubigeo] => 150130 [tipo_via] => AV. [nombre_via] => SAN BORJA SUR [codigo_zona] => URB. [tipo_zona] => SAN BORJA [numero] => 689 [interior] => - [lote] => - [departamento] => 401 [manzana] => - [kilometro] => - [direccion] => AV. SAN BORJA SUR URB. SAN BORJA Nro. 689 Dpto. 401 ) ) 
+	}
+	
 	/*
 	public function make_pdf($html, $filename){
 		// instantiate and use the dompdf class
@@ -64,23 +163,5 @@ class My_func{
 			$randomString .= $characters[rand(0, strlen($characters) - 1)];
 		}
 		return trim($randomString);
-	}
-	
-	public function paging($page, $qty){
-		$pages = [];
-		if ($qty){
-			$last = floor($qty / 25); if ($qty % 25) $last++;
-			if (3 < $page) $pages[] = [1, "<<", ""];
-			if (3 < $page) $pages[] = [$page-3, "...", ""];
-			if (2 < $page) $pages[] = [$page-2, $page-2, ""];
-			if (1 < $page) $pages[] = [$page-1, $page-1, ""];
-			$pages[] = [$page, $page, "active"];
-			if ($page+1 <= $last) $pages[] = [$page+1, $page+1, ""];
-			if ($page+2 <= $last) $pages[] = [$page+2, $page+2, ""];
-			if ($page+3 <= $last) $pages[] = [$page+3, "...", ""];
-			if ($page+3 <= $last) $pages[] = [$last, ">>", ""];
-		}
-		
-		return $pages;
 	}
 }

@@ -56,6 +56,13 @@ class General_model extends CI_Model{
 		return $result;
 	}
 	
+	function all_simple($tablename, $order_by, $order){
+		$this->db->order_by($order_by, $order);
+		$query = $this->db->get($tablename);
+		$result = $query->result();
+		return $result;
+	}
+	
 	function update($tablename, $filter, $data){
 		$this->db->where($filter);
 		return $this->db->update($tablename, $data);

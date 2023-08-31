@@ -1,5 +1,12 @@
-
-
+$("#btn_search_company").on('click',(function(e) {
+	ajax_simple({ruc: $("#ip_ruc").val()}, "setting/company/search").done(function(res) {
+		console.log(res);
+		alert(res);
+		if (res.type == "success"){
+			
+		}else swal(res.type, res.msg);
+	});
+}));
 
 
 
