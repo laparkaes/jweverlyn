@@ -29,14 +29,19 @@ class Company extends CI_Controller {
 		$res = $this->my_func->utildatos_ruc($this->input->post("ruc"));
 		if ($res->status){
 			$type = "success";
-			$msg = "Datos de empresa han sido cargados.";
 			$company = $res->data;
 			
 			//load distric, province, department using ubigeo
-			print_r($company);
-		}else $msg = "No hay resultado de busqueda.";
+			$district = $this->gm->unique("address_district", "ubigeo", $company->ubigeo, false);
+			if ($district){
+				$province = $this->gm->unique("address_province", "province_id", $district->province_id, false);
+				$company->department_id = $province->department_id;
+				$company->province_id = $province->province_id;
+				$company->district_id = $district->district_id;
+			}else $company->department_id = $company->province_id = $company->district_id = "";
+		}else $msg = $this->lang->line("e_no_result");
 		
-		//header('Content-Type: application/json');
-		//echo json_encode(["type" => $type, "msg" => $msg, "company" => $company]);
+		header('Content-Type: application/json');
+		echo json_encode(["type" => $type, "msg" => $msg, "company" => $company]);
 	}
 }

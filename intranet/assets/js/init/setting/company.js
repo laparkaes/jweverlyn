@@ -1,9 +1,12 @@
 $("#btn_search_company").on('click',(function(e) {
 	ajax_simple({ruc: $("#ip_ruc").val()}, "setting/company/search").done(function(res) {
-		console.log(res);
-		alert(res);
 		if (res.type == "success"){
-			
+			console.log(res);
+			$("#ip_company").val(res.company.razon_social.trim());
+			$("#ip_address").val(res.company.direccion.trim());
+			$("#sl_department").val(res.company.department_id);
+			$("#sl_province").val(res.company.province_id);
+			$("#sl_district").val(res.company.district_id);
 		}else swal(res.type, res.msg);
 	});
 }));

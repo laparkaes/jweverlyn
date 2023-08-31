@@ -7,6 +7,10 @@ $lang['e_finished_session'] = 'Sesión finalizada. Debe ingresar nuevamente.';
 $lang['e_integer'] = 'Debe ser un número entero.';
 $lang['e_numeric'] = 'Debe ser un número.';
 $lang['e_numeric_positive'] = 'Debe ser un número positivo.';
+$lang['e_no_result'] = 'No hay resultado de búsqueda.';
+
+//setting - company
+//$lang['s_search_company'] = 'Imagen de producto ha sido cargada con éxito.';
 
 //product image
 $lang['s_image_insert'] = 'Imagen de producto ha sido cargada con éxito.';

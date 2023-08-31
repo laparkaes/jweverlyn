@@ -46,7 +46,7 @@
 						<div class="col-md-4">
 							<label for="sl_department" class="form-label">Departamento</label>
 							<select class="form-select" id="sl_department" name="department">
-								<option selected="">Elegir...</option>
+								<option value="">Elegir...</option>
 								<?php foreach($departments as $d){ ?>
 								<option value="<?= $d->department_id ?>"><?= $d->department ?></option>
 								<?php } ?>
@@ -55,7 +55,7 @@
 						<div class="col-md-4">
 							<label for="ip_province" class="form-label">Provincia</label>
 							<select class="form-select" id="sl_province" name="province">
-								<option selected="">Elegir...</option>
+								<option value="">Elegir...</option>
 								<?php foreach($provinces as $p){ ?>
 								<option value="<?= $p->province_id ?>"><?= $p->province ?></option>
 								<?php } ?>
@@ -64,7 +64,7 @@
 						<div class="col-md-4">
 							<label for="ip_district" class="form-label">Distrito</label>
 							<select class="form-select" id="sl_district" name="district">
-								<option selected="">Elegir...</option>
+								<option value="">Elegir...</option>
 								<?php foreach($districts as $d){ ?>
 								<option value="<?= $d->district_id ?>"><?= $d->district ?></option>
 								<?php } ?>
