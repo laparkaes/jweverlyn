@@ -348,9 +348,38 @@ class My_val{
 	public function add_image($data){
 		$msgs = []; $msg = "";
 		
-		if ($data["image"]){
-			$msgs = $this->set_msg($msgs, "image");
-		}else $msgs = $this->set_msg($msgs, "image", "e_required_field");
+		if ($data["image"]) $msgs = $this->set_msg($msgs, "image");
+		else $msgs = $this->set_msg($msgs, "image", "e_required_field");
+		
+		return ["type" => $this->get_type($msgs), "msgs" => $msgs, "msg" => $msg];
+	}
+	
+	public function save_company_info($data){
+		$msgs = []; $msg = "";
+		
+		if ($data["ruc"]) $msgs = $this->set_msg($msgs, "ruc");
+		else $msgs = $this->set_msg($msgs, "ruc", "e_required_field");
+		
+		if ($data["company"]) $msgs = $this->set_msg($msgs, "company");
+		else $msgs = $this->set_msg($msgs, "company", "e_required_field");
+		
+		if ($data["tel"]) $msgs = $this->set_msg($msgs, "tel");
+		else $msgs = $this->set_msg($msgs, "tel", "e_required_field");
+		
+		if ($data["email"]) $msgs = $this->set_msg($msgs, "email");
+		else $msgs = $this->set_msg($msgs, "email", "e_required_field");
+		
+		if ($data["address"]) $msgs = $this->set_msg($msgs, "address");
+		else $msgs = $this->set_msg($msgs, "address", "e_required_field");
+		
+		if ($data["department_id"]) $msgs = $this->set_msg($msgs, "department_id");
+		else $msgs = $this->set_msg($msgs, "department_id", "e_required_field");
+		
+		if ($data["province_id"]) $msgs = $this->set_msg($msgs, "province_id");
+		else $msgs = $this->set_msg($msgs, "province_id", "e_required_field");
+		
+		if ($data["district_id"]) $msgs = $this->set_msg($msgs, "district_id");
+		else $msgs = $this->set_msg($msgs, "district_id", "e_required_field");
 		
 		return ["type" => $this->get_type($msgs), "msgs" => $msgs, "msg" => $msg];
 	}

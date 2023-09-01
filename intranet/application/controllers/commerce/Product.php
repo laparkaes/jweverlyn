@@ -7,8 +7,8 @@ class Product extends CI_Controller {
 		parent::__construct();
 		$this->lang->load("message", "spanish");
 		$this->load->model('general_model','gm');
-		$this->nav_menu = ["products", ""];
-		$this->js_init = "product.js";
+		$this->nav_menu = ["commerce", "product"];
+		$this->js_init = "commerce/product.js";
 	}
 	
 	private function calculate_stock($product_id){
@@ -79,7 +79,7 @@ class Product extends CI_Controller {
 			"params" => $params,
 			"paging" => $this->my_func->paging($params["page"], $this->gm->qty("product", $w, $l, $w_in)),
 			"products" => $products,
-			"main" => "product/index",
+			"main" => "commerce/product/index",
 		];
 		$this->load->view('layout', $data);
 	}
@@ -106,7 +106,7 @@ class Product extends CI_Controller {
 			"options" => $options,
 			"images" => $this->get_images($product_id),
 			"categories" => $this->gm->all("product_category", [["category", "asc"]]),
-			"main" => "product/detail",
+			"main" => "commerce/product/detail",
 		];
 		$this->load->view('layout', $data);
 	}
@@ -116,7 +116,7 @@ class Product extends CI_Controller {
 		
 		$data = [
 			"categories" => $this->gm->all("product_category", [["category", "asc"]]),
-			"main" => "product/register",
+			"main" => "commerce/product/register",
 		];
 		$this->load->view('layout', $data);
 	}

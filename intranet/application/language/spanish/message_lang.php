@@ -10,7 +10,7 @@ $lang['e_numeric_positive'] = 'Debe ser un número positivo.';
 $lang['e_no_result'] = 'No hay resultado de búsqueda.';
 
 //setting - company
-//$lang['s_search_company'] = 'Imagen de producto ha sido cargada con éxito.';
+$lang['s_save_company_info'] = 'Información de empresa ha sido guardada.';
 
 //product image
 $lang['s_image_insert'] = 'Imagen de producto ha sido cargada con éxito.';

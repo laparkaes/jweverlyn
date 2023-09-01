@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- 생성 시간: 23-08-30 19:32
+-- 생성 시간: 23-09-01 16:48
 -- 서버 버전: 10.4.24-MariaDB
 -- PHP 버전: 7.4.29
 
@@ -3391,6 +3391,32 @@ INSERT INTO `role_access` (`role_id`, `access_id`) VALUES
 (1, 1),
 (1, 2);
 
+-- --------------------------------------------------------
+
+--
+-- 테이블 구조 `setting_company`
+--
+
+CREATE TABLE `setting_company` (
+  `company_id` int(11) NOT NULL,
+  `ruc` varchar(15) NOT NULL,
+  `company` varchar(200) NOT NULL,
+  `tel` varchar(20) NOT NULL,
+  `email` varchar(150) NOT NULL,
+  `address` varchar(250) NOT NULL,
+  `department_id` int(11) NOT NULL,
+  `province_id` int(11) NOT NULL,
+  `district_id` int(11) NOT NULL,
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- 테이블의 덤프 데이터 `setting_company`
+--
+
+INSERT INTO `setting_company` (`company_id`, `ruc`, `company`, `tel`, `email`, `address`, `department_id`, `province_id`, `district_id`, `updated_at`) VALUES
+(1, '20610879668', 'JW EVERLYN S.A.C.', '+51 9925 33099', 'gerencia@jweverlyn.com', 'CORONEL MANUEL GOMEZ URB. DEL FUNDO LOBATON Nro. 120 Dpto. 203', 15, 128, 1264, '2023-09-01 21:15:38');
+
 --
 -- 덤프된 테이블의 인덱스
 --
@@ -3473,6 +3499,12 @@ ALTER TABLE `role_access`
   ADD KEY `fk_role_access_access` (`access_id`);
 
 --
+-- 테이블의 인덱스 `setting_company`
+--
+ALTER TABLE `setting_company`
+  ADD PRIMARY KEY (`company_id`);
+
+--
 -- 덤프된 테이블의 AUTO_INCREMENT
 --
 
@@ -3541,6 +3573,12 @@ ALTER TABLE `product_option`
 --
 ALTER TABLE `role`
   MODIFY `role_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5033;
+
+--
+-- 테이블의 AUTO_INCREMENT `setting_company`
+--
+ALTER TABLE `setting_company`
+  MODIFY `company_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- 덤프된 테이블의 제약사항

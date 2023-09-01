@@ -14,7 +14,11 @@ class Company extends CI_Controller {
 	public function index(){
 		if (!$this->session->userdata('username')) redirect("auth/login");
 		
+		$company = $this->gm->unique("setting_company", "company_id", 1, false);
+		if (!$company) $company = $this->gm->structure("setting_company");
+		
 		$data = [
+			"company" => $company,
 			"departments" => $this->gm->all_simple("address_department", "department", "asc"),
 			"provinces" => $this->gm->all_simple("address_province", "province", "asc"),
 			"districts" => $this->gm->all_simple("address_district", "district", "asc"),
@@ -43,5 +47,25 @@ class Company extends CI_Controller {
 		
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msg" => $msg, "company" => $company]);
+	}
+	
+	public function save_company_info(){
+		$type = "error"; $msg = null;
+		$data = $this->input->post();
+		
+		$this->load->library('my_val');
+		$result = $this->my_val->save_company_info($data);
+		
+		if ($result["type"] === "success"){
+			$tablename = "setting_company";
+			if ($this->gm->unique($tablename, "company_id", 1, false))
+				$this->gm->update($tablename, ["company_id" => 1], $data);
+			else $this->gm->insert($tablename, $data);
+			
+			$result["msg"] = $this->lang->line("s_save_company_info");
+		}
+		
+		header('Content-Type: application/json');
+		echo json_encode($result);
 	}
 }

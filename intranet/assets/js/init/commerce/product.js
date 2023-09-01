@@ -1,7 +1,9 @@
+
+
 /* Category start */
 $("#form_add_category").submit(function(e) {
 	e.preventDefault();
-	ajax_form_warning(this, "product/add_category", "add_category").done(function(res) {
+	ajax_form_warning(this, "commerce/product/add_category", "add_category").done(function(res) {
 		set_msgs("#form_add_category", res.msgs);
 		swal_redirection(res.type, res.msg, base_url + "product/register");
 	});
@@ -9,7 +11,7 @@ $("#form_add_category").submit(function(e) {
 
 $("#form_delete_category").submit(function(e) {
 	e.preventDefault();
-	ajax_form_warning(this, "product/delete_category", "delete_category").done(function(res) {
+	ajax_form_warning(this, "commerce/product/delete_category", "delete_category").done(function(res) {
 		set_msgs("#form_delete_category", res.msgs);
 		swal_redirection(res.type, res.msg, base_url + "product/register");
 	});
@@ -17,7 +19,7 @@ $("#form_delete_category").submit(function(e) {
 
 $("#form_move_category").submit(function(e) {
 	e.preventDefault();
-	ajax_form_warning(this, "product/move_category", "move_category").done(function(res) {
+	ajax_form_warning(this, "commerce/product/move_category", "move_category").done(function(res) {
 		set_msgs("#form_move_category", res.msgs);
 		swal_redirection(res.type, res.msg, base_url + "product/register");
 	});
@@ -27,7 +29,7 @@ $("#form_move_category").submit(function(e) {
 /* Product start */
 $("#form_add_product").submit(function(e) {
 	e.preventDefault();
-	ajax_form_warning(this, "product/add", "add_product").done(function(res) {
+	ajax_form_warning(this, "commerce/product/add", "add_product").done(function(res) {
 		set_msgs("#form_add_product", res.msgs);
 		swal_redirection(res.type, res.msg, base_url + "product/detail/" + res.product_id);
 	});
@@ -35,7 +37,7 @@ $("#form_add_product").submit(function(e) {
 
 $("#form_update_product").submit(function(e) {
 	e.preventDefault();
-	ajax_form_warning(this, "product/update", "update_product").done(function(res) {
+	ajax_form_warning(this, "commerce/product/update", "update_product").done(function(res) {
 		set_msgs("#form_update_product", res.msgs);
 		swal_redirection(res.type, res.msg, base_url + "product/detail/" + res.product_id);
 	});
@@ -45,7 +47,7 @@ $("#form_update_product").submit(function(e) {
 /* Option start */
 function set_option_events(){
 	$(".btn_edit_option").on('click',(function(e) {
-		ajax_simple({option_id: $(this).val()}, "product/load_option").done(function(res) {
+		ajax_simple({option_id: $(this).val()}, "commerce/product/load_option").done(function(res) {
 			if (res.type == "success"){
 				$("#form_update_option input[name=option_id]").val(res.option.option_id);
 				$("#form_update_option input[name=option]").val(res.option.option);
@@ -55,7 +57,7 @@ function set_option_events(){
 	}));
 
 	$(".btn_delete_option").on('click',(function(e) {
-		ajax_simple_warning({option_id: $(this).val()}, "product/delete_option", "delete_option").done(function(res) {
+		ajax_simple_warning({option_id: $(this).val()}, "commerce/product/delete_option", "delete_option").done(function(res) {
 			swal(res.type, res.msg);
 			if (res.type == "success") update_stock(res.options, res.stock);
 		});
@@ -73,7 +75,7 @@ function update_stock(options, stock){
 
 $("#form_add_option").submit(function(e) {
 	e.preventDefault();
-	ajax_form_warning(this, "product/add_option", "add_option").done(function(res) {
+	ajax_form_warning(this, "commerce/product/add_option", "add_option").done(function(res) {
 		set_msgs("#form_add_option", res.msgs);
 		swal(res.type, res.msg);
 		if (res.type == "success"){
@@ -86,7 +88,7 @@ $("#form_add_option").submit(function(e) {
 
 $("#form_update_option").submit(function(e) {
 	e.preventDefault();
-	ajax_form_warning(this, "product/update_option", "update_option").done(function(res) {
+	ajax_form_warning(this, "commerce/product/update_option", "update_option").done(function(res) {
 		set_msgs("#form_update_option", res.msgs);
 		swal(res.type, res.msg);
 		if (res.type == "success"){
@@ -103,14 +105,14 @@ set_option_events();
 /* Image start */
 function set_image_events(){
 	$(".btn_edit_image").on('click',(function(e) {
-		ajax_simple_warning({image_id: $(this).val()}, "product/set_main_image", "set_main_image").done(function(res) {
+		ajax_simple_warning({image_id: $(this).val()}, "commerce/product/set_main_image", "set_main_image").done(function(res) {
 			swal(res.type, res.msg);
 			if (res.type == "success") $("#main_image").prop("src", res.image);
 		});
 	}));
 	
 	$(".btn_delete_image").on('click',(function(e) {
-		ajax_simple_warning({image_id: $(this).val()}, "product/delete_image", "delete_image").done(function(res) {
+		ajax_simple_warning({image_id: $(this).val()}, "commerce/product/delete_image", "delete_image").done(function(res) {
 			swal(res.type, res.msg);
 			if (res.type == "success") update_image(res.images);
 		});
@@ -127,7 +129,7 @@ function update_image(imgs){
 
 $("#form_add_image").submit(function(e) {
 	e.preventDefault();
-	ajax_form_warning(this, "product/add_image", "add_image").done(function(res) {
+	ajax_form_warning(this, "commerce/product/add_image", "add_image").done(function(res) {
 		set_msgs("#form_add_image", res.msgs);
 		swal(res.type, res.msg);
 		if (res.type == "success"){

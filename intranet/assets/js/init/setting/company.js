@@ -1,7 +1,16 @@
+$("#ip_ruc").on('keyup',(function(e) {
+	$("#ip_company").val("");
+	$("#ip_tel").val("");
+	$("#ip_email").val("");
+	$("#ip_address").val("");
+	$("#sl_department").val("");
+	$("#sl_province").val("");
+	$("#sl_district").val("");
+}));
+
 $("#btn_search_company").on('click',(function(e) {
 	ajax_simple({ruc: $("#ip_ruc").val()}, "setting/company/search").done(function(res) {
 		if (res.type == "success"){
-			console.log(res);
 			$("#ip_company").val(res.company.razon_social.trim());
 			$("#ip_address").val(res.company.direccion.trim());
 			$("#sl_department").val(res.company.department_id);
@@ -11,7 +20,14 @@ $("#btn_search_company").on('click',(function(e) {
 	});
 }));
 
-
+$("#form_save_company_info").submit(function(e) {
+	e.preventDefault();
+	ajax_form(this, "setting/company/save_company_info").done(function(res) {
+		set_msgs("#form_save_company_info", res.msgs);
+		swal(res.type, res.msg);
+		if (res.type == "success") $("#ip_sunat_ruc").val($("#ip_ruc").val());
+	});
+});
 
 
 
