@@ -10,7 +10,7 @@
 			</nav>
 		</div>
 		<div>
-			<a href="<?= base_url() ?>product/register" type="button" class="btn btn-success">
+			<a href="<?= base_url() ?>commerce/product/register" type="button" class="btn btn-success">
 				<i class="bi bi-plus-lg"></i>
 			</a>
 		</div>
@@ -59,7 +59,7 @@
 									<td><?= date("Y-m-d", strtotime($p->registed_at)) ?></td>
 									<td><i class="bi bi-circle-fill text-<?= $p->color ?>"></i></td>
 									<td class="text-end">
-										<a href="<?= base_url() ?>product/detail/<?= $p->product_id ?>" type="button" class="btn btn-outline-primary btn-sm border-0">
+										<a href="<?= base_url() ?>commerce/product/detail/<?= $p->product_id ?>" type="button" class="btn btn-outline-primary btn-sm border-0">
 											<i class="bi bi-search"></i>
 										</a>
 									</td>
@@ -75,7 +75,7 @@
 	<div class="row">
 		<div class="col">
 			<ul class="pagination">
-				<?php $base_link = base_url()."product?"; 
+				<?php $base_link = base_url()."commerce/product?"; 
 				foreach($paging as $p){ 
 					$params["page"] = $p[0];
 					$link = $base_link.http_build_query($params); ?>

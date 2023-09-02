@@ -189,8 +189,8 @@
 			<li class="nav-item">
 				<?php if ($this->nav_menu[0] === "commerce"){ $c = ""; $c_ul = "show"; }else{ $c = "collapsed"; $c_ul = ""; } ?>
 				<a class="nav-link <?= $c ?>" data-bs-target="#commerce-nav" data-bs-toggle="collapse" href="#">
-					<i class="bi bi-pc-display"></i>
-					<span>Comercios</span>
+					<i class="bi bi-shop"></i>
+					<span>Comercio</span>
 					<i class="bi bi-chevron-down ms-auto"></i>
 				</a>
 				<ul id="commerce-nav" class="nav-content collapse <?= $c_ul ?>" data-bs-parent="#sidebar-nav">
