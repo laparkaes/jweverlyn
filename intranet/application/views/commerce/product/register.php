@@ -4,7 +4,7 @@
 			<h1>Nuevo Producto</h1>
 			<nav>
 				<ol class="breadcrumb">
-					<li class="breadcrumb-item">Producto</li>
+					<li class="breadcrumb-item">Productos</li>
 					<li class="breadcrumb-item active">Nuevo</li>
 				</ol>
 			</nav>

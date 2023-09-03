@@ -8,6 +8,7 @@ $lang['e_integer'] = 'Debe ser un número entero.';
 $lang['e_numeric'] = 'Debe ser un número.';
 $lang['e_numeric_positive'] = 'Debe ser un número positivo.';
 $lang['e_no_result'] = 'No hay resultado de búsqueda.';
+$lang['e_enter_keyword'] = 'Ingrese palabra de búsqueda.';
 
 //setting - company
 $lang['s_save_company_info'] = 'Información de empresa ha sido guardada.';

@@ -33,6 +33,18 @@ class General_model extends CI_Model{
 		$result = $query->result();
 		return $result;
 	}
+	
+	function filter_like($tablename, $field, $like = "", $limit = "", $offset = "", $check_valid = true){
+		if ($check_valid) $this->db->where("valid", true);
+		
+		$likes = explode(" ", $like);
+		foreach($likes as $l) $this->db->like($field, $l);
+		
+		$this->db->order_by($field, "asc");
+		$query = $this->db->get($tablename, $limit, $offset);
+		$result = $query->result();
+		return $result;
+	}
 
 	function qty($tablename, $w = null, $l = null, $w_in = null, $group_by = null, $check_valid = true){
 		if ($check_valid) $this->db->where("valid", true);

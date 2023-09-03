@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- 생성 시간: 23-09-01 16:48
+-- 생성 시간: 23-09-02 19:51
 -- 서버 버전: 10.4.24-MariaDB
 -- PHP 버전: 7.4.29
 
@@ -3153,6 +3153,30 @@ INSERT INTO `address_province` (`province_id`, `department_id`, `province`) VALU
 -- --------------------------------------------------------
 
 --
+-- 테이블 구조 `identification_document`
+--
+
+CREATE TABLE `identification_document` (
+  `identification_document_id` int(11) NOT NULL,
+  `identification_document` varchar(100) NOT NULL,
+  `sunat` varchar(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- 테이블의 덤프 데이터 `identification_document`
+--
+
+INSERT INTO `identification_document` (`identification_document_id`, `identification_document`, `sunat`) VALUES
+(1, 'Sin documento', '0'),
+(2, 'DNI - Documento Nacional de Identidad', '1'),
+(3, 'CE - Carnet de Extranjería', '4'),
+(4, 'RUC - Registro Unico de Contributentes', '6'),
+(5, 'Pasaporte', '7'),
+(6, 'CDI - Cédula Diplomática de Identidad', 'A');
+
+-- --------------------------------------------------------
+
+--
 -- 테이블 구조 `module`
 --
 
@@ -3172,6 +3196,29 @@ INSERT INTO `module` (`module_id`, `module`, `valid`) VALUES
 (3, 'Account', 0),
 (4, 'Account', 0),
 (5, 'Access', 0);
+
+-- --------------------------------------------------------
+
+--
+-- 테이블 구조 `payment_method`
+--
+
+CREATE TABLE `payment_method` (
+  `payment_method_id` int(11) NOT NULL,
+  `payment_method` varchar(150) NOT NULL,
+  `sunat` varchar(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- 테이블의 덤프 데이터 `payment_method`
+--
+
+INSERT INTO `payment_method` (`payment_method_id`, `payment_method`, `sunat`) VALUES
+(1, 'Efectivo', '008'),
+(2, 'Tarjeta de débito', '005'),
+(3, 'Tarjeta de crédito nacional', '006'),
+(4, 'Tarjeta de crédito extranjera', '013'),
+(5, 'Depósito en cuenta', '001');
 
 -- --------------------------------------------------------
 
@@ -3454,10 +3501,22 @@ ALTER TABLE `address_province`
   ADD PRIMARY KEY (`province_id`);
 
 --
+-- 테이블의 인덱스 `identification_document`
+--
+ALTER TABLE `identification_document`
+  ADD PRIMARY KEY (`identification_document_id`);
+
+--
 -- 테이블의 인덱스 `module`
 --
 ALTER TABLE `module`
   ADD PRIMARY KEY (`module_id`);
+
+--
+-- 테이블의 인덱스 `payment_method`
+--
+ALTER TABLE `payment_method`
+  ADD PRIMARY KEY (`payment_method_id`);
 
 --
 -- 테이블의 인덱스 `product`
@@ -3539,10 +3598,22 @@ ALTER TABLE `address_province`
   MODIFY `province_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=196;
 
 --
+-- 테이블의 AUTO_INCREMENT `identification_document`
+--
+ALTER TABLE `identification_document`
+  MODIFY `identification_document_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
 -- 테이블의 AUTO_INCREMENT `module`
 --
 ALTER TABLE `module`
   MODIFY `module_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- 테이블의 AUTO_INCREMENT `payment_method`
+--
+ALTER TABLE `payment_method`
+  MODIFY `payment_method_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- 테이블의 AUTO_INCREMENT `product`
