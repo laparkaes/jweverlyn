@@ -32,51 +32,16 @@
 							<thead>
 								<tr>
 									<th scope="col">#</th>
-									<th scope="col">Name</th>
-									<th scope="col">Position</th>
-									<th scope="col">Age</th>
-									<th scope="col">Start Date</th>
+									<th scope="col">Producto</th>
+									<th scope="col">P/U</th>
+									<th scope="col">Opción</th>
+									<th scope="col">Cant.</th>
+									<th scope="col">Subtotal</th>
+									<th scope="col"></th>
 								</tr>
 							</thead>
-                <tbody>
-                  <tr>
-                    <th scope="row">1</th>
-                    <td>Brandon Jacob</td>
-                    <td>Designer</td>
-                    <td>28</td>
-                    <td>2016-05-25</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">2</th>
-                    <td>Bridie Kessler</td>
-                    <td>Developer</td>
-                    <td>35</td>
-                    <td>2014-12-05</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">3</th>
-                    <td>Ashleigh Langosh</td>
-                    <td>Finance</td>
-                    <td>45</td>
-                    <td>2011-08-12</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">4</th>
-                    <td>Angus Grady</td>
-                    <td>HR</td>
-                    <td>34</td>
-                    <td>2012-06-11</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">5</th>
-                    <td>Raheem Lehner</td>
-                    <td>Dynamic Division Officer</td>
-                    <td>47</td>
-                    <td>2011-04-19</td>
-                  </tr>
-                </tbody>
-              </table>
-					
+							<tbody id="tb_product_list"></tbody>
+						</table>
 					</div>
 				</div>
 			</div>
@@ -136,7 +101,7 @@
 </div>
 
 <div class="modal fade" id="md_add_product" tabindex="-1">
-	<div class="modal-dialog">
+	<div class="modal-dialog modal-dialog-scrollable">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title">Agregar Producto</h5>
@@ -156,31 +121,8 @@
 				<div class="row">
 					<div class="col">
 						<div class="list-group" id="search_result">
-							<button class="list-group-item list-group-item-action">
-								<div class="d-flex w-100 justify-content-between">
-									<h5 class="mb-1">List group item heading</h5>
-									<small>3 days ago</small>
-								</div>
-								<p class="mb-1">Some placeholder content in a paragraph.</p>
-								<small>And some small print.</small>
-							</button>
-  <a href="#" class="list-group-item list-group-item-action">
-    <div class="d-flex w-100 justify-content-between">
-      <h5 class="mb-1">List group item heading</h5>
-      <small class="text-body-secondary">3 days ago</small>
-    </div>
-    <p class="mb-1">Some placeholder content in a paragraph.</p>
-    <small class="text-body-secondary">And some muted small print.</small>
-  </a>
-  <a href="#" class="list-group-item list-group-item-action">
-    <div class="d-flex w-100 justify-content-between">
-      <h5 class="mb-1">List group item heading</h5>
-      <small class="text-body-secondary">3 days ago</small>
-    </div>
-    <p class="mb-1">Some placeholder content in a paragraph.</p>
-    <small class="text-body-secondary">And some muted small print.</small>
-  </a>
-</div>
+							<?= $this->lang->line("e_enter_keyword") ?>
+						</div>
 					</div>
 				</div>
 			</div>

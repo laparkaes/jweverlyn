@@ -25,6 +25,7 @@ $lang['s_option_delete'] = 'Opción ha sido eliminada.';
 
 //product
 $lang['e_duplicate_code'] = 'Código existente en el sistema.';
+$lang['e_product_out_stock'] = 'Producto no disponible.';
 $lang['s_product_insert'] = 'Producto ha sido generado con éxito.';
 $lang['s_product_update'] = 'Producto ha sido actualizado.';
 

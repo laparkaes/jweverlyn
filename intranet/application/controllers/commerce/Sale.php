@@ -93,7 +93,7 @@ class Sale extends CI_Controller {
 				foreach($categories_rec as $c) $categories[$c->category_id] = $c->category;
 				
 				$products = [];
-				foreach($products_rec as $p) $products[] = ["product_id" => $p->product_id, "category" => $categories[$p->category_id], "product" => $p->product, "price" => $p->price, "code" => $p->code];
+				foreach($products_rec as $p) $products[] = ["product_id" => $p->product_id, "category" => $categories[$p->category_id], "product" => $p->product, "price" => number_format($p->price, 2), "code" => $p->code];
 				
 				$type = "success";
 			}else $msg = $this->lang->line("e_no_result");
@@ -101,6 +101,17 @@ class Sale extends CI_Controller {
 		
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msg" => $msg, "products" => $products]);
+	}
+	
+	public function load_product(){
+		$product = $this->gm->unique("product", "product_id", $this->input->post("product_id"));
+		$product->category = $this->gm->unique("product_category", "category_id", $product->category_id)->category;
+		$product->price_txt = "S/. ".number_format($product->price, 2);
+		
+		$options = $this->gm->filter("product_option", ["product_id" => $product->product_id], null, null, [["option_id", "asc"]]);
+		
+		header('Content-Type: application/json');
+		echo json_encode(["product" => $product, "options" => $options]);
 	}
 	
 	public function register(){

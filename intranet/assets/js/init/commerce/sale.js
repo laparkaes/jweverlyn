@@ -1,16 +1,35 @@
 let b_url = "commerce/sale/";
 
+function add_product(dom){
+	ajax_simple({product_id: $(dom).val()}, b_url + "load_product").done(function(res) {
+		console.log(res);
+		let pid = res.product.product_id;
+		
+		$("#tb_product_list").append('<tr class="prod_row" id="prod_' + pid + '"><th scope="row">' + ($(".prod_row").length + 1) + '</th><td class="product">' + res.product.product + '</td><td class="text-nowrap price">' + res.product.price_txt + '</td><td class="options"></td><td class="qty"><input type="number" class="form-control qty" value="1" style="max-width: 100px;"></td><td class="text-nowrap subtotal">' + res.product.price_txt + '</td><td><button type="button" class="btn btn-outline-danger btn-sm border-0" id="btn_delete_prod_' + pid + '" value="' + pid + '"><i class="bi bi-x-lg"></i></button></td></tr>');
+		
+		let dom_id = "#prod_" + pid;
+		if (res.options.length > 0){
+			$(dom_id + " .options").html('<select class="form-select" name="category_id" id="sl_options_' + res.product.product_id + '"></select>');
+			//JSON.stringify(res.options)
+		}else{
+			$(dom_id + " .options").html('<span class="text-nowrap text-danger">No stock</span>');
+			$(dom_id + " .qty").html('');
+			$(dom_id + " .subtotal").html('');
+		}
+		
+	});
+}
+
 function search_product(keyword){
 	ajax_simple({keyword: keyword}, b_url + "search_product").done(function(res) {
 		$("#search_result").html("");
 		if (res.type == "success"){
 			$(res.products).each(function(index, element) {
-				$("#search_result").append('<button class="list-group-item list-group-item-action btn_add_product" value="' + element.product_id + '"><div class="d-flex w-100 justify-content-between"><h5 class="mb-1">' + element.product + '</h5><small>S/. ' + element.price + '</small></div><p class="mb-1">' + element.category + '</p><small>' + element.code + '</small></button>');
-				console.log(element);
+				$("#search_result").append('<button class="list-group-item list-group-item-action btn_add_product" value="' + element.product_id + '"><div class="d-flex w-100 justify-content-between"><h5 class="mb-1 me-3">' + element.product + '</h5><small class="text-nowrap">S/. ' + element.price + '</small></div><p class="mb-1">' + element.category + '</p><small>' + element.code + '</small></button>');
 			});
 			
 			$(".btn_add_product").on('click',(function(e) {
-				alert($(this).val());
+				add_product(this);
 			}));
 		}else $("#search_result").html(res.msg);
 	});

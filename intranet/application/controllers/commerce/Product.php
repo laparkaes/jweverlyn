@@ -13,7 +13,7 @@ class Product extends CI_Controller {
 	
 	private function calculate_stock($product_id){
 		$stock = 0;
-		$options = $this->gm->filter("product_option", ["product_id" => $product_id], null, null, [["option", "asc"]]);
+		$options = $this->gm->filter("product_option", ["product_id" => $product_id], null, null, [["option_id", "asc"]]);
 		foreach($options as $o){
 			$stock += $o->stock;
 			$o->stock = number_format($o->stock);
@@ -139,6 +139,32 @@ class Product extends CI_Controller {
 		header('Content-Type: application/json');
 		echo json_encode($result);
 	}
+	
+	/*
+	public function generate($qty){
+		$categories = $this->gm->all("product_category");
+		$productNames = array("Manzana", "Banana", "Naranja", "Uvas", "Fresas", "Pera", "Pomelo", "Kiwi", "Melocotón", "Mango", "Cereza", "Ciruela", "Limón", "Sandía", "Aguacate", "Higo", "Papaya", "Guayaba", "Piña", "Fruta de la pasión", "Granada", "Moras", "Frambuesas", "Arándanos", "Mora", "Coco", "Coco rallado", "Dátiles", "Higos secos", "Nuez", "Avellana", "Almendra", "Castañas", "Cacahuetes", "Pistachos", "Anacardos", "Nuez de Brasil", "Macadamia", "Chirimoya", "Feijoa", "Nispero", "Caqui", "Guindas", "Uvas pasas", "Pasas", "Higos pasos", "Almendra confitada", "Miel", "Jalea", "Mermelada", "Compota", "Puré de fruta", "Canela", "Vainilla", "Chocolate", "Cacao", "Café", "Té", "Té verde", "Té negro", "Té de hierbas", "Cerveza", "Vino", "Ron", "Whisky", "Brandy", "Tequila", "Vodka", "Ginebra", "Cava", "Champán", "Sidra", "Vino tinto", "Vino blanco", "Vino rosado", "Cava rosado", "Cava blanco", "Cava tinto", "Agua", "Agua mineral", "Agua con gas", "Agua sin gas", "Refresco", "Cola", "Limonada", "Naranjada", "Tónica", "Zumo", "Zumo de naranja", "Zumo de manzana", "Zumo de uva", "Zumo de piña", "Zumo de pera", "Zumo de melocotón", "Zumo de ciruela", "Zumo de fresa", "Zumo de fruta de la pasión", "Zumo de mango", "Zumo de guayaba", "Zumo de limón", "Zumo de sandía", "Zumo de pomelo", "Zumo de kiwi", "Zumo de granada", "Zumo de papaya", "Zumo de mora", "Zumo de frambuesa", "Zumo de arándanos");
+		
+		for($i = 0; $i < $qty; $i++){
+			$product = "";
+			$j_end = rand(3, 6);
+			for($j = 0; $j < $j_end; $j++) $product .= " ".$productNames[array_rand($productNames)];
+			
+			$now = date("Y-m-d H:i:s");
+			
+			$data = [
+				"code" => str_replace(" ", "", strtolower($productNames[array_rand($productNames)]))."-".rand(1000,500000),
+				"product" => trim($product),
+				"price" => (rand(1000, 10000) / 100),
+				"category_id" => $categories[array_rand($categories)]->category_id,
+				"updated_at" => $now,
+				"registed_at" => $now,
+			];
+			
+			$this->gm->insert("product", $data);
+		}
+	}
+	*/
 	
 	public function update(){
 		if ($this->session->userdata('username')){
