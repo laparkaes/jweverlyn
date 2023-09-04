@@ -1,22 +1,95 @@
 let b_url = "commerce/sale/";
+var row_num = 1;
+
+function calculate_change(){
+	var total = parseFloat($("#total").val());
+	var received =  parseFloat($("#received_txt").val());
+	if (isNaN(received) || received <= 0) received = total;
+	
+	var change = received - total;
+	if (change < 0) change = 0;
+	
+	$("#received_txt").val(nf(received));
+	$("#received").val(received);
+	
+	$("#change_txt").val(nf(change));
+	$("#change").val(change);
+}
+
+function calculate_amount(){
+	var total = 0;
+	$($(".prod_row")).each(function(index, element){
+		if ($(element).find(".product_json").length > 0 && $(element).find(".stocks_json").length > 0){
+			var data = JSON.parse($(element).find(".product_json").html());
+			var stocks = JSON.parse($(element).find(".stocks_json").html());
+			var option_id = $(element).find(".option_id").val();
+			var qty = $(element).find(".ip_qty").val();
+			if (qty < 1) qty = 1;
+			else if (qty > parseInt(stocks[option_id])){
+				qty = stocks[option_id];
+				swal("warning", "Disponibilidad: " + qty);
+			}
+			$(element).find(".ip_qty").val(qty);
+			
+			var subtotal = qty * data.price;
+			$(element).find(".subtotal").html("S/. " + nf(subtotal));
+			total = total + subtotal;	
+		}
+	});
+	
+	$("#total, #received").val(total);
+	$("#total_txt, #received_txt").val(nf(total));
+	
+	$("#change_txt").val(nf(0));
+	$("#change").val(0);
+}
 
 function add_product(dom){
 	ajax_simple({product_id: $(dom).val()}, b_url + "load_product").done(function(res) {
-		console.log(res);
-		let pid = res.product.product_id;
+		/* add doms to row */
+		$("#tb_product_list").append('<tr class="prod_row align-middle" id="prod_' + row_num + '"><th class="num" scope="row">' + ($(".prod_row").length + 1) + '</th><td class="product">' + res.product.product + '<div class="product_json d-none">' + JSON.stringify(res.product) + '</div></td><td class="price text-nowrap">S/. ' + nf(res.product.price) + '</td><td class="options"></td><td class="qty"><input type="number" class="form-control ip_qty" value="1" min="1" style="width: 100px;"></td><td class="subtotal text-nowrap text-end">' + nf(res.product.price) + '</td><td class="text-end"><button type="button" class="btn btn-outline-danger btn-sm border-0 btn_delete_prod"><i class="bi bi-x-lg"></i></button></td></tr>');
 		
-		$("#tb_product_list").append('<tr class="prod_row" id="prod_' + pid + '"><th scope="row">' + ($(".prod_row").length + 1) + '</th><td class="product">' + res.product.product + '</td><td class="text-nowrap price">' + res.product.price_txt + '</td><td class="options"></td><td class="qty"><input type="number" class="form-control qty" value="1" style="max-width: 100px;"></td><td class="text-nowrap subtotal">' + res.product.price_txt + '</td><td><button type="button" class="btn btn-outline-danger btn-sm border-0" id="btn_delete_prod_' + pid + '" value="' + pid + '"><i class="bi bi-x-lg"></i></button></td></tr>');
-		
-		let dom_id = "#prod_" + pid;
+		let row_id = "#prod_" + row_num;
 		if (res.options.length > 0){
-			$(dom_id + " .options").html('<select class="form-select" name="category_id" id="sl_options_' + res.product.product_id + '"></select>');
-			//JSON.stringify(res.options)
+			$(row_id).find(".options").html('<select class="form-select option_id" name="option_id" style="width: 150px;"></select>');
+			
+			var stocks = {};
+			var dom_select = $(row_id).find(".option_id");
+			$(res.options).each(function(index, element){
+				$(dom_select).append('<option value="' + element.option_id + '">' + element.option + ' (' + element.stock + ')</option>');
+				stocks[element.option_id] = element.stock;
+			});
+			$(row_id).find(".options").append('<div class="stocks_json d-none">' + JSON.stringify(stocks) + '</div>');
 		}else{
-			$(dom_id + " .options").html('<span class="text-nowrap text-danger">No stock</span>');
-			$(dom_id + " .qty").html('');
-			$(dom_id + " .subtotal").html('');
+			$(row_id).find(".options").html('<span class="text-nowrap text-danger">No stock</span>');
+			$(row_id).find(".qty").html('');
+			$(row_id).find(".subtotal").html('');
 		}
 		
+		/* add events */
+		$(row_id).find(".ip_qty").on('change',(function(e) {
+			calculate_amount();
+		}));
+		
+		$(row_id).find(".option_id").on('change',(function(e) {
+			$(this).closest("tr").find(".ip_qty").val(1);
+			calculate_amount();
+		}));
+		
+		$(row_id).find(".btn_delete_prod").on('click',(function(e) {
+			$(row_id).remove();
+			$($(".prod_row")).each(function(index, element){
+				$(this).find(".num").html(index + 1);
+			});
+			calculate_amount();
+		}));
+		
+		/* close modal */
+		$("#md_add_product").modal("hide");
+		row_num++;
+		
+		/* calculate amount */
+		calculate_amount();
 	});
 }
 
@@ -34,6 +107,10 @@ function search_product(keyword){
 		}else $("#search_result").html(res.msg);
 	});
 }
+
+$("#received_txt").on('change',(function(e) {
+	calculate_change();
+}));
 
 $("#btn_search_product").on('click',(function(e) {
 	search_product($("#keyword").val());

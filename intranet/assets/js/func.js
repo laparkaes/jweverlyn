@@ -34,6 +34,10 @@ const sp_warning_msg = {
 	delete_image: "¿Desea eliminar imagen?",
 }
 
+function nf(num){//number format
+	return parseFloat(num).toLocaleString('es-US', {maximumFractionDigits: 2, minimumFractionDigits: 2});
+}
+
 function reset_form(form_id){
 	$(form_id)[0].reset();
 	$(form_id + " [name]").removeClass("is-invalid").removeClass("is-valid");

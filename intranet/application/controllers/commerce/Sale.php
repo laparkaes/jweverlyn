@@ -106,7 +106,6 @@ class Sale extends CI_Controller {
 	public function load_product(){
 		$product = $this->gm->unique("product", "product_id", $this->input->post("product_id"));
 		$product->category = $this->gm->unique("product_category", "category_id", $product->category_id)->category;
-		$product->price_txt = "S/. ".number_format($product->price, 2);
 		
 		$options = $this->gm->filter("product_option", ["product_id" => $product->product_id], null, null, [["option_id", "asc"]]);
 		

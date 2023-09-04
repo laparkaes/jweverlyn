@@ -47,30 +47,50 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-md-4">
+	<div class="col-md-6">
 		<div class="card">
 			<div class="card-body">
 				<h5 class="card-title">Pago</h5>
 				<div class="row g-3">
-					<div class="col-12">
+					<div class="col-md-6">
 						<label class="form-label">Medio de Pago</label>
-						<select class="form-select" name="category_id">
+						<select class="form-select" name="payment[payment_method_id]">
 							<?php foreach($payment_methods as $p){ ?>
 							<option value="<?= $p->payment_method_id ?>"><?= $p->payment_method ?></option>
 							<?php } ?>
 						</select>
 						<div class="invalid-feedback"></div>
 					</div>
-					<div class="col-12">
-						<label class="form-label">Monto</label>
-						<input type="text" class="form-control" name="product">
+					<div class="col-md-6">
+						<label class="form-label">Recibido</label>
+						<div class="input-group">
+							<span class="input-group-text">S/.</span>
+							<input type="text" class="form-control" id="received_txt" value="0.00">
+						</div>
+						<input type="text" class="form-control d-none" id="received" name="payment[received]" value="0.00">
 						<div class="invalid-feedback"></div>
+					</div>
+					<div class="col-md-6">
+						<label class="form-label">Total</label>
+						<div class="input-group">
+							<span class="input-group-text">S/.</span>
+							<input type="text" class="form-control" id="total_txt" value="0.00" disabled>
+						</div>
+						<input type="text" class="form-control d-none" id="total" name="payment[total]" value="0.00" readonly>
+					</div>
+					<div class="col-md-6">
+						<label class="form-label">Vuelto</label>
+						<div class="input-group">
+							<span class="input-group-text">S/.</span>
+							<input type="text" class="form-control" id="change_txt" value="0.00" disabled>
+						</div>
+						<input type="text" class="form-control d-none" id="change" name="payment[change]" value="0.00" readonly>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<div class="col-md-8">
+	<div class="col-md-6">
 		<div class="card">
 			<div class="card-body">
 				<h5 class="card-title">Cliente</h5>
