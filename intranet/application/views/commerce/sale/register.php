@@ -97,7 +97,7 @@
 				<div class="row g-3">
 					<div class="col-md-6">
 						<label class="form-label">Documento</label>
-						<select class="form-select" name="category_id">
+						<select class="form-select" name="client[doc_type]" id="doc_type">
 							<?php foreach($ident_documents as $i){ ?>
 							<option value="<?= $i->identification_document_id ?>"><?= $i->identification_document ?></option>
 							<?php } ?>
@@ -106,12 +106,17 @@
 					</div>
 					<div class="col-md-6">
 						<label class="form-label">Número</label>
-						<input type="text" class="form-control" name="product">
-						<div class="invalid-feedback"></div>
+						<div class="input-group has-validation">
+							<input type="text" class="form-control" name="client[doc_number]" id="doc_number" disabled>
+							<button type="button" class="btn btn-primary" id="btn_search_person" disabled>
+								<i class="bi bi-search"></i>
+							</button>
+							<div class="invalid-feedback"></div>
+						</div>
 					</div>
 					<div class="col-md-12">
 						<label class="form-label">Nombre</label>
-						<input type="text" class="form-control" name="price">
+						<input type="text" class="form-control" name="client[name]" id="client_name" disabled>
 						<div class="invalid-feedback"></div>
 					</div>
 				</div>

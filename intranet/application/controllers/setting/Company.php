@@ -30,7 +30,7 @@ class Company extends CI_Controller {
 	public function search(){
 		$type = "error"; $msg = $company = null;
 		
-		$res = $this->my_func->utildatos_ruc($this->input->post("ruc"));
+		$res = $this->my_func->utildatos("ruc", $this->input->post("ruc"));
 		if ($res->status){
 			$type = "success";
 			$company = $res->data;

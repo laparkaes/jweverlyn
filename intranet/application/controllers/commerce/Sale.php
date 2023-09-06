@@ -113,6 +113,22 @@ class Sale extends CI_Controller {
 		echo json_encode(["product" => $product, "options" => $options]);
 	}
 	
+	public function search_person(){
+		$type = "error"; $msg = ""; $person = null;
+		$data = $this->input->post();
+		
+		if ($data["doc_number"]){
+			switch($data["doc_type"]){
+				case 2: break;
+				case 4: break;
+				default:
+			}
+		}else $msg = $this->lang->line("e_doc_number_enter");
+		
+		header('Content-Type: application/json');
+		echo json_encode(["type" => $type, "msg" => $msg, "person" => $person]);
+	}
+	
 	public function register(){
 		if (!$this->session->userdata('username')) redirect("auth/login");
 		

@@ -28,11 +28,24 @@ class My_func{
 		return $pages;
 	}
 	
-	public function utildatos_dni($dni){
+	public function utildatos($type, $number){
+		switch($type){
+			case "dni": 
+				//$url = 'https://utildatos.com/api/dni';
+				$url = 'https://utildatos.com/bussines/get-random-dni';
+				$data = ['dni' => $number];
+				break;
+			case "ruc":
+				//$url = 'https://utildatos.com/api/sunat-reducido';
+				$url = 'https://utildatos.com/bussines/get-sunat-reducido';
+				$data = ['ruc' => $number];
+				break;
+		}
+		
 		$curl = curl_init();
-		/*
+		
 		curl_setopt_array($curl, array(
-			CURLOPT_URL => 'https://utildatos.com/api/dni',
+			CURLOPT_URL => $url,
 			CURLOPT_RETURNTRANSFER => true,
 			CURLOPT_ENCODING => '',
 			CURLOPT_MAXREDIRS => 10,
@@ -40,20 +53,8 @@ class My_func{
 			CURLOPT_FOLLOWLOCATION => false,
 			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
 			CURLOPT_CUSTOMREQUEST => 'POST',
-			CURLOPT_POSTFIELDS => ['dni' => $dni],
-			CURLOPT_HTTPHEADER => ['Authorization: Bearer {5e973b619e195eed0aea209fcf27e5}']
-		));
-		*/
-		curl_setopt_array($curl, array(
-			CURLOPT_URL => 'https://utildatos.com/bussines/get-random-dni',
-			CURLOPT_RETURNTRANSFER => true,
-			CURLOPT_ENCODING => '',
-			CURLOPT_MAXREDIRS => 10,
-			CURLOPT_TIMEOUT => 0,
-			CURLOPT_FOLLOWLOCATION => false,
-			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-			CURLOPT_CUSTOMREQUEST => 'POST',
-			CURLOPT_POSTFIELDS => ['dni' => $dni],
+			CURLOPT_POSTFIELDS => $data,
+			//CURLOPT_HTTPHEADER => ['Authorization: Bearer {5e973b619e195eed0aea209fcf27e5}']
 		));
 
 		$response = json_decode(curl_exec($curl));
@@ -70,42 +71,6 @@ class My_func{
 		}
 		
 		return $res;
-	}
-	
-	public function utildatos_ruc($ruc){
-		$curl = curl_init();
-		
-		curl_setopt_array($curl, [
-			//CURLOPT_URL => 'https://utildatos.com/api/sunat-reducido',
-			CURLOPT_URL => 'https://utildatos.com/bussines/get-sunat-reducido',
-			CURLOPT_RETURNTRANSFER => true,
-			CURLOPT_ENCODING => '',
-			CURLOPT_MAXREDIRS => 10,
-			CURLOPT_TIMEOUT => 0,
-			CURLOPT_FOLLOWLOCATION => false,
-			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-			CURLOPT_CUSTOMREQUEST => 'POST',
-			CURLOPT_POSTFIELDS => ['ruc' => $ruc],
-			//CURLOPT_HTTPHEADER => ['Authorization: Bearer {5e973b619e195eed0aea209fcf27e5}'],
-		]);
-
-		$response = json_decode(curl_exec($curl));
-		curl_close($curl);
-		
-		$res = new stdClass;
-		$res->status = false;
-		$res->data = null;
-		if ($response){
-			if (property_exists($response, 'success')){
-				$res->status = $response->success;
-				$res->data = $response->result;
-			}
-		}
-		
-		return $res;
-		
-		//stdClass Object ( [status] => [message] => No se encontro el ruc ) 
-		//stdClass Object ( [success] => 1 [result] => stdClass Object ( [ruc] => 20557939645 [razon_social] => MOARA PERU E.I.R.L. [estado] => SUSPENSION TEMPORAL [condicion_domicilio] => HABIDO [ubigeo] => 150130 [tipo_via] => AV. [nombre_via] => SAN BORJA SUR [codigo_zona] => URB. [tipo_zona] => SAN BORJA [numero] => 689 [interior] => - [lote] => - [departamento] => 401 [manzana] => - [kilometro] => - [direccion] => AV. SAN BORJA SUR URB. SAN BORJA Nro. 689 Dpto. 401 ) ) 
 	}
 	
 	/*

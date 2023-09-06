@@ -19,12 +19,14 @@
 					<h5 class="card-title">Datos</h5>
 					<form class="row g-3" id="form_save_company_info">
 						<div class="col-md-4">
-							<label for="ip_ruc" class="form-label d-flex justify-content-between">
-								<span>RUC</span>
-								<i class="bi bi-search text-success" id="btn_search_company"></i>
-							</label>
-							<input type="text" class="form-control" id="ip_ruc" name="ruc" value="<?= $company->ruc ?>">
-							<div class="invalid-feedback"></div>
+							<label for="ip_ruc" class="form-label">RUC</label>
+							<div class="input-group has-validation">
+								<input type="text" class="form-control" id="ip_ruc" name="ruc" value="<?= $company->ruc ?>">
+								<button type="button" class="btn btn-primary" id="btn_search_company">
+									<i class="bi bi-search"></i>
+								</button>
+								<div class="invalid-feedback"></div>
+							</div>
 						</div>
 						<div class="col-md-8">
 							<label for="ip_company" class="form-label">Empresa</label>

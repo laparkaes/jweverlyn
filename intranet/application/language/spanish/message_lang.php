@@ -10,6 +10,9 @@ $lang['e_numeric_positive'] = 'Debe ser un número positivo.';
 $lang['e_no_result'] = 'No hay resultado de búsqueda.';
 $lang['e_enter_keyword'] = 'Ingrese palabra de búsqueda.';
 
+//sale
+$lang['e_doc_number_enter'] = 'Ingrese número de documento.';
+
 //setting - company
 $lang['s_save_company_info'] = 'Información de empresa ha sido guardada.';
 

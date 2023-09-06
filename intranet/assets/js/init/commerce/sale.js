@@ -1,5 +1,4 @@
 let b_url = "commerce/sale/";
-var row_num = 1;
 
 function calculate_change(){
 	var total = parseFloat($("#total").val());
@@ -44,6 +43,7 @@ function calculate_amount(){
 	$("#change").val(0);
 }
 
+var row_num = 1;
 function add_product(dom){
 	ajax_simple({product_id: $(dom).val()}, b_url + "load_product").done(function(res) {
 		/* add doms to row */
@@ -120,6 +120,26 @@ $("#keyword").on('keyup',(function(e) {
 	if (e.key === "Enter") search_product($("#keyword").val());
 }));
 
+$("#doc_type").on('change',(function(e) {
+	if ($("#doc_type option:selected").val() == 1){
+		$("#doc_number").prop("disabled", true);
+		$("#btn_search_person").prop("disabled", true);
+		$("#client_name").prop("disabled", true);
+	}else{
+		$("#doc_number").prop("disabled", false);
+		$("#btn_search_person").prop("disabled", false);
+		$("#client_name").prop("disabled", false);
+	}
+}));
+
+$("#btn_search_person").on('click',(function(e) {
+	ajax_simple({doc_type: $("#doc_type").val(), doc_number: $("#doc_number").val()}, b_url + "search_person").done(function(res) {
+		swal(res.type, res.msg);
+		if (res.type == "success"){
+			
+		}
+	});
+}));
 
 ////////////////////////////////////////////////////////////////////
 /* Category start */
