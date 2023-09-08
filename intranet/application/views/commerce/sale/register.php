@@ -124,7 +124,7 @@
 		</div>
 	</div>
 	<div class="col-md-12 d-grid">
-		<button type="button" class="btn btn-primary btn-lg" id="btn_add_sale">Add Sale</button>
+		<button type="button" class="btn btn-primary btn-lg mb-3" id="btn_add_sale">Add Sale</button>
 	</div>
 </form>
 

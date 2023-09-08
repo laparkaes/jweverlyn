@@ -47,11 +47,11 @@ var row_num = 1;
 function add_product(dom){
 	ajax_simple({product_id: $(dom).val()}, b_url + "load_product").done(function(res) {
 		/* add doms to row */
-		$("#tb_product_list").append('<tr class="prod_row align-middle" id="prod_' + row_num + '"><th class="num" scope="row">' + ($(".prod_row").length + 1) + '</th><td class="product">' + res.product.product + '<div class="product_json d-none">' + JSON.stringify(res.product) + '</div></td><td class="price text-nowrap">S/. ' + nf(res.product.price) + '</td><td class="options"></td><td class="qty"><input type="number" class="form-control ip_qty" value="1" min="1" style="width: 100px;"></td><td class="subtotal text-nowrap text-end">' + nf(res.product.price) + '</td><td class="text-end"><button type="button" class="btn btn-outline-danger btn-sm border-0 btn_delete_prod"><i class="bi bi-x-lg"></i></button></td></tr>');
+		$("#tb_product_list").append('<tr class="prod_row align-middle" id="prod_' + row_num + '"><th class="num" scope="row">' + ($(".prod_row").length + 1) + '<input type="hidden" name="products[' + row_num + '][product_id]" value="' + res.product.product_id + '"></th><td class="product">' + res.product.product + '<div class="product_json d-none">' + JSON.stringify(res.product) + '</div></td><td class="price text-nowrap">S/. ' + nf(res.product.price) + '</td><td class="options"></td><td class="qty"><input type="number" class="form-control ip_qty" name="products[' + row_num + '][qty]" value="1" min="1" style="width: 100px;"></td><td class="subtotal text-nowrap text-end">' + nf(res.product.price) + '</td><td class="text-end"><button type="button" class="btn btn-outline-danger btn-sm border-0 btn_delete_prod"><i class="bi bi-x-lg"></i></button></td></tr>');
 		
 		let row_id = "#prod_" + row_num;
 		if (res.options.length > 0){
-			$(row_id).find(".options").html('<select class="form-select option_id" name="option_id" style="width: 150px;"></select>');
+			$(row_id).find(".options").html('<select class="form-select option_id" name="products[' + row_num + '][option_id]" style="width: 150px;"></select>');
 			
 			var stocks = {};
 			var dom_select = $(row_id).find(".option_id");
@@ -156,8 +156,6 @@ $("#btn_add_sale").on('click',(function(e) {
 }));
 
 $("#form_add_sale").submit(function(e) {
-	if (e.key === "Enter") return;
-	
 	e.preventDefault();
 	ajax_form_warning(this, b_url + "add_sale", "add_sale").done(function(res) {
 		//set_msgs("#form_add_category", res.msgs);

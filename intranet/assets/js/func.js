@@ -32,6 +32,7 @@ const sp_warning_msg = {
 	add_image: "¿Desea agregar nueva imagen?",
 	set_main_image: "¿Desea configurar como imagen principal?",
 	delete_image: "¿Desea eliminar imagen?",
+	add_sale: "¿Desea agregar nueva venta?",
 }
 
 function nf(num){//number format

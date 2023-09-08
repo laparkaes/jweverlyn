@@ -159,7 +159,8 @@ class Sale extends CI_Controller {
 		$this->load->view('layout', $data);
 	}
 	
-	public function add(){
+	public function add_sale(){
+		/*
 		if ($this->session->userdata('username')){
 			$data = $this->input->post();
 			
@@ -176,6 +177,14 @@ class Sale extends CI_Controller {
 		
 		header('Content-Type: application/json');
 		echo json_encode($result);
+		*/
+		$products = $this->input->post("products");
+		$payment = $this->input->post("payment");
+		$client = $this->input->post("client");
+		
+		print_R($products);
+		print_R($payment);
+		print_R($client);
 	}
 	
 	public function update(){
