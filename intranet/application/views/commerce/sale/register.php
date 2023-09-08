@@ -16,7 +16,7 @@
 		</div>
 	</div>
 </div>
-<div class="row">
+<form class="row" id="form_add_sale">
 	<div class="col-md-12">
 		<div class="card">
 			<div class="card-body">
@@ -97,7 +97,7 @@
 				<div class="row g-3">
 					<div class="col-md-6">
 						<label class="form-label">Documento</label>
-						<select class="form-select" name="client[doc_type]" id="doc_type">
+						<select class="form-select" name="client[doc_type_id]" id="doc_type_id">
 							<?php foreach($ident_documents as $i){ ?>
 							<option value="<?= $i->identification_document_id ?>"><?= $i->identification_document ?></option>
 							<?php } ?>
@@ -123,7 +123,10 @@
 			</div>
 		</div>
 	</div>
-</div>
+	<div class="col-md-12 d-grid">
+		<button type="button" class="btn btn-primary btn-lg" id="btn_add_sale">Add Sale</button>
+	</div>
+</form>
 
 <div class="modal fade" id="md_add_product" tabindex="-1">
 	<div class="modal-dialog modal-dialog-scrollable">

@@ -118,11 +118,30 @@ class Sale extends CI_Controller {
 		$data = $this->input->post();
 		
 		if ($data["doc_number"]){
-			switch($data["doc_type"]){
-				case 2: break;
-				case 4: break;
-				default:
+			$person = $this->gm->filter("client", $data);
+			if (!$person){
+				$name = "";
+				switch($data["doc_type_id"]){
+					case 2: //dni
+						$aux = $this->my_func->utildatos("dni", $data["doc_number"]);
+						if ($aux->status) $name = $aux->data->nombres." ".$aux->data->apellidoPaterno." ".$aux->data->apellidoMaterno;
+						break;
+					case 4: //ruc
+						$aux = $this->my_func->utildatos("ruc", $data["doc_number"]);
+						if ($aux->status) $name = $aux->data->razon_social;
+						break;
+				}
+				
+				$person = $this->gm->structure("client");
+				if ($name){
+					$person->doc_type_id = $data["doc_type_id"];
+					$person->doc_number = $data["doc_number"];
+					$person->name = $name;
+				}
 			}
+			
+			if ($person->name) $type = "success";
+			else $msg = $this->lang->line("e_no_result");
 		}else $msg = $this->lang->line("e_doc_number_enter");
 		
 		header('Content-Type: application/json');
