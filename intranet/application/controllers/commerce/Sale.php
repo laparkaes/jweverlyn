@@ -161,7 +161,7 @@ class Sale extends CI_Controller {
 	
 	public function add_sale(){
 		/*
-		if ($this->session->userdata('username')){
+		
 			$data = $this->input->post();
 			
 			$this->load->library('my_val');
@@ -173,18 +173,30 @@ class Sale extends CI_Controller {
 				$result["product_id"] = $this->gm->insert("product", $data);
 				$result["msg"] = $this->lang->line("s_product_insert");
 			}
-		}else $result = ["type" => "error", "msg" => $this->lang->line("e_finished_session")];
+		
+		
+		
+		*/
+		$type = "error"; $msg = null;
+		
+		if ($this->session->userdata('username')){
+			$products = $this->input->post("products");
+			$payment = $this->input->post("payment");
+			$client = $this->input->post("client");	
+			
+			if ($products){
+				
+				
+				
+		
+				print_R($products);
+				print_R($payment);
+				print_R($client);
+			}else $msg = $this->lang->line("e_select_product");
+		}else $msg = $this->lang->line("e_finished_session");
 		
 		header('Content-Type: application/json');
-		echo json_encode($result);
-		*/
-		$products = $this->input->post("products");
-		$payment = $this->input->post("payment");
-		$client = $this->input->post("client");
-		
-		print_R($products);
-		print_R($payment);
-		print_R($client);
+		echo json_encode(["type" => $type, "msg" => $msg]);
 	}
 	
 	public function update(){

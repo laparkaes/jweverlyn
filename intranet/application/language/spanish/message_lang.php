@@ -12,6 +12,7 @@ $lang['e_enter_keyword'] = 'Ingrese palabra de búsqueda.';
 
 //sale
 $lang['e_doc_number_enter'] = 'Ingrese número de documento.';
+$lang['e_select_product'] = 'Elija al menos un producto.';
 
 //setting - company
 $lang['s_save_company_info'] = 'Información de empresa ha sido guardada.';

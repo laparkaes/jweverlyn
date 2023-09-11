@@ -161,6 +161,7 @@ $("#form_add_sale").submit(function(e) {
 		//set_msgs("#form_add_category", res.msgs);
 		//swal_redirection(res.type, res.msg, base_url + b_url + "register");
 		
+		swal(res.type, res.msg);
 		alert(res);
 	});
 });
