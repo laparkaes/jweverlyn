@@ -186,8 +186,6 @@ class Sale extends CI_Controller {
 			
 			if ($products){
 				
-				
-				
 		
 				print_R($products);
 				print_R($payment);
