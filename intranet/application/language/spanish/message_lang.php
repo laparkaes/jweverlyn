@@ -13,6 +13,10 @@ $lang['e_enter_keyword'] = 'Ingrese palabra de búsqueda.';
 //sale
 $lang['e_doc_number_enter'] = 'Ingrese número de documento.';
 $lang['e_select_product'] = 'Elija al menos un producto.';
+$lang['e_product_no_stock'] = 'Disponibilidad insuficiente de ';
+$lang['e_product_invalid_option'] = "Opción inválida de ";
+$lang['e_invalid_payment'] = "Monto de pago inválido.";
+$lang['s_sale_insert'] = "Venta ha sido registrada.";
 
 //setting - company
 $lang['s_save_company_info'] = 'Información de empresa ha sido guardada.';

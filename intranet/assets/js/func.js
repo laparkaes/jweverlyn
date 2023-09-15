@@ -47,7 +47,7 @@ function reset_form(form_id){
 function set_msgs(form_id, msgs){
 	$(form_id + " [name]").removeClass("is-invalid").removeClass("is-valid");
 	$(msgs).each(function (index, element) {
-		let dom = $(form_id).find("[name=" + element.name + "]");
+		let dom = $(form_id).find("[name='" + element.name + "']");
 		dom.addClass(element.class);
 		//dom.next().html(element.msg);
 		dom.parent().find(".invalid-feedback").html(element.msg);

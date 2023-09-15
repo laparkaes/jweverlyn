@@ -383,4 +383,48 @@ class My_val{
 		
 		return ["type" => $this->get_type($msgs), "msgs" => $msgs, "msg" => $msg];
 	}
+	
+	public function add_sale($products, $payment, $client){
+		$msgs = []; $msg = "";
+		
+		//product list validation
+		if ($products){
+			//merge duplicate product
+			$prod_list = [];
+			foreach($products as $p){
+				$aux_key = $p["product_id"]."_".$p["option_id"];
+				if (isset($prod_list[$aux_key])) $prod_list[$aux_key]["qty"] = $prod_list[$aux_key]["qty"] + $p["qty"];
+				else $prod_list[$aux_key] = $p;
+			}
+			
+			//stock validation
+			foreach($prod_list as $p){
+				$prod = $this->CI->gm->unique("product", "product_id", $p["product_id"]);
+				$prod_op = $this->CI->gm->unique("product_option", "option_id", $p["option_id"]);
+				if ($prod_op){
+					if ($prod_op->stock < $p["qty"]) $msg = $this->CI->lang->line("e_product_no_stock").$prod->product.".";
+				}else $msg = $this->CI->lang->line("e_product_invalid_option").$prod->product.".";
+			}
+		}else $msg = $this->CI->lang->line("e_select_product");
+		
+		//payment method validation
+		$msgs = $this->set_msg($msgs, "payment[payment_method_id]"); //no validation required
+		if ($payment["received"] > 0) $msgs = $this->set_msg($msgs, "payment[received_txt]");
+		else $msgs = $this->set_msg($msgs, "payment[received_txt]", "e_invalid_payment");
+		
+		//client validation
+		$msgs = $this->set_msg($msgs, "client[doc_type_id]"); //no validation required
+		if ($client["doc_type_id"] != 1){
+			if ($client["doc_number"]) $msgs = $this->set_msg($msgs, "client[doc_number]");
+			else $msgs = $this->set_msg($msgs, "client[doc_number]", "e_required_field");
+			
+			if ($client["name"]) $msgs = $this->set_msg($msgs, "client[name]");
+			else $msgs = $this->set_msg($msgs, "client[name]", "e_required_field");
+		}
+		
+		$type = $this->get_type($msgs);
+		if ($msg) $type = "error";
+		
+		return ["type" => $type, "msgs" => $msgs, "msg" => $msg];
+	}
 }

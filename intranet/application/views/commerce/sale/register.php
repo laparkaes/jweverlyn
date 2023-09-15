@@ -63,28 +63,28 @@
 					</div>
 					<div class="col-md-6">
 						<label class="form-label">Recibido</label>
-						<div class="input-group">
+						<div class="input-group has-validation">
 							<span class="input-group-text">S/.</span>
-							<input type="text" class="form-control" id="received_txt" value="0.00">
+							<input type="hidden" id="received" name="payment[received]" value="0.00">
+							<input type="text" class="form-control" id="received_txt" name="payment[received_txt]" value="0.00">
+							<div class="invalid-feedback"></div>
 						</div>
-						<input type="text" class="form-control d-none" id="received" name="payment[received]" value="0.00">
-						<div class="invalid-feedback"></div>
 					</div>
 					<div class="col-md-6">
 						<label class="form-label">Total</label>
 						<div class="input-group">
 							<span class="input-group-text">S/.</span>
+							<input type="hidden" id="total" name="payment[total]" value="0.00" readonly>
 							<input type="text" class="form-control" id="total_txt" value="0.00" disabled>
 						</div>
-						<input type="text" class="form-control d-none" id="total" name="payment[total]" value="0.00" readonly>
 					</div>
 					<div class="col-md-6">
 						<label class="form-label">Vuelto</label>
 						<div class="input-group">
 							<span class="input-group-text">S/.</span>
+							<input type="hidden"id="change" name="payment[change]" value="0.00" readonly>
 							<input type="text" class="form-control" id="change_txt" value="0.00" disabled>
 						</div>
-						<input type="text" class="form-control d-none" id="change" name="payment[change]" value="0.00" readonly>
 					</div>
 				</div>
 			</div>

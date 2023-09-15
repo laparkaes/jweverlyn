@@ -137,8 +137,8 @@ function search_person(){
 	var data = {doc_type_id: $("#doc_type_id").val(), doc_number: $("#doc_number").val()};
 	ajax_simple(data, b_url + "search_person").done(function(res) {
 		swal(res.type, res.msg);
-		if (res.type == "success") $("#client_name").val(res.person.name).prop("disabled", true);
-		else $("#client_name").val("").prop("disabled", false);
+		if (res.type == "success") $("#client_name").val(res.person.name);
+		else $("#client_name").val("");
 	});
 }
 
@@ -158,10 +158,10 @@ $("#btn_add_sale").on('click',(function(e) {
 $("#form_add_sale").submit(function(e) {
 	e.preventDefault();
 	ajax_form_warning(this, b_url + "add_sale", "add_sale").done(function(res) {
-		//set_msgs("#form_add_category", res.msgs);
 		//swal_redirection(res.type, res.msg, base_url + b_url + "register");
 		
+		set_msgs("#form_add_sale", res.msgs);
 		swal(res.type, res.msg);
-		alert(res);
+		//alert(res);
 	});
 });
