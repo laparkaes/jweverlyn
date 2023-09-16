@@ -160,22 +160,6 @@ class Sale extends CI_Controller {
 	}
 	
 	public function add_sale(){
-		/*
-		
-			$data = $this->input->post();
-			
-			
-			
-			if ($result["type"] === "success"){
-				$data["updated_at"] = $data["registed_at"] = date("Y-m-d H:i:s");
-				
-				$result["product_id"] = $this->gm->insert("product", $data);
-				$result["msg"] = $this->lang->line("s_product_insert");
-			}
-		
-		
-		
-		*/
 		$type = "error"; $msg = null;
 		
 		if ($this->session->userdata('username')){
@@ -187,9 +171,58 @@ class Sale extends CI_Controller {
 			$result = $this->my_val->add_sale($products, $payment, $client);
 			
 			if ($result["type"] === "success"){
-				//$data["updated_at"] = $data["registed_at"] = date("Y-m-d H:i:s");
+				$now = date("Y-m-d H:i:s");
 				
-				$result["sale_id"] = 1;//$this->gm->insert("product", $data);
+				//client process
+				if ($client["doc_type_id"] == 1) $client_id = null; //case of no client document
+				else{
+					$client_rec = $this->gm->filter("client", $client);
+					if ($client_rec) $client_id = $client_rec[0]->client_id;
+					else{
+						$client["valid"] = true;
+						$client["updated_at"] = $client["registed_at"] = $now;	
+						$client_id = $this->gm->insert("client", $client);
+					}
+				}
+				
+				//sale process
+				$sale = [
+					"client_id" => $client_id,
+					"updated_at" => $now,
+					"registed_at" => $now,
+				];
+				
+				$amount = 0;
+				foreach($products as $i => $p){
+					$prod = $this->gm->unique("product", "product_id", $p["product_id"]);
+					$products[$i]["price"] = $prod->price;
+					$products[$i]["subtotal"] = $prod->price * $products[$i]["qty"];
+					$amount += $products[$i]["subtotal"];
+				}
+				
+				$sale["amount"] = $amount;
+				$sale["paid"] = $payment["received"] - $payment["change"];
+				$sale["balance"] = $sale["amount"] - $sale["paid"];
+				
+				//$sale_id = $this->gm->insert("sale", $sale);
+				$sale_id = 1;
+				
+				//payment process
+				unset($payment["received_txt"]);
+				$payment["sale_id"] = $sale_id;
+				$payment["registed_at"] = $now;
+				//$this->gm->insert("payment", $payment);
+				
+				//products process
+				foreach($products as $p){
+					$p["sale_id"] = $sale_id;
+					//$this->gm->insert("sale_product", $p);
+					
+					$prod = $this->gm->unique("product", "product_id", $p["product_id"]);
+					//$this->gm->update("product", ["product_id" => $p["product_id"]], ["stock" => $prod->stock - $p["qty"]]);
+				}
+				
+				$result["sale_id"] = $sale_id;
 				$result["msg"] = $this->lang->line("s_sale_insert");
 			}
 		}else $msg = $this->lang->line("e_finished_session");
