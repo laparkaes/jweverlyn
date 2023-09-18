@@ -158,10 +158,10 @@ $("#btn_add_sale").on('click',(function(e) {
 $("#form_add_sale").submit(function(e) {
 	e.preventDefault();
 	ajax_form_warning(this, b_url + "add_sale", "add_sale").done(function(res) {
-		//swal_redirection(res.type, res.msg, base_url + b_url + "register");
-		
-		set_msgs("#form_add_sale", res.msgs);
-		swal(res.type, res.msg);
-		//alert(res);
+		if (res.type == "success") swal_redirection(res.type, res.msg, base_url + b_url + "detail/" + res.sale_id);
+		else{
+			set_msgs("#form_add_sale", res.msgs);
+			swal(res.type, res.msg);
+		}
 	});
 });

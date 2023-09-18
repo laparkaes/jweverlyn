@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- 생성 시간: 23-09-03 19:16
+-- 생성 시간: 23-09-17 19:04
 -- 서버 버전: 10.4.24-MariaDB
 -- PHP 버전: 7.4.29
 
@@ -3153,6 +3153,31 @@ INSERT INTO `address_province` (`province_id`, `department_id`, `province`) VALU
 -- --------------------------------------------------------
 
 --
+-- 테이블 구조 `client`
+--
+
+CREATE TABLE `client` (
+  `client_id` int(11) NOT NULL,
+  `doc_type_id` int(11) NOT NULL,
+  `doc_number` varchar(30) NOT NULL,
+  `name` varchar(250) NOT NULL,
+  `valid` tinyint(1) NOT NULL DEFAULT 1,
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `registed_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- 테이블의 덤프 데이터 `client`
+--
+
+INSERT INTO `client` (`client_id`, `doc_type_id`, `doc_number`, `name`, `valid`, `updated_at`, `registed_at`) VALUES
+(1, 2, '76408531', 'LEA MABEL SILUPU MONTALVAN', 1, '2023-09-16 23:05:39', '2023-09-16 23:05:39'),
+(2, 2, '70614226', 'SOFIA LISSET CASAVERDE VALDIVIEZO', 1, '2023-09-17 20:50:05', '2023-09-17 20:50:05'),
+(3, 2, '75694084', 'FRANCESCA JENNIFER OLAYA CAMACHO', 1, '2023-09-17 22:19:28', '2023-09-17 22:19:28');
+
+-- --------------------------------------------------------
+
+--
 -- 테이블 구조 `identification_document`
 --
 
@@ -3670,9 +3695,9 @@ INSERT INTO `product_option` (`option_id`, `product_id`, `option`, `stock`, `val
 (23, 1, 'Rosado', 12375, 0),
 (24, 1, 'Talla S', 157, 0),
 (25, 1, 'Rosado', 77, 0),
-(26, 1, 'Negro', 150, 1),
+(26, 1, 'Negro', 138, 1),
 (27, 197, 'Talla S', 100, 1),
-(28, 197, 'Talla M', 120, 1),
+(28, 197, 'Talla M', 84, 1),
 (29, 197, 'Talla L', 130, 1);
 
 -- --------------------------------------------------------
@@ -3753,6 +3778,86 @@ INSERT INTO `role_access` (`role_id`, `access_id`) VALUES
 -- --------------------------------------------------------
 
 --
+-- 테이블 구조 `sale`
+--
+
+CREATE TABLE `sale` (
+  `sale_id` int(11) NOT NULL,
+  `client_id` int(11) DEFAULT NULL,
+  `amount` float NOT NULL,
+  `paid` float NOT NULL,
+  `balance` float NOT NULL,
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `registed_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `valid` tinyint(1) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- 테이블의 덤프 데이터 `sale`
+--
+
+INSERT INTO `sale` (`sale_id`, `client_id`, `amount`, `paid`, `balance`, `updated_at`, `registed_at`, `valid`) VALUES
+(1, 3, 363.12, 363.12, 0, '2023-09-17 22:19:28', '2023-09-17 22:19:28', 1),
+(2, 3, 363.12, 363.12, 0, '2023-09-17 22:19:34', '2023-09-17 22:19:34', 1),
+(3, 3, 363.12, 363.12, 0, '2023-09-17 22:19:58', '2023-09-17 22:19:58', 1),
+(4, 3, 363.12, 363.12, 0, '2023-09-17 22:21:19', '2023-09-17 22:21:19', 1),
+(5, NULL, 1974.72, 1974.72, 0, '2023-09-17 23:58:18', '2023-09-17 23:58:18', 1);
+
+-- --------------------------------------------------------
+
+--
+-- 테이블 구조 `sale_payment`
+--
+
+CREATE TABLE `sale_payment` (
+  `payment_id` int(11) NOT NULL,
+  `sale_id` int(11) NOT NULL,
+  `payment_method_id` int(11) NOT NULL,
+  `total` float NOT NULL,
+  `received` float NOT NULL,
+  `change` float NOT NULL,
+  `registed_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `valid` tinyint(1) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- 테이블의 덤프 데이터 `sale_payment`
+--
+
+INSERT INTO `sale_payment` (`payment_id`, `sale_id`, `payment_method_id`, `total`, `received`, `change`, `registed_at`, `valid`) VALUES
+(1, 3, 1, 363.12, 400, 36.88, '2023-09-17 22:19:58', 1),
+(2, 4, 1, 363.12, 400, 36.88, '2023-09-17 22:21:19', 1),
+(3, 5, 3, 1974.72, 2000, 25.28, '2023-09-17 23:58:18', 1);
+
+-- --------------------------------------------------------
+
+--
+-- 테이블 구조 `sale_product`
+--
+
+CREATE TABLE `sale_product` (
+  `sale_product_id` int(11) NOT NULL,
+  `sale_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `option_id` int(11) NOT NULL,
+  `qty` int(11) NOT NULL,
+  `price` float NOT NULL,
+  `subtotal` float NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- 테이블의 덤프 데이터 `sale_product`
+--
+
+INSERT INTO `sale_product` (`sale_product_id`, `sale_id`, `product_id`, `option_id`, `qty`, `price`, `subtotal`) VALUES
+(1, 3, 197, 28, 3, 59.84, 179.52),
+(2, 4, 197, 28, 3, 59.84, 179.52),
+(3, 4, 1, 26, 12, 15.3, 183.6),
+(4, 5, 197, 28, 33, 59.84, 1974.72);
+
+-- --------------------------------------------------------
+
+--
 -- 테이블 구조 `setting_company`
 --
 
@@ -3813,6 +3918,13 @@ ALTER TABLE `address_province`
   ADD PRIMARY KEY (`province_id`);
 
 --
+-- 테이블의 인덱스 `client`
+--
+ALTER TABLE `client`
+  ADD PRIMARY KEY (`client_id`),
+  ADD KEY `fk_doc_type_id` (`doc_type_id`);
+
+--
 -- 테이블의 인덱스 `identification_document`
 --
 ALTER TABLE `identification_document`
@@ -3870,6 +3982,29 @@ ALTER TABLE `role_access`
   ADD KEY `fk_role_access_access` (`access_id`);
 
 --
+-- 테이블의 인덱스 `sale`
+--
+ALTER TABLE `sale`
+  ADD PRIMARY KEY (`sale_id`),
+  ADD KEY `fk_sale_client` (`client_id`);
+
+--
+-- 테이블의 인덱스 `sale_payment`
+--
+ALTER TABLE `sale_payment`
+  ADD PRIMARY KEY (`payment_id`),
+  ADD KEY `fk_payment_sale` (`sale_id`);
+
+--
+-- 테이블의 인덱스 `sale_product`
+--
+ALTER TABLE `sale_product`
+  ADD PRIMARY KEY (`sale_product_id`),
+  ADD KEY `fk_sale_product_sale` (`sale_id`),
+  ADD KEY `fk_sale_product_product` (`product_id`),
+  ADD KEY `fk_sale_product_option` (`option_id`);
+
+--
 -- 테이블의 인덱스 `setting_company`
 --
 ALTER TABLE `setting_company`
@@ -3908,6 +4043,12 @@ ALTER TABLE `address_district`
 --
 ALTER TABLE `address_province`
   MODIFY `province_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=196;
+
+--
+-- 테이블의 AUTO_INCREMENT `client`
+--
+ALTER TABLE `client`
+  MODIFY `client_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- 테이블의 AUTO_INCREMENT `identification_document`
@@ -3958,6 +4099,24 @@ ALTER TABLE `role`
   MODIFY `role_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5033;
 
 --
+-- 테이블의 AUTO_INCREMENT `sale`
+--
+ALTER TABLE `sale`
+  MODIFY `sale_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- 테이블의 AUTO_INCREMENT `sale_payment`
+--
+ALTER TABLE `sale_payment`
+  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- 테이블의 AUTO_INCREMENT `sale_product`
+--
+ALTER TABLE `sale_product`
+  MODIFY `sale_product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- 테이블의 AUTO_INCREMENT `setting_company`
 --
 ALTER TABLE `setting_company`
@@ -3980,6 +4139,12 @@ ALTER TABLE `account`
   ADD CONSTRAINT `account_role` FOREIGN KEY (`role_id`) REFERENCES `role` (`role_id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
+-- 테이블의 제약사항 `client`
+--
+ALTER TABLE `client`
+  ADD CONSTRAINT `fk_doc_type_id` FOREIGN KEY (`doc_type_id`) REFERENCES `identification_document` (`identification_document_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- 테이블의 제약사항 `product_image`
 --
 ALTER TABLE `product_image`
@@ -3997,6 +4162,26 @@ ALTER TABLE `product_option`
 ALTER TABLE `role_access`
   ADD CONSTRAINT `fk_role_access_access` FOREIGN KEY (`access_id`) REFERENCES `access` (`access_id`) ON DELETE NO ACTION ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_role_access_role` FOREIGN KEY (`role_id`) REFERENCES `role` (`role_id`) ON DELETE NO ACTION ON UPDATE CASCADE;
+
+--
+-- 테이블의 제약사항 `sale`
+--
+ALTER TABLE `sale`
+  ADD CONSTRAINT `fk_sale_client` FOREIGN KEY (`client_id`) REFERENCES `client` (`client_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- 테이블의 제약사항 `sale_payment`
+--
+ALTER TABLE `sale_payment`
+  ADD CONSTRAINT `fk_payment_sale` FOREIGN KEY (`sale_id`) REFERENCES `sale` (`sale_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- 테이블의 제약사항 `sale_product`
+--
+ALTER TABLE `sale_product`
+  ADD CONSTRAINT `fk_sale_product_option` FOREIGN KEY (`option_id`) REFERENCES `product_option` (`option_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_sale_product_product` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_sale_product_sale` FOREIGN KEY (`sale_id`) REFERENCES `sale` (`sale_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

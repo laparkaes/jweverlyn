@@ -54,9 +54,24 @@ class Sale extends CI_Controller {
 		$this->load->view('layout', $data);
 	}
 	
-	public function detail($product_id){
+	public function detail($sale_id){
 		if (!$this->session->userdata('username')) redirect("auth/login");
+
+		$sale = $this->gm->unique("sale", "sale_id", $sale_id);
+		if ($sale->client_id){
+			$client = $this->gm->unique("client", "client_id", $sale->client_id);
+			$client->doc_type = $this->gm->unique("identification_document", "identification_document_id", $client->doc_type_id, false)->identification_document;
+		}else $client = null;
 		
+		$payments = $this->gm->filter("sale_payment", ["sale_id" => $sale->sale_id], null, null, [["registed_at", "desc"]], "", "", false);
+		$products = $this->gm->filter("sale_product", ["sale_id" => $sale->sale_id], null, null, [["subtotal", "desc"]], "", "", false);
+		
+		print_r($sale); echo "<br/><br/><br/>";
+		print_r($client); echo "<br/><br/><br/>";
+		print_r($payments); echo "<br/><br/><br/>";
+		print_r($products); echo "<br/><br/><br/>";
+		
+		/*
 		$product = $this->gm->unique("product", "product_id", $product_id);
 		$product->category = $this->gm->unique("product_category", "category_id", $product->category_id)->category;
 		
@@ -70,13 +85,13 @@ class Sale extends CI_Controller {
 		$op_aux = $this->calculate_stock($product_id);
 		$options = $op_aux["options"];
 		$product->stock = $op_aux["stock"];
-		
+		*/
 		$data = [
-			"product" => $product,
+			/* "product" => $product,
 			"options" => $options,
 			"images" => $this->get_images($product_id),
-			"categories" => $this->gm->all("product_category", [["category", "asc"]]),
-			"main" => "commerce/product/detail",
+			"categories" => $this->gm->all("product_category", [["category", "asc"]]), */
+			"main" => "commerce/sale/detail",
 		];
 		$this->load->view('layout', $data);
 	}
@@ -203,23 +218,21 @@ class Sale extends CI_Controller {
 				$sale["amount"] = $amount;
 				$sale["paid"] = $payment["received"] - $payment["change"];
 				$sale["balance"] = $sale["amount"] - $sale["paid"];
-				
-				//$sale_id = $this->gm->insert("sale", $sale);
-				$sale_id = 1;
+				$sale_id = $this->gm->insert("sale", $sale);
 				
 				//payment process
 				unset($payment["received_txt"]);
 				$payment["sale_id"] = $sale_id;
 				$payment["registed_at"] = $now;
-				//$this->gm->insert("payment", $payment);
+				$this->gm->insert("sale_payment", $payment);
 				
 				//products process
 				foreach($products as $p){
 					$p["sale_id"] = $sale_id;
-					//$this->gm->insert("sale_product", $p);
+					$this->gm->insert("sale_product", $p);
 					
-					$prod = $this->gm->unique("product", "product_id", $p["product_id"]);
-					//$this->gm->update("product", ["product_id" => $p["product_id"]], ["stock" => $prod->stock - $p["qty"]]);
+					$option = $this->gm->unique("product_option", "option_id", $p["option_id"]);
+					$this->gm->update("product_option", ["option_id" => $p["option_id"]], ["stock" => $option->stock - $p["qty"]]);
 				}
 				
 				$result["sale_id"] = $sale_id;

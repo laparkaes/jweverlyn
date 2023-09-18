@@ -1,16 +1,16 @@
 <div class="pagetitle">
 	<div class="d-flex justify-content-between align-items-start">
 		<div>
-			<h1>Detalle de Producto</h1>
+			<h1>Detalle de Venta</h1>
 			<nav>
 				<ol class="breadcrumb">
-					<li class="breadcrumb-item">Producto</li>
+					<li class="breadcrumb-item">Venta</li>
 					<li class="breadcrumb-item active">Detalle</li>
 				</ol>
 			</nav>
 		</div>
 		<div>
-			<a href="<?= base_url() ?>commerce/product" type="button" class="btn btn-success">
+			<a href="<?= base_url() ?>commerce/sale" type="button" class="btn btn-success">
 				<i class="bi bi-arrow-left"></i>
 			</a>
 		</div>
