@@ -13,7 +13,7 @@ class Sale extends CI_Controller {
 	
 	public function index(){
 		if (!$this->session->userdata('username')) redirect("auth/login");
-		/*
+		
 		$params = [
 			"page" => $this->input->get("page"),
 			"search" => $this->input->get("search"),
@@ -22,6 +22,7 @@ class Sale extends CI_Controller {
 		
 		$w = $l = $w_in = [];
 		if ($params["search"]){
+			/*
 			$l["product"] = $params["search"];
 			
 			$categories = $this->gm->filter("product_category", $w, ["category" => $params["search"]]);
@@ -30,9 +31,17 @@ class Sale extends CI_Controller {
 				foreach($categories as $c) $cat_ids[] = $c->category_id;
 				$w_in[] = ["field" => "category_id", "values" => $cat_ids];	
 			}
+			*/
 		}else unset($params["search"]);
 		
-		$products = $this->gm->filter("product", $w, $l, $w_in, [["product", "asc"]], 25, 25 * ($params["page"] - 1), false);
+		$sales = $this->gm->filter("sale", $w, $l, $w_in, [["registed_at", "desc"]], 25, 25 * ($params["page"] - 1), false);
+		foreach($sales as $s){
+			if ($s->client_id) $s->client = $this->gm->unique("client", "client_id", $s->client_id)->name;
+			else $s->client = "";
+			if ($s->balance) $s->color = "warning"; else $s->color = "success";
+		}
+		/*
+		
 		foreach($products as $p){
 			if ($p->image){
 				$path = "uploads/prod/".$p->product_id."/".$p->image;
@@ -46,9 +55,9 @@ class Sale extends CI_Controller {
 		}
 		*/
 		$data = [
-			//"params" => $params,
-			//"paging" => $this->my_func->paging($params["page"], $this->gm->qty("product", $w, $l, $w_in)),
-			//"products" => $products,
+			"params" => $params,
+			"paging" => $this->my_func->paging($params["page"], $this->gm->qty("sale", $w, $l, $w_in)),
+			"sales" => $sales,
 			"main" => "commerce/sale/index",
 		];
 		$this->load->view('layout', $data);

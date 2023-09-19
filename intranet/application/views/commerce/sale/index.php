@@ -16,14 +16,14 @@
 		</div>
 	</div>
 </div>
-<!-- section class="section">
+<section class="section">
 	<div class="row">
 		<div class="col">
 			<div class="card">
 				<div class="card-body">
 					<div class="row">
 						<div class="col-md-8 col-12">
-							<h5 class="card-title">Lista de Productos</h5>
+							<h5 class="card-title">Lista de Ventas</h5>
 						</div>
 						<div class="col-md-4 col-12">
 							<form>
@@ -39,27 +39,27 @@
 							<thead>
 								<tr>
 									<th scope="col">#</th>
-									<th scope="col">Imagen</th>
-									<th scope="col">Categoría</th>
-									<th scope="col">Producto</th>
-									<th scope="col">Vendidos</th>
-									<th scope="col">Desde</th>
+									<th scope="col">Fecha</th>
+									<th scope="col">Cliente</th>
+									<th scope="col">Monto</th>
+									<th scope="col">Saldo</th>
 									<th scope="col"></th>
 									<th scope="col"></th>
 								</tr>
 							</thead>
 							<tbody>
-								<?php $base_page = ($params["page"] - 1) * 25; foreach($products as $i_p => $p){ ?>
+								<?php $base_page = ($params["page"] - 1) * 25; foreach($sales as $i_s => $s){ ?>
 								<tr>
-									<th scope="row"><?= $base_page + $i_p + 1 ?></th>
-									<td><img src="<?= $p->thumb ?>" style="height: 60px;"></td>
-									<td><?= $p->category ?></td>
-									<td><?= $p->product ?></td>
-									<td><?= number_format($p->sold_qty) ?></td>
-									<td><?= date("Y-m-d", strtotime($p->registed_at)) ?></td>
-									<td><i class="bi bi-circle-fill text-<?= $p->color ?>"></i></td>
+									<th scope="row"><?= $base_page + $i_s + 1 ?></th>
+									<td><?= $s->registed_at ?></td>
+									<td><?= $s->client ?></td>
+									<td class="text-nowrap text-end">S/ <?= number_format($s->amount, 2) ?></td>
+									<td class="text-nowrap text-end">
+										<?php if ($s->balance) echo "S/ ".number_format($s->balance, 2); else echo "-"; ?>
+									</td>
+									<td class="text-center"><i class="bi bi-circle-fill text-<?= $s->color ?>"></i></td>
 									<td class="text-end">
-										<a href="<?= base_url() ?>commerce/product/detail/<?= $p->product_id ?>" type="button" class="btn btn-outline-primary btn-sm border-0">
+										<a href="<?= base_url() ?>commerce/sale/detail/<?= $s->sale_id ?>" type="button" class="btn btn-outline-primary btn-sm border-0">
 											<i class="bi bi-search"></i>
 										</a>
 									</td>
@@ -75,7 +75,7 @@
 	<div class="row">
 		<div class="col">
 			<ul class="pagination">
-				<?php $base_link = base_url()."commerce/product?"; 
+				<?php $base_link = base_url()."commerce/sale?"; 
 				foreach($paging as $p){ 
 					$params["page"] = $p[0];
 					$link = $base_link.http_build_query($params); ?>
@@ -84,4 +84,4 @@
 			</ul>
 		</div>
 	</div>
-</section -->
+</section>
