@@ -158,3 +158,85 @@ function ajax_simple_warning(data, url, msg_index){
 	return deferred.promise();
 }
 
+function set_date(dom_date){
+	$(dom_date).datetimepicker({
+		minDate: moment(),
+		allowInputToggle: true,
+		showClose: true,
+		showClear: true,
+		format: "YYYY-MM-DD",
+		widgetPositioning: {
+            horizontal: 'left',
+            vertical: 'bottom',
+        },
+		icons: {
+			previous: 'bi bi-chevron-left',
+			next: 'bi bi-chevron-right',
+			today: 'bi bi-calendar-event',
+			clear: 'bi bi-eraser',
+			close: 'bi bi-x-lg',
+		},
+	});
+}
+
+function set_date_all(dom_date){
+	if ($(dom_date).length > 0){
+		$(dom_date).bootstrapMaterialDatePicker({
+			weekStart: 0,
+			time: false,
+			minDate : null,
+			lang: 'es',
+			okText: $("#bd_select").val(),
+			cancelText: $("#bd_cancel").val(),
+			clearButton: true,
+			clearText: $("#bd_clean").val(),
+		});	
+	}
+}
+
+function set_dates_between(dom_from, dom_to){
+	$(dom_from).datetimepicker({
+		locale: 'es',
+		allowInputToggle: true,
+		showClose: true,
+		showClear: true,
+		format: "YYYY-MM-DD",
+		widgetPositioning: {
+            horizontal: 'left',
+            vertical: 'bottom',
+        },
+		icons: {
+			previous: 'bi bi-chevron-left',
+			next: 'bi bi-chevron-right',
+			today: 'bi bi-calendar-event',
+			clear: 'bi bi-eraser',
+			close: 'bi bi-x-lg',
+		},
+	});
+	
+	$(dom_to).datetimepicker({
+		locale: 'es',
+		allowInputToggle: true,
+		showClose: true,
+		showClear: true,
+		format: "YYYY-MM-DD",
+		widgetPositioning: {
+            horizontal: 'left',
+            vertical: 'bottom',
+        },
+		icons: {
+			previous: 'bi bi-chevron-left',
+			next: 'bi bi-chevron-right',
+			today: 'bi bi-calendar-event',
+			clear: 'bi bi-eraser',
+			close: 'bi bi-x-lg',
+		},
+	});
+	
+	$(dom_from).on("dp.change", function (e) {
+		$(dom_to).data("DateTimePicker").minDate(e.date);
+	});
+	$(dom_to).on("dp.change", function (e) {
+		$(dom_from).data("DateTimePicker").maxDate(e.date);
+	});
+}

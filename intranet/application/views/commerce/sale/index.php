@@ -22,13 +22,15 @@
 			<div class="card">
 				<div class="card-body">
 					<div class="row">
-						<div class="col-md-8 col-12">
+						<div class="col-md-6 col-12">
 							<h5 class="card-title">Lista de Ventas</h5>
 						</div>
-						<div class="col-md-4 col-12">
+						<div class="col-md-6 col-12">
 							<form>
 								<div class="input-group mt-md-3 mb-3">
-									<input type="text" class="form-control" name="search" placeholder="Buscar" value="<?= $this->input->get("search") ?>">
+									<input type="text" class="form-control" id="f_from" name="from" placeholder="Desde" value="<?= $this->input->get("from") ?>">
+									<input type="text" class="form-control" id="f_to" name="to" placeholder="Hasta" value="<?= $this->input->get("to") ?>">
+									<input type="text" class="form-control" name="client" placeholder="Cliente" value="<?= $this->input->get("client") ?>">
 									<button type="submit" class="btn btn-primary"><i class="bi bi-funnel-fill"></i></button>
 								</div>
 							</form>

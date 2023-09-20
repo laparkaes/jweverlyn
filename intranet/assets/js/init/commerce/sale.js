@@ -165,3 +165,5 @@ $("#form_add_sale").submit(function(e) {
 		}
 	});
 });
+
+set_dates_between("#f_from", "#f_to");
