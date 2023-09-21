@@ -21,10 +21,31 @@
 		<div class="col-md-4">
 			<div class="card">
 				<div class="card-body profile-card pt-4 d-flex flex-column align-items-center text-center">
-					<?php  ?>
-					<img src="<?= $product->thumb ?>" id="main_image" alt="Thumb" style="max-width: 80%;">
-					<h2><?= $product->product ?></h2>
-					<h3><?= $product->category ?></h3>
+					<?php if ($client){ ?><h2 class="mb-3"><?= $client->name ?></h2><?php } ?>
+					<ul class="list-group w-100">
+						<li class="list-group-item d-flex justify-content-between align-items-center">
+							<strong>Estado</strong>
+							<span class="text-<?= $sale->color ?>"><?= $sale->status ?></span>
+						</li>
+						<li class="list-group-item d-flex justify-content-between align-items-center">
+							<strong>Monto</strong>
+							<span>S/. <?= number_format($sale->amount, 2) ?></span>
+						</li>
+						<?php if ($sale->balance){ ?>
+						<li class="list-group-item d-flex justify-content-between align-items-center">
+							<strong>Saldo</strong>
+							<span>S/. <?= number_format($sale->balance, 2) ?></span>
+						</li>
+						<?php } ?>
+						<li class="list-group-item">
+							<div class="text-start"><strong>Fecha</strong></div>
+							<div class="text-end"><span><?= $sale->registed_at ?></span></div>
+						</li>
+						<li class="list-group-item">
+							<div class="text-start"><strong>Última Actualización</strong></div>
+							<div class="text-end"><span><?= $sale->updated_at ?></span></div>
+						</li>
+					</ul>
 				</div>
 			</div>
 		</div>

@@ -158,9 +158,13 @@ function ajax_simple_warning(data, url, msg_index){
 	return deferred.promise();
 }
 
-function set_date(dom_date){
-	$(dom_date).datetimepicker({
-		minDate: moment(),
+function set_date(dom_date, min){
+	/*
+	min = moment() // select from today
+	min = null // all dates selection
+	*/
+	var op = {
+		locale: 'es',
 		allowInputToggle: true,
 		showClose: true,
 		showClear: true,
@@ -176,22 +180,10 @@ function set_date(dom_date){
 			clear: 'bi bi-eraser',
 			close: 'bi bi-x-lg',
 		},
-	});
-}
-
-function set_date_all(dom_date){
-	if ($(dom_date).length > 0){
-		$(dom_date).bootstrapMaterialDatePicker({
-			weekStart: 0,
-			time: false,
-			minDate : null,
-			lang: 'es',
-			okText: $("#bd_select").val(),
-			cancelText: $("#bd_cancel").val(),
-			clearButton: true,
-			clearText: $("#bd_clean").val(),
-		});	
 	}
+	if (min != null) op.minDate = moment();
+	
+	$(dom_date).datetimepicker(op);
 }
 
 function set_dates_between(dom_from, dom_to){

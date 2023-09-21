@@ -16,23 +16,26 @@ class Sale extends CI_Controller {
 		
 		$params = [
 			"page" => $this->input->get("page"),
-			"search" => $this->input->get("search"),
+			"from" => $this->input->get("from"),
+			"to" => $this->input->get("to"),
+			"client" => $this->input->get("client"),
 		];
 		if (!$params["page"]) $params["page"] = 1;
-		
 		$w = $l = $w_in = [];
-		if ($params["search"]){
-			/*
-			$l["product"] = $params["search"];
+	
+		if (!$params["to"]) $params["to"] = Date("Y-m-d");
+		$w["registed_at <"] = Date("Y-m-d", strtotime("+1 day", strtotime($params["to"])));
+		
+		if (!$params["from"]) $params["from"] = Date("Y-m-d", strtotime("-1 months", strtotime($params["to"])));
+		$w["registed_at >="] = $params["from"];
+
+		if ($params["client"]){
+			$client_ids = [-1];
+			$clients = $this->gm->filter("client", null, ["name" => $params["client"]]);
+			if ($clients) foreach($clients as $c) $client_ids[] = $c->client_id;
 			
-			$categories = $this->gm->filter("product_category", $w, ["category" => $params["search"]]);
-			if ($categories){
-				$cat_ids = [];
-				foreach($categories as $c) $cat_ids[] = $c->category_id;
-				$w_in[] = ["field" => "category_id", "values" => $cat_ids];	
-			}
-			*/
-		}else unset($params["search"]);
+			$w_in[] = ["field" => "client_id", "values" => $client_ids];
+		}
 		
 		$sales = $this->gm->filter("sale", $w, $l, $w_in, [["registed_at", "desc"]], 25, 25 * ($params["page"] - 1), false);
 		foreach($sales as $s){
@@ -40,20 +43,7 @@ class Sale extends CI_Controller {
 			else $s->client = "";
 			if ($s->balance) $s->color = "warning"; else $s->color = "success";
 		}
-		/*
 		
-		foreach($products as $p){
-			if ($p->image){
-				$path = "uploads/prod/".$p->product_id."/".$p->image;
-				if (file_exists($path)) $p->thumb = base_url().$path;
-				else $p->thumb = base_url()."uploads/prod/no_img.png";
-			}else $p->thumb = base_url()."uploads/prod/no_img.png";
-			
-			$p->category = $this->gm->unique("product_category", "category_id", $p->category_id)->category;
-			$p->sold_qty = 0;
-			if ($p->valid) $p->color = "success"; else $p->color = "danger";
-		}
-		*/
 		$data = [
 			"params" => $params,
 			"paging" => $this->my_func->paging($params["page"], $this->gm->qty("sale", $w, $l, $w_in)),
@@ -72,13 +62,18 @@ class Sale extends CI_Controller {
 			$client->doc_type = $this->gm->unique("identification_document", "identification_document_id", $client->doc_type_id, false)->identification_document;
 		}else $client = null;
 		
+		if ($sale->valid){
+			if ($sale->balance) $sale->color = "warning"; else $sale->color = "success";
+		}else $sale->color = "danger";
+		
+		switch($sale->color){
+			case "success": $sale->status = "Finalizado"; break;
+			case "warning": $sale->status = "Pendiente"; break;
+			case "danger": $sale->status = "Cancelado"; break;
+		}
+		
 		$payments = $this->gm->filter("sale_payment", ["sale_id" => $sale->sale_id], null, null, [["registed_at", "desc"]], "", "", false);
 		$products = $this->gm->filter("sale_product", ["sale_id" => $sale->sale_id], null, null, [["subtotal", "desc"]], "", "", false);
-		
-		print_r($sale); echo "<br/><br/><br/>";
-		print_r($client); echo "<br/><br/><br/>";
-		print_r($payments); echo "<br/><br/><br/>";
-		print_r($products); echo "<br/><br/><br/>";
 		
 		/*
 		$product = $this->gm->unique("product", "product_id", $product_id);
@@ -96,10 +91,11 @@ class Sale extends CI_Controller {
 		$product->stock = $op_aux["stock"];
 		*/
 		$data = [
-			/* "product" => $product,
-			"options" => $options,
-			"images" => $this->get_images($product_id),
-			"categories" => $this->gm->all("product_category", [["category", "asc"]]), */
+			"sale" => $sale,
+			"client" => $client,
+			"payments" => $payments,
+			"products" => $products,
+			//"categories" => $this->gm->all("product_category", [["category", "asc"]]),
 			"main" => "commerce/sale/detail",
 		];
 		$this->load->view('layout', $data);

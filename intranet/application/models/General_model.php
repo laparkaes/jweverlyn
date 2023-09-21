@@ -19,10 +19,10 @@ class General_model extends CI_Model{
 		if ($check_valid) $this->db->where("valid", true);
 		if ($w or $l or $w_in){
 			$this->db->group_start();
-			if ($w){ $this->db->or_group_start(); $this->db->where($w); $this->db->group_end(); }
-			if ($l){ $this->db->or_group_start(); $this->db->or_like($l); $this->db->group_end(); }
+			if ($w){ $this->db->group_start(); $this->db->where($w); $this->db->group_end(); }
+			if ($l){ $this->db->group_start(); $this->db->or_like($l); $this->db->group_end(); }
 			if ($w_in){
-				$this->db->or_group_start();
+				$this->db->group_start();
 				foreach($w_in as $item) $this->db->where_in($item["field"], $item["values"]);
 				$this->db->group_end();
 			}

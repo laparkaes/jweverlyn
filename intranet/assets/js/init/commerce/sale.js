@@ -157,6 +157,12 @@ $("#btn_add_sale").on('click',(function(e) {
 
 $("#form_add_sale").submit(function(e) {
 	e.preventDefault();
+	
+	//clean no stock products
+	$($(".prod_row")).each(function(index, element){
+		if ($(element).find(".option_id").length == 0) $(element).remove();
+	});
+	
 	ajax_form_warning(this, b_url + "add_sale", "add_sale").done(function(res) {
 		if (res.type == "success") swal_redirection(res.type, res.msg, base_url + b_url + "detail/" + res.sale_id);
 		else{
@@ -166,4 +172,4 @@ $("#form_add_sale").submit(function(e) {
 	});
 });
 
-set_dates_between("#f_from", "#f_to");
+set_date(".datepicker", null);
