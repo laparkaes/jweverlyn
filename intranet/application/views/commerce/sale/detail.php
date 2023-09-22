@@ -21,7 +21,7 @@
 		<div class="col-md-4">
 			<div class="card">
 				<div class="card-body profile-card pt-4 d-flex flex-column align-items-center text-center">
-					<?php if ($client){ ?><h2 class="mb-3"><?= $client->name ?></h2><?php } ?>
+					<?php if ($client){ ?><h2 class="mb-5"><?= $client->name ?></h2><?php } ?>
 					<ul class="list-group w-100">
 						<li class="list-group-item d-flex justify-content-between align-items-center">
 							<strong>Estado</strong>
@@ -38,7 +38,7 @@
 						</li>
 						<?php } ?>
 						<li class="list-group-item">
-							<div class="text-start"><strong>Fecha</strong></div>
+							<div class="text-start"><strong>Fecha de Registro</strong></div>
 							<div class="text-end"><span><?= $sale->registed_at ?></span></div>
 						</li>
 						<li class="list-group-item">
@@ -54,7 +54,10 @@
 				<div class="card-body pt-3">
 					<ul class="nav nav-tabs nav-tabs-bordered">
 						<li class="nav-item">
-							<button class="nav-link active" data-bs-toggle="tab" data-bs-target="#detail">Detalle</button>
+							<button class="nav-link active" data-bs-toggle="tab" data-bs-target="#operation">Operación</button>
+						</li>
+						<li class="nav-item">
+							<button class="nav-link" data-bs-toggle="tab" data-bs-target="#detail">Detalle</button>
 						</li>
 						<li class="nav-item">
 							<button class="nav-link" data-bs-toggle="tab" data-bs-target="#edit">Editar</button>
@@ -67,6 +70,36 @@
 						</li>
 					</ul>
 					<div class="tab-content pt-4">
+						<div class="tab-pane fade show active profile-overview" id="operation">
+							<div class="row">
+								<div class="col-lg-3 col-md-4 label">Código</div>
+								<div class="col-lg-9 col-md-8"><?= $product->code ?></div>
+							</div>
+							<div class="row">
+								<div class="col-lg-3 col-md-4 label">Nombre</div>
+								<div class="col-lg-9 col-md-8"><?= $product->product ?></div>
+							</div>
+							<div class="row">
+								<div class="col-lg-3 col-md-4 label">Categoría</div>
+								<div class="col-lg-9 col-md-8"><?= $product->category ?></div>
+							</div>
+							<div class="row">
+								<div class="col-lg-3 col-md-4 label">Precio</div>
+								<div class="col-lg-9 col-md-8">S/ <?= number_format($product->price, 2) ?></div>
+							</div>
+							<div class="row">
+								<div class="col-lg-3 col-md-4 label">Stock</div>
+								<div class="col-lg-9 col-md-8" id="num_stock"><?= $product->stock ?></div>
+							</div>
+							<div class="row">
+								<div class="col-lg-3 col-md-4 label">Actualizado</div>
+								<div class="col-lg-9 col-md-8"><?= $product->updated_at ?></div>
+							</div>
+							<div class="row">
+								<div class="col-lg-3 col-md-4 label">Registrado</div>
+								<div class="col-lg-9 col-md-8"><?= $product->registed_at ?></div>
+							</div>
+						</div>
 						<div class="tab-pane fade show active profile-overview" id="detail">
 							<div class="row">
 								<div class="col-lg-3 col-md-4 label">Código</div>
