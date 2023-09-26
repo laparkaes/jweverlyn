@@ -52,9 +52,29 @@
 		<div class="col-md-8">
 			<div class="card">
 				<div class="card-body pt-3">
+					<div class="row">
+						<div class="col-md-4 d-grid">
+							<button type="button" class="btn btn-success mb-3">
+								<i class="bi bi-file-earmark-text-fill" style="font-size: 3rem;"></i>
+								<br/>Comprobante
+							</button>
+						</div>
+						<div class="col-md-4 d-grid">
+							<button type="button" class="btn btn-primary mb-3">
+								<i class="bi bi-coin" style="font-size: 3rem;"></i>
+								<br/>Reporte de Pagos
+							</button>
+						</div>
+						<div class="col-md-4 d-grid">
+							<button type="button" class="btn btn-danger mb-3">
+								<i class="bi bi-trash" style="font-size: 3rem;"></i>
+								<br/>Anular Venta
+							</button>
+						</div>
+					</div>
 					<ul class="nav nav-tabs nav-tabs-bordered">
 						<li class="nav-item">
-							<button class="nav-link active" data-bs-toggle="tab" data-bs-target="#operation">Operación</button>
+							<button class="nav-link active" data-bs-toggle="tab" data-bs-target="#products">Productos</button>
 						</li>
 						<li class="nav-item">
 							<button class="nav-link" data-bs-toggle="tab" data-bs-target="#detail">Detalle</button>
@@ -70,48 +90,44 @@
 						</li>
 					</ul>
 					<div class="tab-content pt-4">
-						<div class="tab-pane fade show active profile-overview" id="operation">
-							<div class="row">
-								<div class="col-lg-3 col-md-4 label">Código</div>
-								<div class="col-lg-9 col-md-8"><?= $product->code ?></div>
-							</div>
-							<div class="row">
-								<div class="col-lg-3 col-md-4 label">Nombre</div>
-								<div class="col-lg-9 col-md-8"><?= $product->product ?></div>
-							</div>
-							<div class="row">
-								<div class="col-lg-3 col-md-4 label">Categoría</div>
-								<div class="col-lg-9 col-md-8"><?= $product->category ?></div>
-							</div>
-							<div class="row">
-								<div class="col-lg-3 col-md-4 label">Precio</div>
-								<div class="col-lg-9 col-md-8">S/ <?= number_format($product->price, 2) ?></div>
-							</div>
-							<div class="row">
-								<div class="col-lg-3 col-md-4 label">Stock</div>
-								<div class="col-lg-9 col-md-8" id="num_stock"><?= $product->stock ?></div>
-							</div>
-							<div class="row">
-								<div class="col-lg-3 col-md-4 label">Actualizado</div>
-								<div class="col-lg-9 col-md-8"><?= $product->updated_at ?></div>
-							</div>
-							<div class="row">
-								<div class="col-lg-3 col-md-4 label">Registrado</div>
-								<div class="col-lg-9 col-md-8"><?= $product->registed_at ?></div>
+						<div class="tab-pane fade show active" id="products">
+							<div class="table-responsive">
+								<table class="table align-middle">
+									<thead>
+										<tr>
+											<th scope="col">#</th>
+											<th scope="col">Producto</th>
+											<th scope="col">Cant.</th>
+											<th scope="col">P/U</th>
+											<th scope="col">Subtotal</th>
+										</tr>
+									</thead>
+									<tbody id="tbody_images">
+										<?php foreach($products as $p_i => $p){ ?>
+										<tr>
+											<th scope="row"><?= number_format($p_i + 1) ?></th>
+											<td><?= $p->prod->product ?><br><small><?= $p->op->option ?></small></td>
+											<td><?= number_format($p->qty) ?></td>
+											<td class="text-nowrap text-end">S/ <?= number_format($p->price, 2) ?></td>
+											<td class="text-nowrap text-end">S/ <?= number_format($p->subtotal, 2) ?></td>
+										</tr>
+										<?php } ?>
+									</tbody>
+								</table>
 							</div>
 						</div>
-						<div class="tab-pane fade show active profile-overview" id="detail">
+						<div class="tab-pane fade profile-overview" id="detail">
 							<div class="row">
 								<div class="col-lg-3 col-md-4 label">Código</div>
-								<div class="col-lg-9 col-md-8"><?= $product->code ?></div>
+								<div class="col-lg-9 col-md-8"><?="aa" //$product->code ?></div>
 							</div>
 							<div class="row">
 								<div class="col-lg-3 col-md-4 label">Nombre</div>
-								<div class="col-lg-9 col-md-8"><?= $product->product ?></div>
+								<div class="col-lg-9 col-md-8"><?="aa" //$product->product ?></div>
 							</div>
 							<div class="row">
 								<div class="col-lg-3 col-md-4 label">Categoría</div>
-								<div class="col-lg-9 col-md-8"><?= $product->category ?></div>
+								<div class="col-lg-9 col-md-8"><?="aa" //$product->category ?></div>
 							</div>
 							<div class="row">
 								<div class="col-lg-3 col-md-4 label">Precio</div>
@@ -119,31 +135,31 @@
 							</div>
 							<div class="row">
 								<div class="col-lg-3 col-md-4 label">Stock</div>
-								<div class="col-lg-9 col-md-8" id="num_stock"><?= $product->stock ?></div>
+								<div class="col-lg-9 col-md-8" id="num_stock"><?="aa" //$product->stock ?></div>
 							</div>
 							<div class="row">
 								<div class="col-lg-3 col-md-4 label">Actualizado</div>
-								<div class="col-lg-9 col-md-8"><?= $product->updated_at ?></div>
+								<div class="col-lg-9 col-md-8"><?="aa" //$product->updated_at ?></div>
 							</div>
 							<div class="row">
 								<div class="col-lg-3 col-md-4 label">Registrado</div>
-								<div class="col-lg-9 col-md-8"><?= $product->registed_at ?></div>
+								<div class="col-lg-9 col-md-8"><?="aa" //$product->registed_at ?></div>
 							</div>
 						</div>
 						<div class="tab-pane fade profile-edit" id="edit">
 							<form id="form_update_product">
-								<input type="hidden" name="product_id" value="<?= $product->product_id ?>">
+								<input type="hidden" name="product_id" value="<?="aa" //$product->product_id ?>">
 								<div class="row mb-3">
 									<label class="col-md-4 col-lg-3 col-form-label">Código</label>
 									<div class="col-md-8 col-lg-9">
-										<input name="code" type="text" class="form-control" value="<?= $product->code ?>">
+										<input name="code" type="text" class="form-control" value="<?="aa" //$product->code ?>">
 										<div class="invalid-feedback"></div>
 									</div>
 								</div>
 								<div class="row mb-3">
 									<label class="col-md-4 col-lg-3 col-form-label">Producto</label>
 									<div class="col-md-8 col-lg-9">
-										<input name="product" type="text" class="form-control" value="<?= $product->product ?>">
+										<input name="product" type="text" class="form-control" value="<?="aa" //$product->product ?>">
 										<div class="invalid-feedback"></div>
 									</div>
 								</div>
@@ -165,7 +181,7 @@
 									<div class="col-md-8 col-lg-9">
 										<div class="input-group">
 											<span class="input-group-text" id="basic-addon1">S/</span>
-											<input type="text" class="form-control" name="price" value="<?= number_format($product->price, 2) ?>">
+											<input type="text" class="form-control" name="price" value="<?= number_format(11, 2) ?>">
 											<div class="invalid-feedback"></div>
 										</div>
 									</div>
@@ -257,7 +273,7 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<form id="form_add_option">
-				<input type="hidden" name="product_id" value="<?= $product->product_id ?>">
+				<input type="hidden" name="product_id" value="<?="aa" //$product->product_id ?>">
 				<div class="modal-header">
 					<h5 class="modal-title">Agregar Opción</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
@@ -289,7 +305,7 @@
 		<div class="modal-content">
 			<form id="form_update_option">
 				<input type="hidden" name="option_id">
-				<input type="hidden" name="product_id" value="<?= $product->product_id ?>">
+				<input type="hidden" name="product_id" value="<?="aa" //$product->product_id ?>">
 				<div class="modal-header">
 					<h5 class="modal-title">Editar Opción</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
@@ -320,7 +336,7 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<form id="form_add_image">
-				<input type="hidden" name="product_id" value="<?= $product->product_id ?>">
+				<input type="hidden" name="product_id" value="<?="aa" //$product->product_id ?>">
 				<div class="modal-header">
 					<h5 class="modal-title">Agregar Imagen</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>

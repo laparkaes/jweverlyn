@@ -74,6 +74,10 @@ class Sale extends CI_Controller {
 		
 		$payments = $this->gm->filter("sale_payment", ["sale_id" => $sale->sale_id], null, null, [["registed_at", "desc"]], "", "", false);
 		$products = $this->gm->filter("sale_product", ["sale_id" => $sale->sale_id], null, null, [["subtotal", "desc"]], "", "", false);
+		foreach($products as $p){
+			$p->prod = $this->gm->unique("product", "product_id", $p->product_id);
+			$p->op = $this->gm->unique("product_option", "option_id", $p->option_id);
+		}
 		
 		/*
 		$product = $this->gm->unique("product", "product_id", $product_id);
