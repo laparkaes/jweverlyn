@@ -53,28 +53,23 @@
 			<div class="card">
 				<div class="card-body pt-3">
 					<div class="row">
-						<div class="col-md-4 d-grid">
+						<div class="col-md-6 d-grid">
 							<button type="button" class="btn btn-success mb-3">
-								<i class="bi bi-file-earmark-text-fill" style="font-size: 3rem;"></i>
-								<br/>Comprobante
+								<i class="bi bi-file-earmark-text-fill"></i> Emitir Comprobante
 							</button>
 						</div>
-						<div class="col-md-4 d-grid">
-							<button type="button" class="btn btn-primary mb-3">
-								<i class="bi bi-coin" style="font-size: 3rem;"></i>
-								<br/>Reporte de Pagos
-							</button>
-						</div>
-						<div class="col-md-4 d-grid">
-							<button type="button" class="btn btn-danger mb-3">
-								<i class="bi bi-trash" style="font-size: 3rem;"></i>
-								<br/>Anular Venta
+						<div class="col-md-6 d-grid">
+							<button type="button" class="btn btn-outline-danger mb-3">
+								<i class="bi bi-trash"></i> Anular Venta
 							</button>
 						</div>
 					</div>
 					<ul class="nav nav-tabs nav-tabs-bordered">
 						<li class="nav-item">
 							<button class="nav-link active" data-bs-toggle="tab" data-bs-target="#products">Productos</button>
+						</li>
+						<li class="nav-item">
+							<button class="nav-link" data-bs-toggle="tab" data-bs-target="#payments">Pagos</button>
 						</li>
 						<li class="nav-item">
 							<button class="nav-link" data-bs-toggle="tab" data-bs-target="#detail">Detalle</button>
@@ -91,6 +86,32 @@
 					</ul>
 					<div class="tab-content pt-4">
 						<div class="tab-pane fade show active" id="products">
+							<div class="table-responsive">
+								<table class="table align-middle">
+									<thead>
+										<tr>
+											<th scope="col">#</th>
+											<th scope="col">Producto</th>
+											<th scope="col">Cant.</th>
+											<th scope="col">P/U</th>
+											<th scope="col">Subtotal</th>
+										</tr>
+									</thead>
+									<tbody id="tbody_images">
+										<?php foreach($products as $p_i => $p){ ?>
+										<tr>
+											<th scope="row"><?= number_format($p_i + 1) ?></th>
+											<td><?= $p->prod->product ?><br><small><?= $p->op->option ?></small></td>
+											<td><?= number_format($p->qty) ?></td>
+											<td class="text-nowrap text-end">S/ <?= number_format($p->price, 2) ?></td>
+											<td class="text-nowrap text-end">S/ <?= number_format($p->subtotal, 2) ?></td>
+										</tr>
+										<?php } ?>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div class="tab-pane fade" id="payments">
 							<div class="table-responsive">
 								<table class="table align-middle">
 									<thead>
