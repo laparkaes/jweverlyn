@@ -72,28 +72,17 @@ class Sale extends CI_Controller {
 			case "danger": $sale->status = "Cancelado"; break;
 		}
 		
-		$payments = $this->gm->filter("sale_payment", ["sale_id" => $sale->sale_id], null, null, [["registed_at", "desc"]], "", "", false);
+		$payments = $this->gm->filter("sale_payment", ["sale_id" => $sale->sale_id], null, null, [["registed_at", "desc"]], "", "");
+		foreach($payments as $p){
+			$p->payment_method = $this->gm->unique("payment_method", "payment_method_id", $p->payment_method_id, false)->payment_method;
+		}
+		
 		$products = $this->gm->filter("sale_product", ["sale_id" => $sale->sale_id], null, null, [["subtotal", "desc"]], "", "", false);
 		foreach($products as $p){
 			$p->prod = $this->gm->unique("product", "product_id", $p->product_id);
 			$p->op = $this->gm->unique("product_option", "option_id", $p->option_id);
 		}
 		
-		/*
-		$product = $this->gm->unique("product", "product_id", $product_id);
-		$product->category = $this->gm->unique("product_category", "category_id", $product->category_id)->category;
-		
-		if ($product->image){
-			$path = "uploads/prod/".$product->product_id."/".$product->image;
-			if (file_exists($path)) $product->thumb = base_url().$path;
-			else $product->thumb = base_url()."uploads/prod/no_img.png";
-		}else $product->thumb = base_url()."uploads/prod/no_img.png";
-		
-		
-		$op_aux = $this->calculate_stock($product_id);
-		$options = $op_aux["options"];
-		$product->stock = $op_aux["stock"];
-		*/
 		$data = [
 			"sale" => $sale,
 			"client" => $client,
