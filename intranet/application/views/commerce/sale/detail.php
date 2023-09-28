@@ -60,7 +60,7 @@
 						</div>
 						<div class="col-md-4 d-grid">
 							<?php if ($sale->balance) $d = ""; else $d = "disabled"; ?>
-							<button type="button" class="btn btn-primary mb-3" <?= $d ?>>
+							<button type="button" class="btn btn-primary mb-3" <?= $d ?> data-bs-toggle="modal" data-bs-target="#md_add_payment">
 								<i class="bi bi-piggy-bank-fill" style="font-size: 2rem;"></i><br/>Agregar Pago
 							</button>
 						</div>
@@ -127,7 +127,7 @@
 											<td class="text-nowrap text-end">S/ <?= number_format($p->received, 2) ?></td>
 											<td class="text-nowrap text-end">S/ <?= number_format($p->change, 2) ?></td>
 											<td class="text-end">
-												<button type="button" class="btn btn-outline-danger btn-sm border-0">
+												<button type="button" class="btn btn-outline-danger btn-sm border-0 btn_delete_payment" value="<?= $p->payment_id ?>">
 													<i class="bi bi-x-lg"></i>
 												</button>
 											</td>
@@ -145,92 +145,60 @@
 </section>
 
 <!-- modals -->
-<div class="modal fade" id="md_add_option" tabindex="-1">
+<?php if ($sale->balance){ ?>
+<div class="modal fade" id="md_add_payment" tabindex="-1">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form id="form_add_option">
-				<input type="hidden" name="product_id" value="<?="aa" //$product->product_id ?>">
+			<form id="form_add_payment">
+				<input type="hidden" name="sale_id" value="<?= $sale->sale_id ?>">
 				<div class="modal-header">
-					<h5 class="modal-title">Agregar Opción</h5>
+					<h5 class="modal-title">Agregar Pago</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
 				</div>
 				<div class="modal-body text-start">
 					<div class="row g-3">
-						<div class="col-6">
-							<label class="form-label">Opción</label>
-							<input type="text" class="form-control" name="option">
+						<div class="col-md-6">
+							<label class="form-label">Medio de Pago</label>
+							<select class="form-select" name="payment_method_id">
+								<?php foreach($payment_methods as $p){ ?>
+								<option value="<?= $p->payment_method_id ?>"><?= $p->payment_method ?></option>
+								<?php } ?>
+							</select>
 							<div class="invalid-feedback"></div>
 						</div>
-						<div class="col-6">
-							<label class="form-label">Stock</label>
-							<input type="text" class="form-control" name="stock">
-							<div class="invalid-feedback"></div>
+						<div class="col-md-6">
+							<label class="form-label">Recibido</label>
+							<div class="input-group has-validation">
+								<span class="input-group-text">S/.</span>
+								<input type="hidden" id="received" name="received" value="0.00">
+								<input type="text" class="form-control" id="received_txt" value="0.00">
+								<div class="invalid-feedback"></div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<label class="form-label">Total</label>
+							<div class="input-group">
+								<span class="input-group-text">S/.</span>
+								<input type="hidden" id="total" name="total" value="<?= $sale->balance ?>" readonly>
+								<input type="text" class="form-control" id="total_txt" value="<?= number_format($sale->balance, 2) ?>" disabled>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<label class="form-label">Vuelto</label>
+							<div class="input-group">
+								<span class="input-group-text">S/.</span>
+								<input type="hidden"id="change" name="change" value="0.00" readonly>
+								<input type="text" class="form-control" id="change_txt" value="0.00" disabled>
+							</div>
 						</div>
 					</div>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-					<button type="submit" class="btn btn-primary">Agregar</button>
+					<button type="button" class="btn btn-primary" id="btn_add_payment">Agregar</button>
 				</div>
 			</form>
 		</div>
 	</div>
 </div>
-<div class="modal fade" id="md_edit_option" tabindex="-1">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<form id="form_update_option">
-				<input type="hidden" name="option_id">
-				<input type="hidden" name="product_id" value="<?="aa" //$product->product_id ?>">
-				<div class="modal-header">
-					<h5 class="modal-title">Editar Opción</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-				</div>
-				<div class="modal-body text-start">
-					<div class="row g-3">
-						<div class="col-6">
-							<label class="form-label">Opción</label>
-							<input type="text" class="form-control" name="option">
-							<div class="invalid-feedback"></div>
-						</div>
-						<div class="col-6">
-							<label class="form-label">Stock</label>
-							<input type="text" class="form-control" name="stock">
-							<div class="invalid-feedback"></div>
-						</div>
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-					<button type="submit" class="btn btn-primary">Actualizar</button>
-				</div>
-			</form>
-		</div>
-	</div>
-</div>
-<div class="modal fade" id="md_add_image" tabindex="-1">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<form id="form_add_image">
-				<input type="hidden" name="product_id" value="<?="aa" //$product->product_id ?>">
-				<div class="modal-header">
-					<h5 class="modal-title">Agregar Imagen</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-				</div>
-				<div class="modal-body text-start">
-					<div class="row g-3">
-						<div class="col-12">
-							<label class="form-label">Imagen</label>
-							<input type="file" class="form-control" name="image" accept=".jpg, .jpeg, .png, .gif">
-							<div class="invalid-feedback"></div>
-						</div>
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-					<button type="submit" class="btn btn-primary">Agregar</button>
-				</div>
-			</form>
-		</div>
-	</div>
-</div>
+<?php } ?>

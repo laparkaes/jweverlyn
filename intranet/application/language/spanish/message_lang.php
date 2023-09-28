@@ -16,7 +16,11 @@ $lang['e_select_product'] = 'Elija al menos un producto.';
 $lang['e_product_no_stock'] = 'Disponibilidad insuficiente de ';
 $lang['e_product_invalid_option'] = "Opción inválida de ";
 $lang['e_invalid_payment'] = "Monto de pago inválido.";
+$lang['e_no_payment_record'] = "No hay registro de pago. Actualice la página e inténtelo nuevamente.";
 $lang['s_sale_insert'] = "Venta ha sido registrada.";
+$lang['s_payment_delete'] = "Pago ha sido anulado.";
+
+
 
 //setting - company
 $lang['s_save_company_info'] = 'Información de empresa ha sido guardada.';
