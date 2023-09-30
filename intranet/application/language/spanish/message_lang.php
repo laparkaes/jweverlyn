@@ -18,6 +18,7 @@ $lang['e_product_invalid_option'] = "Opción inválida de ";
 $lang['e_invalid_payment'] = "Monto de pago inválido.";
 $lang['e_no_payment_record'] = "No hay registro de pago. Actualice la página e inténtelo nuevamente.";
 $lang['s_sale_insert'] = "Venta ha sido registrada.";
+$lang['s_payment_insert'] = "Pago ha sido registrado.";
 $lang['s_payment_delete'] = "Pago ha sido anulado.";
 
 

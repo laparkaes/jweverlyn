@@ -171,7 +171,7 @@
 							<div class="input-group has-validation">
 								<span class="input-group-text">S/.</span>
 								<input type="hidden" id="received" name="received" value="0.00">
-								<input type="text" class="form-control" id="received_txt" value="0.00">
+								<input type="text" class="form-control" id="received_txt" name="received_txt" value="0.00">
 								<div class="invalid-feedback"></div>
 							</div>
 						</div>

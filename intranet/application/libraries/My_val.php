@@ -427,4 +427,15 @@ class My_val{
 		
 		return ["type" => $type, "msgs" => $msgs, "msg" => $msg];
 	}
+	
+	public function add_payment($payment){
+		$msgs = []; $msg = "";
+		
+		//payment validation
+		$msgs = $this->set_msg($msgs, "payment_method_id"); //no validation required
+		if ($payment["received"] > 0) $msgs = $this->set_msg($msgs, "received_txt");
+		else $msgs = $this->set_msg($msgs, "received_txt", "e_invalid_payment");
+		
+		return ["type" => $this->get_type($msgs), "msgs" => $msgs, "msg" => $msg];
+	}
 }

@@ -185,15 +185,10 @@ $("#btn_add_payment").on('click',(function(e) {
 
 $("#form_add_payment").submit(function(e) {
 	e.preventDefault();
-	
 	ajax_form_warning(this, b_url + "add_payment", "add_payment").done(function(res) {
-		/*
+		set_msgs("#form_add_payment", res.msgs);
 		if (res.type == "success") swal_redirection(res.type, res.msg, base_url + b_url + "detail/" + res.sale_id);
-		else{
-			set_msgs("#form_add_sale", res.msgs);
-			swal(res.type, res.msg);
-		}
-		*/
+		else swal(res.type, res.msg);
 	});
 });
 

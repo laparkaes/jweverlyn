@@ -84,6 +84,14 @@ class General_model extends CI_Model{
 		$this->db->where($filter);
 		return $this->db->delete($tablename);
 	}
+	
+	function sum($tablename, $col, $filter = null){
+		$this->db->select_sum($col);
+		if ($filter) $this->db->where($filter);
+		$query = $this->db->get($tablename);
+		$result = $query->result();
+		return $result[0];
+	}
 
 	////////////////////////////////////////////
     function id($tablename, $id){
@@ -102,13 +110,7 @@ class General_model extends CI_Model{
 		}else return array();
 	}
 	
-	function sum($tablename, $col, $filter = null){
-		$this->db->select_sum($col);
-		if ($filter) $this->db->where($filter);
-		$query = $this->db->get($tablename);
-		$result = $query->result();
-		return $result[0];
-	}
+	
 	
 	function find($tablename, $field1 = null, $field2 = null, $filter = null){
 		if ($field1) foreach($filter as $f) $this->db->like($field1, $f);

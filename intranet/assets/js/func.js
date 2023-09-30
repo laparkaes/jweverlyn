@@ -34,6 +34,7 @@ const sp_warning_msg = {
 	delete_image: "¿Desea eliminar imagen?",
 	add_sale: "¿Desea agregar nueva venta?",
 	//cancel_sale: "¿Desea anular la venta?",
+	add_payment: "¿Desea agregar pago?",
 	delete_payment: "¿Desea eliminar pago?",
 }
 

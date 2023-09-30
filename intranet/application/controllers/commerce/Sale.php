@@ -88,34 +88,67 @@ class Sale extends CI_Controller {
 			"client" => $client,
 			"payments" => $payments,
 			"products" => $products,
-			//"categories" => $this->gm->all("product_category", [["category", "asc"]]),
+			"payment_methods" => $this->gm->all_simple("payment_method", "payment_method_id", "asc"),
 			"main" => "commerce/sale/detail",
 		];
 		$this->load->view('layout', $data);
+	}
+	
+	private function update_balance($sale_id){
+		$sale = $this->gm->unique("sale", "sale_id", $sale_id);
+		
+		$paid = 0;
+		//$paid = $this->gm->sum("sale_payment", "received", ["sale_id" => $sale->sale_id])->received - $this->gm->sum("sale_payment", "change", ["sale_id" => $sale->sale_id])->change;
+		
+		echo $paid;
+	}
+	
+	public function add_payment(){
+		$result = ["type" => "error", "msg" => null, "url" => null];
+		
+		if ($this->session->userdata('username')){
+			$payment = $this->input->post();
+			
+			$this->load->library('my_val');
+			$result = $this->my_val->add_payment($payment);
+			
+			if ($result["type"] === "success"){
+				//$this->gm->insert("sale_payment", $payment);
+				$this->update_balance($payment["sale_id"]);
+				
+				$result["msg"] = $this->lang->line("s_payment_insert");
+				$result["url"] = base_url()."commerce/sale/detail/".$payment["sale_id"];
+			}
+		}else $result["msg"] = $this->lang->line("e_finished_session");
+		
+		header('Content-Type: application/json');
+		echo json_encode($result);
 	}
 	
 	public function delete_payment(){
 		$type = "error"; $msg = null; $url = null;
 		$payment = $this->gm->unique("sale_payment", "payment_id", $this->input->post('payment_id'));
 		
-		if ($payment){
-			$sale = $this->gm->unique("sale", "sale_id", $payment->sale_id);
-			
-			$amount = $payment->received - $payment->change;
-			$f = ["sale_id" => $sale->sale_id];
-			$d = [
-				"paid" => $sale->paid - $amount,
-				"balance" => $sale->balance + $amount,
-				"updated_at" => date("Y-m-d H:i:s"),
-			];
-			
-			$this->gm->update("sale", $f, $d);
-			$this->gm->update("sale_payment", ["payment_id" => $payment->payment_id], ["valid" => false]);
-			
-			$type = "success";
-			$msg = $this->lang->line("s_payment_delete");
-			$url = base_url()."commerce/sale/detail/".$sale->sale_id;
-		}else $msg = $this->lang->line("e_no_payment_record");
+		if ($this->session->userdata('username')){
+			if ($payment){
+				$sale = $this->gm->unique("sale", "sale_id", $payment->sale_id);
+				
+				$amount = $payment->received - $payment->change;
+				$f = ["sale_id" => $sale->sale_id];
+				$d = [
+					"paid" => $sale->paid - $amount,
+					"balance" => $sale->balance + $amount,
+					"updated_at" => date("Y-m-d H:i:s"),
+				];
+				
+				$this->gm->update("sale", $f, $d);
+				$this->gm->update("sale_payment", ["payment_id" => $payment->payment_id], ["valid" => false]);
+				
+				$type = "success";
+				$msg = $this->lang->line("s_payment_delete");
+				$url = base_url()."commerce/sale/detail/".$sale->sale_id;
+			}else $msg = $this->lang->line("e_no_payment_record");
+		}else $msg = $this->lang->line("e_finished_session");
 		
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msg" => $msg, "url" => $url]);
@@ -200,7 +233,7 @@ class Sale extends CI_Controller {
 	}
 	
 	public function add_sale(){
-		$type = "error"; $msg = null;
+		$result = ["type" => "error", "msg" => null];
 		
 		if ($this->session->userdata('username')){
 			$products = $this->input->post("products");
@@ -263,7 +296,7 @@ class Sale extends CI_Controller {
 				$result["sale_id"] = $sale_id;
 				$result["msg"] = $this->lang->line("s_sale_insert");
 			}
-		}else $msg = $this->lang->line("e_finished_session");
+		}else $result["msg"] = $this->lang->line("e_finished_session");
 		
 		header('Content-Type: application/json');
 		echo json_encode($result);
