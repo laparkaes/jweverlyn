@@ -98,9 +98,16 @@ class Sale extends CI_Controller {
 		$sale = $this->gm->unique("sale", "sale_id", $sale_id);
 		
 		$paid = 0;
-		//$paid = $this->gm->sum("sale_payment", "received", ["sale_id" => $sale->sale_id])->received - $this->gm->sum("sale_payment", "change", ["sale_id" => $sale->sale_id])->change;
+		$payments = $this->gm->filter("sale_payment", ["sale_id" => $sale->sale_id]);
+		foreach($payments as $p) $paid = $paid + $p->received - $p->change;
 		
-		echo $paid;
+		$f = ["sale_id" => $sale->sale_id];
+		$d = [
+			"paid" => $paid,
+			"balance" => $sale->amount - $paid,
+			"updated_at" => date("Y-m-d H:i:s"),
+		];
+		$this->gm->update("sale", $f, $d);
 	}
 	
 	public function add_payment(){
@@ -113,7 +120,8 @@ class Sale extends CI_Controller {
 			$result = $this->my_val->add_payment($payment);
 			
 			if ($result["type"] === "success"){
-				//$this->gm->insert("sale_payment", $payment);
+				unset($payment["received_txt"]);
+				$this->gm->insert("sale_payment", $payment);
 				$this->update_balance($payment["sale_id"]);
 				
 				$result["msg"] = $this->lang->line("s_payment_insert");
@@ -131,22 +139,12 @@ class Sale extends CI_Controller {
 		
 		if ($this->session->userdata('username')){
 			if ($payment){
-				$sale = $this->gm->unique("sale", "sale_id", $payment->sale_id);
-				
-				$amount = $payment->received - $payment->change;
-				$f = ["sale_id" => $sale->sale_id];
-				$d = [
-					"paid" => $sale->paid - $amount,
-					"balance" => $sale->balance + $amount,
-					"updated_at" => date("Y-m-d H:i:s"),
-				];
-				
-				$this->gm->update("sale", $f, $d);
 				$this->gm->update("sale_payment", ["payment_id" => $payment->payment_id], ["valid" => false]);
+				$this->update_balance($payment->sale_id);
 				
 				$type = "success";
 				$msg = $this->lang->line("s_payment_delete");
-				$url = base_url()."commerce/sale/detail/".$sale->sale_id;
+				$url = base_url()."commerce/sale/detail/".$payment->sale_id;
 			}else $msg = $this->lang->line("e_no_payment_record");
 		}else $msg = $this->lang->line("e_finished_session");
 		
@@ -192,7 +190,8 @@ class Sale extends CI_Controller {
 		
 		if ($data["doc_number"]){
 			$person = $this->gm->filter("client", $data);
-			if (!$person){
+			if ($person) $person = $person[0];
+			else{
 				$name = "";
 				switch($data["doc_type_id"]){
 					case 2: //dni
@@ -206,15 +205,15 @@ class Sale extends CI_Controller {
 				}
 				
 				$person = $this->gm->structure("client");
-				if ($name){
-					$person->doc_type_id = $data["doc_type_id"];
-					$person->doc_number = $data["doc_number"];
-					$person->name = $name;
-				}
+				$person->name = $name;
 			}
 			
-			if ($person->name) $type = "success";
-			else $msg = $this->lang->line("e_no_result");
+			if ($person->name){
+				$person->doc_type_id = $data["doc_type_id"];
+				$person->doc_number = $data["doc_number"];
+				
+				$type = "success";
+			}else $msg = $this->lang->line("e_no_result");
 		}else $msg = $this->lang->line("e_doc_number_enter");
 		
 		header('Content-Type: application/json');

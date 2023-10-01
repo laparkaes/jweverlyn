@@ -112,7 +112,6 @@
 										<tr>
 											<th scope="col">#</th>
 											<th scope="col">Metodo / Fecha</th>
-											<th scope="col">Total</th>
 											<th scope="col">Recibido</th>
 											<th scope="col">Vuelto</th>
 											<th scope="col"></th>
@@ -123,7 +122,6 @@
 										<tr>
 											<th scope="row"><?= number_format($p_i + 1) ?></th>
 											<td><?= $p->payment_method ?><br/><?= $p->registed_at ?></td>
-											<td class="text-nowrap text-end">S/ <?= number_format($p->total, 2) ?></td>
 											<td class="text-nowrap text-end">S/ <?= number_format($p->received, 2) ?></td>
 											<td class="text-nowrap text-end">S/ <?= number_format($p->change, 2) ?></td>
 											<td class="text-end">
