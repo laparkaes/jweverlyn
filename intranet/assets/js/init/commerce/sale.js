@@ -1,5 +1,7 @@
 let b_url = "commerce/sale/";
 
+set_date(".datepicker", null);
+
 function calculate_change(){
 	var total = parseFloat($("#total").val());
 	var received =  parseFloat($("#received_txt").val());
@@ -182,7 +184,6 @@ $("#btn_add_payment").on('click',(function(e) {
 	$("#form_add_payment").submit();
 }));
 
-
 $("#form_add_payment").submit(function(e) {
 	e.preventDefault();
 	ajax_form_warning(this, b_url + "add_payment", "add_payment").done(function(res) {
@@ -192,6 +193,9 @@ $("#form_add_payment").submit(function(e) {
 	});
 });
 
+$("#btn_cancel_sale").on('click',(function(e) {
+	ajax_simple_warning({sale_id: $(this).val()}, b_url + "cancel_sale", "cancel_sale").done(function(res) {
+		swal_redirection(res.type, res.msg, res.url);
+	});
+}));
 
-
-set_date(".datepicker", null);

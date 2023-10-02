@@ -52,9 +52,11 @@
 		<div class="col-md-8">
 			<div class="card">
 				<div class="card-body pt-3">
+					<?php if ($sale->valid){ ?>
 					<div class="row">
 						<div class="col-md-4 d-grid">
-							<button type="button" class="btn btn-success mb-3">
+							<?php if ($sale->balance) $d = "disabled"; else $d = ""; ?>
+							<button type="button" class="btn btn-success mb-3" <?= $d ?>>
 								<i class="bi bi-file-earmark-text-fill" style="font-size: 2rem;"></i><br/>Comprobante
 							</button>
 						</div>
@@ -65,11 +67,12 @@
 							</button>
 						</div>
 						<div class="col-md-4 d-grid">
-							<button type="button" class="btn btn-outline-danger mb-3">
+							<button type="button" class="btn btn-outline-danger mb-3" id="btn_cancel_sale" value="<?= $sale->sale_id ?>">
 								<i class="bi bi-trash" style="font-size: 2rem;"></i><br/>Anular Venta
 							</button>
 						</div>
 					</div>
+					<?php } ?>
 					<ul class="nav nav-tabs nav-tabs-bordered">
 						<li class="nav-item">
 							<button class="nav-link active" data-bs-toggle="tab" data-bs-target="#products">Productos</button>

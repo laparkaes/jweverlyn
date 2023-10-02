@@ -41,7 +41,9 @@ class Sale extends CI_Controller {
 		foreach($sales as $s){
 			if ($s->client_id) $s->client = $this->gm->unique("client", "client_id", $s->client_id)->name;
 			else $s->client = "";
-			if ($s->balance) $s->color = "warning"; else $s->color = "success";
+			if ($s->valid){
+				if ($s->balance) $s->color = "warning"; else $s->color = "success";
+			}else $s->color = "danger";
 		}
 		
 		$data = [
@@ -56,7 +58,9 @@ class Sale extends CI_Controller {
 	public function detail($sale_id){
 		if (!$this->session->userdata('username')) redirect("auth/login");
 
-		$sale = $this->gm->unique("sale", "sale_id", $sale_id);
+		$sale = $this->gm->unique("sale", "sale_id", $sale_id, false);
+		if (!$sale) redirect("no_page");
+			
 		if ($sale->client_id){
 			$client = $this->gm->unique("client", "client_id", $sale->client_id);
 			$client->doc_type = $this->gm->unique("identification_document", "identification_document_id", $client->doc_type_id, false)->identification_document;
@@ -69,7 +73,7 @@ class Sale extends CI_Controller {
 		switch($sale->color){
 			case "success": $sale->status = "Finalizado"; break;
 			case "warning": $sale->status = "Pendiente"; break;
-			case "danger": $sale->status = "Cancelado"; break;
+			case "danger": $sale->status = "Anulado"; break;
 		}
 		
 		$payments = $this->gm->filter("sale_payment", ["sale_id" => $sale->sale_id], null, null, [["registed_at", "desc"]], "", "");
@@ -301,23 +305,29 @@ class Sale extends CI_Controller {
 		echo json_encode($result);
 	}
 	
-	public function update(){
+	public function cancel_sale(){
+		$type = "error"; $msg = null; $url = "";
+		
 		if ($this->session->userdata('username')){
-			$data = $this->input->post();
+			$sale_id = $this->input->post("sale_id");
+			$f = ["sale_id" => $sale_id];
 			
-			$this->load->library('my_val');
-			$result = $this->my_val->update_product($data);
+			/* cancelar
+			1. comprobante - pendiente
+			2. pagos
+			3. venta
+			*/
 			
-			if ($result["type"] === "success"){
-				$data["updated_at"] = date("Y-m-d H:i:s");
-				
-				$this->gm->update("product", ["product_id" => $data["product_id"]], $data);
-				$result["product_id"] = $data["product_id"];
-				$result["msg"] = $this->lang->line("s_product_update");
-			}
-		}else $result = ["type" => "error", "msg" => $this->lang->line("e_finished_session")];
+			//$this->gm->update("voucher", $f, $d);
+			$this->gm->update("sale_payment", $f, ["valid" => false]);
+			$this->gm->update("sale", $f, ["updated_at" => date("Y-m-d H:i:s"), "valid" => false]);
+			
+			$type = "success";
+			$msg = $this->lang->line("s_sale_cancel");
+			$url = base_url()."commerce/sale";
+		}else $msg = $this->lang->line("e_finished_session");
 		
 		header('Content-Type: application/json');
-		echo json_encode($result);
+		echo json_encode(["type" => $type, "msg" => $msg, "url" => $url]);
 	}
 }
