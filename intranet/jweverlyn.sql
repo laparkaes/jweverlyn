@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- 생성 시간: 23-09-17 19:04
+-- 생성 시간: 23-10-06 17:28
 -- 서버 버전: 10.4.24-MariaDB
 -- PHP 버전: 7.4.29
 
@@ -542,7 +542,7 @@ INSERT INTO `account` (`account_id`, `role_id`, `username`, `password`, `name`, 
 (466, 1, 'wilson.chloe@gmail.com', '$2y$10$v5Uvg4VaZj3n1Zlv7qFZ2.b18YgJX1SA8/W5R6zgg0WGsz5l7M4EO', 'Wilson Chloe', 1, NULL, '2023-08-15 04:44:02', '2023-08-15 04:44:02'),
 (467, 5022, 'wilson.daniel@gmail.com', '$2y$10$POFFVNK0EFCPKNF7cuM06.XMf9mx.e0MR8BPyUHdn69m4jZ9IpXwm', 'Wilson Daniel', 1, NULL, '2023-08-15 04:44:02', '2023-08-15 04:44:02'),
 (468, 5020, 'wilson.emma@gmail.com', '$2y$10$tfd6ytgVEtes3eDciXZFTeGwhVBZAu6SEXqtnMm6fGRQ1HOtDLjCK', 'Wilson Emma', 1, NULL, '2023-08-15 04:44:02', '2023-08-15 04:44:02'),
-(469, 5013, 'anderson.alice@gmail.com', '$2y$10$1l1NFim3oQ4qq1NE6mnXzOjHAKqoa3ZxXILGg21ZhKUJi/k/1W2Ci', 'Anderson Alice', 1, NULL, '2023-08-15 04:44:02', '2023-08-15 04:44:02'),
+(469, 5013, 'anderson.alice@gmail.com', '$2y$10$1l1NFim3oQ4qq1NE6mnXzOjHAKqoa3ZxXILGg21ZhKUJi/k/1W2Ci', 'Anderson Alice android', 1, NULL, '2023-09-25 21:28:26', '2023-08-15 04:44:02'),
 (470, 5020, 'anderson.bob@gmail.com', '$2y$10$fOWBxN6TgmvWuEygkg70lu/THZP2HoGGxyi91cm30XkcBC5MoqU5C', 'Anderson Bob', 1, NULL, '2023-08-15 17:05:31', '2023-08-15 04:44:02'),
 (471, 5028, 'anderson.charlie@gmail.com', '$2y$10$5j7tFVwbBEXvQMI.6m9N7.5MwWYG0vzoWITiv7MHIk2XTsS8abywG', 'Anderson Charlie', 0, NULL, '2023-08-15 16:11:55', '2023-08-15 04:44:02'),
 (472, 5021, 'anderson.david@gmail.com', '$2y$10$bCD/RHj7hZM8/8CMFvHooObWJ.Gs49Na2LaqbnOSdhvf7Zt7XZvAC', 'Anderson David', 1, NULL, '2023-08-15 04:44:03', '2023-08-15 04:44:03'),
@@ -3173,7 +3173,10 @@ CREATE TABLE `client` (
 INSERT INTO `client` (`client_id`, `doc_type_id`, `doc_number`, `name`, `valid`, `updated_at`, `registed_at`) VALUES
 (1, 2, '76408531', 'LEA MABEL SILUPU MONTALVAN', 1, '2023-09-16 23:05:39', '2023-09-16 23:05:39'),
 (2, 2, '70614226', 'SOFIA LISSET CASAVERDE VALDIVIEZO', 1, '2023-09-17 20:50:05', '2023-09-17 20:50:05'),
-(3, 2, '75694084', 'FRANCESCA JENNIFER OLAYA CAMACHO', 1, '2023-09-17 22:19:28', '2023-09-17 22:19:28');
+(3, 2, '75694084', 'FRANCESCA JENNIFER OLAYA CAMACHO', 1, '2023-09-17 22:19:28', '2023-09-17 22:19:28'),
+(4, 2, '75098340', 'YESABELLA ESPERANZA UBILLUS MORALES', 1, '2023-09-21 21:50:14', '2023-09-21 21:50:14'),
+(5, 2, '75763698', 'ESTHEFANY DE LOS MILAGROS HERRERA CHECA', 1, '2023-09-25 21:29:42', '2023-09-25 21:29:42'),
+(6, 2, '75112025', 'YARIS NAYELY CALLE CASTILLO', 1, '2023-10-05 00:33:52', '2023-10-05 00:33:52');
 
 -- --------------------------------------------------------
 
@@ -3464,7 +3467,7 @@ INSERT INTO `product` (`product_id`, `category_id`, `code`, `product`, `price`, 
 (194, 5, 'guindas-351948', 'Manzana Zumo de sandía Tequila Whisky Zumo de limón Limón', 91.31, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
 (195, 16, 'limón-79641', 'Cacao Naranja Mango Melocotón Sidra', 35.07, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
 (196, 10, 'zumodelimón-351217', 'Zumo de fresa Mora Zumo de arándanos', 49.59, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(197, 8, 'vinorosado-291310', 'Agua Compota Zumo de sandía Guindas Zumo de papaya Higo', 59.84, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(197, 8, 'vinorosado-291310', 'Agua Compota Zumo de sandía Guindas Zumo de papaya Higo', 59.84, '20230919181851_thumb.png', 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
 (198, 12, 'tédehierbas-339222', 'Pistachos Nuez Guayaba Cacao', 67.31, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
 (199, 15, 'café-57373', 'Zumo de fresa Granada Cerveza Cacao Agua con gas Zumo de fruta de la pasión', 18.32, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
 (200, 10, 'mango-369255', 'Brandy Tónica Zumo de uva Zumo de naranja', 99.38, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
@@ -3649,7 +3652,8 @@ INSERT INTO `product_image` (`image_id`, `product_id`, `image`, `valid`) VALUES
 (26, 1, '20230829172923.png', 0),
 (27, 1, '20230829172933.png', 0),
 (28, 1, '20230829173001.png', 1),
-(29, 2, '20230829175952.png', 0);
+(29, 2, '20230829175952.png', 0),
+(30, 197, '20230919181851.png', 1);
 
 -- --------------------------------------------------------
 
@@ -3695,10 +3699,26 @@ INSERT INTO `product_option` (`option_id`, `product_id`, `option`, `stock`, `val
 (23, 1, 'Rosado', 12375, 0),
 (24, 1, 'Talla S', 157, 0),
 (25, 1, 'Rosado', 77, 0),
-(26, 1, 'Negro', 138, 1),
-(27, 197, 'Talla S', 100, 1),
-(28, 197, 'Talla M', 84, 1),
+(26, 1, 'Negro', 134, 1),
+(27, 197, 'Talla S', 67, 1),
+(28, 197, 'Talla M', 76, 1),
 (29, 197, 'Talla L', 130, 1);
+
+-- --------------------------------------------------------
+
+--
+-- 테이블 구조 `proforma`
+--
+
+CREATE TABLE `proforma` (
+  `proforma_id` int(11) NOT NULL,
+  `client_id` int(11) NOT NULL,
+  `amount` double NOT NULL,
+  `validity` date DEFAULT NULL,
+  `remark` varchar(250) NOT NULL,
+  `valid` tinyint(1) NOT NULL DEFAULT 1,
+  `registed_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -3784,9 +3804,9 @@ INSERT INTO `role_access` (`role_id`, `access_id`) VALUES
 CREATE TABLE `sale` (
   `sale_id` int(11) NOT NULL,
   `client_id` int(11) DEFAULT NULL,
-  `amount` float NOT NULL,
-  `paid` float NOT NULL,
-  `balance` float NOT NULL,
+  `amount` double NOT NULL,
+  `paid` double NOT NULL,
+  `balance` double NOT NULL,
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `registed_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `valid` tinyint(1) NOT NULL DEFAULT 1
@@ -3797,11 +3817,16 @@ CREATE TABLE `sale` (
 --
 
 INSERT INTO `sale` (`sale_id`, `client_id`, `amount`, `paid`, `balance`, `updated_at`, `registed_at`, `valid`) VALUES
-(1, 3, 363.12, 363.12, 0, '2023-09-17 22:19:28', '2023-09-17 22:19:28', 1),
-(2, 3, 363.12, 363.12, 0, '2023-09-17 22:19:34', '2023-09-17 22:19:34', 1),
-(3, 3, 363.12, 363.12, 0, '2023-09-17 22:19:58', '2023-09-17 22:19:58', 1),
-(4, 3, 363.12, 363.12, 0, '2023-09-17 22:21:19', '2023-09-17 22:21:19', 1),
-(5, NULL, 1974.72, 1974.72, 0, '2023-09-17 23:58:18', '2023-09-17 23:58:18', 1);
+(1, 3, 363, 363, 0, '2023-10-02 16:26:10', '2023-09-17 22:19:28', 0),
+(2, 3, 363, 363, 0, '2023-10-02 16:20:43', '2023-09-17 22:19:34', 1),
+(3, 3, 363, 0, 363, '2023-10-02 16:13:43', '2023-09-17 22:19:58', 1),
+(4, 3, 363, 363, 0, '2023-10-02 16:17:28', '2023-09-17 22:21:19', 1),
+(5, NULL, 1975, 1975, 0, '2023-10-02 16:19:46', '2023-09-17 23:58:18', 1),
+(6, NULL, 1795, 0, 1795, '2023-10-06 19:13:29', '2023-09-21 21:48:37', 0),
+(7, NULL, 180, 0, 180, '2023-09-28 22:52:22', '2023-09-21 21:48:57', 1),
+(8, 4, 180, 180, 0, '2023-09-21 21:50:14', '2023-09-21 21:50:14', 1),
+(9, 5, 299, 299, 0, '2023-10-03 15:23:02', '2023-09-25 21:29:42', 1),
+(10, 6, 61.2, 61.2, 0, '2023-10-05 00:34:13', '2023-10-05 00:33:52', 1);
 
 -- --------------------------------------------------------
 
@@ -3825,9 +3850,21 @@ CREATE TABLE `sale_payment` (
 --
 
 INSERT INTO `sale_payment` (`payment_id`, `sale_id`, `payment_method_id`, `total`, `received`, `change`, `registed_at`, `valid`) VALUES
-(1, 3, 1, 363.12, 400, 36.88, '2023-09-17 22:19:58', 1),
-(2, 4, 1, 363.12, 400, 36.88, '2023-09-17 22:21:19', 1),
-(3, 5, 3, 1974.72, 2000, 25.28, '2023-09-17 23:58:18', 1);
+(1, 3, 1, 363.12, 400, 36.88, '2023-09-17 22:19:58', 0),
+(2, 4, 1, 363.12, 400, 36.88, '2023-09-17 22:21:19', 0),
+(3, 5, 3, 1974.72, 2000, 25.28, '2023-09-17 23:58:18', 0),
+(4, 6, 1, 1795.2, 1795.2, 0, '2023-09-21 21:48:37', 0),
+(5, 7, 1, 179.52, 200, 20.48, '2023-09-21 21:48:57', 0),
+(6, 8, 1, 179.52, 300, 120.48, '2023-09-21 21:50:14', 1),
+(7, 9, 1, 299.2, 300, 0.8, '2023-09-25 21:29:42', 0),
+(8, 9, 1, 299.2, 99.2, 0, '2023-10-02 15:36:27', 1),
+(9, 9, 1, 200, 100, 0, '2023-10-02 15:37:04', 1),
+(10, 9, 1, 100, 140, 40, '2023-10-02 15:40:33', 0),
+(11, 5, 1, 1974.72, 2000, 25.28, '2023-10-02 16:19:35', 0),
+(12, 9, 1, 100, 999, 899, '2023-10-03 15:15:35', 0),
+(13, 9, 1, 99.8, 9999, 9899.2, '2023-10-03 15:23:02', 1),
+(14, 10, 1, 61.2, 30, 0, '2023-10-05 00:33:52', 1),
+(15, 10, 1, 31.2, 50, 18.8, '2023-10-05 00:34:13', 1);
 
 -- --------------------------------------------------------
 
@@ -3853,7 +3890,12 @@ INSERT INTO `sale_product` (`sale_product_id`, `sale_id`, `product_id`, `option_
 (1, 3, 197, 28, 3, 59.84, 179.52),
 (2, 4, 197, 28, 3, 59.84, 179.52),
 (3, 4, 1, 26, 12, 15.3, 183.6),
-(4, 5, 197, 28, 33, 59.84, 1974.72);
+(4, 5, 197, 28, 33, 59.84, 1974.72),
+(5, 6, 197, 27, 30, 59.84, 1795.2),
+(6, 7, 197, 28, 3, 59.84, 179.52),
+(7, 8, 197, 27, 3, 59.84, 179.52),
+(8, 9, 197, 28, 5, 59.84, 299.2),
+(9, 10, 1, 26, 4, 15.3, 61.2);
 
 -- --------------------------------------------------------
 
@@ -3969,6 +4011,13 @@ ALTER TABLE `product_option`
   ADD KEY `fk_option_product` (`product_id`);
 
 --
+-- 테이블의 인덱스 `proforma`
+--
+ALTER TABLE `proforma`
+  ADD PRIMARY KEY (`proforma_id`),
+  ADD KEY `fk_profrma_client` (`client_id`);
+
+--
 -- 테이블의 인덱스 `role`
 --
 ALTER TABLE `role`
@@ -4048,7 +4097,7 @@ ALTER TABLE `address_province`
 -- 테이블의 AUTO_INCREMENT `client`
 --
 ALTER TABLE `client`
-  MODIFY `client_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `client_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- 테이블의 AUTO_INCREMENT `identification_document`
@@ -4084,13 +4133,19 @@ ALTER TABLE `product_category`
 -- 테이블의 AUTO_INCREMENT `product_image`
 --
 ALTER TABLE `product_image`
-  MODIFY `image_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `image_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- 테이블의 AUTO_INCREMENT `product_option`
 --
 ALTER TABLE `product_option`
   MODIFY `option_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+
+--
+-- 테이블의 AUTO_INCREMENT `proforma`
+--
+ALTER TABLE `proforma`
+  MODIFY `proforma_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- 테이블의 AUTO_INCREMENT `role`
@@ -4102,19 +4157,19 @@ ALTER TABLE `role`
 -- 테이블의 AUTO_INCREMENT `sale`
 --
 ALTER TABLE `sale`
-  MODIFY `sale_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `sale_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- 테이블의 AUTO_INCREMENT `sale_payment`
 --
 ALTER TABLE `sale_payment`
-  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- 테이블의 AUTO_INCREMENT `sale_product`
 --
 ALTER TABLE `sale_product`
-  MODIFY `sale_product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `sale_product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- 테이블의 AUTO_INCREMENT `setting_company`
@@ -4155,6 +4210,12 @@ ALTER TABLE `product_image`
 --
 ALTER TABLE `product_option`
   ADD CONSTRAINT `fk_option_product` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- 테이블의 제약사항 `proforma`
+--
+ALTER TABLE `proforma`
+  ADD CONSTRAINT `fk_profrma_client` FOREIGN KEY (`client_id`) REFERENCES `client` (`client_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- 테이블의 제약사항 `role_access`
