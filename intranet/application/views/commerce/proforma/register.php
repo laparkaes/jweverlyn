@@ -1,16 +1,16 @@
 <div class="pagetitle">
 	<div class="d-flex justify-content-between align-items-start">
 		<div>
-			<h1>Nueva Venta</h1>
+			<h1>Nueva Proforma</h1>
 			<nav>
 				<ol class="breadcrumb">
-					<li class="breadcrumb-item">Ventas</li>
+					<li class="breadcrumb-item">Proformas</li>
 					<li class="breadcrumb-item active">Nueva</li>
 				</ol>
 			</nav>
 		</div>
 		<div>
-			<a href="<?= base_url() ?>commerce/sale" type="button" class="btn btn-success">
+			<a href="<?= base_url() ?>commerce/proforma" type="button" class="btn btn-success">
 				<i class="bi bi-arrow-left"></i>
 			</a>
 		</div>
@@ -33,11 +33,11 @@
 								<tr>
 									<th scope="col">#</th>
 									<th scope="col">Producto</th>
-									<th scope="col">P/U</th>
-									<th scope="col">Opción</th>
-									<th scope="col">Cant.</th>
-									<th scope="col">Subtotal</th>
-									<th scope="col"></th>
+									<th scope="col" style="width:150px;">P/U</th>
+									<th scope="col" style="width:150px;">Opción</th>
+									<th scope="col" style="width:100px;">Cant.</th>
+									<th scope="col" style="width:100px;">Subtotal</th>
+									<th scope="col" style="width:50px;"></th>
 								</tr>
 							</thead>
 							<tbody id="tb_product_list"></tbody>
@@ -50,41 +50,28 @@
 	<div class="col-md-6">
 		<div class="card">
 			<div class="card-body">
-				<h5 class="card-title">Pago</h5>
+				<h5 class="card-title">Proforma</h5>
 				<div class="row g-3">
 					<div class="col-md-6">
-						<label class="form-label">Medio de Pago</label>
-						<select class="form-select" name="payment[payment_method_id]">
-							<?php foreach($payment_methods as $p){ ?>
-							<option value="<?= $p->payment_method_id ?>"><?= $p->payment_method ?></option>
+						<label class="form-label">Monto</label>
+						<input type="text" class="form-control" id="proforma_amount_txt" readonly>
+						<input type="hidden" name="proforma[amount]" id="proforma_amount" readonly>
+					</div>
+					<div class="col-md-6">
+						<label class="form-label">Vigencia</label>
+						<select class="form-select" name="proforma[validity]">
+							<option value="<?= date("Y-m-d") ?>">Hoy</option>
+							<?php for($i = 1; $i <= 4; $i++){ 
+							$t = ($i > 1) ? $i." semanas" : $i." semana";
+							$aux = date("Y-m-d", strtotime("+".$i." weeks", strtotime(date("Y-m-d")))); ?>
+							<option value="<?= $aux ?>"><?= $t ?> (<?= $aux ?>)</option>
 							<?php } ?>
+							<option value="">Indefinido</option>
 						</select>
-						<div class="invalid-feedback"></div>
 					</div>
-					<div class="col-md-6">
-						<label class="form-label">Recibido</label>
-						<div class="input-group has-validation">
-							<span class="input-group-text">S/.</span>
-							<input type="hidden" id="received" name="payment[received]" value="0.00">
-							<input type="text" class="form-control" id="received_txt" name="payment[received_txt]" value="0.00">
-							<div class="invalid-feedback"></div>
-						</div>
-					</div>
-					<div class="col-md-6">
-						<label class="form-label">Total</label>
-						<div class="input-group">
-							<span class="input-group-text">S/.</span>
-							<input type="hidden" id="total" name="payment[total]" value="0.00" readonly>
-							<input type="text" class="form-control" id="total_txt" value="0.00" disabled>
-						</div>
-					</div>
-					<div class="col-md-6">
-						<label class="form-label">Vuelto</label>
-						<div class="input-group">
-							<span class="input-group-text">S/.</span>
-							<input type="hidden"id="change" name="payment[change]" value="0.00" readonly>
-							<input type="text" class="form-control" id="change_txt" value="0.00" disabled>
-						</div>
+					<div class="col-md-12">
+						<label class="form-label">Observación</label>
+						<input type="text" class="form-control" name="proforma[remark]">
 					</div>
 				</div>
 			</div>
@@ -124,7 +111,7 @@
 		</div>
 	</div>
 	<div class="col-md-12 d-grid">
-		<button type="button" class="btn btn-primary btn-lg mb-3" id="btn_add_sale">Agregar Venta</button>
+		<button type="button" class="btn btn-primary btn-lg mb-3" id="btn_add_sale">Agregar Proforma</button>
 	</div>
 </form>
 
