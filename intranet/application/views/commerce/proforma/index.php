@@ -57,6 +57,7 @@
 									<td><?= $p->validity ?></td>
 									<td><?= $p->client ?></td>
 									<td class="text-nowrap text-end">S/ <?= number_format($p->amount, 2) ?></td>
+									<td class="text-center"><i class="bi bi-circle-fill text-<?= $p->color ?>"></i></td>
 									<td class="text-end">
 										<a href="<?= base_url() ?>commerce/proforma/detail/<?= $p->proforma_id ?>" type="button" class="btn btn-outline-primary btn-sm border-0">
 											<i class="bi bi-search"></i>

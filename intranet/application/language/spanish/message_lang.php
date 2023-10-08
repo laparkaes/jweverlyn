@@ -10,6 +10,9 @@ $lang['e_numeric_positive'] = 'Debe ser un número positivo.';
 $lang['e_no_result'] = 'No hay resultado de búsqueda.';
 $lang['e_enter_keyword'] = 'Ingrese palabra de búsqueda.';
 
+//proforma
+$lang['s_proforma_insert'] = "Proforma ha sido registrada.";
+
 //sale
 $lang['e_doc_number_enter'] = 'Ingrese número de documento.';
 $lang['e_select_product'] = 'Elija al menos un producto.';
@@ -21,8 +24,6 @@ $lang['s_sale_insert'] = "Venta ha sido registrada.";
 $lang['s_sale_cancel'] = "Venta ha sido anulada.";
 $lang['s_payment_insert'] = "Pago ha sido registrado.";
 $lang['s_payment_delete'] = "Pago ha sido anulado.";
-
-
 
 //setting - company
 $lang['s_save_company_info'] = 'Información de empresa ha sido guardada.';

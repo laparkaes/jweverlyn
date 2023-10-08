@@ -16,7 +16,7 @@
 		</div>
 	</div>
 </div>
-<form class="row" id="form_add_sale">
+<form class="row" id="form_add_proforma">
 	<div class="col-md-12">
 		<div class="card">
 			<div class="card-body">
@@ -60,12 +60,20 @@
 					<div class="col-md-6">
 						<label class="form-label">Vigencia</label>
 						<select class="form-select" name="proforma[validity]">
-							<option value="<?= date("Y-m-d") ?>">Hoy</option>
-							<?php for($i = 1; $i <= 4; $i++){ 
-							$t = ($i > 1) ? $i." semanas" : $i." semana";
-							$aux = date("Y-m-d", strtotime("+".$i." weeks", strtotime(date("Y-m-d")))); ?>
-							<option value="<?= $aux ?>"><?= $t ?> (<?= $aux ?>)</option>
-							<?php } ?>
+							<?php $today = date("Y-m-d"); ?>
+							<option value="<?= $today ?>">Solo hoy</option>
+							<?php $aux = date("Y-m-d", strtotime("+1 week", strtotime($today))); ?>
+							<option value="<?= $aux ?>">Hasta <?= $aux ?> (una semana)</option>
+							<?php $aux = date("Y-m-d", strtotime("+2 week", strtotime($today))); ?>
+							<option value="<?= $aux ?>">Hasta <?= $aux ?> (dos semanas)</option>
+							<?php $aux = date("Y-m-d", strtotime("+1 month", strtotime($today))); ?>
+							<option value="<?= $aux ?>">Hasta <?= $aux ?> (un mes)</option>
+							<?php $aux = date("Y-m-d", strtotime("+3 months", strtotime($today))); ?>
+							<option value="<?= $aux ?>">Hasta <?= $aux ?> (tres meses)</option>
+							<?php $aux = date("Y-m-d", strtotime("+6 months", strtotime($today))); ?>
+							<option value="<?= $aux ?>">Hasta <?= $aux ?> (seis meses)</option>
+							<?php $aux = date("Y-m-d", strtotime("+1 year", strtotime($today))); ?>
+							<option value="<?= $aux ?>">Hasta <?= $aux ?> (un año)</option>
 							<option value="">Indefinido</option>
 						</select>
 					</div>
@@ -111,7 +119,7 @@
 		</div>
 	</div>
 	<div class="col-md-12 d-grid">
-		<button type="button" class="btn btn-primary btn-lg mb-3" id="btn_add_sale">Agregar Proforma</button>
+		<button type="button" class="btn btn-primary btn-lg mb-3" id="btn_add_proforma">Agregar Proforma</button>
 	</div>
 </form>
 

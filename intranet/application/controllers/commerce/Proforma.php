@@ -41,9 +41,8 @@ class Proforma extends CI_Controller {
 		foreach($proformas as $s){
 			if ($s->client_id) $s->client = $this->gm->unique("client", "client_id", $s->client_id)->name;
 			else $s->client = "";
-			if ($s->valid){
-				if ($s->balance) $s->color = "warning"; else $s->color = "success";
-			}else $s->color = "danger";
+			if ($s->valid) $s->color = "success";
+			else $s->color = "danger";
 		}
 		
 		$data = [
@@ -55,45 +54,36 @@ class Proforma extends CI_Controller {
 		$this->load->view('layout', $data);
 	}
 	
-	public function detail($sale_id){
+	public function detail($proforma_id){
 		if (!$this->session->userdata('username')) redirect("auth/login");
 
-		$sale = $this->gm->unique("sale", "sale_id", $sale_id, false);
-		if (!$sale) redirect("no_page");
+		$proforma = $this->gm->unique("proforma", "proforma_id", $proforma_id, false);
+		if (!$proforma) redirect("no_page");
 			
 		if ($sale->client_id){
 			$client = $this->gm->unique("client", "client_id", $sale->client_id);
 			$client->doc_type = $this->gm->unique("identification_document", "identification_document_id", $client->doc_type_id, false)->identification_document;
 		}else $client = null;
 		
-		if ($sale->valid){
-			if ($sale->balance) $sale->color = "warning"; else $sale->color = "success";
-		}else $sale->color = "danger";
+		if ($proforma->valid) $proforma->color = "success";
+		else $proforma->color = "danger";
 		
-		switch($sale->color){
-			case "success": $sale->status = "Finalizado"; break;
-			case "warning": $sale->status = "Pendiente"; break;
-			case "danger": $sale->status = "Anulado"; break;
+		switch($proforma->color){
+			case "success": $proforma->status = "Válida"; break;
+			case "danger": $proforma->status = "Inválida"; break;
 		}
 		
-		$payments = $this->gm->filter("sale_payment", ["sale_id" => $sale->sale_id], null, null, [["registed_at", "desc"]], "", "");
-		foreach($payments as $p){
-			$p->payment_method = $this->gm->unique("payment_method", "payment_method_id", $p->payment_method_id, false)->payment_method;
-		}
-		
-		$products = $this->gm->filter("sale_product", ["sale_id" => $sale->sale_id], null, null, [["subtotal", "desc"]], "", "", false);
+		$products = $this->gm->filter("proforma_product", ["proforma_id" => $proforma->proforma_id], null, null, [["price", "desc"]], "", "", false);
 		foreach($products as $p){
 			$p->prod = $this->gm->unique("product", "product_id", $p->product_id);
 			$p->op = $this->gm->unique("product_option", "option_id", $p->option_id);
 		}
 		
 		$data = [
-			"sale" => $sale,
+			"proforma" => $proforma,
 			"client" => $client,
-			"payments" => $payments,
 			"products" => $products,
-			"payment_methods" => $this->gm->all_simple("payment_method", "payment_method_id", "asc"),
-			"main" => "commerce/sale/detail",
+			"main" => "commerce/proforma/detail",
 		];
 		$this->load->view('layout', $data);
 	}
@@ -130,6 +120,42 @@ class Proforma extends CI_Controller {
 		echo json_encode(["product" => $product, "options" => $options]);
 	}
 	
+	public function search_person(){
+		$type = "error"; $msg = ""; $person = null;
+		$data = $this->input->post();
+		
+		if ($data["doc_number"]){
+			$person = $this->gm->filter("client", $data);
+			if ($person) $person = $person[0];
+			else{
+				$name = "";
+				switch($data["doc_type_id"]){
+					case 2: //dni
+						$aux = $this->my_func->utildatos("dni", $data["doc_number"]);
+						if ($aux->status) $name = $aux->data->nombres." ".$aux->data->apellidoPaterno." ".$aux->data->apellidoMaterno;
+						break;
+					case 4: //ruc
+						$aux = $this->my_func->utildatos("ruc", $data["doc_number"]);
+						if ($aux->status) $name = $aux->data->razon_social;
+						break;
+				}
+				
+				$person = $this->gm->structure("client");
+				$person->name = $name;
+			}
+			
+			if ($person->name){
+				$person->doc_type_id = $data["doc_type_id"];
+				$person->doc_number = $data["doc_number"];
+				
+				$type = "success";
+			}else $msg = $this->lang->line("e_no_result");
+		}else $msg = $this->lang->line("e_doc_number_enter");
+		
+		header('Content-Type: application/json');
+		echo json_encode(["type" => $type, "msg" => $msg, "person" => $person]);
+	}
+	
 	public function register(){
 		if (!$this->session->userdata('username')) redirect("auth/login");
 		
@@ -140,4 +166,53 @@ class Proforma extends CI_Controller {
 		$this->load->view('layout', $data);
 	}
 	
+	public function add_proforma(){
+		$result = ["type" => "error", "msg" => null];
+		
+		if ($this->session->userdata('username')){
+			$products = $this->input->post("products");
+			$proforma = $this->input->post("proforma");
+			$client = $this->input->post("client");	
+			
+			$this->load->library('my_val');
+			$result = $this->my_val->add_proforma($products, $client);
+			
+			if ($result["type"] === "success"){
+				$now = date("Y-m-d H:i:s");
+				
+				//client process
+				if ($client["doc_type_id"] == 1) $client_id = null; //case of no client document
+				else{
+					$client_rec = $this->gm->filter("client", $client);
+					if ($client_rec) $client_id = $client_rec[0]->client_id;
+					else{
+						$client["valid"] = true;
+						$client["updated_at"] = $client["registed_at"] = $now;	
+						$client_id = $this->gm->insert("client", $client);
+					}
+				}
+				
+				//proforma process
+				$amount = 0;
+				foreach($products as $prod) $amount += $prod["price"] * $prod["qty"];
+				
+				$proforma["client_id"] = $client_id;
+				$proforma["amount"] = $amount;
+				$proforma["registed_at"] = $now;
+				$proforma_id = $this->gm->insert("proforma", $proforma);
+				
+				//products process
+				foreach($products as $p){
+					$p["proforma_id"] = $proforma_id;
+					$this->gm->insert("proforma_product", $p);
+				}
+				
+				$result["proforma_id"] = $proforma_id;
+				$result["msg"] = $this->lang->line("s_proforma_insert");
+			}
+		}else $result["msg"] = $this->lang->line("e_finished_session");
+		
+		header('Content-Type: application/json');
+		echo json_encode($result);
+	}
 }

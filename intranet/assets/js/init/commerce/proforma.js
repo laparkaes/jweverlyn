@@ -143,11 +143,11 @@ $("#btn_search_person").on('click',(function(e) {
 	search_person();
 }));
 
-$("#btn_add_sale").on('click',(function(e) {
-	$("#form_add_sale").submit();
+$("#btn_add_proforma").on('click',(function(e) {
+	$("#form_add_proforma").submit();
 }));
 
-$("#form_add_sale").submit(function(e) {
+$("#form_add_proforma").submit(function(e) {
 	e.preventDefault();
 	
 	//clean no stock products
@@ -155,37 +155,11 @@ $("#form_add_sale").submit(function(e) {
 		if ($(element).find(".option_id").length == 0) $(element).remove();
 	});
 	
-	ajax_form_warning(this, b_url + "add_sale", "add_sale").done(function(res) {
-		if (res.type == "success") swal_redirection(res.type, res.msg, base_url + b_url + "detail/" + res.sale_id);
+	ajax_form_warning(this, b_url + "add_proforma", "add_proforma").done(function(res) {
+		if (res.type == "success") swal_redirection(res.type, res.msg, base_url + b_url + "detail/" + res.proforma_id);
 		else{
-			set_msgs("#form_add_sale", res.msgs);
+			set_msgs("#form_add_proforma", res.msgs);
 			swal(res.type, res.msg);
 		}
 	});
 });
-
-$(".btn_delete_payment").on('click',(function(e) {
-	ajax_simple_warning({payment_id: $(this).val()}, b_url + "delete_payment", "delete_payment").done(function(res) {
-		swal_redirection(res.type, res.msg, res.url);
-	});
-}));
-
-$("#btn_add_payment").on('click',(function(e) {
-	$("#form_add_payment").submit();
-}));
-
-$("#form_add_payment").submit(function(e) {
-	e.preventDefault();
-	ajax_form_warning(this, b_url + "add_payment", "add_payment").done(function(res) {
-		set_msgs("#form_add_payment", res.msgs);
-		if (res.type == "success") swal_redirection(res.type, res.msg, res.url);
-		else swal(res.type, res.msg);
-	});
-});
-
-$("#btn_cancel_sale").on('click',(function(e) {
-	ajax_simple_warning({sale_id: $(this).val()}, b_url + "cancel_sale", "cancel_sale").done(function(res) {
-		swal_redirection(res.type, res.msg, res.url);
-	});
-}));
-

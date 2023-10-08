@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- 생성 시간: 23-10-06 17:28
+-- 생성 시간: 23-10-07 19:19
 -- 서버 버전: 10.4.24-MariaDB
 -- PHP 버전: 7.4.29
 
@@ -3176,7 +3176,9 @@ INSERT INTO `client` (`client_id`, `doc_type_id`, `doc_number`, `name`, `valid`,
 (3, 2, '75694084', 'FRANCESCA JENNIFER OLAYA CAMACHO', 1, '2023-09-17 22:19:28', '2023-09-17 22:19:28'),
 (4, 2, '75098340', 'YESABELLA ESPERANZA UBILLUS MORALES', 1, '2023-09-21 21:50:14', '2023-09-21 21:50:14'),
 (5, 2, '75763698', 'ESTHEFANY DE LOS MILAGROS HERRERA CHECA', 1, '2023-09-25 21:29:42', '2023-09-25 21:29:42'),
-(6, 2, '75112025', 'YARIS NAYELY CALLE CASTILLO', 1, '2023-10-05 00:33:52', '2023-10-05 00:33:52');
+(6, 2, '75112025', 'YARIS NAYELY CALLE CASTILLO', 1, '2023-10-05 00:33:52', '2023-10-05 00:33:52'),
+(7, 3, '000765808', 'Jeong Woo Park', 1, '2023-10-07 22:08:29', '2023-10-07 22:08:29'),
+(8, 2, '48098843', 'ROSA DEL CARMEN GARRIDO MORE', 1, '2023-10-07 23:11:35', '2023-10-07 23:11:35');
 
 -- --------------------------------------------------------
 
@@ -3720,6 +3722,38 @@ CREATE TABLE `proforma` (
   `registed_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- 테이블의 덤프 데이터 `proforma`
+--
+
+INSERT INTO `proforma` (`proforma_id`, `client_id`, `amount`, `validity`, `remark`, `valid`, `registed_at`) VALUES
+(1, 7, 1490, '2023-10-21', 'Descuento por mayorista', 1, '2023-10-07 22:36:14'),
+(2, 8, 150, '2023-10-21', 'cliente no tiene dinero', 1, '2023-10-07 23:11:35');
+
+-- --------------------------------------------------------
+
+--
+-- 테이블 구조 `proforma_product`
+--
+
+CREATE TABLE `proforma_product` (
+  `proforma_product_id` int(11) NOT NULL,
+  `proforma_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `option_id` int(11) NOT NULL,
+  `price` double NOT NULL,
+  `qty` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- 테이블의 덤프 데이터 `proforma_product`
+--
+
+INSERT INTO `proforma_product` (`proforma_product_id`, `proforma_id`, `product_id`, `option_id`, `price`, `qty`) VALUES
+(1, 1, 197, 27, 55, 20),
+(2, 1, 1, 26, 13, 30),
+(3, 2, 197, 29, 50, 3);
+
 -- --------------------------------------------------------
 
 --
@@ -4018,6 +4052,15 @@ ALTER TABLE `proforma`
   ADD KEY `fk_profrma_client` (`client_id`);
 
 --
+-- 테이블의 인덱스 `proforma_product`
+--
+ALTER TABLE `proforma_product`
+  ADD PRIMARY KEY (`proforma_product_id`),
+  ADD KEY `fk_proforma_proforma` (`proforma_id`),
+  ADD KEY `fk_proforma_product` (`product_id`),
+  ADD KEY `fk_proforma_option` (`option_id`);
+
+--
 -- 테이블의 인덱스 `role`
 --
 ALTER TABLE `role`
@@ -4097,7 +4140,7 @@ ALTER TABLE `address_province`
 -- 테이블의 AUTO_INCREMENT `client`
 --
 ALTER TABLE `client`
-  MODIFY `client_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `client_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- 테이블의 AUTO_INCREMENT `identification_document`
@@ -4145,7 +4188,13 @@ ALTER TABLE `product_option`
 -- 테이블의 AUTO_INCREMENT `proforma`
 --
 ALTER TABLE `proforma`
-  MODIFY `proforma_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `proforma_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- 테이블의 AUTO_INCREMENT `proforma_product`
+--
+ALTER TABLE `proforma_product`
+  MODIFY `proforma_product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- 테이블의 AUTO_INCREMENT `role`
@@ -4216,6 +4265,14 @@ ALTER TABLE `product_option`
 --
 ALTER TABLE `proforma`
   ADD CONSTRAINT `fk_profrma_client` FOREIGN KEY (`client_id`) REFERENCES `client` (`client_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- 테이블의 제약사항 `proforma_product`
+--
+ALTER TABLE `proforma_product`
+  ADD CONSTRAINT `fk_proforma_option` FOREIGN KEY (`option_id`) REFERENCES `product_option` (`option_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_proforma_product` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_proforma_proforma` FOREIGN KEY (`proforma_id`) REFERENCES `proforma` (`proforma_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- 테이블의 제약사항 `role_access`

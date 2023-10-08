@@ -36,6 +36,7 @@ const sp_warning_msg = {
 	cancel_sale: "¿Desea anular la venta?",
 	add_payment: "¿Desea agregar pago?",
 	delete_payment: "¿Desea eliminar pago?",
+	add_proforma: "¿Desea agregar nueva proforma?",
 }
 
 function nf(num){//number format

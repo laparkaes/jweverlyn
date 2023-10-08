@@ -1,7 +1,7 @@
 <div class="pagetitle">
 	<div class="d-flex justify-content-between align-items-start">
 		<div>
-			<h1>Detalle de Venta</h1>
+			<h1>Detalle de Proforma</h1>
 			<nav>
 				<ol class="breadcrumb">
 					<li class="breadcrumb-item">Venta</li>
