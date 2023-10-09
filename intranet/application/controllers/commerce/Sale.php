@@ -330,4 +330,17 @@ class Sale extends CI_Controller {
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msg" => $msg, "url" => $url]);
 	}
+
+	public function issue_invoice(){
+		
+		$this->load->library('my_greenter');
+		$result = $this->my_greenter->issue_invoice();
+		
+		print_r($result);
+	}
+	
+	public function convert_pem(){//convert *.pfx cert to *.pem for facturacion electronica
+		$this->load->library('my_greenter');
+		$this->my_greenter->convert_to_pem();
+	}
 }
