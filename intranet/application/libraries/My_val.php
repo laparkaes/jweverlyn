@@ -477,4 +477,24 @@ class My_val{
 		
 		return ["type" => $type, "msgs" => $msgs, "msg" => $msg];
 	}
+	
+	public function issue_invoice($invoice, $client){
+		$msgs = [];
+		
+		$invoice_type = $this->CI->gm->unique("invoice_type", "type_id", $invoice["type_id"], false);
+		if ($invoice_type->sunat == "01"){
+			$doc_type = $this->CI->gm->unique("identification_document", "identification_document_id", $client["doc_type_id"], false);
+			if ($doc_type->sunat !== "6") $msgs = $this->set_msg($msgs, "client[doc_type_id]", "e_doc_type_ruc");
+		}
+		
+		if ($client["doc_type_id"] != 1){
+			if ($client["doc_number"]) $msgs = $this->set_msg($msgs, "client[doc_number]");
+			else $msgs = $this->set_msg($msgs, "client[doc_number]", "e_required_field");
+			
+			if ($client["name"]) $msgs = $this->set_msg($msgs, "client[name]");
+			else $msgs = $this->set_msg($msgs, "client[name]", "e_required_field");
+		}
+		
+		return ["type" => $this->get_type($msgs), "msgs" => $msgs];
+	}
 }

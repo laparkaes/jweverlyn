@@ -37,6 +37,7 @@ const sp_warning_msg = {
 	add_payment: "¿Desea agregar pago?",
 	delete_payment: "¿Desea eliminar pago?",
 	add_proforma: "¿Desea agregar nueva proforma?",
+	issue_invoice: "¿Desea emitir comprobante?",
 }
 
 function nf(num){//number format

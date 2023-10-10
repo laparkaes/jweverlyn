@@ -14,6 +14,7 @@ $lang['e_enter_keyword'] = 'Ingrese palabra de búsqueda.';
 $lang['s_proforma_insert'] = "Proforma ha sido registrada.";
 
 //sale
+$lang['e_doc_type_ruc'] = 'Elija RUC.';
 $lang['e_doc_number_enter'] = 'Ingrese número de documento.';
 $lang['e_select_product'] = 'Elija al menos un producto.';
 $lang['e_product_no_stock'] = 'Disponibilidad insuficiente de ';

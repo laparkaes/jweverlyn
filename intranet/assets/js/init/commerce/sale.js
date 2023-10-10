@@ -199,3 +199,20 @@ $("#btn_cancel_sale").on('click',(function(e) {
 	});
 }));
 
+$("#btn_issue_invoice").on('click',(function(e) {
+	$("#form_issue_invoice").submit();
+}));
+
+$("#form_issue_invoice").submit(function(e) {
+	e.preventDefault();
+	ajax_form_warning(this, b_url + "issue_invoice", "issue_invoice").done(function(res) {
+		set_msgs("#form_issue_invoice", res.msgs);
+		swal_redirection(res.type, res.msg, window.location.href);
+		if (res.type == "success") window.open(res.url, '_blank');
+		/*
+		
+		if (res.type == "success") swal_redirection(res.type, res.msg, res.url);
+		else swal(res.type, res.msg);
+		*/
+	});
+});

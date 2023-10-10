@@ -56,7 +56,7 @@
 					<div class="row">
 						<div class="col-md-4 d-grid">
 							<?php if ($sale->balance) $d = "disabled"; else $d = ""; ?>
-							<button type="button" class="btn btn-success mb-3" <?= $d ?>>
+							<button type="button" class="btn btn-success mb-3" <?= $d ?> data-bs-toggle="modal" data-bs-target="#md_issue_invoice">
 								<i class="bi bi-file-earmark-text-fill" style="font-size: 2rem;"></i><br/>Comprobante
 							</button>
 						</div>
@@ -197,6 +197,70 @@
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
 					<button type="button" class="btn btn-primary" id="btn_add_payment">Agregar</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<?php }else{ ?>
+<div class="modal fade" id="md_issue_invoice" tabindex="-1">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form id="form_issue_invoice">
+				<input type="hidden" name="invoice[sale_id]" value="<?= $sale->sale_id ?>">
+				<div class="modal-header">
+					<h5 class="modal-title">Emitir Comprobante</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+				</div>
+				<div class="modal-body text-start">
+					<div class="row g-3">
+						<div class="col-md-6">
+							<label class="form-label">Serie</label>
+							<select class="form-select" name="invoice[serie_id]">
+								<?php foreach($invoice_series as $is){ ?>
+								<option value="<?= $is->serie_id ?>"><?= $is->serie." - ".$is->description ?></option>
+								<?php } ?>
+							</select>
+							<div class="invalid-feedback"></div>
+						</div>
+						<div class="col-md-6">
+							<label class="form-label">Tipo</label>
+							<select class="form-select" name="invoice[type_id]" id="invoice_type_id">
+								<?php foreach($invoice_types as $it){ ?>
+								<option value="<?= $it->type_id ?>"><?= $it->type ?></option>
+								<?php } ?>
+							</select>
+							<div class="invalid-feedback"></div>
+						</div>
+						<div class="col-md-6">
+							<label class="form-label">Documento</label>
+							<select class="form-select" name="client[doc_type_id]" id="doc_type_id">
+								<?php foreach($ident_documents as $i){ ?>
+								<option value="<?= $i->identification_document_id ?>"><?= $i->identification_document ?></option>
+								<?php } ?>
+							</select>
+							<div class="invalid-feedback"></div>
+						</div>
+						<div class="col-md-6">
+							<label class="form-label">Número</label>
+							<div class="input-group has-validation">
+								<input type="text" class="form-control" name="client[doc_number]" id="doc_number" disabled>
+								<button type="button" class="btn btn-primary" id="btn_search_person" disabled>
+									<i class="bi bi-search"></i>
+								</button>
+								<div class="invalid-feedback"></div>
+							</div>
+						</div>
+						<div class="col-md-12">
+							<label class="form-label">Nombre</label>
+							<input type="text" class="form-control" name="client[name]" id="client_name" disabled>
+							<div class="invalid-feedback"></div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+					<button type="button" class="btn btn-primary" id="btn_issue_invoice">Emitir</button>
 				</div>
 			</form>
 		</div>

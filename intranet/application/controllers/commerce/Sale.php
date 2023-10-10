@@ -93,6 +93,9 @@ class Sale extends CI_Controller {
 			"payments" => $payments,
 			"products" => $products,
 			"payment_methods" => $this->gm->all_simple("payment_method", "payment_method_id", "asc"),
+			"invoice_types" => $this->gm->all_simple("invoice_type", "type", "asc"),
+			"ident_documents" => $this->gm->all_simple("identification_document", "identification_document_id", "asc"),
+			"invoice_series" => $this->gm->all_simple("invoice_serie", "serie", "asc"),
 			"main" => "commerce/sale/detail",
 		];
 		$this->load->view('layout', $data);
@@ -332,11 +335,68 @@ class Sale extends CI_Controller {
 	}
 
 	public function issue_invoice(){
+		$type = "error"; $msg = $url = null;
 		
+		if ($this->session->userdata('username')){
+			$invoice = $this->input->post("invoice");
+			$client = $this->input->post("client");
+			
+			$this->load->library('my_val');
+			$result = $this->my_val->issue_invoice($invoice, $client);
+			
+			if ($result["type"] === "success"){
+				$sale = $this->gm->unique("sale", "sale_id", $invoice["sale_id"], false);
+				if (!$sale->balance){
+					$now = date("Y-m-d H:i:s");
+					
+					//client process
+					if ($client["doc_type_id"] == 1) $client_id = null; //case of no client document
+					else{
+						$client_rec = $this->gm->filter("client", $client);
+						if ($client_rec) $client_id = $client_rec[0]->client_id;
+						else{
+							$client["valid"] = true;
+							$client["updated_at"] = $client["registed_at"] = $now;	
+							$client_id = $this->gm->insert("client", $client);
+						}
+					}
+					
+					//invoice process
+					$invoice["client_id"] = $client_id;
+					
+					$last_invoice = $this->gm->filter("invoice", ["serie_id" => $invoice["serie_id"]], null, null, [["correlative", "desc"]], 1, 0, false);
+					if ($last_invoice) $invoice["correlative"] = $last_invoice[0]->correlative + 1;
+					else $invoice["correlative"] = 1;
+					
+					$invoice["total"] = $sale->amount;
+					$invoice["amount"] = round($sale->amount / 1.18, 2);
+					$invoice["vat"] = $invoice["total"] - $invoice["amount"];
+					$invoice["registed_at"] = $now;
+					$invoice_id = $this->gm->insert("invoice", $invoice);
+					
+					//aqui enviar comprobante a sunat y validar resultado
+					
+					$result["msg"] = "Comprobante ha sido emitido.";
+					$result["url"] = base_url()."commerce/sale/view_invoice/".$invoice_id;
+				}else{
+					$result["type"] = "error";
+					$result["msg"] = "Venta no finalizada.";
+				}
+			}
+		}else $msg = $this->lang->line("e_finished_session");
+		
+		
+		
+		//print_R($this->input->post());
+		/*
 		$this->load->library('my_greenter');
 		$result = $this->my_greenter->issue_invoice();
 		
 		print_r($result);
+		*/
+		
+		header('Content-Type: application/json');
+		echo json_encode($result);
 	}
 	
 	public function convert_pem(){//convert *.pfx cert to *.pem for facturacion electronica
