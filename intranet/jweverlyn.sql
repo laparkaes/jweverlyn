@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- 생성 시간: 23-10-07 19:19
+-- 생성 시간: 23-10-09 19:09
 -- 서버 버전: 10.4.24-MariaDB
 -- PHP 버전: 7.4.29
 
@@ -3178,7 +3178,8 @@ INSERT INTO `client` (`client_id`, `doc_type_id`, `doc_number`, `name`, `valid`,
 (5, 2, '75763698', 'ESTHEFANY DE LOS MILAGROS HERRERA CHECA', 1, '2023-09-25 21:29:42', '2023-09-25 21:29:42'),
 (6, 2, '75112025', 'YARIS NAYELY CALLE CASTILLO', 1, '2023-10-05 00:33:52', '2023-10-05 00:33:52'),
 (7, 3, '000765808', 'Jeong Woo Park', 1, '2023-10-07 22:08:29', '2023-10-07 22:08:29'),
-(8, 2, '48098843', 'ROSA DEL CARMEN GARRIDO MORE', 1, '2023-10-07 23:11:35', '2023-10-07 23:11:35');
+(8, 2, '48098843', 'ROSA DEL CARMEN GARRIDO MORE', 1, '2023-10-07 23:11:35', '2023-10-07 23:11:35'),
+(9, 4, '20454193556', 'COMERCIAL FERNANDA\'S S.R.L.', 1, '2023-10-09 23:22:01', '2023-10-09 23:22:01');
 
 -- --------------------------------------------------------
 
@@ -3203,6 +3204,72 @@ INSERT INTO `identification_document` (`identification_document_id`, `identifica
 (4, 'RUC - Registro Unico de Contributentes', '6'),
 (5, 'Pasaporte', '7'),
 (6, 'CDI - Cédula Diplomática de Identidad', 'A');
+
+-- --------------------------------------------------------
+
+--
+-- 테이블 구조 `invoice`
+--
+
+CREATE TABLE `invoice` (
+  `invoice_id` int(11) NOT NULL,
+  `type_id` int(11) NOT NULL,
+  `client_id` int(11) DEFAULT NULL,
+  `sale_id` int(11) NOT NULL,
+  `serie_id` int(11) NOT NULL,
+  `correlative` int(11) NOT NULL,
+  `total` double NOT NULL,
+  `amount` double NOT NULL,
+  `vat` double NOT NULL,
+  `valid` tinyint(1) NOT NULL DEFAULT 1,
+  `registed_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- 테이블의 덤프 데이터 `invoice`
+--
+
+INSERT INTO `invoice` (`invoice_id`, `type_id`, `client_id`, `sale_id`, `serie_id`, `correlative`, `total`, `amount`, `vat`, `valid`, `registed_at`) VALUES
+(6, 1, NULL, 9, 1, 1, 299, 253.39, 45.61, 1, '2023-10-10 00:08:11');
+
+-- --------------------------------------------------------
+
+--
+-- 테이블 구조 `invoice_serie`
+--
+
+CREATE TABLE `invoice_serie` (
+  `serie_id` int(11) NOT NULL,
+  `serie` varchar(5) NOT NULL,
+  `description` varchar(200) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- 테이블의 덤프 데이터 `invoice_serie`
+--
+
+INSERT INTO `invoice_serie` (`serie_id`, `serie`, `description`) VALUES
+(1, '001', 'Venta Simple');
+
+-- --------------------------------------------------------
+
+--
+-- 테이블 구조 `invoice_type`
+--
+
+CREATE TABLE `invoice_type` (
+  `type_id` int(11) NOT NULL,
+  `type` varchar(20) NOT NULL,
+  `sunat` varchar(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- 테이블의 덤프 데이터 `invoice_type`
+--
+
+INSERT INTO `invoice_type` (`type_id`, `type`, `sunat`) VALUES
+(1, 'Boleta de venta', '03'),
+(2, 'Factura', '01');
 
 -- --------------------------------------------------------
 
@@ -4007,6 +4074,24 @@ ALTER TABLE `identification_document`
   ADD PRIMARY KEY (`identification_document_id`);
 
 --
+-- 테이블의 인덱스 `invoice`
+--
+ALTER TABLE `invoice`
+  ADD PRIMARY KEY (`invoice_id`);
+
+--
+-- 테이블의 인덱스 `invoice_serie`
+--
+ALTER TABLE `invoice_serie`
+  ADD PRIMARY KEY (`serie_id`);
+
+--
+-- 테이블의 인덱스 `invoice_type`
+--
+ALTER TABLE `invoice_type`
+  ADD PRIMARY KEY (`type_id`);
+
+--
 -- 테이블의 인덱스 `module`
 --
 ALTER TABLE `module`
@@ -4140,13 +4225,31 @@ ALTER TABLE `address_province`
 -- 테이블의 AUTO_INCREMENT `client`
 --
 ALTER TABLE `client`
-  MODIFY `client_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `client_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- 테이블의 AUTO_INCREMENT `identification_document`
 --
 ALTER TABLE `identification_document`
   MODIFY `identification_document_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- 테이블의 AUTO_INCREMENT `invoice`
+--
+ALTER TABLE `invoice`
+  MODIFY `invoice_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- 테이블의 AUTO_INCREMENT `invoice_serie`
+--
+ALTER TABLE `invoice_serie`
+  MODIFY `serie_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- 테이블의 AUTO_INCREMENT `invoice_type`
+--
+ALTER TABLE `invoice_type`
+  MODIFY `type_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- 테이블의 AUTO_INCREMENT `module`
