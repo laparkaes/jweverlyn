@@ -55,10 +55,15 @@
 					<?php if ($sale->valid){ ?>
 					<div class="row">
 						<div class="col-md-4 d-grid">
-							<?php if ($sale->balance) $d = "disabled"; else $d = ""; ?>
+							<?php if ($invoice){ ?>
+							<a href="<?= base_url()?>commerce/sale/view_invoice/<?= $invoice->invoice_id ?>" class="btn btn-success mb-3" target="_blank">
+								<i class="bi bi-file-earmark-text-fill" style="font-size: 2rem;"></i><br/><?= $invoice->type ?>
+							</a>
+							<?php }else{ if ($sale->balance) $d = "disabled"; else $d = ""; ?>
 							<button type="button" class="btn btn-success mb-3" <?= $d ?> data-bs-toggle="modal" data-bs-target="#md_issue_invoice">
 								<i class="bi bi-file-earmark-text-fill" style="font-size: 2rem;"></i><br/>Comprobante
 							</button>
+							<?php } ?>
 						</div>
 						<div class="col-md-4 d-grid">
 							<?php if ($sale->balance) $d = ""; else $d = "disabled"; ?>
@@ -235,17 +240,29 @@
 						<div class="col-md-6">
 							<label class="form-label">Documento</label>
 							<select class="form-select" name="client[doc_type_id]" id="doc_type_id">
-								<?php foreach($ident_documents as $i){ ?>
-								<option value="<?= $i->identification_document_id ?>"><?= $i->identification_document ?></option>
+								<?php foreach($client_doc_types as $dt){ 
+								if ($client){
+									if ($client->doc_type_id == $dt->doc_type_id) $s = "selected";
+									else $s = "";
+								}else $s = ""; ?>
+								<option value="<?= $dt->doc_type_id ?>" <?= $s ?>><?= $dt->doc_type ?></option>
 								<?php } ?>
 							</select>
 							<div class="invalid-feedback"></div>
 						</div>
+						<?php if ($client){
+							$doc_number = $client->doc_number;
+							$name = $client->name;
+							$d = "";
+						}else{
+							$doc_number = $name = "";
+							$d = "disabled";
+						} ?>
 						<div class="col-md-6">
 							<label class="form-label">Número</label>
 							<div class="input-group has-validation">
-								<input type="text" class="form-control" name="client[doc_number]" id="doc_number" disabled>
-								<button type="button" class="btn btn-primary" id="btn_search_person" disabled>
+								<input type="text" class="form-control" name="client[doc_number]" id="doc_number" value="<?= $doc_number ?>" <?= $d ?>>
+								<button type="button" class="btn btn-primary" id="btn_search_person" <?= $d ?>>
 									<i class="bi bi-search"></i>
 								</button>
 								<div class="invalid-feedback"></div>
@@ -253,7 +270,7 @@
 						</div>
 						<div class="col-md-12">
 							<label class="form-label">Nombre</label>
-							<input type="text" class="form-control" name="client[name]" id="client_name" disabled>
+							<input type="text" class="form-control" name="client[name]" id="client_name" value="<?= $name ?>" <?= $d ?>>
 							<div class="invalid-feedback"></div>
 						</div>
 					</div>

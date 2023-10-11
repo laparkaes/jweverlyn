@@ -21,10 +21,13 @@ $lang['e_product_no_stock'] = 'Disponibilidad insuficiente de ';
 $lang['e_product_invalid_option'] = "Opción inválida de ";
 $lang['e_invalid_payment'] = "Monto de pago inválido.";
 $lang['e_no_payment_record'] = "No hay registro de pago. Actualice la página e inténtelo nuevamente.";
+$lang['e_unfinished_sale'] = "Venta no finalizada.";
+$lang['e_invoice_issued'] = "Existe comprobante emitido.";
 $lang['s_sale_insert'] = "Venta ha sido registrada.";
 $lang['s_sale_cancel'] = "Venta ha sido anulada.";
 $lang['s_payment_insert'] = "Pago ha sido registrado.";
 $lang['s_payment_delete'] = "Pago ha sido anulado.";
+$lang['s_invoice_issue'] = "Comprobante ha sido emitido.";
 
 //setting - company
 $lang['s_save_company_info'] = 'Información de empresa ha sido guardada.';

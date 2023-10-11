@@ -98,8 +98,8 @@
 					<div class="col-md-6">
 						<label class="form-label">Documento</label>
 						<select class="form-select" name="client[doc_type_id]" id="doc_type_id">
-							<?php foreach($ident_documents as $i){ ?>
-							<option value="<?= $i->identification_document_id ?>"><?= $i->identification_document ?></option>
+							<?php foreach($client_doc_types as $dt){ ?>
+							<option value="<?= $dt->doc_type_id ?>"><?= $dt->doc_type ?></option>
 							<?php } ?>
 						</select>
 						<div class="invalid-feedback"></div>

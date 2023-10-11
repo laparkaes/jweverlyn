@@ -33,6 +33,10 @@ class ComposerStaticInitd882c4472889c070c9c5feb4c3f6d1f2
             'Psr\\Http\\Client\\' => 16,
             'PhpZip\\' => 7,
         ),
+        'L' => 
+        array (
+            'Luecano\\NumeroALetras\\' => 22,
+        ),
         'G' => 
         array (
             'GuzzleHttp\\Psr7\\' => 16,
@@ -67,8 +71,8 @@ class ComposerStaticInitd882c4472889c070c9c5feb4c3f6d1f2
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-message/src',
-            1 => __DIR__ . '/..' . '/psr/http-factory/src',
+            0 => __DIR__ . '/..' . '/psr/http-factory/src',
+            1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
         'Psr\\Http\\Client\\' => 
         array (
@@ -77,6 +81,10 @@ class ComposerStaticInitd882c4472889c070c9c5feb4c3f6d1f2
         'PhpZip\\' => 
         array (
             0 => __DIR__ . '/..' . '/nelexa/zip/src',
+        ),
+        'Luecano\\NumeroALetras\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/luecano/numero-a-letras/src',
         ),
         'GuzzleHttp\\Psr7\\' => 
         array (
@@ -100,10 +108,10 @@ class ComposerStaticInitd882c4472889c070c9c5feb4c3f6d1f2
         ),
         'Greenter\\' => 
         array (
-            0 => __DIR__ . '/..' . '/greenter/xml/src',
-            1 => __DIR__ . '/..' . '/greenter/core/src/Core',
+            0 => __DIR__ . '/..' . '/greenter/core/src/Core',
+            1 => __DIR__ . '/..' . '/greenter/lite/src/Greenter',
             2 => __DIR__ . '/..' . '/greenter/ws/src',
-            3 => __DIR__ . '/..' . '/greenter/lite/src/Greenter',
+            3 => __DIR__ . '/..' . '/greenter/xml/src',
         ),
     );
 

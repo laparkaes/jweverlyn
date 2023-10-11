@@ -62,7 +62,7 @@ class Proforma extends CI_Controller {
 			
 		if ($sale->client_id){
 			$client = $this->gm->unique("client", "client_id", $sale->client_id);
-			$client->doc_type = $this->gm->unique("identification_document", "identification_document_id", $client->doc_type_id, false)->identification_document;
+			$client->doc_type = $this->gm->unique("client_doc_type", "doc_type_id", $client->doc_type_id, false)->doc_type;
 		}else $client = null;
 		
 		if ($proforma->valid) $proforma->color = "success";
@@ -160,7 +160,7 @@ class Proforma extends CI_Controller {
 		if (!$this->session->userdata('username')) redirect("auth/login");
 		
 		$data = [
-			"ident_documents" => $this->gm->all_simple("identification_document", "identification_document_id", "asc"),
+			"client_doc_types" => $this->gm->all_simple("client_doc_type", "doc_type_id", "asc"),
 			"main" => "commerce/proforma/register",
 		];
 		$this->load->view('layout', $data);

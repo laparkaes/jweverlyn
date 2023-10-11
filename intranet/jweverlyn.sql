@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- 생성 시간: 23-10-09 19:09
+-- 생성 시간: 23-10-10 18:38
 -- 서버 버전: 10.4.24-MariaDB
 -- PHP 버전: 7.4.29
 
@@ -3179,25 +3179,27 @@ INSERT INTO `client` (`client_id`, `doc_type_id`, `doc_number`, `name`, `valid`,
 (6, 2, '75112025', 'YARIS NAYELY CALLE CASTILLO', 1, '2023-10-05 00:33:52', '2023-10-05 00:33:52'),
 (7, 3, '000765808', 'Jeong Woo Park', 1, '2023-10-07 22:08:29', '2023-10-07 22:08:29'),
 (8, 2, '48098843', 'ROSA DEL CARMEN GARRIDO MORE', 1, '2023-10-07 23:11:35', '2023-10-07 23:11:35'),
-(9, 4, '20454193556', 'COMERCIAL FERNANDA\'S S.R.L.', 1, '2023-10-09 23:22:01', '2023-10-09 23:22:01');
+(9, 4, '20454193556', 'COMERCIAL FERNANDA\'S S.R.L.', 1, '2023-10-09 23:22:01', '2023-10-09 23:22:01'),
+(10, 2, '76147068', 'JACKELINE DEL PILAR ARCELES VINCES', 1, '2023-10-10 21:40:41', '2023-10-10 21:40:41'),
+(11, 2, '74896747', 'CARLOS DAVID VILELA VILCHEZ', 1, '2023-10-10 22:38:14', '2023-10-10 22:38:14');
 
 -- --------------------------------------------------------
 
 --
--- 테이블 구조 `identification_document`
+-- 테이블 구조 `client_doc_type`
 --
 
-CREATE TABLE `identification_document` (
-  `identification_document_id` int(11) NOT NULL,
-  `identification_document` varchar(100) NOT NULL,
+CREATE TABLE `client_doc_type` (
+  `doc_type_id` int(11) NOT NULL,
+  `doc_type` varchar(100) NOT NULL,
   `sunat` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- 테이블의 덤프 데이터 `identification_document`
+-- 테이블의 덤프 데이터 `client_doc_type`
 --
 
-INSERT INTO `identification_document` (`identification_document_id`, `identification_document`, `sunat`) VALUES
+INSERT INTO `client_doc_type` (`doc_type_id`, `doc_type`, `sunat`) VALUES
 (1, 'Sin documento', '0'),
 (2, 'DNI - Documento Nacional de Identidad', '1'),
 (3, 'CE - Carnet de Extranjería', '4'),
@@ -3230,7 +3232,20 @@ CREATE TABLE `invoice` (
 --
 
 INSERT INTO `invoice` (`invoice_id`, `type_id`, `client_id`, `sale_id`, `serie_id`, `correlative`, `total`, `amount`, `vat`, `valid`, `registed_at`) VALUES
-(6, 1, NULL, 9, 1, 1, 299, 253.39, 45.61, 1, '2023-10-10 00:08:11');
+(30, 1, 10, 11, 1, 1, 631.72, 535.36, 96.36, 1, '2023-10-10 23:33:49'),
+(31, 1, NULL, 5, 1, 2, 1975, 1673.73, 301.27, 1, '2023-10-10 23:33:59'),
+(32, 1, NULL, 5, 1, 3, 1975, 1673.73, 301.27, 1, '2023-10-10 23:34:31'),
+(33, 1, NULL, 5, 1, 4, 1975, 1673.73, 301.27, 1, '2023-10-10 23:34:54'),
+(34, 1, NULL, 5, 1, 5, 1975, 1673.73, 301.27, 1, '2023-10-10 23:35:10'),
+(35, 1, NULL, 5, 1, 6, 1975, 1673.73, 301.27, 1, '2023-10-10 23:35:19'),
+(36, 1, NULL, 5, 1, 7, 1975, 1673.73, 301.27, 1, '2023-10-10 23:35:29'),
+(37, 1, NULL, 5, 1, 8, 1975, 1673.73, 301.27, 1, '2023-10-10 23:35:38'),
+(38, 1, NULL, 5, 1, 9, 1975, 1673.73, 301.27, 1, '2023-10-10 23:35:55'),
+(39, 1, NULL, 5, 1, 10, 1975, 1673.73, 301.27, 1, '2023-10-10 23:36:26'),
+(40, 1, NULL, 5, 1, 11, 1975, 1673.73, 301.27, 1, '2023-10-10 23:36:43'),
+(41, 1, NULL, 5, 1, 12, 1975, 1673.73, 301.27, 1, '2023-10-10 23:36:58'),
+(42, 1, NULL, 5, 1, 13, 1975, 1673.73, 301.27, 1, '2023-10-10 23:37:13'),
+(43, 1, NULL, 5, 1, 14, 1975, 1673.73, 301.27, 1, '2023-10-10 23:37:21');
 
 -- --------------------------------------------------------
 
@@ -3260,6 +3275,7 @@ INSERT INTO `invoice_serie` (`serie_id`, `serie`, `description`) VALUES
 CREATE TABLE `invoice_type` (
   `type_id` int(11) NOT NULL,
   `type` varchar(20) NOT NULL,
+  `letter` char(1) NOT NULL,
   `sunat` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -3267,9 +3283,9 @@ CREATE TABLE `invoice_type` (
 -- 테이블의 덤프 데이터 `invoice_type`
 --
 
-INSERT INTO `invoice_type` (`type_id`, `type`, `sunat`) VALUES
-(1, 'Boleta de venta', '03'),
-(2, 'Factura', '01');
+INSERT INTO `invoice_type` (`type_id`, `type`, `letter`, `sunat`) VALUES
+(1, 'Boleta', 'B', '03'),
+(2, 'Factura', 'F', '01');
 
 -- --------------------------------------------------------
 
@@ -3768,10 +3784,10 @@ INSERT INTO `product_option` (`option_id`, `product_id`, `option`, `stock`, `val
 (23, 1, 'Rosado', 12375, 0),
 (24, 1, 'Talla S', 157, 0),
 (25, 1, 'Rosado', 77, 0),
-(26, 1, 'Negro', 134, 1),
+(26, 1, 'Negro', 124, 1),
 (27, 197, 'Talla S', 67, 1),
-(28, 197, 'Talla M', 76, 1),
-(29, 197, 'Talla L', 130, 1);
+(28, 197, 'Talla M', 73, 1),
+(29, 197, 'Talla L', 125, 1);
 
 -- --------------------------------------------------------
 
@@ -3795,7 +3811,8 @@ CREATE TABLE `proforma` (
 
 INSERT INTO `proforma` (`proforma_id`, `client_id`, `amount`, `validity`, `remark`, `valid`, `registed_at`) VALUES
 (1, 7, 1490, '2023-10-21', 'Descuento por mayorista', 1, '2023-10-07 22:36:14'),
-(2, 8, 150, '2023-10-21', 'cliente no tiene dinero', 1, '2023-10-07 23:11:35');
+(2, 8, 150, '2023-10-21', 'cliente no tiene dinero', 1, '2023-10-07 23:11:35'),
+(3, 11, 1000, '2023-10-24', 'Descuento por compra mayor', 1, '2023-10-10 22:38:14');
 
 -- --------------------------------------------------------
 
@@ -3819,7 +3836,8 @@ CREATE TABLE `proforma_product` (
 INSERT INTO `proforma_product` (`proforma_product_id`, `proforma_id`, `product_id`, `option_id`, `price`, `qty`) VALUES
 (1, 1, 197, 27, 55, 20),
 (2, 1, 1, 26, 13, 30),
-(3, 2, 197, 29, 50, 3);
+(3, 2, 197, 29, 50, 3),
+(4, 3, 197, 29, 50, 20);
 
 -- --------------------------------------------------------
 
@@ -3927,7 +3945,8 @@ INSERT INTO `sale` (`sale_id`, `client_id`, `amount`, `paid`, `balance`, `update
 (7, NULL, 180, 0, 180, '2023-09-28 22:52:22', '2023-09-21 21:48:57', 1),
 (8, 4, 180, 180, 0, '2023-09-21 21:50:14', '2023-09-21 21:50:14', 1),
 (9, 5, 299, 299, 0, '2023-10-03 15:23:02', '2023-09-25 21:29:42', 1),
-(10, 6, 61.2, 61.2, 0, '2023-10-05 00:34:13', '2023-10-05 00:33:52', 1);
+(10, 6, 61.2, 61.2, 0, '2023-10-05 00:34:13', '2023-10-05 00:33:52', 1),
+(11, 10, 631.72, 631.72, 0, '2023-10-10 21:40:41', '2023-10-10 21:40:41', 1);
 
 -- --------------------------------------------------------
 
@@ -3965,7 +3984,8 @@ INSERT INTO `sale_payment` (`payment_id`, `sale_id`, `payment_method_id`, `total
 (12, 9, 1, 100, 999, 899, '2023-10-03 15:15:35', 0),
 (13, 9, 1, 99.8, 9999, 9899.2, '2023-10-03 15:23:02', 1),
 (14, 10, 1, 61.2, 30, 0, '2023-10-05 00:33:52', 1),
-(15, 10, 1, 31.2, 50, 18.8, '2023-10-05 00:34:13', 1);
+(15, 10, 1, 31.2, 50, 18.8, '2023-10-05 00:34:13', 1),
+(16, 11, 2, 631.72, 631.72, 0, '2023-10-10 21:40:41', 1);
 
 -- --------------------------------------------------------
 
@@ -3996,7 +4016,10 @@ INSERT INTO `sale_product` (`sale_product_id`, `sale_id`, `product_id`, `option_
 (6, 7, 197, 28, 3, 59.84, 179.52),
 (7, 8, 197, 27, 3, 59.84, 179.52),
 (8, 9, 197, 28, 5, 59.84, 299.2),
-(9, 10, 1, 26, 4, 15.3, 61.2);
+(9, 10, 1, 26, 4, 15.3, 61.2),
+(10, 11, 197, 28, 3, 59.84, 179.52),
+(11, 11, 197, 29, 5, 59.84, 299.2),
+(12, 11, 1, 26, 10, 15.3, 153);
 
 -- --------------------------------------------------------
 
@@ -4068,10 +4091,10 @@ ALTER TABLE `client`
   ADD KEY `fk_doc_type_id` (`doc_type_id`);
 
 --
--- 테이블의 인덱스 `identification_document`
+-- 테이블의 인덱스 `client_doc_type`
 --
-ALTER TABLE `identification_document`
-  ADD PRIMARY KEY (`identification_document_id`);
+ALTER TABLE `client_doc_type`
+  ADD PRIMARY KEY (`doc_type_id`);
 
 --
 -- 테이블의 인덱스 `invoice`
@@ -4225,19 +4248,19 @@ ALTER TABLE `address_province`
 -- 테이블의 AUTO_INCREMENT `client`
 --
 ALTER TABLE `client`
-  MODIFY `client_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `client_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
--- 테이블의 AUTO_INCREMENT `identification_document`
+-- 테이블의 AUTO_INCREMENT `client_doc_type`
 --
-ALTER TABLE `identification_document`
-  MODIFY `identification_document_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+ALTER TABLE `client_doc_type`
+  MODIFY `doc_type_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- 테이블의 AUTO_INCREMENT `invoice`
 --
 ALTER TABLE `invoice`
-  MODIFY `invoice_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `invoice_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
 -- 테이블의 AUTO_INCREMENT `invoice_serie`
@@ -4291,13 +4314,13 @@ ALTER TABLE `product_option`
 -- 테이블의 AUTO_INCREMENT `proforma`
 --
 ALTER TABLE `proforma`
-  MODIFY `proforma_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `proforma_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- 테이블의 AUTO_INCREMENT `proforma_product`
 --
 ALTER TABLE `proforma_product`
-  MODIFY `proforma_product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `proforma_product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- 테이블의 AUTO_INCREMENT `role`
@@ -4309,19 +4332,19 @@ ALTER TABLE `role`
 -- 테이블의 AUTO_INCREMENT `sale`
 --
 ALTER TABLE `sale`
-  MODIFY `sale_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `sale_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- 테이블의 AUTO_INCREMENT `sale_payment`
 --
 ALTER TABLE `sale_payment`
-  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- 테이블의 AUTO_INCREMENT `sale_product`
 --
 ALTER TABLE `sale_product`
-  MODIFY `sale_product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `sale_product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- 테이블의 AUTO_INCREMENT `setting_company`
@@ -4349,7 +4372,7 @@ ALTER TABLE `account`
 -- 테이블의 제약사항 `client`
 --
 ALTER TABLE `client`
-  ADD CONSTRAINT `fk_doc_type_id` FOREIGN KEY (`doc_type_id`) REFERENCES `identification_document` (`identification_document_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_doc_type_id` FOREIGN KEY (`doc_type_id`) REFERENCES `client_doc_type` (`doc_type_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- 테이블의 제약사항 `product_image`

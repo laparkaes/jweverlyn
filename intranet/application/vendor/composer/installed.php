@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'e62f4930a9d1affe537756528291ee2872649b66',
+        'reference' => 'd459f200ae904b3ed7e43bced67114872bbc8e10',
         'name' => '__root__',
         'dev' => true,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'e62f4930a9d1affe537756528291ee2872649b66',
+            'reference' => 'd459f200ae904b3ed7e43bced67114872bbc8e10',
             'dev_requirement' => false,
         ),
         'greenter/core' => array(
@@ -98,6 +98,15 @@
             'install_path' => __DIR__ . '/../guzzlehttp/psr7',
             'aliases' => array(),
             'reference' => 'be45764272e8873c72dbe3d2edcfdfcc3bc9f727',
+            'dev_requirement' => false,
+        ),
+        'luecano/numero-a-letras' => array(
+            'pretty_version' => 'v3.0.0',
+            'version' => '3.0.0.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../luecano/numero-a-letras',
+            'aliases' => array(),
+            'reference' => 'bab51e3e81545e38d6a11efccb3e6d568765ba7c',
             'dev_requirement' => false,
         ),
         'nelexa/zip' => array(
