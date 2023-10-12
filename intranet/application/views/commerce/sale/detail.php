@@ -45,7 +45,18 @@
 							<div class="text-start"><strong>Última Actualización</strong></div>
 							<div class="text-end"><span><?= $sale->updated_at ?></span></div>
 						</li>
+						<?php if ($invoice){ ?>
+						<li class="list-group-item">
+							<div class="text-start"><strong>Sunat</strong></div>
+							<div class="text-end"><a href="<?= base_url() ?>/uploads/sunat/<?= $invoice->file_xml ?>" target="_blank"><?= $invoice->file_xml ?></a></div>
+							<div class="text-end"><a href="<?= base_url() ?>/uploads/sunat/<?= $invoice->file_cdr ?>" target="_blank"><?= $invoice->file_cdr ?></a></div>
+							<div class="mt-3 text-end">
+								<button type="button" class="btn btn-outline-danger btn-sm">Anular <?= $invoice->type ?></button>
+							</div>
+						</li>
+						<?php } ?>
 					</ul>
+					
 				</div>
 			</div>
 		</div>
@@ -73,7 +84,7 @@
 						</div>
 						<div class="col-md-4 d-grid">
 							<button type="button" class="btn btn-outline-danger mb-3" id="btn_cancel_sale" value="<?= $sale->sale_id ?>">
-								<i class="bi bi-trash" style="font-size: 2rem;"></i><br/>Anular Venta
+								<i class="bi bi-trash" style="font-size: 2rem;"></i><br/>Cancelar Venta
 							</button>
 						</div>
 					</div>

@@ -27,6 +27,7 @@ class My_greenter{
 		$this->pass = "Wjddn0315";
 		$this->cert_path = FCPATH."uploads/cert/cert_jweverlyn.pem";
 		$this->service_link = SunatEndpoints::FE_BETA;
+		$this->path = "./uploads/sunat/";
 	}
 	
 	private function set_see(){
@@ -147,8 +148,8 @@ class My_greenter{
 		
 		// Verificamos que la conexión con SUNAT fue exitosa.
 		if ($result->isSuccess()){
-			//file_put_contents($result["file_xml"], $see->getFactory()->getLastXml());
-			//file_put_contents($result["file_cdr"], $result->getCdrZip());		
+			file_put_contents($this->path.$r["file_xml"], $see->getFactory()->getLastXml());
+			file_put_contents($this->path.$r["file_cdr"], $result->getCdrZip());		
 		}else{
 			$r["type"] = "error";
 			$r["msg"] = $result->getError()->getMessage();

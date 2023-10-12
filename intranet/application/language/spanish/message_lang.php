@@ -1,5 +1,6 @@
 <?php
 
+$lang['e_check_datas'] = 'Revise los datos ingresados.';
 $lang['e_internal_again'] = 'Ocurrió error interno. Intente nuevamente.';
 $lang['e_unknown_refresh'] = 'Ocurrió error desconocido. Actualice la página y vuelva a intentar.';
 $lang['e_required_field'] = 'Campo requerido.';

@@ -317,21 +317,18 @@ class Sale extends CI_Controller {
 		
 		if ($this->session->userdata('username')){
 			$sale_id = $this->input->post("sale_id");
-			$f = ["sale_id" => $sale_id];
 			
-			/* cancelar
-			1. comprobante - pendiente
-			2. pagos
-			3. venta
-			*/
-			
-			//$this->gm->update("voucher", $f, $d);
-			$this->gm->update("sale_payment", $f, ["valid" => false]);
-			$this->gm->update("sale", $f, ["updated_at" => date("Y-m-d H:i:s"), "valid" => false]);
-			
-			$type = "success";
-			$msg = $this->lang->line("s_sale_cancel");
-			$url = base_url()."commerce/sale";
+			if (!$this->gm->unique("invoice", "sale_id", $sale_id)){
+				$f = ["sale_id" => $sale_id];
+				
+				// cancelar pagos y venta
+				$this->gm->update("sale_payment", $f, ["valid" => false]);
+				$this->gm->update("sale", $f, ["updated_at" => date("Y-m-d H:i:s"), "valid" => false]);
+				
+				$type = "success";
+				$msg = $this->lang->line("s_sale_cancel");
+				$url = base_url()."commerce/sale";	
+			}else $msg = $this->lang->line("e_invoice_issued");
 		}else $msg = $this->lang->line("e_finished_session");
 		
 		header('Content-Type: application/json');
@@ -339,13 +336,13 @@ class Sale extends CI_Controller {
 	}
 
 	public function issue_invoice(){
-		$result = ["type" => "error", "msg" => null, "url" => null];
+		$result = ["type" => "error", "msg" => "", "url" => null];
 		
 		if ($this->session->userdata('username')){
 			$invoice = $this->input->post("invoice");
 			$client = $this->input->post("client");
 			
-			//if (!$this->gm->unique("invoice", "sale_id", $invoice["sale_id"])){
+			if (!$this->gm->unique("invoice", "sale_id", $invoice["sale_id"])){
 				$this->load->library('my_val');
 				$result = $this->my_val->issue_invoice($invoice, $client);
 				
@@ -398,18 +395,9 @@ class Sale extends CI_Controller {
 						$result["type"] = "error";
 						$result["msg"] = $this->lang->line("e_unfinished_sale");
 					}
-				}	
-			//}else $result["msg"] = $this->lang->line("e_invoice_issued");
+				}else $result["msg"] = $this->lang->line("e_check_datas");
+			}else $result["msg"] = $this->lang->line("e_invoice_issued");
 		}else $result["msg"] = $this->lang->line("e_finished_session");
-		
-		
-		
-		//print_R($this->input->post());
-		/*
-		
-		
-		print_r($result);
-		*/
 		
 		header('Content-Type: application/json');
 		echo json_encode($result);

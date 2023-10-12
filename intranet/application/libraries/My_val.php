@@ -483,7 +483,7 @@ class My_val{
 		
 		$invoice_type = $this->CI->gm->unique("invoice_type", "type_id", $invoice["type_id"], false);
 		if ($invoice_type->sunat == "01"){
-			$doc_type = $this->CI->gm->unique("identification_document", "identification_document_id", $client["doc_type_id"], false);
+			$doc_type = $this->CI->gm->unique("client_doc_type", "doc_type_id", $client["doc_type_id"], false);
 			if ($doc_type->sunat !== "6") $msgs = $this->set_msg($msgs, "client[doc_type_id]", "e_doc_type_ruc");
 		}
 		
