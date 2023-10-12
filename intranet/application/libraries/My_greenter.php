@@ -91,7 +91,7 @@ class My_greenter{
 			->setTipoOperacion('0101') // Venta - Catalog. 51
 			->setTipoDoc($invoice_type->sunat)
 			->setSerie($invoice_type->letter.$invoice_serie->serie)
-			->setCorrelativo('1')
+			->setCorrelativo($invoice->correlative)
 			->setFechaEmision(new DateTime($invoice->registed_at.'-05:00')) // Zona horaria: Lima
 			->setFormaPago(new FormaPagoContado()) // FormaPago: Contado
 			->setTipoMoneda('PEN') // Sol - Catalog. 02

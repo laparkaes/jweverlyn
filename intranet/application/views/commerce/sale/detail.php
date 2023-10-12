@@ -48,10 +48,10 @@
 						<?php if ($invoice){ ?>
 						<li class="list-group-item">
 							<div class="text-start"><strong>Sunat</strong></div>
-							<div class="text-end"><a href="<?= base_url() ?>/uploads/sunat/<?= $invoice->file_xml ?>" target="_blank"><?= $invoice->file_xml ?></a></div>
-							<div class="text-end"><a href="<?= base_url() ?>/uploads/sunat/<?= $invoice->file_cdr ?>" target="_blank"><?= $invoice->file_cdr ?></a></div>
-							<div class="mt-3 text-end">
-								<button type="button" class="btn btn-outline-danger btn-sm">Anular <?= $invoice->type ?></button>
+							<div class="text-end">
+								<a href="<?= base_url() ?>/uploads/sunat/<?= $invoice->file_xml ?>" download="<?= $invoice->file_xml ?>" class="btn btn-outline-success btn-sm" target="_blank">XML</a>
+								<a href="<?= base_url() ?>/uploads/sunat/<?= $invoice->file_cdr ?>" download="<?= $invoice->file_cdr ?>" class="btn btn-outline-success btn-sm" target="_blank">CDR</a>
+								<button type="button" class="btn btn-outline-danger btn-sm" id="btn_void_invoice" value="<?= $invoice->invoice_id ?>">Anular</button>
 							</div>
 						</li>
 						<?php } ?>
