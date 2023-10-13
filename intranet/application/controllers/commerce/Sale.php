@@ -378,18 +378,16 @@ class Sale extends CI_Controller {
 						
 						//sent to sunat
 						$this->load->library('my_greenter');
-						$result_sunat = $this->my_greenter->issue_invoice($invoice_id);
+						$result = $this->my_greenter->issue_invoice($invoice_id);
 						
-						if ($result_sunat["type"] === "success"){
+						if ($result["type"] === "success"){
 							//xml y cdr update in invoice record
-							$data = ["file_xml" => $result_sunat["file_xml"], "file_cdr" => $result_sunat["file_cdr"]];
+							$data = ["file_xml" => $result["file_xml"], "file_cdr" => $result["file_cdr"]];
 							$this->gm->update("invoice", ["invoice_id" => $invoice_id], $data);
 							
-							$result["msg"] = $this->lang->line("s_invoice_issue");
+							unset($result["file_xml"]);
+							unset($result["file_cdr"]);
 							$result["url"] = base_url()."commerce/sale/view_invoice/".$invoice_id;	
-						}else{
-							$result["type"] = "error";
-							$result["msg"] = $result_sunat["msg"];
 						}
 					}else{
 						$result["type"] = "error";
@@ -403,10 +401,54 @@ class Sale extends CI_Controller {
 		echo json_encode($result);
 	}
 	
+	public function send_invoice(){
+		$result = ["type" => "error", "msg" => "", "url" => null];
+		
+		if ($this->session->userdata('username')){
+			$invoice_id = $this->input->post("invoice_id");
+			
+			$this->load->library('my_greenter');
+			$result = $this->my_greenter->issue_invoice($invoice_id);
+			
+			if ($result["type"] === "success"){
+				//xml y cdr update in invoice record
+				$data = ["file_xml" => $result["file_xml"], "file_cdr" => $result["file_cdr"]];
+				$this->gm->update("invoice", ["invoice_id" => $invoice_id], $data);
+				
+				unset($result["file_xml"]);
+				unset($result["file_cdr"]);
+				$result["url"] = base_url()."commerce/sale/view_invoice/".$invoice_id;	
+			}
+		}else $result["msg"] = $this->lang->line("e_finished_session");
+		
+		header('Content-Type: application/json');
+		echo json_encode($result);
+	}
+	
 	public function view_invoice($invoice_id){
 		$invoice = $this->gm->unique("invoice", "invoice_id", $invoice_id);
 		
 		print_r($invoice);
+	}
+	
+	public function void_invoice(){
+		$result = ["type" => "error", "msg" => ""];
+		
+		if ($this->session->userdata('username')){
+			$invoice = $this->gm->unique("invoice", "invoice_id", $this->input->post("invoice_id"));
+			
+			$this->load->library('my_greenter');
+			$result_sunat = $this->my_greenter->void_invoice($invoice);
+			print_r($result_sunat);
+			/*
+			if ($result_sunat["type"] === "success"){
+				$result = $result_sunat;
+				$result["sale_id"] = $invoice->sale_id;
+			}else $result["msg"] = $result_sunat["msg"];
+			*/
+		}else $result["msg"] = $this->lang->line("e_finished_session");
+		
+		
 	}
 	
 	public function convert_pem(){//convert *.pfx cert to *.pem for facturacion electronica

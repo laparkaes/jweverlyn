@@ -38,6 +38,7 @@ const sp_warning_msg = {
 	delete_payment: "¿Desea eliminar pago?",
 	add_proforma: "¿Desea agregar nueva proforma?",
 	issue_invoice: "¿Desea emitir comprobante?",
+	send_invoice: "¿Desea enviar comprobante a Sunat?",
 	void_invoice: "¿Desea anular comprobante?",
 }
 

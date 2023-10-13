@@ -212,6 +212,14 @@ $("#form_issue_invoice").submit(function(e) {
 	});
 });
 
+$("#btn_send_invoice").on('click',(function(e) {
+	ajax_simple_warning({invoice_id: $(this).val()}, b_url + "send_invoice", "send_invoice").done(function(res) {
+		set_msgs("#form_issue_invoice", res.msgs);
+		swal_redirection(res.type, res.msg, window.location.href);
+		if (res.type == "success") window.open(res.url, '_blank');
+	});
+}));
+
 $("#btn_void_invoice").on('click',(function(e) {
 	ajax_simple_warning({invoice_id: $(this).val()}, b_url + "void_invoice", "void_invoice").done(function(res) {
 		alert(res);

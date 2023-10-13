@@ -49,9 +49,14 @@
 						<li class="list-group-item">
 							<div class="text-start"><strong>Sunat</strong></div>
 							<div class="text-end">
+								<?php if ($invoice->file_xml){ ?>
 								<a href="<?= base_url() ?>/uploads/sunat/<?= $invoice->file_xml ?>" download="<?= $invoice->file_xml ?>" class="btn btn-outline-success btn-sm" target="_blank">XML</a>
+								<?php } if ($invoice->file_cdr){ ?>
 								<a href="<?= base_url() ?>/uploads/sunat/<?= $invoice->file_cdr ?>" download="<?= $invoice->file_cdr ?>" class="btn btn-outline-success btn-sm" target="_blank">CDR</a>
 								<button type="button" class="btn btn-outline-danger btn-sm" id="btn_void_invoice" value="<?= $invoice->invoice_id ?>">Anular</button>
+								<?php }else{ ?>
+								<button type="button" class="btn btn-outline-primary btn-sm" id="btn_send_invoice" value="<?= $invoice->invoice_id ?>">Enviar a Sunat</button>
+								<?php } ?>
 							</div>
 						</li>
 						<?php } ?>

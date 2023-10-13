@@ -11,6 +11,9 @@ use Greenter\Model\Sale\FormaPagos\FormaPagoContado;
 use Greenter\Model\Sale\Invoice;
 use Greenter\Model\Sale\SaleDetail;
 use Greenter\Model\Sale\Legend;
+use Greenter\Model\Sale\Document;
+use Greenter\Model\Summary\Summary;
+use Greenter\Model\Summary\SummaryDetail;
 
 use Greenter\XMLSecLibs\Certificate\X509Certificate;
 use Greenter\XMLSecLibs\Certificate\X509ContentType;
@@ -139,27 +142,119 @@ class My_greenter{
 		$result = $see->send($invoice_greenter);
 
 		// Guardar XML firmado digitalmente.
-		$r = [
-			"type" => "success",
-			"msg" => null,
-			"file_xml" => $invoice_greenter->getName().'.xml',
-			"file_cdr" => 'R-'.$invoice_greenter->getName().'.zip',
-		];
-		
+		$file_xml = $invoice_greenter->getName().'.xml';
+		file_put_contents($this->path.$file_xml, $see->getFactory()->getLastXml());
+
 		// Verificamos que la conexión con SUNAT fue exitosa.
 		if ($result->isSuccess()){
-			file_put_contents($this->path.$r["file_xml"], $see->getFactory()->getLastXml());
-			file_put_contents($this->path.$r["file_cdr"], $result->getCdrZip());		
+			// Guardar CDR
+			$file_cdr = 'R-'.$invoice_greenter->getName().'.zip';
+			file_put_contents($this->path.$file_cdr, $result->getCdrZip());
+			
+			$type = "success";
+			$msg = $result->getCdrResponse()->getDescription();
 		}else{
-			$r["type"] = "error";
-			$r["msg"] = $result->getError()->getMessage();
-			// Mostrar error al conectarse a SUNAT.
-			//echo 'Codigo Error: '.$result->getError()->getCode();
-			//echo 'Mensaje Error: '.$result->getError()->getMessage();
-			//exit();
+			$file_cdr = null;
+			$type = "error";
+			$msg = $result->getError()->getMessage();
 		}
 
-		return $r;
+		return ["type" => $type, "msg" => $msg, "file_xml" => $file_xml, "file_cdr" => $file_cdr];
+	}
+	
+	private function void_invoice_boleta($invoice, $invoice_type){
+		$type = "error"; $msg = null;
+		
+		$company = $this->CI->gm->unique("setting_company", "company_id", 1, false);
+		$address_department = $this->CI->gm->unique("address_department", "department_id", $company->department_id, false);
+		$address_province = $this->CI->gm->unique("address_province", "province_id", $company->province_id, false);
+		$address_district = $this->CI->gm->unique("address_district", "district_id", $company->district_id, false);
+		
+		$invoice_serie = $this->CI->gm->unique("invoice_serie", "serie_id", $invoice->serie_id, false);
+		
+		$client = $this->CI->gm->unique("client", "client_id", $invoice->client_id);
+		if (!$client){
+			$client = new stdClass;
+			$client->doc_type_id = 1;
+			$client->doc_number = "0";
+			$client->name = "---";
+		}
+		$client_doc_type = $this->CI->gm->unique("client_doc_type", "doc_type_id", $client->doc_type_id, false);
+		
+		//Emisor
+		$address = (new Address())
+			->setUbigueo($address_district->ubigeo)
+			->setDepartamento($address_department->department)
+			->setProvincia($address_province->province)
+			->setDistrito($address_district->district)
+			->setUrbanizacion('-')
+			->setDireccion($company->address)
+			->setCodLocal('0000'); // Codigo de establecimiento asignado por SUNAT, 0000 por defecto.
+		
+		$company = (new Company())
+			->setRuc($company->ruc)
+			->setRazonSocial($company->company)
+			->setNombreComercial($company->company)
+			->setAddress($address);
+		
+		$detail = (new SummaryDetail())
+			->setTipoDoc($invoice_type->sunat) // Boleta
+			->setSerieNro($invoice_type->letter.$invoice_serie->serie."-".$invoice->correlative)
+			->setEstado('3') // Anulación
+			->setClienteTipo($client_doc_type->sunat)
+			->setClienteNro($client->doc_number)
+			->setTotal($invoice->total)
+			->setMtoOperGravadas($invoice->amount)
+			//->setMtoOperInafectas(24.4)
+			//->setMtoOperExoneradas(50)
+			//->setMtoOtrosCargos(21)
+			->setMtoIGV($invoice->vat);
+		
+		$resumen = (new Summary())
+			->setFecGeneracion(new \DateTime(date("Y-m-d", strtotime($invoice->registed_at)))) // Fecha de emisión de las boletas.
+			->setFecResumen(new \DateTime(date("Y-m-d"))) // Fecha de envío del resumen diario.
+			->setCorrelativo('001') // Correlativo, necesario para diferenciar de otros Resumen diario del mismo día.
+			->setCompany($company)
+			->setDetails([$detail]);
+		
+		$see = $this->set_see();
+		$result = $see->send($resumen);
+		
+		// Guardar XML firmado digitalmente.
+		$file_xml = $resumen->getName().'.xml';
+		file_put_contents($this->path.$file_xml, $see->getFactory()->getLastXml());
+		
+		$type = "error"; $ticket = $file_cdr = null;
+		if ($result->isSuccess()){
+			$ticket = $result->getTicket();
+			
+			$statusResult = $see->getStatus($ticket); print_R($statusResult);
+			if ($statusResult->isSuccess()) {
+				// Guardar CDR
+				$file_cdr = 'R-'.$resumen->getName().'.zip';
+				file_put_contents($this->path.$file_cdr, $statusResult->getCdrZip());
+				
+				$type = "success";
+				$msg = $statusResult->getCdrResponse()->getDescription();
+			}else $msg = $statusResult->getError()->getCode()." - ".$statusResult->getError()->getMessage();
+		}else $msg = $result->getError()->getCode()." - ".$result->getError()->getMessage();
+		
+		return ["type" => $type, "msg" => $msg, "ticket" => $ticket, "file_xml" => $file_xml, "file_cdr" => $file_cdr];
+	}
+	
+	private function void_invoice_factura($invoice, $type){
+		$type = "error"; $msg = null;
+		
+		return ["type" => $type, "msg" => $msg];
+	}
+	
+	public function void_invoice($invoice){
+		$invoice_type = $this->CI->gm->unique("invoice_type", "type_id", $invoice->type_id, false);
+		
+		if ($invoice_type->letter === "B") $result = $this->void_invoice_boleta($invoice, $invoice_type);
+		else $result = $this->void_invoice_factura($invoice, $invoice_type);
+		
+		return $result;
 	}
 	
 	public function convert_to_pem(){
