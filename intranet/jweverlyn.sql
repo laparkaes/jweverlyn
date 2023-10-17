@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- 생성 시간: 23-10-11 23:42
+-- 생성 시간: 23-10-17 17:55
 -- 서버 버전: 10.4.24-MariaDB
 -- PHP 버전: 7.4.29
 
@@ -3223,8 +3223,6 @@ CREATE TABLE `invoice` (
   `total` double NOT NULL,
   `amount` double NOT NULL,
   `vat` double NOT NULL,
-  `file_xml` varchar(200) DEFAULT NULL,
-  `file_cdr` varchar(200) DEFAULT NULL,
   `valid` tinyint(1) NOT NULL DEFAULT 1,
   `registed_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -3233,46 +3231,8 @@ CREATE TABLE `invoice` (
 -- 테이블의 덤프 데이터 `invoice`
 --
 
-INSERT INTO `invoice` (`invoice_id`, `type_id`, `client_id`, `sale_id`, `serie_id`, `correlative`, `total`, `amount`, `vat`, `file_xml`, `file_cdr`, `valid`, `registed_at`) VALUES
-(45, 1, NULL, 5, 1, 1, 1975, 1673.73, 301.27, NULL, NULL, 1, '2023-10-11 20:09:09'),
-(46, 1, NULL, 5, 1, 2, 1975, 1673.73, 301.27, NULL, NULL, 1, '2023-10-11 20:09:28'),
-(47, 1, NULL, 5, 1, 3, 1975, 1673.73, 301.27, NULL, NULL, 1, '2023-10-11 20:09:59'),
-(48, 1, 5, 9, 1, 4, 299, 253.39, 45.61, NULL, NULL, 1, '2023-10-11 21:04:26'),
-(49, 1, 5, 9, 1, 5, 299, 253.39, 45.61, NULL, NULL, 1, '2023-10-11 21:05:09'),
-(50, 1, 5, 9, 1, 6, 299, 253.39, 45.61, NULL, NULL, 1, '2023-10-11 21:06:58'),
-(51, 1, 5, 9, 1, 7, 299, 253.39, 45.61, NULL, NULL, 1, '2023-10-11 21:11:35'),
-(52, 1, 5, 9, 1, 8, 299, 253.39, 45.61, NULL, NULL, 1, '2023-10-11 21:19:44'),
-(53, 1, 5, 9, 1, 9, 299, 253.39, 45.61, NULL, NULL, 1, '2023-10-11 21:20:49'),
-(54, 1, 5, 9, 1, 10, 299, 253.39, 45.61, NULL, NULL, 1, '2023-10-11 21:21:21'),
-(55, 1, 5, 9, 1, 11, 299, 253.39, 45.61, NULL, NULL, 1, '2023-10-11 21:22:09'),
-(56, 1, 5, 9, 1, 12, 299, 253.39, 45.61, NULL, NULL, 1, '2023-10-11 21:31:44'),
-(57, 1, 5, 9, 1, 13, 299, 253.39, 45.61, NULL, NULL, 1, '2023-10-11 22:11:04'),
-(58, 1, 5, 9, 1, 14, 299, 253.39, 45.61, NULL, NULL, 1, '2023-10-11 22:14:17'),
-(59, 1, 5, 9, 1, 15, 299, 253.39, 45.61, NULL, NULL, 1, '2023-10-11 22:14:57'),
-(60, 1, 5, 9, 1, 16, 299, 253.39, 45.61, NULL, NULL, 1, '2023-10-11 22:18:07'),
-(61, 1, 5, 9, 1, 17, 299, 253.39, 45.61, NULL, NULL, 1, '2023-10-11 22:18:27'),
-(62, 1, 5, 9, 1, 18, 299, 253.39, 45.61, NULL, NULL, 1, '2023-10-11 22:26:35'),
-(63, 1, 5, 9, 1, 19, 299, 253.39, 45.61, NULL, NULL, 1, '2023-10-11 22:27:02'),
-(64, 1, 5, 9, 1, 20, 299, 253.39, 45.61, NULL, NULL, 1, '2023-10-11 22:28:30'),
-(65, 1, 5, 9, 1, 21, 299, 253.39, 45.61, NULL, NULL, 1, '2023-10-11 22:29:37'),
-(66, 1, 5, 9, 1, 22, 299, 253.39, 45.61, NULL, NULL, 1, '2023-10-11 22:30:36'),
-(67, 1, 5, 9, 1, 23, 299, 253.39, 45.61, NULL, NULL, 1, '2023-10-11 22:31:32'),
-(68, 1, 5, 9, 1, 24, 299, 253.39, 45.61, NULL, NULL, 1, '2023-10-11 22:33:28'),
-(69, 1, 5, 9, 1, 25, 299, 253.39, 45.61, NULL, NULL, 1, '2023-10-11 22:34:01'),
-(70, 1, 5, 9, 1, 26, 299, 253.39, 45.61, NULL, NULL, 1, '2023-10-11 22:34:41'),
-(71, 1, 5, 9, 1, 27, 299, 253.39, 45.61, NULL, NULL, 1, '2023-10-11 22:42:40'),
-(72, 1, 5, 9, 1, 28, 299, 253.39, 45.61, NULL, NULL, 1, '2023-10-11 22:43:29'),
-(73, 1, 5, 9, 1, 29, 299, 253.39, 45.61, NULL, NULL, 1, '2023-10-11 22:44:41'),
-(74, 1, 5, 9, 1, 30, 299, 253.39, 45.61, NULL, NULL, 1, '2023-10-11 22:47:53'),
-(75, 1, 5, 9, 1, 31, 299, 253.39, 45.61, NULL, NULL, 1, '2023-10-11 22:58:31'),
-(76, 1, 5, 9, 1, 32, 299, 253.39, 45.61, NULL, NULL, 1, '2023-10-11 23:03:59'),
-(77, 1, 5, 9, 1, 33, 299, 253.39, 45.61, NULL, NULL, 1, '2023-10-11 23:07:56'),
-(78, 1, 5, 9, 1, 34, 299, 253.39, 45.61, NULL, NULL, 1, '2023-10-11 23:20:19'),
-(79, 1, 5, 9, 1, 35, 299, 253.39, 45.61, NULL, NULL, 1, '2023-10-11 23:20:35'),
-(80, 1, NULL, 5, 1, 36, 1975, 1673.73, 301.27, NULL, NULL, 1, '2023-10-11 23:23:47'),
-(81, 1, NULL, 5, 1, 37, 1975, 1673.73, 301.27, NULL, NULL, 1, '2023-10-11 23:24:26'),
-(82, 1, NULL, 5, 1, 38, 1975, 1673.73, 301.27, NULL, NULL, 1, '2023-10-11 23:25:36'),
-(83, 1, NULL, 5, 1, 39, 1975, 1673.73, 301.27, '20610879668-03-B001-1.xml', 'R-20610879668-03-B001-1.zip', 1, '2023-10-11 23:26:05');
+INSERT INTO `invoice` (`invoice_id`, `type_id`, `client_id`, `sale_id`, `serie_id`, `correlative`, `total`, `amount`, `vat`, `valid`, `registed_at`) VALUES
+(18, 1, 10, 11, 1, 1, 631.72, 535.36, 96.36, 1, '2023-10-17 22:00:25');
 
 -- --------------------------------------------------------
 
@@ -4074,6 +4034,41 @@ CREATE TABLE `setting_company` (
 INSERT INTO `setting_company` (`company_id`, `ruc`, `company`, `tel`, `email`, `address`, `department_id`, `province_id`, `district_id`, `updated_at`) VALUES
 (1, '20610879668', 'JW EVERLYN S.A.C.', '+51 9925 33099', 'gerencia@jweverlyn.com', 'CORONEL MANUEL GOMEZ URB. DEL FUNDO LOBATON Nro. 120 Dpto. 203', 15, 128, 1264, '2023-09-01 21:15:38');
 
+-- --------------------------------------------------------
+
+--
+-- 테이블 구조 `sunat_file`
+--
+
+CREATE TABLE `sunat_file` (
+  `file_id` int(11) NOT NULL,
+  `invoice_id` int(11) NOT NULL,
+  `xml` varchar(200) NOT NULL,
+  `cdr` varchar(200) NOT NULL,
+  `registed_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- 테이블의 덤프 데이터 `sunat_file`
+--
+
+INSERT INTO `sunat_file` (`file_id`, `invoice_id`, `xml`, `cdr`, `registed_at`) VALUES
+(1, 18, '20610879668-03-B001-1.xml', 'R-20610879668-03-B001-1.zip', '2023-10-17 22:00:26');
+
+-- --------------------------------------------------------
+
+--
+-- 테이블 구조 `sunat_resume`
+--
+
+CREATE TABLE `sunat_resume` (
+  `resume_id` int(11) NOT NULL,
+  `ticket` varchar(250) NOT NULL,
+  `date` date NOT NULL DEFAULT current_timestamp(),
+  `correlative` int(11) NOT NULL,
+  `registed_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 --
 -- 덤프된 테이블의 인덱스
 --
@@ -4238,6 +4233,19 @@ ALTER TABLE `setting_company`
   ADD PRIMARY KEY (`company_id`);
 
 --
+-- 테이블의 인덱스 `sunat_file`
+--
+ALTER TABLE `sunat_file`
+  ADD PRIMARY KEY (`file_id`),
+  ADD KEY `fk_file_invoice` (`invoice_id`);
+
+--
+-- 테이블의 인덱스 `sunat_resume`
+--
+ALTER TABLE `sunat_resume`
+  ADD PRIMARY KEY (`resume_id`);
+
+--
 -- 덤프된 테이블의 AUTO_INCREMENT
 --
 
@@ -4287,7 +4295,7 @@ ALTER TABLE `client_doc_type`
 -- 테이블의 AUTO_INCREMENT `invoice`
 --
 ALTER TABLE `invoice`
-  MODIFY `invoice_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=84;
+  MODIFY `invoice_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- 테이블의 AUTO_INCREMENT `invoice_serie`
@@ -4380,6 +4388,18 @@ ALTER TABLE `setting_company`
   MODIFY `company_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- 테이블의 AUTO_INCREMENT `sunat_file`
+--
+ALTER TABLE `sunat_file`
+  MODIFY `file_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- 테이블의 AUTO_INCREMENT `sunat_resume`
+--
+ALTER TABLE `sunat_resume`
+  MODIFY `resume_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- 덤프된 테이블의 제약사항
 --
 
@@ -4453,6 +4473,12 @@ ALTER TABLE `sale_product`
   ADD CONSTRAINT `fk_sale_product_option` FOREIGN KEY (`option_id`) REFERENCES `product_option` (`option_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_sale_product_product` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_sale_product_sale` FOREIGN KEY (`sale_id`) REFERENCES `sale` (`sale_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- 테이블의 제약사항 `sunat_file`
+--
+ALTER TABLE `sunat_file`
+  ADD CONSTRAINT `fk_file_invoice` FOREIGN KEY (`invoice_id`) REFERENCES `invoice` (`invoice_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

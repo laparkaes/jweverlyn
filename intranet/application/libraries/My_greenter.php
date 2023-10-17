@@ -159,7 +159,7 @@ class My_greenter{
 			$msg = $result->getError()->getMessage();
 		}
 
-		return ["type" => $type, "msg" => $msg, "file_xml" => $file_xml, "file_cdr" => $file_cdr];
+		return ["type" => $type, "msg" => $msg, "xml" => $file_xml, "cdr" => $file_cdr];
 	}
 	
 	private function void_invoice_boleta($invoice, $invoice_type){
@@ -228,7 +228,7 @@ class My_greenter{
 		if ($result->isSuccess()){
 			$ticket = $result->getTicket();
 			
-			$statusResult = $see->getStatus($ticket); print_R($statusResult);
+			$statusResult = $see->getStatus($ticket);
 			if ($statusResult->isSuccess()) {
 				// Guardar CDR
 				$file_cdr = 'R-'.$resumen->getName().'.zip';
@@ -239,7 +239,7 @@ class My_greenter{
 			}else $msg = $statusResult->getError()->getCode()." - ".$statusResult->getError()->getMessage();
 		}else $msg = $result->getError()->getCode()." - ".$result->getError()->getMessage();
 		
-		return ["type" => $type, "msg" => $msg, "ticket" => $ticket, "file_xml" => $file_xml, "file_cdr" => $file_cdr];
+		return ["type" => $type, "msg" => $msg, "ticket" => $ticket, "xml" => $file_xml, "cdr" => $file_cdr];
 	}
 	
 	private function void_invoice_factura($invoice, $type){

@@ -88,7 +88,10 @@ class Sale extends CI_Controller {
 		}
 		
 		$invoice = $this->gm->unique("invoice", "sale_id", $sale->sale_id);
-		if ($invoice) $invoice->type = $this->gm->unique("invoice_type", "type_id", $invoice->type_id, false)->type;
+		if ($invoice){
+			$invoice->type = $this->gm->unique("invoice_type", "type_id", $invoice->type_id, false)->type;
+			$invoice->files = $this->gm->filter("sunat_file", ["invoice_id" => $invoice->invoice_id], null, null, [["registed_at", "desc"]], "", "", false);
+		}
 		
 		$data = [
 			"sale" => $sale,
@@ -382,13 +385,19 @@ class Sale extends CI_Controller {
 						
 						if ($result["type"] === "success"){
 							//xml y cdr update in invoice record
-							$data = ["file_xml" => $result["file_xml"], "file_cdr" => $result["file_cdr"]];
-							$this->gm->update("invoice", ["invoice_id" => $invoice_id], $data);
+							$sunat_file = [
+								"invoice_id " => $invoice_id,
+								"xml" => $result["xml"], 
+								"cdr" => $result["cdr"],
+								"registed_at" => date("Y-m-d H:i:s"),
+							];
+							$this->gm->insert("sunat_file", $sunat_file);
 							
-							unset($result["file_xml"]);
-							unset($result["file_cdr"]);
 							$result["url"] = base_url()."commerce/sale/view_invoice/".$invoice_id;	
 						}
+						
+						unset($result["xml"]);
+						unset($result["cdr"]);
 					}else{
 						$result["type"] = "error";
 						$result["msg"] = $this->lang->line("e_unfinished_sale");
@@ -412,13 +421,19 @@ class Sale extends CI_Controller {
 			
 			if ($result["type"] === "success"){
 				//xml y cdr update in invoice record
-				$data = ["file_xml" => $result["file_xml"], "file_cdr" => $result["file_cdr"]];
-				$this->gm->update("invoice", ["invoice_id" => $invoice_id], $data);
+				$sunat_file = [
+					"invoice_id " => $invoice_id,
+					"xml" => $result["xml"], 
+					"cdr" => $result["cdr"],
+					"registed_at" => date("Y-m-d H:i:s"),
+				];
+				$this->gm->insert("sunat_file", $sunat_file);
 				
-				unset($result["file_xml"]);
-				unset($result["file_cdr"]);
 				$result["url"] = base_url()."commerce/sale/view_invoice/".$invoice_id;	
 			}
+			
+			unset($result["xml"]);
+			unset($result["cdr"]);
 		}else $result["msg"] = $this->lang->line("e_finished_session");
 		
 		header('Content-Type: application/json');
@@ -435,20 +450,31 @@ class Sale extends CI_Controller {
 		$result = ["type" => "error", "msg" => ""];
 		
 		if ($this->session->userdata('username')){
-			$invoice = $this->gm->unique("invoice", "invoice_id", $this->input->post("invoice_id"));
+			$invoice_id = $this->input->post("invoice_id");
+			$invoice = $this->gm->unique("invoice", "invoice_id", $invoice_id);
 			
 			$this->load->library('my_greenter');
-			$result_sunat = $this->my_greenter->void_invoice($invoice);
-			print_r($result_sunat);
-			/*
-			if ($result_sunat["type"] === "success"){
-				$result = $result_sunat;
-				$result["sale_id"] = $invoice->sale_id;
-			}else $result["msg"] = $result_sunat["msg"];
-			*/
+			$result = $this->my_greenter->void_invoice($invoice);
+			
+			if ($result["type"] === "success"){
+				//xml y cdr update in invoice record
+				$sunat_file = [
+					"invoice_id " => $invoice_id,
+					"xml" => $result["xml"], 
+					"cdr" => $result["cdr"],
+					"registed_at" => date("Y-m-d H:i:s"),
+				];
+				$this->gm->insert("sunat_file", $sunat_file);
+				
+				$result["url"] = base_url()."commerce/sale/view_invoice/".$invoice_id;	
+			}
+			
+			unset($result["xml"]);
+			unset($result["cdr"]);
 		}else $result["msg"] = $this->lang->line("e_finished_session");
 		
-		
+		header('Content-Type: application/json');
+		echo json_encode($result);
 	}
 	
 	public function convert_pem(){//convert *.pfx cert to *.pem for facturacion electronica
