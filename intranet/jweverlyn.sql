@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- 생성 시간: 23-10-17 17:55
+-- 생성 시간: 23-10-18 18:02
 -- 서버 버전: 10.4.24-MariaDB
 -- PHP 버전: 7.4.29
 
@@ -3192,6 +3192,7 @@ INSERT INTO `client` (`client_id`, `doc_type_id`, `doc_number`, `name`, `valid`,
 CREATE TABLE `client_doc_type` (
   `doc_type_id` int(11) NOT NULL,
   `doc_type` varchar(100) NOT NULL,
+  `short` varchar(20) NOT NULL,
   `sunat` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -3199,13 +3200,13 @@ CREATE TABLE `client_doc_type` (
 -- 테이블의 덤프 데이터 `client_doc_type`
 --
 
-INSERT INTO `client_doc_type` (`doc_type_id`, `doc_type`, `sunat`) VALUES
-(1, 'Sin documento', '0'),
-(2, 'DNI - Documento Nacional de Identidad', '1'),
-(3, 'CE - Carnet de Extranjería', '4'),
-(4, 'RUC - Registro Unico de Contributentes', '6'),
-(5, 'Pasaporte', '7'),
-(6, 'CDI - Cédula Diplomática de Identidad', 'A');
+INSERT INTO `client_doc_type` (`doc_type_id`, `doc_type`, `short`, `sunat`) VALUES
+(1, 'Sin documento', '', '0'),
+(2, 'DNI - Documento Nacional de Identidad', 'DNI', '1'),
+(3, 'CE - Carnet de Extranjería', 'CE', '4'),
+(4, 'RUC - Registro Unico de Contributentes', 'RUC', '6'),
+(5, 'Pasaporte', 'Pasaporte', '7'),
+(6, 'CDI - Cédula Diplomática de Identidad', 'CDI', 'A');
 
 -- --------------------------------------------------------
 
@@ -3223,6 +3224,7 @@ CREATE TABLE `invoice` (
   `total` double NOT NULL,
   `amount` double NOT NULL,
   `vat` double NOT NULL,
+  `is_sent_sunat` tinyint(1) NOT NULL DEFAULT 0,
   `valid` tinyint(1) NOT NULL DEFAULT 1,
   `registed_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -3231,8 +3233,16 @@ CREATE TABLE `invoice` (
 -- 테이블의 덤프 데이터 `invoice`
 --
 
-INSERT INTO `invoice` (`invoice_id`, `type_id`, `client_id`, `sale_id`, `serie_id`, `correlative`, `total`, `amount`, `vat`, `valid`, `registed_at`) VALUES
-(18, 1, 10, 11, 1, 1, 631.72, 535.36, 96.36, 1, '2023-10-17 22:00:25');
+INSERT INTO `invoice` (`invoice_id`, `type_id`, `client_id`, `sale_id`, `serie_id`, `correlative`, `total`, `amount`, `vat`, `is_sent_sunat`, `valid`, `registed_at`) VALUES
+(19, 1, 10, 11, 1, 1, 631.72, 535.36, 96.36, 1, 0, '2023-10-18 16:13:27'),
+(20, 1, 10, 11, 1, 2, 631.72, 535.36, 96.36, 1, 0, '2023-10-18 16:24:16'),
+(21, 1, 10, 11, 1, 3, 631.72, 535.36, 96.36, 1, 0, '2023-10-18 16:33:40'),
+(22, 1, 10, 11, 1, 4, 631.72, 535.36, 96.36, 1, 0, '2023-10-18 16:39:13'),
+(23, 1, 10, 11, 1, 5, 631.72, 535.36, 96.36, 1, 0, '2023-10-18 17:27:10'),
+(24, 1, 10, 11, 1, 6, 631.72, 535.36, 96.36, 1, 0, '2023-10-18 17:30:41'),
+(25, 1, 10, 11, 1, 7, 631.72, 535.36, 96.36, 1, 0, '2023-10-18 17:31:04'),
+(26, 1, 6, 10, 1, 8, 61.2, 51.86, 9.34, 1, 1, '2023-10-18 21:55:02'),
+(27, 1, 5, 9, 1, 9, 299, 253.39, 45.61, 1, 1, '2023-10-18 22:01:40');
 
 -- --------------------------------------------------------
 
@@ -3933,7 +3943,7 @@ INSERT INTO `sale` (`sale_id`, `client_id`, `amount`, `paid`, `balance`, `update
 (8, 4, 180, 180, 0, '2023-09-21 21:50:14', '2023-09-21 21:50:14', 1),
 (9, 5, 299, 299, 0, '2023-10-03 15:23:02', '2023-09-25 21:29:42', 1),
 (10, 6, 61.2, 61.2, 0, '2023-10-05 00:34:13', '2023-10-05 00:33:52', 1),
-(11, 10, 631.72, 631.72, 0, '2023-10-10 21:40:41', '2023-10-10 21:40:41', 1);
+(11, 10, 631.72, 631.72, 0, '2023-10-18 21:54:51', '2023-10-10 21:40:41', 0);
 
 -- --------------------------------------------------------
 
@@ -3972,7 +3982,7 @@ INSERT INTO `sale_payment` (`payment_id`, `sale_id`, `payment_method_id`, `total
 (13, 9, 1, 99.8, 9999, 9899.2, '2023-10-03 15:23:02', 1),
 (14, 10, 1, 61.2, 30, 0, '2023-10-05 00:33:52', 1),
 (15, 10, 1, 31.2, 50, 18.8, '2023-10-05 00:34:13', 1),
-(16, 11, 2, 631.72, 631.72, 0, '2023-10-10 21:40:41', 1);
+(16, 11, 2, 631.72, 631.72, 0, '2023-10-10 21:40:41', 0);
 
 -- --------------------------------------------------------
 
@@ -4042,6 +4052,7 @@ INSERT INTO `setting_company` (`company_id`, `ruc`, `company`, `tel`, `email`, `
 
 CREATE TABLE `sunat_file` (
   `file_id` int(11) NOT NULL,
+  `sale_id` int(11) NOT NULL,
   `invoice_id` int(11) NOT NULL,
   `xml` varchar(200) NOT NULL,
   `cdr` varchar(200) NOT NULL,
@@ -4052,8 +4063,23 @@ CREATE TABLE `sunat_file` (
 -- 테이블의 덤프 데이터 `sunat_file`
 --
 
-INSERT INTO `sunat_file` (`file_id`, `invoice_id`, `xml`, `cdr`, `registed_at`) VALUES
-(1, 18, '20610879668-03-B001-1.xml', 'R-20610879668-03-B001-1.zip', '2023-10-17 22:00:26');
+INSERT INTO `sunat_file` (`file_id`, `sale_id`, `invoice_id`, `xml`, `cdr`, `registed_at`) VALUES
+(5, 11, 19, '20610879668-03-B001-1.xml', 'R-20610879668-03-B001-1.zip', '2023-10-18 16:10:30'),
+(8, 11, 19, '20610879668-RC-20231018-001.xml', 'R-20610879668-RC-20231018-001.zip', '2023-10-18 16:13:27'),
+(9, 11, 20, '20610879668-03-B001-2.xml', 'R-20610879668-03-B001-2.zip', '2023-10-18 16:19:44'),
+(10, 11, 20, '20610879668-RC-20231018-001.xml', 'R-20610879668-RC-20231018-001.zip', '2023-10-18 16:24:16'),
+(11, 11, 21, '20610879668-03-B001-3.xml', 'R-20610879668-03-B001-3.zip', '2023-10-18 16:33:13'),
+(12, 11, 21, '20610879668-RC-20231018-1.xml', 'R-20610879668-RC-20231018-1.zip', '2023-10-18 16:33:40'),
+(13, 11, 22, '20610879668-03-B001-4.xml', 'R-20610879668-03-B001-4.zip', '2023-10-18 16:38:47'),
+(14, 11, 22, '20610879668-RC-20231018-1.xml', 'R-20610879668-RC-20231018-1.zip', '2023-10-18 16:39:13'),
+(15, 11, 23, '20610879668-03-B001-5.xml', 'R-20610879668-03-B001-5.zip', '2023-10-18 17:27:00'),
+(16, 11, 23, '20610879668-RC-20231018-1.xml', 'R-20610879668-RC-20231018-1.zip', '2023-10-18 17:27:10'),
+(17, 11, 24, '20610879668-03-B001-6.xml', 'R-20610879668-03-B001-6.zip', '2023-10-18 17:28:55'),
+(18, 11, 24, '20610879668-RC-20231018-2.xml', 'R-20610879668-RC-20231018-2.zip', '2023-10-18 17:30:41'),
+(19, 11, 25, '20610879668-03-B001-7.xml', 'R-20610879668-03-B001-7.zip', '2023-10-18 17:30:56'),
+(20, 11, 25, '20610879668-RC-20231018-3.xml', 'R-20610879668-RC-20231018-3.zip', '2023-10-18 17:31:04'),
+(21, 10, 26, '20610879668-03-B001-8.xml', 'R-20610879668-03-B001-8.zip', '2023-10-18 21:55:02'),
+(22, 9, 27, '20610879668-03-B001-9.xml', 'R-20610879668-03-B001-9.zip', '2023-10-18 22:01:40');
 
 -- --------------------------------------------------------
 
@@ -4063,11 +4089,21 @@ INSERT INTO `sunat_file` (`file_id`, `invoice_id`, `xml`, `cdr`, `registed_at`) 
 
 CREATE TABLE `sunat_resume` (
   `resume_id` int(11) NOT NULL,
+  `date` date DEFAULT NULL,
   `ticket` varchar(250) NOT NULL,
-  `date` date NOT NULL DEFAULT current_timestamp(),
   `correlative` int(11) NOT NULL,
   `registed_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- 테이블의 덤프 데이터 `sunat_resume`
+--
+
+INSERT INTO `sunat_resume` (`resume_id`, `date`, `ticket`, `correlative`, `registed_at`) VALUES
+(1, '2023-10-18', '1697646708695', 1, '2023-10-18 16:39:13'),
+(2, '2023-10-18', '1697649585349', 1, '2023-10-18 17:27:10'),
+(3, '2023-10-18', '1697649795257', 2, '2023-10-18 17:30:41'),
+(4, '2023-10-18', '1697649819385', 3, '2023-10-18 17:31:04');
 
 --
 -- 덤프된 테이블의 인덱스
@@ -4237,7 +4273,8 @@ ALTER TABLE `setting_company`
 --
 ALTER TABLE `sunat_file`
   ADD PRIMARY KEY (`file_id`),
-  ADD KEY `fk_file_invoice` (`invoice_id`);
+  ADD KEY `fk_file_invoice` (`invoice_id`),
+  ADD KEY `fk_file_sale` (`sale_id`);
 
 --
 -- 테이블의 인덱스 `sunat_resume`
@@ -4295,7 +4332,7 @@ ALTER TABLE `client_doc_type`
 -- 테이블의 AUTO_INCREMENT `invoice`
 --
 ALTER TABLE `invoice`
-  MODIFY `invoice_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `invoice_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- 테이블의 AUTO_INCREMENT `invoice_serie`
@@ -4391,13 +4428,13 @@ ALTER TABLE `setting_company`
 -- 테이블의 AUTO_INCREMENT `sunat_file`
 --
 ALTER TABLE `sunat_file`
-  MODIFY `file_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `file_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- 테이블의 AUTO_INCREMENT `sunat_resume`
 --
 ALTER TABLE `sunat_resume`
-  MODIFY `resume_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `resume_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- 덤프된 테이블의 제약사항
@@ -4478,7 +4515,8 @@ ALTER TABLE `sale_product`
 -- 테이블의 제약사항 `sunat_file`
 --
 ALTER TABLE `sunat_file`
-  ADD CONSTRAINT `fk_file_invoice` FOREIGN KEY (`invoice_id`) REFERENCES `invoice` (`invoice_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_file_invoice` FOREIGN KEY (`invoice_id`) REFERENCES `invoice` (`invoice_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_file_sale` FOREIGN KEY (`sale_id`) REFERENCES `sale` (`sale_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

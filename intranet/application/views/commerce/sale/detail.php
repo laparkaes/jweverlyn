@@ -47,13 +47,20 @@
 						</li>
 						<?php if ($invoice){ ?>
 						<li class="list-group-item">
-							<div class="text-start"><strong>Sunat</strong></div>
+							<div class="text-start"><strong>Comprobante</strong></div>
 							<div class="text-end">
-								<?php $files = $invoice->files; if ($files){ ?>
+								<?php if ($invoice->is_sent_sunat){ ?>
 								<button type="button" class="btn btn-outline-danger btn-sm" id="btn_void_invoice" value="<?= $invoice->invoice_id ?>">Anular <?= $invoice->type ?></button>
 								<?php }else{ ?>
 								<button type="button" class="btn btn-outline-primary btn-sm" id="btn_send_invoice" value="<?= $invoice->invoice_id ?>">Enviar a Sunat</button>
-								<?php } foreach($files as $f){ ?>
+								<?php } ?>
+							</div>
+						</li>
+						<?php } if ($sunat_files){ ?>
+						<li class="list-group-item">
+							<div class="text-start"><strong>Archivos de Sunat</strong></div>
+							<div class="text-end">
+								<?php foreach($sunat_files as $f){ ?>
 								<div class="d-flex justify-content-between align-items-center mt-1">
 									<span><?= date("Y-m-d", strtotime($f->registed_at)) ?></span>
 									<div>

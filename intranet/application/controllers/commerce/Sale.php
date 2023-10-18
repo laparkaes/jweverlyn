@@ -88,10 +88,9 @@ class Sale extends CI_Controller {
 		}
 		
 		$invoice = $this->gm->unique("invoice", "sale_id", $sale->sale_id);
-		if ($invoice){
-			$invoice->type = $this->gm->unique("invoice_type", "type_id", $invoice->type_id, false)->type;
-			$invoice->files = $this->gm->filter("sunat_file", ["invoice_id" => $invoice->invoice_id], null, null, [["registed_at", "desc"]], "", "", false);
-		}
+		if ($invoice) $invoice->type = $this->gm->unique("invoice_type", "type_id", $invoice->type_id, false)->type;
+		
+		$sunat_files = $this->gm->filter("sunat_file", ["sale_id" => $sale->sale_id], null, null, [["registed_at", "desc"]], "", "", false);
 		
 		$data = [
 			"sale" => $sale,
@@ -99,6 +98,7 @@ class Sale extends CI_Controller {
 			"payments" => $payments,
 			"products" => $products,
 			"invoice" => $invoice,
+			"sunat_files" => $sunat_files,
 			"payment_methods" => $this->gm->all_simple("payment_method", "payment_method_id", "asc"),
 			"invoice_types" => $this->gm->all_simple("invoice_type", "type", "asc"),
 			"client_doc_types" => $this->gm->all_simple("client_doc_type", "doc_type_id", "asc"),
@@ -338,6 +338,33 @@ class Sale extends CI_Controller {
 		echo json_encode(["type" => $type, "msg" => $msg, "url" => $url]);
 	}
 
+	public function send_to_sunat($invoice_id){
+		$this->load->library('my_greenter');
+		$result = $this->my_greenter->issue_invoice($invoice_id);
+		
+		if ($result["type"] === "success"){
+			$invoice = $this->gm->unique("invoice", "invoice_id", $invoice_id);
+			
+			//xml y cdr update in invoice record
+			$sunat_file = [
+				"invoice_id " => $invoice->invoice_id,
+				"sale_id " => $invoice->sale_id,
+				"xml" => $result["xml"], 
+				"cdr" => $result["cdr"],
+				"registed_at" => date("Y-m-d H:i:s"),
+			];
+			$this->gm->insert("sunat_file", $sunat_file);
+			$this->gm->update("invoice", ["invoice_id" => $invoice_id], ["is_sent_sunat" => true]);
+			
+			$result["url"] = base_url()."commerce/sale/view_invoice/".$invoice_id;	
+		}
+		
+		unset($result["xml"]);
+		unset($result["cdr"]);
+		
+		return $result;
+	}
+
 	public function issue_invoice(){
 		$result = ["type" => "error", "msg" => "", "url" => null];
 		
@@ -380,24 +407,7 @@ class Sale extends CI_Controller {
 						$invoice_id = $this->gm->insert("invoice", $invoice);
 						
 						//sent to sunat
-						$this->load->library('my_greenter');
-						$result = $this->my_greenter->issue_invoice($invoice_id);
-						
-						if ($result["type"] === "success"){
-							//xml y cdr update in invoice record
-							$sunat_file = [
-								"invoice_id " => $invoice_id,
-								"xml" => $result["xml"], 
-								"cdr" => $result["cdr"],
-								"registed_at" => date("Y-m-d H:i:s"),
-							];
-							$this->gm->insert("sunat_file", $sunat_file);
-							
-							$result["url"] = base_url()."commerce/sale/view_invoice/".$invoice_id;	
-						}
-						
-						unset($result["xml"]);
-						unset($result["cdr"]);
+						$result = $this->send_to_sunat($invoice_id);
 					}else{
 						$result["type"] = "error";
 						$result["msg"] = $this->lang->line("e_unfinished_sale");
@@ -411,39 +421,20 @@ class Sale extends CI_Controller {
 	}
 	
 	public function send_invoice(){
-		$result = ["type" => "error", "msg" => "", "url" => null];
-		
-		if ($this->session->userdata('username')){
-			$invoice_id = $this->input->post("invoice_id");
-			
-			$this->load->library('my_greenter');
-			$result = $this->my_greenter->issue_invoice($invoice_id);
-			
-			if ($result["type"] === "success"){
-				//xml y cdr update in invoice record
-				$sunat_file = [
-					"invoice_id " => $invoice_id,
-					"xml" => $result["xml"], 
-					"cdr" => $result["cdr"],
-					"registed_at" => date("Y-m-d H:i:s"),
-				];
-				$this->gm->insert("sunat_file", $sunat_file);
-				
-				$result["url"] = base_url()."commerce/sale/view_invoice/".$invoice_id;	
-			}
-			
-			unset($result["xml"]);
-			unset($result["cdr"]);
-		}else $result["msg"] = $this->lang->line("e_finished_session");
+		if ($this->session->userdata('username')) $result = $this->send_to_sunat($this->input->post("invoice_id"));
+		else $result = ["type" => "error", "msg" => $this->lang->line("e_finished_session")];
 		
 		header('Content-Type: application/json');
 		echo json_encode($result);
 	}
 	
 	public function view_invoice($invoice_id){
-		$invoice = $this->gm->unique("invoice", "invoice_id", $invoice_id);
+		if (!$this->session->userdata('username')) redirect("auth/login");
 		
-		print_r($invoice);
+		$this->load->library('my_greenter');
+		$invoice = $this->my_greenter->set_invoice_greenter($invoice_id);
+		
+		$this->load->view('commerce/sale/invoice', ["invoice" => $invoice]);
 	}
 	
 	public function void_invoice(){
@@ -457,16 +448,27 @@ class Sale extends CI_Controller {
 			$result = $this->my_greenter->void_invoice($invoice);
 			
 			if ($result["type"] === "success"){
+				$now = date("Y-m-d H:i:s");
+				
 				//xml y cdr update in invoice record
 				$sunat_file = [
 					"invoice_id " => $invoice_id,
+					"sale_id " => $invoice->sale_id,
 					"xml" => $result["xml"], 
 					"cdr" => $result["cdr"],
-					"registed_at" => date("Y-m-d H:i:s"),
+					"registed_at" => $now,
 				];
 				$this->gm->insert("sunat_file", $sunat_file);
 				
-				$result["url"] = base_url()."commerce/sale/view_invoice/".$invoice_id;	
+				$sunat_resume = [
+					"date" => date("Y-m-d"),
+					"ticket" => $result["ticket"],
+					"correlative" => $result["correlative"],
+					"registed_at" => $now,
+				];
+				$this->gm->insert("sunat_resume", $sunat_resume);
+				
+				$this->gm->update("invoice", ["invoice_id" => $invoice_id], ["valid" => false]);
 			}
 			
 			unset($result["xml"]);

@@ -42,7 +42,7 @@ class My_greenter{
 		return $see;
 	}
 	
-	public function issue_invoice($invoice_id){
+	public function set_invoice_greenter($invoice_id){
 		$formatter = new NumeroALetras();
 		
 		$company = $this->CI->gm->unique("setting_company", "company_id", 1, false);
@@ -137,18 +137,24 @@ class My_greenter{
 		$invoice_greenter
 			->setDetails($items)
 			->setLegends([$legend]);
+			
+		return $invoice_greenter;
+	}
+	
+	public function issue_invoice($invoice_id){
+		$invoice = $this->set_invoice_greenter($invoice_id);
 
 		$see = $this->set_see();
-		$result = $see->send($invoice_greenter);
+		$result = $see->send($invoice);
 
 		// Guardar XML firmado digitalmente.
-		$file_xml = $invoice_greenter->getName().'.xml';
+		$file_xml = $invoice->getName().'.xml';
 		file_put_contents($this->path.$file_xml, $see->getFactory()->getLastXml());
 
 		// Verificamos que la conexión con SUNAT fue exitosa.
 		if ($result->isSuccess()){
 			// Guardar CDR
-			$file_cdr = 'R-'.$invoice_greenter->getName().'.zip';
+			$file_cdr = 'R-'.$invoice->getName().'.zip';
 			file_put_contents($this->path.$file_cdr, $result->getCdrZip());
 			
 			$type = "success";
@@ -210,10 +216,13 @@ class My_greenter{
 			//->setMtoOtrosCargos(21)
 			->setMtoIGV($invoice->vat);
 		
+		$last_resume = $this->CI->gm->filter("sunat_resume", ["date" => date("Y-m-d")], null, null, [["correlative", "desc"]], 1, 0, false);
+		if ($last_resume) $correlative = $last_resume[0]->correlative + 1; else $correlative = 1;
+		
 		$resumen = (new Summary())
 			->setFecGeneracion(new \DateTime(date("Y-m-d", strtotime($invoice->registed_at)))) // Fecha de emisión de las boletas.
 			->setFecResumen(new \DateTime(date("Y-m-d"))) // Fecha de envío del resumen diario.
-			->setCorrelativo('001') // Correlativo, necesario para diferenciar de otros Resumen diario del mismo día.
+			->setCorrelativo($correlative) // Correlativo, necesario para diferenciar de otros Resumen diario del mismo día.
 			->setCompany($company)
 			->setDetails([$detail]);
 		
@@ -239,7 +248,7 @@ class My_greenter{
 			}else $msg = $statusResult->getError()->getCode()." - ".$statusResult->getError()->getMessage();
 		}else $msg = $result->getError()->getCode()." - ".$result->getError()->getMessage();
 		
-		return ["type" => $type, "msg" => $msg, "ticket" => $ticket, "xml" => $file_xml, "cdr" => $file_cdr];
+		return ["type" => $type, "msg" => $msg, "ticket" => $ticket, "correlative" => $correlative, "xml" => $file_xml, "cdr" => $file_cdr];
 	}
 	
 	private function void_invoice_factura($invoice, $type){
