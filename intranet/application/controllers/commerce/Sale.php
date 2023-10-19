@@ -403,6 +403,7 @@ class Sale extends CI_Controller {
 						$invoice["total"] = $sale->amount;
 						$invoice["amount"] = round($sale->amount / 1.18, 2);
 						$invoice["vat"] = $invoice["total"] - $invoice["amount"];
+						$invoice["hash"] = substr(password_hash(date("Ymdhims"), PASSWORD_BCRYPT), -28, 28);
 						$invoice["registed_at"] = $now;
 						$invoice_id = $this->gm->insert("invoice", $invoice);
 						
@@ -434,7 +435,39 @@ class Sale extends CI_Controller {
 		$this->load->library('my_greenter');
 		$invoice = $this->my_greenter->set_invoice_greenter($invoice_id);
 		
-		$this->load->view('commerce/sale/invoice', ["invoice" => $invoice]);
+		$invoice_rec = $this->gm->unique("invoice", "invoice_id", $invoice_id);
+		$payments = $this->gm->filter("sale_payment", ["sale_id" => $invoice_rec->sale_id]);
+		
+		$received = $change = 0;
+		foreach($payments as $p){
+			$received += $p->received;
+			$change += $p->change;
+		}
+		
+		if (count($payments) > 1) $method = $this->gm->unique("payment_method", "payment_method", "Efectivo", false);
+		else $method = $this->gm->unique("payment_method", "payment_method_id", $payments[0]->payment_method_id, false);
+		
+		$qr_data = [
+			$invoice->getCompany()->getRuc(), $invoice->getTipoDoc(), $invoice->getSerie(), $invoice->getCorrelativo(), 
+			$invoice->getTotalImpuestos(), $invoice->getMtoImpVenta(), $invoice->getFechaEmision()->format('Y-m-d'), 
+			$invoice->getClient()->getTipoDoc(), $invoice->getClient()->getNumDoc(), $invoice_rec->hash
+		];
+			
+		$this->load->library('ciqrcode');
+		$qr_params = array(
+			"data" => implode("|", $qr_data), "level" => 'H', 
+			"size" => 10, "savename" => FCPATH.'/uploads/qr.png'
+		);
+		
+		$data = [
+			"method" => $method->payment_method,
+			"received" => $received,
+			"change" => $change,
+			"qr" => base64_encode(file_get_contents($this->ciqrcode->generate($qr_params))),
+			"hash" => $invoice_rec->hash,
+		];
+		
+		$this->load->view('commerce/sale/invoice', ["invoice" => $invoice, "data" => $data]);
 	}
 	
 	public function void_invoice(){

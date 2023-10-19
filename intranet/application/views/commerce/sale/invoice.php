@@ -1,21 +1,16 @@
-<div>hola</div>
-<div><?php print_r($invoice); ?></div>
-<br/><br/>
 <?php 
 $company = $invoice->getCompany();
 $address = $company->getAddress();
 $client = $invoice->getClient();
 $items = $invoice->getDetails();
-print_r($client);
 ?>
-<br/><br/>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <link rel="stylesheet" href="<?= base_url() ?>resorces/css/style.css">
 	<link rel="stylesheet" href="<?= base_url() ?>resorces/css/setting.css">
 	<style>
-	html, body{margin: 5px; font-size: 14px; font-family: 'poppins', sans-serif; line-height: 1.5;}
+	html, body{margin: 5px; /* font-size: 14px; */ font-family: 'poppins', sans-serif; line-height: 1.5;}
 	table{width: 100%; padding: 0; margin: 0; border: 0; border-collapse: collapse;}
 	.mt{margin-top: 20px;}
 	.text-center{text-align: center;}
@@ -29,11 +24,6 @@ print_r($client);
 				<div><?= $address->getDireccion() ?></div>
 				<div><?= $address->getDistrito()." - ".$address->getProvincia()." - ".$address->getDepartamento() ?></div>
 			</td>
-			<!--
-			<td style="text-align: right; vertical-align: top;">
-				<img src="data:image/png;base64,<?= $logo ?>" style="max-width: 80px;"/>
-			</td>
-			-->
 		</tr>
 	</table>
 	<div class="text-center mt">
@@ -76,28 +66,27 @@ print_r($client);
 			<td>S/ <?= number_format($invoice->getMtoImpVenta(), 2) ?></td>
 		</tr>
 		<tr>
-			<td style="padding-top: 10px;"><?= $voucher->payment_method ?></td>
-			<td style="padding-top: 10px;">S/ <?= number_format($voucher->received, 2) ?></td>
+			<td style="padding-top: 10px;"><?= $data["method"] ?></td>
+			<td style="padding-top: 10px;">S/ <?= number_format($data["received"], 2) ?></td>
 		</tr>
 		<tr>
-			<td><?= $this->lang->line('label_change') ?></td>
-			<td><?= $voucher->currency." ".number_format($voucher->change, 2) ?></td>
+			<td>Vuelto</td>
+			<td>S/ <?= number_format($data["change"], 2) ?></td>
 		</tr>
 	</table>
-	<div style="margin-top: 10px;"><?= $this->lang->line('label_are_u')." ".$invoice->getLegends()[0]->getValue(); ?></div>
+	<div style="margin-top: 10px;"><?= $invoice->getLegends()[0]->getValue(); ?></div>
 	<div class="mt" style="border-top: 1px dashed black; border-bottom: 1px dashed black;">
-		<div><strong><?= $this->lang->line('label_remarks') ?></strong></div>
+		<div><strong>Observación</strong></div>
 		<table>
 			<tr>
-				<td style="width: 80px;"><?= $this->lang->line('label_way_to_pay') ?></td>
+				<td style="width: 150px;">Forma de Pago</td>
 				<td>: <?= $invoice->getFormaPago()->getTipo() ?></td>
 			</tr>
 		</table>
 	</div>
 	<div class="mt text-center">
-		<div><img src="data:image/png;base64,<?= $qr ?>" style="max-width: 100px;"/></div>
-		<div><?= $this->lang->line("resolution_num").": ".$this->sunat_resolution ?></div>
-		<div><?= $this->lang->line("hash_code").": ".$voucher->hash ?></div>
+		<div><img src="data:image/png;base64,<?= $data["qr"] ?>" style="max-width: 100px;"/></div>
+		<div><?= $data["hash"] ?></div>
 	</div>
 </body>
 </html>
