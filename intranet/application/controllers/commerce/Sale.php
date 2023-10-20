@@ -396,7 +396,11 @@ class Sale extends CI_Controller {
 						//invoice process
 						$invoice["client_id"] = $client_id;
 						
-						$last_invoice = $this->gm->filter("invoice", ["serie_id" => $invoice["serie_id"]], null, null, [["correlative", "desc"]], 1, 0, false);
+						$f = [
+							"type_id" => $invoice["type_id"],
+							"serie_id" => $invoice["serie_id"],
+						];
+						$last_invoice = $this->gm->filter("invoice", $f, null, null, [["correlative", "desc"]], 1, 0, false);
 						if ($last_invoice) $invoice["correlative"] = $last_invoice[0]->correlative + 1;
 						else $invoice["correlative"] = 1;
 						
@@ -431,6 +435,12 @@ class Sale extends CI_Controller {
 	
 	public function view_invoice($invoice_id){
 		if (!$this->session->userdata('username')) redirect("auth/login");
+		
+		$invoice = $this->gm->unique("invoice", "invoice_id", $invoice_id);
+		if (!$invoice){
+			echo "No hay comprobante generado en la base de datos.";
+			return;
+		}
 		
 		$this->load->library('my_greenter');
 		$invoice = $this->my_greenter->set_invoice_greenter($invoice_id);
@@ -467,7 +477,8 @@ class Sale extends CI_Controller {
 			"hash" => $invoice_rec->hash,
 		];
 		
-		$this->load->view('commerce/sale/invoice', ["invoice" => $invoice, "data" => $data]);
+		$html = $this->load->view('commerce/sale/invoice', ["invoice" => $invoice, "data" => $data], true);
+		$this->my_func->make_pdf($html, $invoice->getSerie()." - ".str_pad($invoice->getCorrelativo(), 6, '0', STR_PAD_LEFT));
 	}
 	
 	public function void_invoice(){

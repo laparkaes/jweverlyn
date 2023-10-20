@@ -10,7 +10,7 @@ $items = $invoice->getDetails();
     <link rel="stylesheet" href="<?= base_url() ?>resorces/css/style.css">
 	<link rel="stylesheet" href="<?= base_url() ?>resorces/css/setting.css">
 	<style>
-	html, body{margin: 5px; /* font-size: 14px; */ font-family: 'poppins', sans-serif; line-height: 1.5;}
+	html, body{margin: 5px; font-size: 10px; font-family: 'poppins', sans-serif; line-height: 1.5;}
 	table{width: 100%; padding: 0; margin: 0; border: 0; border-collapse: collapse;}
 	.mt{margin-top: 20px;}
 	.text-center{text-align: center;}
@@ -21,7 +21,7 @@ $items = $invoice->getDetails();
 		<tr>
 			<td style="text-align: center;">
 				<div style="margin-bottom: 3px;"><strong><?= $company->getRazonSocial() ?></strong></div>
-				<div><?= $address->getDireccion() ?></div>
+				<div style="padding: 0 50px;"><?= $address->getDireccion() ?></div>
 				<div><?= $address->getDistrito()." - ".$address->getProvincia()." - ".$address->getDepartamento() ?></div>
 			</td>
 		</tr>
@@ -79,7 +79,7 @@ $items = $invoice->getDetails();
 		<div><strong>Observación</strong></div>
 		<table>
 			<tr>
-				<td style="width: 150px;">Forma de Pago</td>
+				<td style="width: 80px;">Forma de Pago</td>
 				<td>: <?= $invoice->getFormaPago()->getTipo() ?></td>
 			</tr>
 		</table>

@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 //use Luecano\NumeroALetras\NumeroALetras;
-//use Dompdf\Dompdf;
+use Dompdf\Dompdf;
 
 class My_func{
 	
@@ -73,7 +73,6 @@ class My_func{
 		return $res;
 	}
 	
-	/*
 	public function make_pdf($html, $filename){
 		// instantiate and use the dompdf class
 		$dompdf = new Dompdf();
@@ -111,18 +110,7 @@ class My_func{
 		else echo "Error";
 	}
 	
-	public function get_numletter($num, $cur){
-		switch($cur){
-			case "USD": $formatter_currency = "DÓLARES"; break;
-			default: $formatter_currency = "SOLES";//PEN
-		}
-		$formatter = new NumeroALetras();
-		
-		return $formatter->toInvoice($num, 2, $formatter_currency);
-	}
-	*/
-	
-	function randomString($length, $characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz "){
+	function randomString($length, $characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"){
 		$randomString = '';
 		for ($i = 0; $i < $length; $i++) {
 			$randomString .= $characters[rand(0, strlen($characters) - 1)];
