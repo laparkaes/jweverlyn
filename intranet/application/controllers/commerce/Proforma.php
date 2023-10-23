@@ -60,18 +60,18 @@ class Proforma extends CI_Controller {
 		$proforma = $this->gm->unique("proforma", "proforma_id", $proforma_id, false);
 		if (!$proforma) redirect("no_page");
 			
-		if ($sale->client_id){
-			$client = $this->gm->unique("client", "client_id", $sale->client_id);
+		if ($proforma->client_id){
+			$client = $this->gm->unique("client", "client_id", $proforma->client_id);
 			$client->doc_type = $this->gm->unique("client_doc_type", "doc_type_id", $client->doc_type_id, false)->doc_type;
 		}else $client = null;
 		
-		if ($proforma->valid) $proforma->color = "success";
-		else $proforma->color = "danger";
-		
-		switch($proforma->color){
-			case "success": $proforma->status = "Válida"; break;
-			case "danger": $proforma->status = "Inválida"; break;
-		}
+		$proforma->color = "danger";
+		if ($proforma->valid){
+			if (time() < strtotime("+1 day", strtotime($proforma->validity))){
+				$proforma->status = "Vigente";
+				$proforma->color = "success";
+			}else $proforma->status = "Vencido";
+		}else $proforma->status = "Anulado";
 		
 		$products = $this->gm->filter("proforma_product", ["proforma_id" => $proforma->proforma_id], null, null, [["price", "desc"]], "", "", false);
 		foreach($products as $p){
@@ -83,6 +83,7 @@ class Proforma extends CI_Controller {
 			"proforma" => $proforma,
 			"client" => $client,
 			"products" => $products,
+			"payment_methods" => $this->gm->all_simple("payment_method", "payment_method_id", "asc"),
 			"main" => "commerce/proforma/detail",
 		];
 		$this->load->view('layout', $data);
@@ -214,5 +215,9 @@ class Proforma extends CI_Controller {
 		
 		header('Content-Type: application/json');
 		echo json_encode($result);
+	}
+
+	public function add_sale(){
+		print_r($this->input->post());
 	}
 }

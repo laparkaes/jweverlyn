@@ -163,3 +163,18 @@ $("#form_add_proforma").submit(function(e) {
 		}
 	});
 });
+
+$("#btn_add_sale").on('click',(function(e) {
+	$("#form_add_sale").submit();
+}));
+
+$("#form_add_sale").submit(function(e) {
+	e.preventDefault();
+	ajax_form_warning(this, b_url + "add_sale", "add_sale").done(function(res) {
+		alert(res);
+		set_msgs("#form_add_sale", res.msgs);
+		if (res.type == "success") swal_redirection(res.type, res.msg, res.url);
+		else swal(res.type, res.msg);
+	});
+});
+
