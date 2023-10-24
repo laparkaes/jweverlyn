@@ -12,6 +12,7 @@ $lang['e_enter_keyword']		= 'Ingrese palabra de búsqueda.';
 
 //proforma
 $lang['s_proforma_insert']		= "Proforma ha sido registrada.";
+$lang['s_sale_based_proforma']	= "Nueva venta ha sido generada en base a proforma.";
 
 //sale
 $lang['e_doc_type_ruc']			= 'Elija RUC.';

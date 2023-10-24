@@ -218,6 +218,60 @@ class Proforma extends CI_Controller {
 	}
 
 	public function add_sale(){
-		print_r($this->input->post());
+		$result = ["type" => "error", "msg" => null, "msg" => []];
+		
+		if ($this->session->userdata('username')){
+			$proforma_id = $this->input->post("proforma_id");
+			$payment = $this->input->post("payment");
+			
+			$this->load->library('my_val');
+			$result = $this->my_val->add_sale_from_proforma($proforma_id, $payment);
+			
+			if ($result["type"] === "success"){
+				$proforma = $this->gm->unique("proforma", "proforma_id", $proforma_id);
+				$now = date("Y-m-d H:i:s");
+				$paid = $payment["received"] - $payment["change"];
+				
+				$sale = [
+					"client_id" => $proforma->client_id,
+					"proforma_id" => $proforma->proforma_id,
+					"amount" => $proforma->amount,
+					"paid" => $paid,
+					"balance" => $proforma->amount - $paid,
+					"updated_at" => $now,
+					"registed_at" => $now,
+				];
+				
+				$sale_id = $this->gm->insert("sale", $sale);
+				if ($sale_id){
+					$f = ["proforma_id" => $proforma_id];
+					$products = $this->gm->filter("proforma_product", $f, null, null, [], "", "", false);
+					foreach($products as $p){
+						$sale_prod = [
+							"sale_id" => $sale_id,
+							"product_id" => $p->product_id,
+							"option_id" => $p->option_id,
+							"qty" => $p->qty,
+							"price" => $p->price,
+							"subtotal" => $p->qty * $p->price,
+						];
+						$this->gm->insert("sale_product", $sale_prod);
+					}
+				
+					unset($payment["received_txt"]);
+					$payment["sale_id"] = $sale_id;
+					$this->gm->insert("sale_payment", $payment);
+					
+					$result["msg"] = $this->lang->line("s_sale_based_proforma");
+					$result["url"] = base_url()."commerce/sale/detail/".$sale_id;
+				}else{
+					$result["type"] = "error";
+					$result["msg"] = $this->lang->line("e_internal_again");
+				}
+			}else $result["msg"] = $this->lang->line("e_check_datas");
+		}else $result["msg"] = $this->lang->line("e_finished_session");
+		
+		header('Content-Type: application/json');
+		echo json_encode($result);
 	}
 }

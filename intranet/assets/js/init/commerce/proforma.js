@@ -1,5 +1,20 @@
 let b_url = "commerce/proforma/";
 
+function calculate_change(){
+	var total = parseFloat($("#total").val());
+	var received =  parseFloat($("#received_txt").val());
+	if (isNaN(received) || received <= 0) received = total;
+	
+	var change = received - total;
+	if (change < 0) change = 0;
+
+	$("#received_txt").val(nf(received));
+	$("#received").val(received);
+	
+	$("#change_txt").val(nf(change));
+	$("#change").val(change);
+}
+
 function calculate_amount(){
 	var total = 0;
 	$($(".prod_row")).each(function(index, element){
@@ -168,10 +183,13 @@ $("#btn_add_sale").on('click',(function(e) {
 	$("#form_add_sale").submit();
 }));
 
+$("#received_txt").on('change',(function(e) {
+	calculate_change();
+}));
+
 $("#form_add_sale").submit(function(e) {
 	e.preventDefault();
 	ajax_form_warning(this, b_url + "add_sale", "add_sale").done(function(res) {
-		alert(res);
 		set_msgs("#form_add_sale", res.msgs);
 		if (res.type == "success") swal_redirection(res.type, res.msg, res.url);
 		else swal(res.type, res.msg);

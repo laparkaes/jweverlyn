@@ -231,7 +231,6 @@ class My_val{
 		return ["type" => $this->get_type($msgs), "msgs" => $msgs, "msg" => $msg];
 	}
 	
-	
 	public function delete_category($data){
 		$msgs = []; $msg = "";
 		
@@ -496,5 +495,21 @@ class My_val{
 		}
 		
 		return ["type" => $this->get_type($msgs), "msgs" => $msgs];
+	}
+	
+	public function add_sale_from_proforma($proforma_id, $payment){
+		$msg = null; $msgs = [];
+		
+		if (!$proforma_id) $msg = $this->CI->lang->line("e_unknown_refresh");
+		
+		if ($payment){
+			if ($payment["received"] > 0) $msgs = $this->set_msg($msgs, "payment[received_txt]");
+			else $msgs = $this->set_msg($msgs, "payment[received_txt]", "e_invalid_payment");
+		}else $msg = $this->CI->lang->line("e_unknown_refresh");
+		
+		$type = $this->get_type($msgs);
+		if ($msg) $type = "error";
+		
+		return ["type" => $type, "msgs" => $msgs, "msg" => $msg];
 	}
 }
