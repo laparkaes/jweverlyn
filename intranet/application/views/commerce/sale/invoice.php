@@ -7,9 +7,7 @@ $items = $invoice->getDetails();
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <link rel="stylesheet" href="<?= base_url() ?>resorces/css/style.css">
-	<link rel="stylesheet" href="<?= base_url() ?>resorces/css/setting.css">
-	<style>
+    <style>
 	html, body{margin: 5px; font-size: 10px; font-family: 'poppins', sans-serif; line-height: 1.5;}
 	table{width: 100%; padding: 0; margin: 0; border: 0; border-collapse: collapse;}
 	.mt{margin-top: 20px;}
@@ -90,4 +88,3 @@ $items = $invoice->getDetails();
 	</div>
 </body>
 </html>
-

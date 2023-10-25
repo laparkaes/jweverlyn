@@ -49,14 +49,18 @@
 				<div class="card-body pt-3">
 					<?php if ($proforma->valid){ ?>
 					<div class="row">
-						<div class="col-md-6 d-grid">
-							<?php if (!$proforma->sold){ ?>
-							<button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#md_generate_sale">
+						<div class="col-md-4 d-grid">
+							<?php if ($proforma->color === "success") $d = ""; else $d = "disabled"; ?>
+							<button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#md_generate_sale" <?= $d ?>>
 								<i class="bi bi-coin" style="font-size: 2rem;"></i><br/>Generar Venta
 							</button>
-							<?php } ?>
 						</div>
-						<div class="col-md-6 d-grid">
+						<div class="col-md-4 d-grid">
+							<a href="<?= base_url()?>commerce/proforma/view/<?= $proforma->proforma_id ?>" class="btn btn-primary mb-3" target="_blank">
+								<i class="bi bi-file-earmark-pdf" style="font-size: 2rem;"></i><br/>PDF
+							</a>
+						</div>
+						<div class="col-md-4 d-grid">
 							<button type="button" class="btn btn-outline-danger mb-3" id="btn_cancel_proforma" value="<?= $proforma->proforma_id ?>">
 								<i class="bi bi-trash" style="font-size: 2rem;"></i><br/>Anular Proforma
 							</button>
@@ -92,7 +96,7 @@
 </section>
 
 <!-- modals -->
-<?php if ((!$proforma->sold) and ($proforma->color === "success")){ ?>
+<?php if ($proforma->color === "success"){ ?>
 <div class="modal fade" id="md_generate_sale" tabindex="-1">
 	<div class="modal-dialog">
 		<div class="modal-content">

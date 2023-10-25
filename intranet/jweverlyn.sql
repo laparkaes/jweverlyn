@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- 생성 시간: 23-10-19 17:48
+-- 생성 시간: 23-10-25 18:28
 -- 서버 버전: 10.4.24-MariaDB
 -- PHP 버전: 7.4.29
 
@@ -3161,6 +3161,9 @@ CREATE TABLE `client` (
   `doc_type_id` int(11) NOT NULL,
   `doc_number` varchar(30) NOT NULL,
   `name` varchar(250) NOT NULL,
+  `tel` varchar(20) DEFAULT NULL,
+  `mobile` varchar(50) DEFAULT NULL,
+  `address` varchar(200) DEFAULT NULL,
   `valid` tinyint(1) NOT NULL DEFAULT 1,
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `registed_at` timestamp NOT NULL DEFAULT current_timestamp()
@@ -3170,18 +3173,21 @@ CREATE TABLE `client` (
 -- 테이블의 덤프 데이터 `client`
 --
 
-INSERT INTO `client` (`client_id`, `doc_type_id`, `doc_number`, `name`, `valid`, `updated_at`, `registed_at`) VALUES
-(1, 2, '76408531', 'LEA MABEL SILUPU MONTALVAN', 1, '2023-09-16 23:05:39', '2023-09-16 23:05:39'),
-(2, 2, '70614226', 'SOFIA LISSET CASAVERDE VALDIVIEZO', 1, '2023-09-17 20:50:05', '2023-09-17 20:50:05'),
-(3, 2, '75694084', 'FRANCESCA JENNIFER OLAYA CAMACHO', 1, '2023-09-17 22:19:28', '2023-09-17 22:19:28'),
-(4, 2, '75098340', 'YESABELLA ESPERANZA UBILLUS MORALES', 1, '2023-09-21 21:50:14', '2023-09-21 21:50:14'),
-(5, 2, '75763698', 'ESTHEFANY DE LOS MILAGROS HERRERA CHECA', 1, '2023-09-25 21:29:42', '2023-09-25 21:29:42'),
-(6, 2, '75112025', 'YARIS NAYELY CALLE CASTILLO', 1, '2023-10-05 00:33:52', '2023-10-05 00:33:52'),
-(7, 3, '000765808', 'Jeong Woo Park', 1, '2023-10-07 22:08:29', '2023-10-07 22:08:29'),
-(8, 2, '48098843', 'ROSA DEL CARMEN GARRIDO MORE', 1, '2023-10-07 23:11:35', '2023-10-07 23:11:35'),
-(9, 4, '20454193556', 'COMERCIAL FERNANDA\'S S.R.L.', 1, '2023-10-09 23:22:01', '2023-10-09 23:22:01'),
-(10, 2, '76147068', 'JACKELINE DEL PILAR ARCELES VINCES', 1, '2023-10-10 21:40:41', '2023-10-10 21:40:41'),
-(11, 2, '74896747', 'CARLOS DAVID VILELA VILCHEZ', 1, '2023-10-10 22:38:14', '2023-10-10 22:38:14');
+INSERT INTO `client` (`client_id`, `doc_type_id`, `doc_number`, `name`, `tel`, `mobile`, `address`, `valid`, `updated_at`, `registed_at`) VALUES
+(1, 2, '76408531', 'LEA MABEL SILUPU MONTALVAN', '', '', '', 1, '2023-09-16 23:05:39', '2023-09-16 23:05:39'),
+(2, 2, '70614226', 'SOFIA LISSET CASAVERDE VALDIVIEZO', '', '', '', 1, '2023-09-17 20:50:05', '2023-09-17 20:50:05'),
+(3, 2, '75694084', 'FRANCESCA JENNIFER OLAYA CAMACHO', '', '', '', 1, '2023-09-17 22:19:28', '2023-09-17 22:19:28'),
+(4, 2, '75098340', 'YESABELLA ESPERANZA UBILLUS MORALES', '', '', '', 1, '2023-09-21 21:50:14', '2023-09-21 21:50:14'),
+(5, 2, '75763698', 'ESTHEFANY DE LOS MILAGROS HERRERA CHECA', '', '', '', 1, '2023-09-25 21:29:42', '2023-09-25 21:29:42'),
+(6, 2, '75112025', 'YARIS NAYELY CALLE CASTILLO', '', '', '', 1, '2023-10-05 00:33:52', '2023-10-05 00:33:52'),
+(7, 3, '000765808', 'Jeong Woo Park', '', '', '', 1, '2023-10-07 22:08:29', '2023-10-07 22:08:29'),
+(8, 2, '48098843', 'ROSA DEL CARMEN GARRIDO MORE', '', '', '', 1, '2023-10-07 23:11:35', '2023-10-07 23:11:35'),
+(9, 4, '20454193556', 'COMERCIAL FERNANDA\'S S.R.L.', '', '', '', 1, '2023-10-09 23:22:01', '2023-10-09 23:22:01'),
+(10, 2, '76147068', 'JACKELINE DEL PILAR ARCELES VINCES', '', '', '', 1, '2023-10-10 21:40:41', '2023-10-10 21:40:41'),
+(11, 2, '74896747', 'CARLOS DAVID VILELA VILCHEZ', '', '', '', 1, '2023-10-10 22:38:14', '2023-10-10 22:38:14'),
+(12, 4, '20405441862', 'INGEMET CPI EMPRESA INDIVIDUAL DE RESPONSABILIDAD LIMITADA', '', '', '', 1, '2023-10-20 22:37:38', '2023-10-20 22:37:38'),
+(13, 4, '20364169982', 'EMGESA S.A.C.', '', '', '', 1, '2023-10-20 22:57:43', '2023-10-20 22:57:43'),
+(14, 2, '72879477', 'MARIA FERNANDA VASQUEZ EVANGELISTA', '01 241 2345', '99 888 777', 'Av Aviacion 3204, San Borja, Lima, Peru', 1, '2023-10-23 20:30:42', '2023-10-23 20:30:42');
 
 -- --------------------------------------------------------
 
@@ -3235,7 +3241,12 @@ CREATE TABLE `invoice` (
 --
 
 INSERT INTO `invoice` (`invoice_id`, `type_id`, `client_id`, `sale_id`, `serie_id`, `correlative`, `total`, `amount`, `vat`, `hash`, `is_sent_sunat`, `valid`, `registed_at`) VALUES
-(28, 1, 6, 10, 1, 1, 61.2, 51.86, 9.34, 'DHD/KUZrIySiYJ7bJRg.vOmXWI9m', 1, 1, '2023-10-19 22:40:23');
+(28, 1, 6, 10, 1, 1, 61.2, 51.86, 9.34, 'DHD/KUZrIySiYJ7bJRg.vOmXWI9m', 1, 1, '2023-10-19 22:40:23'),
+(29, 1, 5, 9, 1, 2, 299, 253.39, 45.61, 'BG.A4fhmfwZ.i1n8BY6rxVmZZKbC', 1, 1, '2023-10-20 20:48:55'),
+(31, 2, 13, 8, 1, 1, 180, 152.54, 27.46, 'cLJSdOx9XJOPJoad7ZEuzxi0070q', 1, 1, '2023-10-20 22:57:43'),
+(32, 1, 14, 19, 1, 3, 280, 237.29, 42.71, 'yrD7Kzk8TfUBJmr28TGIRxKjFjB.', 1, 1, '2023-10-24 22:32:54'),
+(33, 1, 14, 20, 1, 4, 280, 237.29, 42.71, '9UAuFP8Nwi7oYpQUtzxUMen.hye6', 1, 1, '2023-10-24 23:02:49'),
+(34, 1, 14, 21, 1, 5, 280, 237.29, 42.71, 'adMsXuxvtRa//Nz6R5doEwHoyHjS', 1, 1, '2023-10-25 19:56:53');
 
 -- --------------------------------------------------------
 
@@ -3777,7 +3788,8 @@ INSERT INTO `product_option` (`option_id`, `product_id`, `option`, `stock`, `val
 (26, 1, 'Negro', 124, 1),
 (27, 197, 'Talla S', 67, 1),
 (28, 197, 'Talla M', 73, 1),
-(29, 197, 'Talla L', 125, 1);
+(29, 197, 'Talla L', 125, 1),
+(30, 216, '7L', 300, 1);
 
 -- --------------------------------------------------------
 
@@ -3789,6 +3801,7 @@ CREATE TABLE `proforma` (
   `proforma_id` int(11) NOT NULL,
   `client_id` int(11) NOT NULL,
   `amount` double NOT NULL,
+  `sold` tinyint(1) NOT NULL DEFAULT 0,
   `validity` date DEFAULT NULL,
   `remark` varchar(250) NOT NULL,
   `valid` tinyint(1) NOT NULL DEFAULT 1,
@@ -3799,10 +3812,11 @@ CREATE TABLE `proforma` (
 -- 테이블의 덤프 데이터 `proforma`
 --
 
-INSERT INTO `proforma` (`proforma_id`, `client_id`, `amount`, `validity`, `remark`, `valid`, `registed_at`) VALUES
-(1, 7, 1490, '2023-10-21', 'Descuento por mayorista', 1, '2023-10-07 22:36:14'),
-(2, 8, 150, '2023-10-21', 'cliente no tiene dinero', 1, '2023-10-07 23:11:35'),
-(3, 11, 1000, '2023-10-24', 'Descuento por compra mayor', 1, '2023-10-10 22:38:14');
+INSERT INTO `proforma` (`proforma_id`, `client_id`, `amount`, `sold`, `validity`, `remark`, `valid`, `registed_at`) VALUES
+(1, 7, 1490, 0, '2023-10-21', 'Descuento por mayorista', 1, '2023-10-07 22:36:14'),
+(2, 8, 150, 0, '2023-10-21', 'cliente no tiene dinero', 1, '2023-10-07 23:11:35'),
+(3, 11, 1000, 0, '2023-10-24', 'Descuento por compra mayor', 1, '2023-10-10 22:38:14'),
+(4, 14, 280, 0, '2023-11-06', 'Descuento por mayorista', 1, '2023-10-23 20:30:42');
 
 -- --------------------------------------------------------
 
@@ -3827,7 +3841,8 @@ INSERT INTO `proforma_product` (`proforma_product_id`, `proforma_id`, `product_i
 (1, 1, 197, 27, 55, 20),
 (2, 1, 1, 26, 13, 30),
 (3, 2, 197, 29, 50, 3),
-(4, 3, 197, 29, 50, 20);
+(4, 3, 197, 29, 50, 20),
+(5, 4, 1, 26, 14, 20);
 
 -- --------------------------------------------------------
 
@@ -3913,6 +3928,7 @@ INSERT INTO `role_access` (`role_id`, `access_id`) VALUES
 CREATE TABLE `sale` (
   `sale_id` int(11) NOT NULL,
   `client_id` int(11) DEFAULT NULL,
+  `proforma_id` int(11) DEFAULT NULL,
   `amount` double NOT NULL,
   `paid` double NOT NULL,
   `balance` double NOT NULL,
@@ -3925,18 +3941,28 @@ CREATE TABLE `sale` (
 -- 테이블의 덤프 데이터 `sale`
 --
 
-INSERT INTO `sale` (`sale_id`, `client_id`, `amount`, `paid`, `balance`, `updated_at`, `registed_at`, `valid`) VALUES
-(1, 3, 363, 363, 0, '2023-10-02 16:26:10', '2023-09-17 22:19:28', 0),
-(2, 3, 363, 363, 0, '2023-10-02 16:20:43', '2023-09-17 22:19:34', 1),
-(3, 3, 363, 0, 363, '2023-10-02 16:13:43', '2023-09-17 22:19:58', 1),
-(4, 3, 363, 363, 0, '2023-10-02 16:17:28', '2023-09-17 22:21:19', 1),
-(5, NULL, 1975, 1975, 0, '2023-10-02 16:19:46', '2023-09-17 23:58:18', 1),
-(6, NULL, 1795, 0, 1795, '2023-10-06 19:13:29', '2023-09-21 21:48:37', 0),
-(7, NULL, 180, 0, 180, '2023-09-28 22:52:22', '2023-09-21 21:48:57', 1),
-(8, 4, 180, 180, 0, '2023-09-21 21:50:14', '2023-09-21 21:50:14', 1),
-(9, 5, 299, 299, 0, '2023-10-03 15:23:02', '2023-09-25 21:29:42', 1),
-(10, 6, 61.2, 61.2, 0, '2023-10-05 00:34:13', '2023-10-05 00:33:52', 1),
-(11, 10, 631.72, 631.72, 0, '2023-10-18 21:54:51', '2023-10-10 21:40:41', 0);
+INSERT INTO `sale` (`sale_id`, `client_id`, `proforma_id`, `amount`, `paid`, `balance`, `updated_at`, `registed_at`, `valid`) VALUES
+(1, 3, NULL, 363, 363, 0, '2023-10-02 16:26:10', '2023-09-17 22:19:28', 0),
+(2, 3, NULL, 363, 363, 0, '2023-10-02 16:20:43', '2023-09-17 22:19:34', 1),
+(3, 3, NULL, 363, 0, 363, '2023-10-02 16:13:43', '2023-09-17 22:19:58', 1),
+(4, 3, NULL, 363, 363, 0, '2023-10-02 16:17:28', '2023-09-17 22:21:19', 1),
+(5, NULL, NULL, 1975, 1975, 0, '2023-10-02 16:19:46', '2023-09-17 23:58:18', 1),
+(6, NULL, NULL, 1795, 0, 1795, '2023-10-06 19:13:29', '2023-09-21 21:48:37', 0),
+(7, NULL, NULL, 180, 0, 180, '2023-09-28 22:52:22', '2023-09-21 21:48:57', 1),
+(8, 4, NULL, 180, 180, 0, '2023-09-21 21:50:14', '2023-09-21 21:50:14', 1),
+(9, 5, NULL, 299, 299, 0, '2023-10-03 15:23:02', '2023-09-25 21:29:42', 1),
+(10, 6, NULL, 61.2, 61.2, 0, '2023-10-05 00:34:13', '2023-10-05 00:33:52', 1),
+(11, 10, NULL, 631.72, 631.72, 0, '2023-10-18 21:54:51', '2023-10-10 21:40:41', 0),
+(12, 14, 4, 280, 100, 180, '2023-10-24 21:27:48', '2023-10-24 21:27:48', 1),
+(13, 14, 4, 280, 100, 180, '2023-10-24 21:27:53', '2023-10-24 21:27:53', 1),
+(14, 14, 4, 280, 100, 180, '2023-10-24 21:43:00', '2023-10-24 21:43:00', 1),
+(15, 14, 4, 280, 100, 180, '2023-10-24 21:53:06', '2023-10-24 21:53:06', 1),
+(16, 14, 4, 280, 100, 180, '2023-10-24 21:53:46', '2023-10-24 21:53:46', 1),
+(17, 14, 4, 280, 100, 180, '2023-10-24 21:54:32', '2023-10-24 21:54:32', 1),
+(18, 14, 4, 280, 100, 180, '2023-10-24 21:55:48', '2023-10-24 21:55:48', 1),
+(19, 14, 4, 280, 280, 0, '2023-10-24 22:32:45', '2023-10-24 22:32:29', 1),
+(20, 14, 4, 280, 280, 0, '2023-10-24 23:02:45', '2023-10-24 23:02:34', 1),
+(21, 14, 4, 280, 280, 0, '2023-10-25 19:56:37', '2023-10-25 19:56:37', 1);
 
 -- --------------------------------------------------------
 
@@ -3975,7 +4001,13 @@ INSERT INTO `sale_payment` (`payment_id`, `sale_id`, `payment_method_id`, `total
 (13, 9, 1, 99.8, 9999, 9899.2, '2023-10-03 15:23:02', 1),
 (14, 10, 1, 61.2, 30, 0, '2023-10-05 00:33:52', 1),
 (15, 10, 1, 31.2, 50, 18.8, '2023-10-05 00:34:13', 1),
-(16, 11, 2, 631.72, 631.72, 0, '2023-10-10 21:40:41', 0);
+(16, 11, 2, 631.72, 631.72, 0, '2023-10-10 21:40:41', 0),
+(17, 18, 1, 280, 100, 0, '2023-10-24 21:55:48', 1),
+(18, 19, 1, 280, 100, 0, '2023-10-24 22:32:29', 1),
+(19, 19, 1, 180, 300, 120, '2023-10-24 22:32:45', 1),
+(20, 20, 1, 280, 5, 0, '2023-10-24 23:02:34', 1),
+(21, 20, 1, 275, 300, 25, '2023-10-24 23:02:45', 1),
+(22, 21, 1, 280, 300, 20, '2023-10-25 19:56:37', 1);
 
 -- --------------------------------------------------------
 
@@ -4009,7 +4041,12 @@ INSERT INTO `sale_product` (`sale_product_id`, `sale_id`, `product_id`, `option_
 (9, 10, 1, 26, 4, 15.3, 61.2),
 (10, 11, 197, 28, 3, 59.84, 179.52),
 (11, 11, 197, 29, 5, 59.84, 299.2),
-(12, 11, 1, 26, 10, 15.3, 153);
+(12, 11, 1, 26, 10, 15.3, 153),
+(14, 17, 1, 26, 20, 14, 280),
+(15, 18, 1, 26, 20, 14, 280),
+(16, 19, 1, 26, 20, 14, 280),
+(17, 20, 1, 26, 20, 14, 280),
+(18, 21, 1, 26, 20, 14, 280);
 
 -- --------------------------------------------------------
 
@@ -4057,7 +4094,12 @@ CREATE TABLE `sunat_file` (
 --
 
 INSERT INTO `sunat_file` (`file_id`, `sale_id`, `invoice_id`, `xml`, `cdr`, `registed_at`) VALUES
-(23, 10, 28, '20610879668-03-B001-1.xml', 'R-20610879668-03-B001-1.zip', '2023-10-19 22:40:23');
+(23, 10, 28, '20610879668-03-B001-1.xml', 'R-20610879668-03-B001-1.zip', '2023-10-19 22:40:23'),
+(24, 9, 29, '20610879668-03-B001-2.xml', 'R-20610879668-03-B001-2.zip', '2023-10-20 20:48:55'),
+(26, 8, 31, '20610879668-01-F001-1.xml', 'R-20610879668-01-F001-1.zip', '2023-10-20 22:57:43'),
+(27, 19, 32, '20610879668-03-B001-3.xml', 'R-20610879668-03-B001-3.zip', '2023-10-24 22:32:54'),
+(28, 20, 33, '20610879668-03-B001-4.xml', 'R-20610879668-03-B001-4.zip', '2023-10-24 23:02:49'),
+(29, 21, 34, '20610879668-03-B001-5.xml', 'R-20610879668-03-B001-5.zip', '2023-10-25 19:56:53');
 
 -- --------------------------------------------------------
 
@@ -4222,7 +4264,8 @@ ALTER TABLE `role_access`
 --
 ALTER TABLE `sale`
   ADD PRIMARY KEY (`sale_id`),
-  ADD KEY `fk_sale_client` (`client_id`);
+  ADD KEY `fk_sale_client` (`client_id`),
+  ADD KEY `fk_sale_proforma` (`proforma_id`);
 
 --
 -- 테이블의 인덱스 `sale_payment`
@@ -4298,7 +4341,7 @@ ALTER TABLE `address_province`
 -- 테이블의 AUTO_INCREMENT `client`
 --
 ALTER TABLE `client`
-  MODIFY `client_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `client_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- 테이블의 AUTO_INCREMENT `client_doc_type`
@@ -4310,7 +4353,7 @@ ALTER TABLE `client_doc_type`
 -- 테이블의 AUTO_INCREMENT `invoice`
 --
 ALTER TABLE `invoice`
-  MODIFY `invoice_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `invoice_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- 테이블의 AUTO_INCREMENT `invoice_serie`
@@ -4358,19 +4401,19 @@ ALTER TABLE `product_image`
 -- 테이블의 AUTO_INCREMENT `product_option`
 --
 ALTER TABLE `product_option`
-  MODIFY `option_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `option_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- 테이블의 AUTO_INCREMENT `proforma`
 --
 ALTER TABLE `proforma`
-  MODIFY `proforma_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `proforma_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- 테이블의 AUTO_INCREMENT `proforma_product`
 --
 ALTER TABLE `proforma_product`
-  MODIFY `proforma_product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `proforma_product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- 테이블의 AUTO_INCREMENT `role`
@@ -4382,19 +4425,19 @@ ALTER TABLE `role`
 -- 테이블의 AUTO_INCREMENT `sale`
 --
 ALTER TABLE `sale`
-  MODIFY `sale_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `sale_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- 테이블의 AUTO_INCREMENT `sale_payment`
 --
 ALTER TABLE `sale_payment`
-  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- 테이블의 AUTO_INCREMENT `sale_product`
 --
 ALTER TABLE `sale_product`
-  MODIFY `sale_product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `sale_product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- 테이블의 AUTO_INCREMENT `setting_company`
@@ -4406,7 +4449,7 @@ ALTER TABLE `setting_company`
 -- 테이블의 AUTO_INCREMENT `sunat_file`
 --
 ALTER TABLE `sunat_file`
-  MODIFY `file_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `file_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- 테이블의 AUTO_INCREMENT `sunat_resume`
@@ -4473,7 +4516,8 @@ ALTER TABLE `role_access`
 -- 테이블의 제약사항 `sale`
 --
 ALTER TABLE `sale`
-  ADD CONSTRAINT `fk_sale_client` FOREIGN KEY (`client_id`) REFERENCES `client` (`client_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_sale_client` FOREIGN KEY (`client_id`) REFERENCES `client` (`client_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_sale_proforma` FOREIGN KEY (`proforma_id`) REFERENCES `proforma` (`proforma_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- 테이블의 제약사항 `sale_payment`

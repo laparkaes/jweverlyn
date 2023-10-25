@@ -73,7 +73,23 @@ class My_func{
 		return $res;
 	}
 	
-	public function make_pdf($html, $filename){
+	public function make_pdf_a4($html, $filename){
+		// instantiate and use the dompdf class
+		$dompdf = new Dompdf();
+
+		// (Optional) Setup the paper size and orientation
+		$dompdf->setPaper('A4', 'portrait');//vertical [0.0, 0.0, 595.28, 841.89]
+		//$dompdf->setPaper('A4', 'landscape');//horizontal
+		//$dompdf->setPaper(array(0,0,240,600));
+		$dompdf->loadHtml($html);
+		$dompdf->render();
+		
+		// Output the generated PDF to Browser
+		if ($dompdf) $dompdf->stream($filename, array("Attachment" => false));
+		else echo "Error";
+	}
+	
+	public function make_pdf_ticket($html, $filename){
 		// instantiate and use the dompdf class
 		$dompdf = new Dompdf();
 

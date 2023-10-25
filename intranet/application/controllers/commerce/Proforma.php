@@ -274,4 +274,34 @@ class Proforma extends CI_Controller {
 		header('Content-Type: application/json');
 		echo json_encode($result);
 	}
+
+	public function view($proforma_id){
+		$proforma = $this->gm->unique("proforma", "proforma_id", $proforma_id, false);
+		if ($proforma){
+			if ($proforma->client_id){
+				$client = $this->gm->unique("client", "client_id", $proforma->client_id, false);
+				$client->doc_type = $this->gm->unique("client_doc_type", "doc_type_id", $client->doc_type_id, false)->short;
+			}else{
+				$client = $this->gm->structure("client");
+				$client->doc_type = null;
+			}
+			
+			$products = $this->gm->filter("proforma_product", ["proforma_id" => $proforma_id], null, null, [], "", "", false);
+			foreach($products as $p){
+				$p->product = $this->gm->unique("product", "product_id", $p->product_id, false);
+				$p->option = ($p->option_id > 0) ? $this->gm->unique("product_option", "option_id", $p->option_id, false)->option : null;
+			}
+			
+			$data = [
+				"logo" => base64_encode(file_get_contents("../resources/assets/img/logo.svg")),
+				"proforma" => $proforma,
+				"client" => $client,
+				"products" => $products,
+			];
+			
+			$html = $this->load->view('commerce/proforma/proforma_a4', $data, true);
+			$this->my_func->make_pdf_a4($html, "Proforma");
+			//echo $html;
+		}else redirect("no_page");
+	}
 }

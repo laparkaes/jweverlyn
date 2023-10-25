@@ -478,7 +478,7 @@ class Sale extends CI_Controller {
 		];
 		
 		$html = $this->load->view('commerce/sale/invoice', ["invoice" => $invoice, "data" => $data], true);
-		$this->my_func->make_pdf($html, $invoice->getSerie()." - ".str_pad($invoice->getCorrelativo(), 6, '0', STR_PAD_LEFT));
+		$this->my_func->make_pdf_ticket($html, $invoice->getSerie()." - ".str_pad($invoice->getCorrelativo(), 6, '0', STR_PAD_LEFT));
 	}
 	
 	public function void_invoice(){

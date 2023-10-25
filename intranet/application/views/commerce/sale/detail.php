@@ -103,7 +103,7 @@
 						</div>
 						<div class="col-md-4 d-grid">
 							<button type="button" class="btn btn-outline-danger mb-3" id="btn_cancel_sale" value="<?= $sale->sale_id ?>">
-								<i class="bi bi-trash" style="font-size: 2rem;"></i><br/>Cancelar Venta
+								<i class="bi bi-trash" style="font-size: 2rem;"></i><br/>Anular Venta
 							</button>
 						</div>
 					</div>
