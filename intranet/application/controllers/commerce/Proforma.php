@@ -288,7 +288,7 @@ class Proforma extends CI_Controller {
 			
 			$products = $this->gm->filter("proforma_product", ["proforma_id" => $proforma_id], null, null, [], "", "", false);
 			foreach($products as $p){
-				$p->product = $this->gm->unique("product", "product_id", $p->product_id, false);
+				$p->product = $this->gm->unique("product", "product_id", $p->product_id, false)->product;
 				$p->option = ($p->option_id > 0) ? $this->gm->unique("product_option", "option_id", $p->option_id, false)->option : null;
 			}
 			

@@ -79,7 +79,7 @@
 					</div>
 					<div class="col-md-12">
 						<label class="form-label">Observación</label>
-						<input type="text" class="form-control" name="proforma[remark]">
+						<textarea class="form-control" name="proforma[remark]" rows="3"></textarea>
 					</div>
 				</div>
 			</div>

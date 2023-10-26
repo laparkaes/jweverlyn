@@ -37,26 +37,43 @@
 			<td class="pt" valign="top">
 				<table>
 					<tr>
-						<td><strong>Nº de Proforma</strong></td><td class="text-end">PR230001</td>
+						<td><strong>Nº de Proforma</strong></td>
+						<td class="text-end"><?= date("y").str_pad($proforma->proforma_id, 4, '0', STR_PAD_LEFT) ?></td>
 					</tr>
 					<tr>
-						<td><strong>Fecha de Emisión</strong></td><td class="text-end"></td>
+						<td><strong>Fecha de Emisión</strong></td>
+						<td class="text-end"><?= date("Y-m-d", strtotime($proforma->registed_at)) ?></td>
 					</tr>
 					<tr>
-						<td><strong>Vigencia</strong></td><td class="text-end"></td>
-					</tr>
-					<tr>
-						<td><strong>Término de Pago</strong></td><td class="text-end"></td>
+						<td><strong>Vigencia</strong></td>
+						<td class="text-end"><?= date("Y-m-d", strtotime($proforma->validity)) ?></td>
 					</tr>
 				</table>
 			</td>
 		</tr>
 	</table>
-
-<br/><br/><br/>
-<?php print_r($proforma); ?><br/><br/>
-<?php print_r($client); ?><br/><br/>
-<?php print_r($products); ?><br/><br/>
-
+	<table class="mt">
+		<tr>
+			<th class="text-start">#</th>
+			<th style="width: 40%;">Producto</th>
+			<th>Opción</th>
+			<th>P/U</th>
+			<th>Cant.</th>
+			<th class="text-end">Subtotal</th>
+		</tr>
+		<?php foreach($products as $i => $p){ ?>
+		<tr>
+			<td><?= number_format($i + 1) ?></td>
+			<td><?= $p->product ?></td>
+			<td class="text-center"><?= $p->option ?></td>
+			<td class="text-center"><?= number_format($p->price, 2) ?></td>
+			<td class="text-center"><?= number_format($p->qty) ?></td>
+			<td class="text-end"><?= number_format($p->price * $p->qty, 2) ?></td>
+		</tr>
+		<?php } ?>
+	</table>
+	<div class="mt"><strong>Observación</strong></div>
+	<div><?= nl2br($proforma->remark) ?></div>
+	
 </body>
 </html>
