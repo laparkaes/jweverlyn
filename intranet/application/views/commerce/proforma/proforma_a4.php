@@ -5,6 +5,7 @@
 	html, body{font-size: 14px; font-family: 'poppins', sans-serif; line-height: 1.5;}
 	table{width: 100%; padding: 0; margin: 0; border: 0; border-collapse: collapse;}
 	.mt{margin-top: 20px;}
+	.mt-lg{margin-top: 50px;}
 	.pt{padding-top: 20px;}
 	.text-start{text-align: left;}
 	.text-center{text-align: center;}
@@ -52,7 +53,7 @@
 			</td>
 		</tr>
 	</table>
-	<table class="mt">
+	<table class="mt-lg">
 		<tr>
 			<th class="text-start">#</th>
 			<th style="width: 40%;">Producto</th>
@@ -74,6 +75,24 @@
 	</table>
 	<div class="mt"><strong>Observación</strong></div>
 	<div><?= nl2br($proforma->remark) ?></div>
+	<div class="mt-lg"><strong>Datos del Banco</strong></div>
+	<table>
+		<tr>
+			<td colspan="3">Interbank</td>
+		</tr>
+		<tr>
+			<td style="width: 100px;">Soles</td>
+			<td style="width: 150px;">432-3004927103</td>
+			<td>/ CCI 003-432-003004927103-21</td>
+		</tr>
+		<tr>
+			<td>Dólares</td><td>432-3004927110</td><td>/ CCI 003-432-003004927110-26</td>
+		</tr>
+	</table>
 	
+	
+	<div></div>
+	<div><span></span><span></span></div>
+	<div><span style="width: 120px;"></span><span></span></div>
 </body>
 </html>
