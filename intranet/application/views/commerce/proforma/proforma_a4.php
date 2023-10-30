@@ -4,19 +4,27 @@
 	<style>
 	html, body{font-size: 14px; font-family: 'poppins', sans-serif; line-height: 1.5;}
 	table{width: 100%; padding: 0; margin: 0; border: 0; border-collapse: collapse;}
+	strong, th{color: #233774;}
 	.mt{margin-top: 20px;}
 	.mt-lg{margin-top: 50px;}
 	.pt{padding-top: 20px;}
+	.pb{padding-bottom: 20px;}
 	.text-start{text-align: left;}
 	.text-center{text-align: center;}
 	.text-end{text-align: right;}
+	.fs-xs{font-size: 0.6rem;}
+	.fs-sm{font-size: 0.8rem;}
+	.fs-lg{font-size: 1.2rem;}
+	.fs-xl{font-size: 2rem;}
+	.bg-color{background-color: #D9E1F2;}
+	#tb_products td, #tb_products th{padding: 7px 5px;}
 	</style>
 </head>
 <body style="padding: 0 40px;">
 	<table>
 		<tr>
-			<td style="width:55%;"><strong>Proforma</strong></td>
-			<td style="width:45%;" class="text-end"><img src="data:image/jpeg;base64,<?= $logo ?>" style="width: 80%;"></td>
+			<td class="fs-xl" style="width:55%;"><strong>Proforma</strong></td>
+			<td style="width:45%;" class="text-end"><img src="data:image/svg;base64,<?= $logo ?>" style="width: 80%;"></td>
 		</tr>
 		<tr>
 			<td class="pt" valign="top">
@@ -53,25 +61,30 @@
 			</td>
 		</tr>
 	</table>
-	<table class="mt-lg">
+	<table class="mt-lg" id="tb_products" style="border-top: 1px solid black;">
 		<tr>
 			<th class="text-start">#</th>
-			<th style="width: 40%;">Producto</th>
+			<th style="width: 40%;">Ítem</th>
 			<th>Opción</th>
 			<th>P/U</th>
 			<th>Cant.</th>
 			<th class="text-end">Subtotal</th>
 		</tr>
-		<?php foreach($products as $i => $p){ ?>
-		<tr>
+		<?php foreach($products as $i => $p){ if ($i % 2) $bg = ""; else $bg = "bg-color"; ?>
+		<tr class="<?= $bg ?>">
 			<td><?= number_format($i + 1) ?></td>
 			<td><?= $p->product ?></td>
 			<td class="text-center"><?= $p->option ?></td>
-			<td class="text-center"><?= number_format($p->price, 2) ?></td>
+			<td class="text-center">S/ <?= number_format($p->price, 2) ?></td>
 			<td class="text-center"><?= number_format($p->qty) ?></td>
-			<td class="text-end"><?= number_format($p->price * $p->qty, 2) ?></td>
+			<td class="text-end">S/ <?= number_format($p->price * $p->qty, 2) ?></td>
 		</tr>
 		<?php } ?>
+		<tr style="border-top: 1px solid black;">
+			<td class="pt pb" colspan="2"></td>
+			<td class="text-end pt pb" colspan="2"><strong>TOTAL</strong></td>
+			<td class="text-end pt pb" colspan="2"><strong>S/ <?= number_format($proforma->amount, 2) ?></strong></td>
+		</tr>
 	</table>
 	<div class="mt"><strong>Observación</strong></div>
 	<div><?= nl2br($proforma->remark) ?></div>
@@ -89,10 +102,11 @@
 			<td>Dólares</td><td>432-3004927110</td><td>/ CCI 003-432-003004927110-26</td>
 		</tr>
 	</table>
-	
-	
-	<div></div>
-	<div><span></span><span></span></div>
-	<div><span style="width: 120px;"></span><span></span></div>
+	<div class="mt text-end">
+		<div><img src="data:image/png;base64,<?= $sign_jw ?>" style="width:200px;"></div>
+		<div>Jeong Woo Park</div>
+		<div>Gerente General</div>
+		<div>JW Everlyn S.A.C.</div>
+	</div>
 </body>
 </html>

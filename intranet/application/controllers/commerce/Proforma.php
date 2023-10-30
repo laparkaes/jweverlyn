@@ -41,7 +41,7 @@ class Proforma extends CI_Controller {
 		foreach($proformas as $s){
 			if ($s->client_id) $s->client = $this->gm->unique("client", "client_id", $s->client_id)->name;
 			else $s->client = "";
-			if ($s->valid) $s->color = "success";
+			if ($s->valid and (time() < strtotime("+1 day", strtotime($s->validity)))) $s->color = "success";
 			else $s->color = "danger";
 		}
 		
@@ -293,14 +293,15 @@ class Proforma extends CI_Controller {
 			}
 			
 			$data = [
-				"logo" => base64_encode(file_get_contents("../resources/assets/img/logo.svg")),
+				"logo" => base64_encode(file_get_contents("./assets/img/logo.svg")),
 				"proforma" => $proforma,
 				"client" => $client,
 				"products" => $products,
+				"sign_jw" => base64_encode(file_get_contents("./assets/img/sign_jw.png")),
 			];
 			
 			$html = $this->load->view('commerce/proforma/proforma_a4', $data, true);
-			$this->my_func->make_pdf_a4($html, "Proforma");
+			$this->my_func->make_pdf_a4($html, "Proforma - ".$client->name." - ".date("Y md"));
 			//echo $html;
 		}else redirect("no_page");
 	}

@@ -32,9 +32,33 @@
 							<span class="text-<?= $proforma->color ?>"><?= $proforma->status ?></span>
 						</li>
 						<li class="list-group-item">
-							<div class="text-start"><strong>Vigencia</strong></div>
+							<div class="d-flex justify-content-between">
+								<strong>Vigencia</strong>
+								<span id="edit_validity"><i class="bi bi-pencil-square text-primary"></i><i class="bi bi-x-lg text-danger d-none"></i></span>
+							</div>
 							<div class="text-end"><span>Hasta <?= $proforma->validity ?></span></div>
-							
+							<form id="form_edit_validity" class="mt-3 d-none">
+								<div class="input-group input-group-sm">
+									<select class="form-select" name="validity">
+										<?php $today = date("Y-m-d"); ?>
+										<option value="<?= $today ?>">Solo hoy</option>
+										<?php $aux = date("Y-m-d", strtotime("+1 week", strtotime($today))); ?>
+										<option value="<?= $aux ?>">Hasta <?= $aux ?> (una semana)</option>
+										<?php $aux = date("Y-m-d", strtotime("+2 week", strtotime($today))); ?>
+										<option value="<?= $aux ?>">Hasta <?= $aux ?> (dos semanas)</option>
+										<?php $aux = date("Y-m-d", strtotime("+1 month", strtotime($today))); ?>
+										<option value="<?= $aux ?>">Hasta <?= $aux ?> (un mes)</option>
+										<?php $aux = date("Y-m-d", strtotime("+3 months", strtotime($today))); ?>
+										<option value="<?= $aux ?>">Hasta <?= $aux ?> (tres meses)</option>
+										<?php $aux = date("Y-m-d", strtotime("+6 months", strtotime($today))); ?>
+										<option value="<?= $aux ?>">Hasta <?= $aux ?> (seis meses)</option>
+										<?php $aux = date("Y-m-d", strtotime("+1 year", strtotime($today))); ?>
+										<option value="<?= $aux ?>">Hasta <?= $aux ?> (un año)</option>
+										<option value="">Indefinido</option>
+									</select>
+									<button class="btn btn-success" type="submit"><i class="bi bi-check2"></i></button>
+								</div>
+							</form>
 						</li>
 						<li class="list-group-item">
 							<div class="text-start"><strong>Emisión</strong></div>

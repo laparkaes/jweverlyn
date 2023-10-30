@@ -196,3 +196,10 @@ $("#form_add_sale").submit(function(e) {
 	});
 });
 
+$("#edit_validity i").on('click',(function(e) {
+	$("#edit_validity i").removeClass("d-none");
+	$(this).addClass("d-none");
+	
+	if ($(this).hasClass("bi-pencil-square")) $("#form_edit_validity").removeClass("d-none");
+	else $("#form_edit_validity").addClass("d-none");
+}));
