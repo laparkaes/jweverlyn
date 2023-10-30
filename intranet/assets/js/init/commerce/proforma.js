@@ -203,3 +203,18 @@ $("#edit_validity i").on('click',(function(e) {
 	if ($(this).hasClass("bi-pencil-square")) $("#form_edit_validity").removeClass("d-none");
 	else $("#form_edit_validity").addClass("d-none");
 }));
+
+$("#form_edit_validity").submit(function(e) {
+	e.preventDefault();
+	ajax_form_warning(this, b_url + "update_proforma", "update_proforma").done(function(res) {
+		//set_msgs("#form_edit_validity", res.msgs);
+		if (res.type == "success") swal_redirection(res.type, res.msg, window.location.href);
+		else swal(res.type, res.msg);
+	});
+});
+
+$("#btn_void_proforma").on('click',(function(e) {
+	ajax_simple_warning({proforma_id: $(this).val()}, b_url + "void_proforma", "void_proforma").done(function(res) {
+		swal_redirection(res.type, res.msg, window.location.href);
+	});
+}));

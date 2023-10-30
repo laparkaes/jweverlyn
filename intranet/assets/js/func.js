@@ -41,6 +41,8 @@ const warning_msg = {
 		add_payment: "¿Desea agregar pago?",
 		delete_payment: "¿Desea eliminar pago?",
 		add_proforma: "¿Desea agregar nueva proforma?",
+		update_proforma: "¿Desea actualizar la proforma?",
+		void_proforma: "¿Desea anular la proforma?",
 		issue_invoice: "¿Desea emitir comprobante?",
 		send_invoice: "¿Desea enviar comprobante a Sunat?",
 		void_invoice: "¿Desea anular comprobante?",

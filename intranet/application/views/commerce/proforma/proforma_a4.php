@@ -55,7 +55,8 @@
 					</tr>
 					<tr>
 						<td><strong>Vigencia</strong></td>
-						<td class="text-end"><?= date("Y-m-d", strtotime($proforma->validity)) ?></td>
+						<?php if ($proforma->validity) $aux = date("Y-m-d", strtotime($proforma->validity)); else $aux = "Indefinida"; ?>
+						<td class="text-end"><?= $aux ?></td>
 					</tr>
 				</table>
 			</td>

@@ -38,11 +38,11 @@ class Proforma extends CI_Controller {
 		}
 		
 		$proformas = $this->gm->filter("proforma", $w, $l, $w_in, [["registed_at", "desc"]], 25, 25 * ($params["page"] - 1), false);
-		foreach($proformas as $s){
-			if ($s->client_id) $s->client = $this->gm->unique("client", "client_id", $s->client_id)->name;
-			else $s->client = "";
-			if ($s->valid and (time() < strtotime("+1 day", strtotime($s->validity)))) $s->color = "success";
-			else $s->color = "danger";
+		foreach($proformas as $p){
+			if ($p->client_id) $p->client = $this->gm->unique("client", "client_id", $p->client_id)->name;
+			else $p->client = "";
+			if ($p->valid and (time() < strtotime("+1 day", strtotime($p->validity)))) $p->color = "success";
+			else $p->color = "danger";
 		}
 		
 		$data = [
@@ -197,6 +197,8 @@ class Proforma extends CI_Controller {
 				$amount = 0;
 				foreach($products as $prod) $amount += $prod["price"] * $prod["qty"];
 				
+				if (!$data["validity"]) $data["validity"] = null;
+				
 				$proforma["client_id"] = $client_id;
 				$proforma["amount"] = $amount;
 				$proforma["registed_at"] = $now;
@@ -304,5 +306,32 @@ class Proforma extends CI_Controller {
 			$this->my_func->make_pdf_a4($html, "Proforma - ".$client->name." - ".date("Y md"));
 			//echo $html;
 		}else redirect("no_page");
+	}
+
+	public function update_proforma(){
+		$type = "error"; $msg = null;
+		$data = $this->input->post();
+		if (!$data["validity"]) $data["validity"] = null;
+		
+		if ($this->gm->update("proforma", ["proforma_id" => $data["proforma_id"]], $data)){
+			$type = "success";
+			$msg = $this->lang->line("s_proforma_update");
+		}else $msg = $this->lang->line("e_unknown_refresh");
+		
+		header('Content-Type: application/json');
+		echo json_encode(["type" => $type, "msg" => $msg]);
+	}
+	
+	public function void_proforma(){
+		$type = "error"; $msg = null;
+		$proforma_id = $this->input->post("proforma_id");
+		
+		if ($this->gm->update("proforma", ["proforma_id" => $proforma_id], ["valid" => false])){
+			$type = "success";
+			$msg = $this->lang->line("s_proforma_void");
+		}else $msg = $this->lang->line("e_unknown_refresh");
+		
+		header('Content-Type: application/json');
+		echo json_encode(["type" => $type, "msg" => $msg]);
 	}
 }

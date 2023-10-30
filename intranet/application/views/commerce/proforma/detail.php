@@ -34,10 +34,14 @@
 						<li class="list-group-item">
 							<div class="d-flex justify-content-between">
 								<strong>Vigencia</strong>
+								<?php if ($proforma->valid){ ?>
 								<span id="edit_validity"><i class="bi bi-pencil-square text-primary"></i><i class="bi bi-x-lg text-danger d-none"></i></span>
+								<?php } ?>
 							</div>
-							<div class="text-end"><span>Hasta <?= $proforma->validity ?></span></div>
+							<?php if ($proforma->validity) $aux = "Hasta ".$proforma->validity; else $aux = "Indefinida"; ?>
+							<div class="text-end"><span><?= $aux ?></span></div>
 							<form id="form_edit_validity" class="mt-3 d-none">
+								<input type="hidden" name="proforma_id" value="<?= $proforma->proforma_id ?>">
 								<div class="input-group input-group-sm">
 									<select class="form-select" name="validity">
 										<?php $today = date("Y-m-d"); ?>
@@ -85,7 +89,7 @@
 							</a>
 						</div>
 						<div class="col-md-4 d-grid">
-							<button type="button" class="btn btn-outline-danger mb-3" id="btn_cancel_proforma" value="<?= $proforma->proforma_id ?>">
+							<button type="button" class="btn btn-outline-danger mb-3" id="btn_void_proforma" value="<?= $proforma->proforma_id ?>">
 								<i class="bi bi-trash" style="font-size: 2rem;"></i><br/>Anular Proforma
 							</button>
 						</div>
