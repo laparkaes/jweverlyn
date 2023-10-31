@@ -218,6 +218,14 @@
 						</a>
 					</li>
 				</ul>
+				<ul id="commerce-nav" class="nav-content collapse <?= $c_ul ?>" data-bs-parent="#sidebar-nav">
+					<li>
+						<?php if ($this->nav_menu[1] === "client") $c1 = "active"; else $c1 = ""; ?>
+						<a href="<?= base_url() ?>commerce/client" class="<?= $c1 ?>">
+							<i class="bi bi-circle"></i><span>Clientes</span>
+						</a>
+					</li>
+				</ul>
 			</li>
 			<li class="nav-item">
 				<?php if ($this->nav_menu[0] === "authentication"){ $c = ""; $c_ul = "show"; }else{ $c = "collapsed"; $c_ul = ""; } ?>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- 생성 시간: 23-10-30 18:08
+-- 생성 시간: 23-10-31 18:35
 -- 서버 버전: 10.4.24-MariaDB
 -- PHP 버전: 7.4.29
 
@@ -3164,6 +3164,7 @@ CREATE TABLE `client` (
   `tel` varchar(20) DEFAULT NULL,
   `mobile` varchar(50) DEFAULT NULL,
   `address` varchar(200) DEFAULT NULL,
+  `image` varchar(30) DEFAULT NULL,
   `valid` tinyint(1) NOT NULL DEFAULT 1,
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `registed_at` timestamp NOT NULL DEFAULT current_timestamp()
@@ -3173,22 +3174,22 @@ CREATE TABLE `client` (
 -- 테이블의 덤프 데이터 `client`
 --
 
-INSERT INTO `client` (`client_id`, `doc_type_id`, `doc_number`, `name`, `tel`, `mobile`, `address`, `valid`, `updated_at`, `registed_at`) VALUES
-(1, 2, '76408531', 'LEA MABEL SILUPU MONTALVAN', '', '', '', 1, '2023-09-16 23:05:39', '2023-09-16 23:05:39'),
-(2, 2, '70614226', 'SOFIA LISSET CASAVERDE VALDIVIEZO', '', '', '', 1, '2023-09-17 20:50:05', '2023-09-17 20:50:05'),
-(3, 2, '75694084', 'FRANCESCA JENNIFER OLAYA CAMACHO', '', '', '', 1, '2023-09-17 22:19:28', '2023-09-17 22:19:28'),
-(4, 2, '75098340', 'YESABELLA ESPERANZA UBILLUS MORALES', '', '', '', 1, '2023-09-21 21:50:14', '2023-09-21 21:50:14'),
-(5, 2, '75763698', 'ESTHEFANY DE LOS MILAGROS HERRERA CHECA', '', '', '', 1, '2023-09-25 21:29:42', '2023-09-25 21:29:42'),
-(6, 2, '75112025', 'YARIS NAYELY CALLE CASTILLO', '', '', '', 1, '2023-10-05 00:33:52', '2023-10-05 00:33:52'),
-(7, 3, '000765808', 'Jeong Woo Park', '', '', '', 1, '2023-10-07 22:08:29', '2023-10-07 22:08:29'),
-(8, 2, '48098843', 'ROSA DEL CARMEN GARRIDO MORE', '', '', '', 1, '2023-10-07 23:11:35', '2023-10-07 23:11:35'),
-(9, 4, '20454193556', 'COMERCIAL FERNANDA\'S S.R.L.', '', '', '', 1, '2023-10-09 23:22:01', '2023-10-09 23:22:01'),
-(10, 2, '76147068', 'JACKELINE DEL PILAR ARCELES VINCES', '', '', '', 1, '2023-10-10 21:40:41', '2023-10-10 21:40:41'),
-(11, 2, '74896747', 'CARLOS DAVID VILELA VILCHEZ', '', '', '', 1, '2023-10-10 22:38:14', '2023-10-10 22:38:14'),
-(12, 4, '20405441862', 'INGEMET CPI EMPRESA INDIVIDUAL DE RESPONSABILIDAD LIMITADA', '', '', '', 1, '2023-10-20 22:37:38', '2023-10-20 22:37:38'),
-(13, 4, '20364169982', 'EMGESA S.A.C.', '', '', '', 1, '2023-10-20 22:57:43', '2023-10-20 22:57:43'),
-(14, 2, '72879477', 'MARIA FERNANDA VASQUEZ EVANGELISTA', '01 241 2345', '99 888 777', 'Av Aviacion 3204, San Borja, Lima, Peru', 1, '2023-10-23 20:30:42', '2023-10-23 20:30:42'),
-(15, 2, '76155454', 'Emily Delgado', NULL, NULL, NULL, 1, '2023-10-26 20:01:00', '2023-10-26 20:01:00');
+INSERT INTO `client` (`client_id`, `doc_type_id`, `doc_number`, `name`, `tel`, `mobile`, `address`, `image`, `valid`, `updated_at`, `registed_at`) VALUES
+(1, 2, '76408531', 'LEA MABEL SILUPU MONTALVAN', '', '', '', NULL, 1, '2023-09-16 23:05:39', '2023-09-16 23:05:39'),
+(2, 2, '70614226', 'SOFIA LISSET CASAVERDE VALDIVIEZO', '', '', '', NULL, 1, '2023-09-17 20:50:05', '2023-09-17 20:50:05'),
+(3, 2, '75694084', 'FRANCESCA JENNIFER OLAYA CAMACHO', '', '', '', NULL, 1, '2023-09-17 22:19:28', '2023-09-17 22:19:28'),
+(4, 2, '75098340', 'YESABELLA ESPERANZA UBILLUS MORALES', '', '', '', NULL, 1, '2023-09-21 21:50:14', '2023-09-21 21:50:14'),
+(5, 2, '75763698', 'ESTHEFANY DE LOS MILAGROS HERRERA CHECA', '', '', '', NULL, 1, '2023-09-25 21:29:42', '2023-09-25 21:29:42'),
+(6, 2, '75112025', 'YARIS NAYELY CALLE CASTILLO', '', '', '', NULL, 1, '2023-10-05 00:33:52', '2023-10-05 00:33:52'),
+(7, 3, '000765808', 'Jeong Woo Park', '', '', '', NULL, 1, '2023-10-07 22:08:29', '2023-10-07 22:08:29'),
+(8, 2, '48098843', 'ROSA DEL CARMEN GARRIDO MORE', '', '', '', NULL, 1, '2023-10-07 23:11:35', '2023-10-07 23:11:35'),
+(9, 4, '20454193556', 'COMERCIAL FERNANDA\'S S.R.L.', '', '', '', NULL, 1, '2023-10-09 23:22:01', '2023-10-09 23:22:01'),
+(10, 2, '76147068', 'JACKELINE DEL PILAR ARCELES VINCES', '', '', '', NULL, 1, '2023-10-10 21:40:41', '2023-10-10 21:40:41'),
+(11, 2, '74896747', 'CARLOS DAVID VILELA VILCHEZ', '', '', '', NULL, 1, '2023-10-10 22:38:14', '2023-10-10 22:38:14'),
+(12, 4, '20405441862', 'INGEMET CPI EMPRESA INDIVIDUAL DE RESPONSABILIDAD LIMITADA', '', '', '', NULL, 1, '2023-10-20 22:37:38', '2023-10-20 22:37:38'),
+(13, 4, '20364169982', 'EMGESA S.A.C.', '', '', '', NULL, 1, '2023-10-20 22:57:43', '2023-10-20 22:57:43'),
+(14, 2, '72879477', 'MARIA FERNANDA VASQUEZ EVANGELISTA', '01 241 2345', '99 888 777', 'Av Aviacion 3204, San Borja, Lima, Peru', NULL, 1, '2023-10-23 20:30:42', '2023-10-23 20:30:42'),
+(15, 2, '76155454', 'Emily Delgado', NULL, NULL, NULL, NULL, 1, '2023-10-26 20:01:00', '2023-10-26 20:01:00');
 
 -- --------------------------------------------------------
 
