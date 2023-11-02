@@ -61,6 +61,10 @@
 								<div class="col-lg-9 col-md-8"><?= $client->mobile ?></div>
 							</div>
 							<div class="row">
+								<div class="col-lg-3 col-md-4 label">Correo E.</div>
+								<div class="col-lg-9 col-md-8"><?= $client->email ?></div>
+							</div>
+							<div class="row">
 								<div class="col-lg-3 col-md-4 label">Dirección</div>
 								<div class="col-lg-9 col-md-8"><?= $client->address ?></div>
 							</div>
@@ -99,6 +103,13 @@
 									</div>
 								</div>
 								<div class="row mb-3">
+									<label class="col-md-4 col-lg-3 col-form-label">Correo Elect.</label>
+									<div class="col-md-8 col-lg-9">
+										<input name="email" type="text" class="form-control" value="<?= $client->email ?>">
+										<div class="invalid-feedback"></div>
+									</div>
+								</div>
+								<div class="row mb-3">
 									<label class="col-md-4 col-lg-3 col-form-label">Address</label>
 									<div class="col-md-8 col-lg-9">
 										<input name="address" type="text" class="form-control" value="<?= $client->address ?>">
@@ -111,7 +122,7 @@
 							</form>
 							<hr>
 							<form id="form_update_client_image">
-								<h5 class="card-title">Imagen</h5>
+								<h5 class="card-title pt-0">Imagen</h5>
 								<input type="hidden" name="client_id" value="<?= $client->client_id ?>">
 								<div class="row mb-3">
 									<label class="col-md-4 col-lg-3 col-form-label">Archivo</label>
@@ -131,21 +142,18 @@
 									<thead>
 										<tr>
 											<th scope="col">#</th>
+											<th scope="col">Fecha</th>
 											<th scope="col">Pago</th>
 											<th scope="col">Saldo</th>
 											<th scope="col">Total</th>
-											<th scope="col" class="text-end">
-												<button type="button" class="btn btn-success btn-sm border-0" data-bs-toggle="modal" data-bs-target="#md_add_option">
-													<i class="bi bi-plus-lg"></i>
-												</button>
-											</th>
+											<th scope="col"></th>
 										</tr>
 									</thead>
 									<tbody id="tbody_options">
 										<?php foreach($sales as $i_s => $s){ ?>
 										<tr>
 											<th scope="row"><?= $i_s + 1 ?></th>
-											<!-- td><?= date("y").str_pad($s->proforma_id, 4, '0', STR_PAD_LEFT) ?></td -->
+											<td><?= $s->registed_at ?></td>
 											<td>S/ <?= number_format($s->paid, 2) ?></td>
 											<td><?= ($s->balance > 0) ? "S/ ".number_format($s->balance, 2) : "-" ?></td>
 											<td>S/ <?= number_format($s->amount, 2) ?></td>
@@ -159,40 +167,14 @@
 									</tbody>
 								</table>
 							</div>
-						</div>
-						<div class="tab-pane fade" id="images">
-							<div class="table-responsive">
-								<table class="table align-middle">
-									<thead>
-										<tr>
-											<th scope="col">#</th>
-											<th scope="col">Imagen</th>
-											<th scope="col">Ruta</th>
-											<th scope="col" class="text-end">
-												<button type="button" class="btn btn-success btn-sm border-0" data-bs-toggle="modal" data-bs-target="#md_add_image">
-													<i class="bi bi-plus-lg"></i>
-												</button>
-											</th>
-										</tr>
-									</thead>
-									<tbody id="tbody_images">
-										<?php foreach($images as $i_i => $i){ ?>
-										<tr>
-											<th scope="row"><?= $i_i + 1 ?></th>
-											<td><img src="<?= $i->thumb ?>" alt="Thumb" style="max-height: 80px;"></td>
-											<td><?= $i->image_path ?></td>
-											<td class="text-end">
-												<button type="button" class="btn btn-outline-primary btn-sm border-0 btn_edit_image" value="<?= $i->image_id ?>">
-													<i class="bi bi-image"></i>
-												</button>
-												<button type="button" class="btn btn-outline-danger btn-sm border-0 btn_delete_image" value="<?= $i->image_id ?>">
-													<i class="bi bi-x-lg"></i>
-												</button>
-											</td>
-										</tr>
-										<?php } ?>
-									</tbody>
-								</table>
+							<div class="mt-3">
+								<ul class="pagination" id="sale_pagination">
+									<?php foreach($sales_paging as $p){ ?>
+									<li class="page-item <?= $p[2] ?>">
+										<button class="page-link" value="<?= $p[0] ?>"><?= $p[1] ?></button>
+									</li>
+									<?php } ?>
+								</ul>
 							</div>
 						</div>
 					</div>
@@ -201,62 +183,3 @@
 		</div>
 	</div>
 </section>
-
-<!-- modals -->
-<div class="modal fade" id="md_add_option" tabindex="-1">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<form id="form_add_option">
-				<input type="hidden" name="client_id" value="<?= $client->client_id ?>">
-				<div class="modal-header">
-					<h5 class="modal-title">Agregar Opción</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-				</div>
-				<div class="modal-body text-start">
-					<div class="row g-3">
-						<div class="col-6">
-							<label class="form-label">Opción</label>
-							<input type="text" class="form-control" name="option">
-							<div class="invalid-feedback"></div>
-						</div>
-						<div class="col-6">
-							<label class="form-label">Stock</label>
-							<input type="text" class="form-control" name="stock">
-							<div class="invalid-feedback"></div>
-						</div>
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-					<button type="submit" class="btn btn-primary">Agregar</button>
-				</div>
-			</form>
-		</div>
-	</div>
-</div>
-<div class="modal fade" id="md_add_image" tabindex="-1">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<form id="form_add_image">
-				<input type="hidden" name="client_id" value="<?= $client->client_id ?>">
-				<div class="modal-header">
-					<h5 class="modal-title">Agregar Imagen</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-				</div>
-				<div class="modal-body text-start">
-					<div class="row g-3">
-						<div class="col-12">
-							<label class="form-label">Imagen</label>
-							<input type="file" class="form-control" name="image" accept=".jpg, .jpeg, .png, .gif">
-							<div class="invalid-feedback"></div>
-						</div>
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-					<button type="submit" class="btn btn-primary">Agregar</button>
-				</div>
-			</form>
-		</div>
-	</div>
-</div>

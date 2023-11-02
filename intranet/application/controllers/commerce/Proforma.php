@@ -278,6 +278,8 @@ class Proforma extends CI_Controller {
 	}
 
 	public function view($proforma_id){
+		if (!$this->session->userdata('username')) redirect("auth/login");
+		
 		$proforma = $this->gm->unique("proforma", "proforma_id", $proforma_id, false);
 		if ($proforma){
 			if ($proforma->client_id){

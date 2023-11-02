@@ -61,27 +61,30 @@ class Client extends CI_Controller {
 			if (file_exists($path)) $client->thumb = base_url().$path;
 		}
 		
+		$sale_w = ["client_id" => $client_id];
 		$data = [
 			"client" => $client,
-			"sales" => $this->gm->filter("sale", ["client_id" => $client_id], null, null, [["registed_at", "desc"]]),
+			"sales" => $this->gm->filter("sale", $sale_w, null, null, [["registed_at", "desc"]], 25, 0),
+			"sales_paging" => $this->my_func->paging(1, $this->gm->qty("sale", $sale_w, null, null)),
 			"main" => "commerce/client/detail",
 		];
+		
 		$this->load->view('layout', $data);
 	}
-	
-	
-	
-	///////////////////////////// will be tested
 	
 	public function register(){
 		if (!$this->session->userdata('username')) redirect("auth/login");
 		
 		$data = [
-			"categories" => $this->gm->all("product_category", [["category", "asc"]]),
-			"main" => "commerce/product/register",
+			"doc_types" =>$this->gm->all_simple("client_doc_type", "doc_type_id", "asc"),
+			"main" => "commerce/client/register",
 		];
 		$this->load->view('layout', $data);
 	}
+	
+	
+	///////////////////////////// will be tested
+	
 	
 	public function add(){
 		if ($this->session->userdata('username')){
