@@ -82,6 +82,62 @@ class Client extends CI_Controller {
 		$this->load->view('layout', $data);
 	}
 	
+	public function add_client(){
+		$result = ["type" => "error", "msg" => null];
+		
+		if ($this->session->userdata('username')){
+			$client = $this->input->post("client");
+			
+			$this->load->library('my_val');
+			$result = $this->my_val->add_client($client);
+			
+			if ($result["type"] === "success"){
+				$client_id = $this->gm->insert("client", $client);
+				
+				$result["msg"] = $this->lang->line("s_client_insert");
+				$result["url"] = base_url()."commerce/client/detail/".$client_id;
+			}else $result["msg"] = $this->lang->line("e_check_datas");
+		}else $result["msg"] = $this->lang->line("e_finished_session");
+		
+		header('Content-Type: application/json');
+		echo json_encode($result);
+	}
+	
+	public function search_client_ajax(){
+		$type = "error"; $msg = ""; $person = null;
+		$data = $this->input->post();
+		
+		if ($data["doc_number"]){
+			$person = $this->gm->filter("client", $data);
+			if ($person) $person = $person[0];
+			else{
+				$name = "";
+				switch($data["doc_type_id"]){
+					case 2: //dni
+						$aux = $this->my_func->utildatos("dni", $data["doc_number"]);
+						if ($aux->status) $name = $aux->data->nombres." ".$aux->data->apellidoPaterno." ".$aux->data->apellidoMaterno;
+						break;
+					case 4: //ruc
+						$aux = $this->my_func->utildatos("ruc", $data["doc_number"]);
+						if ($aux->status) $name = $aux->data->razon_social;
+						break;
+				}
+				
+				$person = $this->gm->structure("client");
+				$person->name = $name;
+			}
+			
+			if ($person->name){
+				$person->doc_type_id = $data["doc_type_id"];
+				$person->doc_number = $data["doc_number"];
+				
+				$type = "success";
+			}else $msg = $this->lang->line("e_no_result");
+		}else $msg = $this->lang->line("e_doc_number_enter");
+		
+		header('Content-Type: application/json');
+		echo json_encode(["type" => $type, "msg" => $msg, "person" => $person]);
+	}
 	
 	///////////////////////////// will be tested
 	

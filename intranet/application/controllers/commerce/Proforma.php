@@ -121,42 +121,6 @@ class Proforma extends CI_Controller {
 		echo json_encode(["product" => $product, "options" => $options]);
 	}
 	
-	public function search_person(){
-		$type = "error"; $msg = ""; $person = null;
-		$data = $this->input->post();
-		
-		if ($data["doc_number"]){
-			$person = $this->gm->filter("client", $data);
-			if ($person) $person = $person[0];
-			else{
-				$name = "";
-				switch($data["doc_type_id"]){
-					case 2: //dni
-						$aux = $this->my_func->utildatos("dni", $data["doc_number"]);
-						if ($aux->status) $name = $aux->data->nombres." ".$aux->data->apellidoPaterno." ".$aux->data->apellidoMaterno;
-						break;
-					case 4: //ruc
-						$aux = $this->my_func->utildatos("ruc", $data["doc_number"]);
-						if ($aux->status) $name = $aux->data->razon_social;
-						break;
-				}
-				
-				$person = $this->gm->structure("client");
-				$person->name = $name;
-			}
-			
-			if ($person->name){
-				$person->doc_type_id = $data["doc_type_id"];
-				$person->doc_number = $data["doc_number"];
-				
-				$type = "success";
-			}else $msg = $this->lang->line("e_no_result");
-		}else $msg = $this->lang->line("e_doc_number_enter");
-		
-		header('Content-Type: application/json');
-		echo json_encode(["type" => $type, "msg" => $msg, "person" => $person]);
-	}
-	
 	public function register(){
 		if (!$this->session->userdata('username')) redirect("auth/login");
 		

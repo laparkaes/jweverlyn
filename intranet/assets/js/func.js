@@ -46,8 +46,15 @@ const warning_msg = {
 		issue_invoice: "¿Desea emitir comprobante?",
 		send_invoice: "¿Desea enviar comprobante a Sunat?",
 		void_invoice: "¿Desea anular comprobante?",
+		add_client: "¿Desea agregar nuevo cliente?",
 	},
 }
+
+//disable form enter submit
+$('form input').on('keydown', function(event) {
+	//enter key code
+	if (event.keyCode === 13) event.preventDefault();
+});
 
 function nf(num){//number format
 	return parseFloat(num).toLocaleString('es-US', {maximumFractionDigits: 2, minimumFractionDigits: 2});
@@ -246,3 +253,39 @@ function set_dates_between(dom_from, dom_to){
 		$(dom_from).data("DateTimePicker").maxDate(e.date);
 	});
 }
+
+/* search client functions start
+doms: #btn_search_person, #doc_type_id, #doc_number, #client_name */
+function set_search_client_ajax(){
+	function search_client(){
+		var data = {doc_type_id: $("#doc_type_id").val(), doc_number: $("#doc_number").val()};
+		ajax_simple(data, "commerce/client/search_client_ajax").done(function(res) {
+			swal(res.type, res.msg);
+			if (res.type == "success") $("#client_name").val(res.person.name);
+			else $("#client_name").val("");
+		});
+	}
+	
+	$("#doc_type_id").on('change',(function(e) {
+		$("#doc_number, #client_name").val("");
+		if ($("#doc_type_id option:selected").val() == 1){
+			$("#doc_number").prop("disabled", true);
+			$("#btn_search_person").prop("disabled", true);
+			$("#client_name").prop("disabled", true);
+		}else{
+			$("#doc_number").prop("disabled", false);
+			$("#btn_search_person").prop("disabled", false);
+			$("#client_name").prop("disabled", false);
+		}
+	}));
+
+	$("#doc_number").on('keyup',(function(e) {
+		if (e.key === "Enter") search_client();
+		else $("#client_name").prop("disabled", false);
+	}));
+
+	$("#btn_search_person").on('click',(function(e) {
+		search_client();
+	}));
+}
+/* search client functions end */

@@ -48,22 +48,22 @@
 					</div>
 					<div class="col-md-6">
 						<label class="form-label">Telefono</label>
-						<input type="text" class="form-control" name="client[name]" id="client_name">
+						<input type="text" class="form-control" name="client[tel]">
 						<div class="invalid-feedback"></div>
 					</div>
 					<div class="col-md-6">
 						<label class="form-label">Celular</label>
-						<input type="text" class="form-control" name="client[name]" id="client_name">
+						<input type="text" class="form-control" name="client[mobile]">
 						<div class="invalid-feedback"></div>
 					</div>
 					<div class="col-md-12">
 						<label class="form-label">Correo Electrónico</label>
-						<input type="text" class="form-control" name="client[name]" id="client_name">
+						<input type="text" class="form-control" name="client[email]">
 						<div class="invalid-feedback"></div>
 					</div>
 					<div class="col-md-12">
 						<label class="form-label">Dirección</label>
-						<input type="text" class="form-control" name="client[name]" id="client_name">
+						<input type="text" class="form-control" name="client[address]">
 						<div class="invalid-feedback"></div>
 					</div>
 					<div class="text-center pt-3">

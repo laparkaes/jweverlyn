@@ -1,6 +1,7 @@
 let b_url = "commerce/sale/";
 
 set_date(".datepicker", null);
+set_search_client_ajax();
 
 function calculate_change(){
 	var total = parseFloat($("#total").val());
@@ -120,37 +121,6 @@ $("#btn_search_product").on('click',(function(e) {
 
 $("#keyword").on('keyup',(function(e) {
 	if (e.key === "Enter") search_product($("#keyword").val());
-}));
-
-$("#doc_type_id").on('change',(function(e) {
-	$("#doc_number, #client_name").val("");
-	if ($("#doc_type_id option:selected").val() == 1){
-		$("#doc_number").prop("disabled", true);
-		$("#btn_search_person").prop("disabled", true);
-		$("#client_name").prop("disabled", true);
-	}else{
-		$("#doc_number").prop("disabled", false);
-		$("#btn_search_person").prop("disabled", false);
-		$("#client_name").prop("disabled", false);
-	}
-}));
-
-function search_person(){
-	var data = {doc_type_id: $("#doc_type_id").val(), doc_number: $("#doc_number").val()};
-	ajax_simple(data, b_url + "search_person").done(function(res) {
-		swal(res.type, res.msg);
-		if (res.type == "success") $("#client_name").val(res.person.name);
-		else $("#client_name").val("");
-	});
-}
-
-$("#doc_number").on('keyup',(function(e) {
-	if (e.key === "Enter") search_person();
-	else $("#client_name").prop("disabled", false);
-}));
-
-$("#btn_search_person").on('click',(function(e) {
-	search_person();
 }));
 
 $("#btn_add_sale").on('click',(function(e) {

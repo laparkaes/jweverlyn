@@ -10,6 +10,10 @@ $lang['e_numeric_positive']		= 'Debe ser un número positivo.';
 $lang['e_no_result']			= 'No hay resultado de búsqueda.';
 $lang['e_enter_keyword']		= 'Ingrese palabra de búsqueda.';
 
+//client
+$lang['e_client_exists']		= 'Cliente registrado.';
+$lang['s_client_insert']		= "Cliente ha sido registrado.";
+
 //proforma
 $lang['s_proforma_insert']		= "Proforma ha sido registrada.";
 $lang['s_sale_based_proforma']	= "Nueva venta ha sido generada en base a proforma.";

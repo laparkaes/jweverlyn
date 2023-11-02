@@ -512,4 +512,26 @@ class My_val{
 		
 		return ["type" => $type, "msgs" => $msgs, "msg" => $msg];
 	}
+	
+	public function add_client($client){
+		$msgs = [];
+		
+		//client validation
+		$msgs = $this->set_msg($msgs, "client[doc_type_id]"); //no validation required
+		
+		if ($client["doc_number"]){
+			$f = [
+				"doc_type_id" => $client["doc_type_id"],
+				"doc_number" => $client["doc_number"],
+			];
+			if (!$this->CI->gm->filter("client", $f)) $msgs = $this->set_msg($msgs, "client[doc_number]");
+			else $msgs = $this->set_msg($msgs, "client[doc_number]", "e_client_exists");
+		}else $msgs = $this->set_msg($msgs, "client[doc_number]", "e_required_field");
+		
+		if ($client["name"]) $msgs = $this->set_msg($msgs, "client[name]");
+		else $msgs = $this->set_msg($msgs, "client[name]", "e_required_field");
+		
+		return ["type" => $this->get_type($msgs), "msgs" => $msgs];
+	}
+	
 }
