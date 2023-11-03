@@ -78,16 +78,9 @@
 							</div>
 						</div>
 						<div class="tab-pane fade profile-edit" id="edit">
-							<form id="form_update_client_data">
-								<h5 class="card-title pt-0">Datos</h5>
+							<form id="form_update_data">
 								<input type="hidden" name="client_id" value="<?= $client->client_id ?>">
-								<div class="row mb-3">
-									<label class="col-md-4 col-lg-3 col-form-label">Nombre</label>
-									<div class="col-md-8 col-lg-9">
-										<input name="name" type="text" class="form-control" value="<?= $client->name ?>">
-										<div class="invalid-feedback"></div>
-									</div>
-								</div>
+								<h5 class="card-title pt-0">Datos</h5>
 								<div class="row mb-3">
 									<label class="col-md-4 col-lg-3 col-form-label">Teléfono</label>
 									<div class="col-md-8 col-lg-9">
@@ -110,7 +103,7 @@
 									</div>
 								</div>
 								<div class="row mb-3">
-									<label class="col-md-4 col-lg-3 col-form-label">Address</label>
+									<label class="col-md-4 col-lg-3 col-form-label">Dirección</label>
 									<div class="col-md-8 col-lg-9">
 										<input name="address" type="text" class="form-control" value="<?= $client->address ?>">
 										<div class="invalid-feedback"></div>
@@ -121,13 +114,13 @@
 								</div>
 							</form>
 							<hr>
-							<form id="form_update_client_image">
-								<h5 class="card-title pt-0">Imagen</h5>
+							<form id="form_update_image">
 								<input type="hidden" name="client_id" value="<?= $client->client_id ?>">
+								<h5 class="card-title pt-0">Imagen</h5>
 								<div class="row mb-3">
 									<label class="col-md-4 col-lg-3 col-form-label">Archivo</label>
 									<div class="col-md-8 col-lg-9">
-										<input name="image" type="file" class="form-control">
+										<input name="image" type="file" class="form-control" accept="image/*">
 										<div class="invalid-feedback"></div>
 									</div>
 								</div>

@@ -345,12 +345,12 @@ class My_val{
 	}
 	
 	public function add_image($data){
-		$msgs = []; $msg = "";
+		$msgs = [];
 		
 		if ($data["image"]) $msgs = $this->set_msg($msgs, "image");
 		else $msgs = $this->set_msg($msgs, "image", "e_required_field");
 		
-		return ["type" => $this->get_type($msgs), "msgs" => $msgs, "msg" => $msg];
+		return ["type" => $this->get_type($msgs), "msgs" => $msgs];
 	}
 	
 	public function save_company_info($data){

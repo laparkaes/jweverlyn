@@ -39,7 +39,7 @@
 							<thead>
 								<tr>
 									<th scope="col">#</th>
-									<th scope="col">Foto</th>
+									<th scope="col">Imagen</th>
 									<th scope="col">Nombre</th>
 									<th scope="col">Documento</th>
 									<th scope="col">Desde</th>

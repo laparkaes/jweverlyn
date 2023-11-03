@@ -82,7 +82,7 @@ class Client extends CI_Controller {
 		$this->load->view('layout', $data);
 	}
 	
-	public function add_client(){
+	public function add(){
 		$result = ["type" => "error", "msg" => null];
 		
 		if ($this->session->userdata('username')){
@@ -92,10 +92,87 @@ class Client extends CI_Controller {
 			$result = $this->my_val->add_client($client);
 			
 			if ($result["type"] === "success"){
+				$client["registed_at"] = $client["updated_at"] = date("Y-m-d H:i:s");
 				$client_id = $this->gm->insert("client", $client);
 				
 				$result["msg"] = $this->lang->line("s_client_insert");
 				$result["url"] = base_url()."commerce/client/detail/".$client_id;
+			}else $result["msg"] = $this->lang->line("e_check_datas");
+		}else $result["msg"] = $this->lang->line("e_finished_session");
+		
+		header('Content-Type: application/json');
+		echo json_encode($result);
+	}
+	
+	public function update_data(){
+		$result = ["type" => "error", "msg" => null];
+		
+		if ($this->session->userdata('username')){
+			$client = $this->input->post();
+			$client["updated_at"] = date("Y-m-d H:i:s");
+			
+			//no validation required
+			$this->gm->update("client", ["client_id" => $client["client_id"]], $client);
+			
+			$result["type"] = "success";
+			$result["msg"] = $this->lang->line("s_client_update");
+			$result["url"] = base_url()."commerce/client/detail/".$client["client_id"];
+		}else $result["msg"] = $this->lang->line("e_finished_session");
+		
+		header('Content-Type: application/json');
+		echo json_encode($result);
+	}
+	
+	public function update_image(){
+		$result = ["type" => "error", "msg" => null];
+		
+		if ($this->session->userdata('username')){
+			$data = $this->input->post();
+			$data["image"] = $_FILES["image"]["name"];
+			
+			$this->load->library('my_val');
+			$result = $this->my_val->add_image($data);
+			
+			if ($result["type"] === "success"){
+				$client = $this->gm->unique("client", "client_id", $data["client_id"]);
+				
+				$path = './uploads/client/';
+				if (!is_dir($path)) mkdir($path, 0777, true);
+				
+				//removing uploaded files
+				if ($client->image){
+					$aux = explode(".", $client->image);
+					$thumb = $aux[0]."_thumb.".$aux[1];
+					
+					if (file_exists($path.$client->image)) unlink($path.$client->image);
+					if (file_exists($path.$thumb)) unlink($path.$thumb);	
+				}
+				
+				$config['upload_path'] = $path;
+				$config['allowed_types'] = 'gif|jpg|jpeg|png';
+				$config['file_name'] = $client->doc_type_id."_".$client->doc_number."_".date("YmdHis");
+				$this->load->library('upload', $config);
+				
+				if ($this->upload->do_upload('image')){
+					$filedata = array('upload_data' => $this->upload->data());
+					$data["image"] = $filedata['upload_data']['file_name'];
+
+					$this->load->library('image_lib');
+					$config['image_library'] = 'gd2';
+					$config['source_image'] = $path.$data["image"];
+					$config['create_thumb'] = TRUE;
+					$config['maintain_ratio'] = TRUE;
+					$config['width'] = 300;
+					$config['height'] = 300;
+
+					$this->image_lib->initialize($config);
+					$this->image_lib->resize();
+					
+					$this->gm->update("client", ["client_id" => $client->client_id], $data);
+					
+					$result["msg"] = $this->lang->line("s_client_update");
+					$result["url"] = base_url()."commerce/client/detail/".$client->client_id;
+				}else $result = ["type" => "error", "msg" => $this->upload->display_errors()];
 			}else $result["msg"] = $this->lang->line("e_check_datas");
 		}else $result["msg"] = $this->lang->line("e_finished_session");
 		
@@ -142,24 +219,6 @@ class Client extends CI_Controller {
 	///////////////////////////// will be tested
 	
 	
-	public function add(){
-		if ($this->session->userdata('username')){
-			$data = $this->input->post();
-			
-			$this->load->library('my_val');
-			$result = $this->my_val->add_product($data);
-			
-			if ($result["type"] === "success"){
-				$data["updated_at"] = $data["registed_at"] = date("Y-m-d H:i:s");
-				
-				$result["product_id"] = $this->gm->insert("product", $data);
-				$result["msg"] = $this->lang->line("s_product_insert");
-			}
-		}else $result = ["type" => "error", "msg" => $this->lang->line("e_finished_session")];
-		
-		header('Content-Type: application/json');
-		echo json_encode($result);
-	}
 	
 	public function update(){
 		if ($this->session->userdata('username')){

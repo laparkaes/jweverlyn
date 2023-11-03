@@ -47,6 +47,7 @@ const warning_msg = {
 		send_invoice: "¿Desea enviar comprobante a Sunat?",
 		void_invoice: "¿Desea anular comprobante?",
 		add_client: "¿Desea agregar nuevo cliente?",
+		update_client: "¿Desea actualizar cliente?",
 	},
 }
 

@@ -13,6 +13,7 @@ $lang['e_enter_keyword']		= 'Ingrese palabra de búsqueda.';
 //client
 $lang['e_client_exists']		= 'Cliente registrado.';
 $lang['s_client_insert']		= "Cliente ha sido registrado.";
+$lang['s_client_update']		= "Cliente ha sido actualizado.";
 
 //proforma
 $lang['s_proforma_insert']		= "Proforma ha sido registrada.";
