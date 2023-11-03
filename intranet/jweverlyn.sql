@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- 생성 시간: 23-11-01 19:25
+-- 생성 시간: 23-11-03 18:29
 -- 서버 버전: 10.4.24-MariaDB
 -- PHP 버전: 7.4.29
 
@@ -3190,7 +3190,11 @@ INSERT INTO `client` (`client_id`, `doc_type_id`, `doc_number`, `name`, `tel`, `
 (12, 4, '20405441862', 'INGEMET CPI EMPRESA INDIVIDUAL DE RESPONSABILIDAD LIMITADA', '', '', NULL, '', NULL, 1, '2023-10-20 22:37:38', '2023-10-20 22:37:38'),
 (13, 4, '20364169982', 'EMGESA S.A.C.', '', '', NULL, '', NULL, 1, '2023-10-20 22:57:43', '2023-10-20 22:57:43'),
 (14, 2, '72879477', 'MARIA FERNANDA VASQUEZ EVANGELISTA', '01 241 2345', '99 888 777', NULL, 'Av Aviacion 3204, San Borja, Lima, Peru', NULL, 1, '2023-10-23 20:30:42', '2023-10-23 20:30:42'),
-(15, 2, '76155454', 'Emily Delgado', NULL, NULL, NULL, NULL, NULL, 1, '2023-10-26 20:01:00', '2023-10-26 20:01:00');
+(15, 2, '76155454', 'Emily Delgado', NULL, NULL, NULL, NULL, NULL, 1, '2023-10-26 20:01:00', '2023-10-26 20:01:00'),
+(17, 4, '20387144901', 'RD HIDRAULICA S.R.L.', '', '', '', '', NULL, 1, '2023-11-02 23:13:11', '2023-11-02 23:13:11'),
+(18, 4, '20408058261', 'CLINICA EVERLYN S.A.C.', '', '', '', '', NULL, 1, '2023-11-02 23:17:29', '2023-11-02 23:17:29'),
+(19, 4, '20448426701', 'ALE BIENES Y SERVICIOS EN GENERAL SOCIEDAD ANONIMA CERRADA', NULL, NULL, NULL, NULL, NULL, 1, '2023-11-03 19:18:11', '2023-11-03 19:18:11'),
+(20, 3, '000765804', 'Henry Calle', '345-6785', '908-237-473', 'h.calle@pontafina.com', 'Cl. Mexico ciudad 283, Cercado de Lima', '3_000765804_20231103182838.jpg', 1, '2023-11-03 23:22:13', '2023-11-03 20:37:49');
 
 -- --------------------------------------------------------
 
@@ -3249,7 +3253,9 @@ INSERT INTO `invoice` (`invoice_id`, `type_id`, `client_id`, `sale_id`, `serie_i
 (31, 2, 13, 8, 1, 1, 180, 152.54, 27.46, 'cLJSdOx9XJOPJoad7ZEuzxi0070q', 1, 1, '2023-10-20 22:57:43'),
 (32, 1, 14, 19, 1, 3, 280, 237.29, 42.71, 'yrD7Kzk8TfUBJmr28TGIRxKjFjB.', 1, 1, '2023-10-24 22:32:54'),
 (33, 1, 14, 20, 1, 4, 280, 237.29, 42.71, '9UAuFP8Nwi7oYpQUtzxUMen.hye6', 1, 1, '2023-10-24 23:02:49'),
-(34, 1, 14, 21, 1, 5, 280, 237.29, 42.71, 'adMsXuxvtRa//Nz6R5doEwHoyHjS', 1, 1, '2023-10-25 19:56:53');
+(34, 1, 14, 21, 1, 5, 280, 237.29, 42.71, 'adMsXuxvtRa//Nz6R5doEwHoyHjS', 1, 1, '2023-10-25 19:56:53'),
+(35, 1, 1, 24, 1, 6, 299.2, 253.56, 45.64, '6O2Lk5YT8M6VH2Blk4vbqzfZtztS', 1, 1, '2023-11-02 23:03:15'),
+(36, 2, 19, 25, 1, 2, 299.2, 253.56, 45.64, '0gDUwWJxq4.OGuIPvETHadKZuGRK', 1, 1, '2023-11-03 19:18:42');
 
 -- --------------------------------------------------------
 
@@ -3789,9 +3795,9 @@ INSERT INTO `product_option` (`option_id`, `product_id`, `option`, `stock`, `val
 (24, 1, 'Talla S', 157, 0),
 (25, 1, 'Rosado', 77, 0),
 (26, 1, 'Negro', 124, 1),
-(27, 197, 'Talla S', 67, 1),
+(27, 197, 'Talla S', 62, 1),
 (28, 197, 'Talla M', 73, 1),
-(29, 197, 'Talla L', 125, 1),
+(29, 197, 'Talla L', 120, 1),
 (30, 216, '7L', 300, 1);
 
 -- --------------------------------------------------------
@@ -3969,7 +3975,9 @@ INSERT INTO `sale` (`sale_id`, `client_id`, `proforma_id`, `amount`, `paid`, `ba
 (20, 14, 4, 280, 280, 0, '2023-10-24 23:02:45', '2023-10-24 23:02:34', 1),
 (21, 14, 4, 280, 280, 0, '2023-10-25 19:56:37', '2023-10-25 19:56:37', 1),
 (22, 14, 4, 280, 280, 0, '2023-10-30 00:15:22', '2023-10-30 00:14:38', 1),
-(23, 14, 4, 280, 280, 0, '2023-10-30 21:01:06', '2023-10-30 21:01:06', 1);
+(23, 14, 4, 280, 280, 0, '2023-10-30 21:01:06', '2023-10-30 21:01:06', 1),
+(24, 1, NULL, 299.2, 299.2, 0, '2023-11-02 23:03:08', '2023-11-02 23:03:08', 1),
+(25, 19, NULL, 299.2, 299.2, 0, '2023-11-03 19:18:11', '2023-11-03 19:18:11', 1);
 
 -- --------------------------------------------------------
 
@@ -4017,7 +4025,9 @@ INSERT INTO `sale_payment` (`payment_id`, `sale_id`, `payment_method_id`, `total
 (22, 21, 1, 280, 300, 20, '2023-10-25 19:56:37', 1),
 (23, 22, 1, 280, 120, 0, '2023-10-30 00:14:38', 1),
 (24, 22, 1, 160, 200, 40, '2023-10-30 00:15:22', 1),
-(25, 23, 1, 280, 300, 20, '2023-10-30 21:01:06', 1);
+(25, 23, 1, 280, 300, 20, '2023-10-30 21:01:06', 1),
+(26, 24, 3, 299.2, 500, 200.8, '2023-11-02 23:03:08', 1),
+(27, 25, 3, 299.2, 299.2, 0, '2023-11-03 19:18:11', 1);
 
 -- --------------------------------------------------------
 
@@ -4058,7 +4068,9 @@ INSERT INTO `sale_product` (`sale_product_id`, `sale_id`, `product_id`, `option_
 (17, 20, 1, 26, 20, 14, 280),
 (18, 21, 1, 26, 20, 14, 280),
 (19, 22, 1, 26, 20, 14, 280),
-(20, 23, 1, 26, 20, 14, 280);
+(20, 23, 1, 26, 20, 14, 280),
+(21, 24, 197, 27, 5, 59.84, 299.2),
+(22, 25, 197, 29, 5, 59.84, 299.2);
 
 -- --------------------------------------------------------
 
@@ -4112,7 +4124,9 @@ INSERT INTO `sunat_file` (`file_id`, `sale_id`, `invoice_id`, `xml`, `cdr`, `reg
 (27, 19, 32, '20610879668-03-B001-3.xml', 'R-20610879668-03-B001-3.zip', '2023-10-24 22:32:54'),
 (28, 20, 33, '20610879668-03-B001-4.xml', 'R-20610879668-03-B001-4.zip', '2023-10-24 23:02:49'),
 (29, 21, 34, '20610879668-03-B001-5.xml', 'R-20610879668-03-B001-5.zip', '2023-10-25 19:56:53'),
-(30, 22, 35, '20610879668-03-B001-6.xml', 'R-20610879668-03-B001-6.zip', '2023-10-30 00:16:16');
+(30, 22, 35, '20610879668-03-B001-6.xml', 'R-20610879668-03-B001-6.zip', '2023-10-30 00:16:16'),
+(31, 24, 35, '20610879668-03-B001-6.xml', 'R-20610879668-03-B001-6.zip', '2023-11-02 23:03:15'),
+(32, 25, 36, '20610879668-01-F001-2.xml', 'R-20610879668-01-F001-2.zip', '2023-11-03 19:18:42');
 
 -- --------------------------------------------------------
 
@@ -4354,7 +4368,7 @@ ALTER TABLE `address_province`
 -- 테이블의 AUTO_INCREMENT `client`
 --
 ALTER TABLE `client`
-  MODIFY `client_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `client_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- 테이블의 AUTO_INCREMENT `client_doc_type`
@@ -4366,7 +4380,7 @@ ALTER TABLE `client_doc_type`
 -- 테이블의 AUTO_INCREMENT `invoice`
 --
 ALTER TABLE `invoice`
-  MODIFY `invoice_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `invoice_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- 테이블의 AUTO_INCREMENT `invoice_serie`
@@ -4438,19 +4452,19 @@ ALTER TABLE `role`
 -- 테이블의 AUTO_INCREMENT `sale`
 --
 ALTER TABLE `sale`
-  MODIFY `sale_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `sale_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- 테이블의 AUTO_INCREMENT `sale_payment`
 --
 ALTER TABLE `sale_payment`
-  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- 테이블의 AUTO_INCREMENT `sale_product`
 --
 ALTER TABLE `sale_product`
-  MODIFY `sale_product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `sale_product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- 테이블의 AUTO_INCREMENT `setting_company`
@@ -4462,7 +4476,7 @@ ALTER TABLE `setting_company`
 -- 테이블의 AUTO_INCREMENT `sunat_file`
 --
 ALTER TABLE `sunat_file`
-  MODIFY `file_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `file_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- 테이블의 AUTO_INCREMENT `sunat_resume`
