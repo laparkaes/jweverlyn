@@ -52,7 +52,7 @@
 								<?php $base_page = ($params["page"] - 1) * 25; foreach($products as $i_p => $p){ ?>
 								<tr>
 									<th scope="row"><?= $base_page + $i_p + 1 ?></th>
-									<td><img src="<?= $p->thumb ?>" style="height: 60px;"></td>
+									<td><img src="<?= base_url() ?>uploads/prod/<?= $p->image ?>" style="height: 60px;"></td>
 									<td><?= $p->category ?></td>
 									<td><?= $p->product ?></td>
 									<td><?= number_format($p->sold_qty) ?></td>

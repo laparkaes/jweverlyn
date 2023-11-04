@@ -26,16 +26,9 @@ class Product extends CI_Controller {
 		$path = base_url()."uploads/prod/";
 		$images = $this->gm->filter("product_image", ["product_id" => $product_id], null, null, [["image", "desc"]]);
 		foreach($images as $i){
-			$i->image_path = $path."no_img.png";
-			if ($i->image){
-				$aux = explode(".", $i->image);
-				$filepath = $i->product_id."/".$aux[0]."_thumb.".$aux[1];
-				if (file_exists("uploads/prod/".$filepath)){
-					$img = $path.$filepath;
-					$i->image_path = $path.$i->product_id."/".$i->image;
-				}else $img = $path."no_img.png";
-			}else $img = $path."no_img.png";
-			$i->thumb = $img;
+			$filepath = $i->product_id."/".$i->image;
+			if (file_exists("uploads/prod/".$filepath)) $i->image_path = $path.$filepath;
+			else $i->image_path = $path."no_img.png";
 		}
 		
 		return $images;
@@ -64,11 +57,8 @@ class Product extends CI_Controller {
 		
 		$products = $this->gm->filter("product", $w, $l, $w_in, [["product", "asc"]], 25, 25 * ($params["page"] - 1), false);
 		foreach($products as $p){
-			if ($p->image){
-				$path = "uploads/prod/".$p->product_id."/".$p->image;
-				if (file_exists($path)) $p->thumb = base_url().$path;
-				else $p->thumb = base_url()."uploads/prod/no_img.png";
-			}else $p->thumb = base_url()."uploads/prod/no_img.png";
+			if ($p->image) $p->image = $p->product_id."/".$p->image;
+			else $p->image = "no_img.png";
 			
 			$p->category = $this->gm->unique("product_category", "category_id", $p->category_id)->category;
 			$p->sold_qty = 0;
@@ -388,13 +378,9 @@ class Product extends CI_Controller {
 			$image = $this->gm->unique("product_image", "image_id", $this->input->post("image_id"));
 			if ($image){
 				if ($this->gm->update("product_image", ["image_id" => $image->image_id], ["valid" => false])){
-					$aux = explode(".", $image->image);
-					$thumb = $aux[0]."_thumb.".$aux[1];
-					
 					//removing uploaded files
 					$path = "uploads/prod/".$image->product_id."/"; 
 					if (file_exists($path.$image->image)) unlink($path.$image->image);
-					if (file_exists($path.$thumb)) unlink($path.$thumb);
 					
 					//product main image validation
 					$product = $this->gm->unique("product", "product_id", $image->product_id);

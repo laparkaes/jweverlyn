@@ -175,7 +175,7 @@
 										<?php foreach($images as $i_i => $i){ ?>
 										<tr>
 											<th scope="row"><?= $i_i + 1 ?></th>
-											<td><img src="<?= $i->thumb ?>" alt="Thumb" style="max-height: 80px;"></td>
+											<td><img src="<?= $i->image_path ?>" alt="Thumb" style="max-height: 80px;"></td>
 											<td><?= $i->image_path ?></td>
 											<td class="text-end">
 												<button type="button" class="btn btn-outline-primary btn-sm border-0 btn_edit_image" value="<?= $i->image_id ?>">

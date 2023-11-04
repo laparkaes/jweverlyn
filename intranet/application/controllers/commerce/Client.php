@@ -140,13 +140,9 @@ class Client extends CI_Controller {
 				if (!is_dir($path)) mkdir($path, 0777, true);
 				
 				//removing uploaded files
-				if ($client->image){
-					$aux = explode(".", $client->image);
-					$thumb = $aux[0]."_thumb.".$aux[1];
-					
-					if (file_exists($path.$client->image)) unlink($path.$client->image);
-					if (file_exists($path.$thumb)) unlink($path.$thumb);	
-				}
+				if ($client->image)
+					if (file_exists($path.$client->image)) 
+						unlink($path.$client->image);
 				
 				$config['upload_path'] = $path;
 				$config['allowed_types'] = 'gif|jpg|jpeg|png';
@@ -154,20 +150,11 @@ class Client extends CI_Controller {
 				$this->load->library('upload', $config);
 				
 				if ($this->upload->do_upload('image')){
-					$filedata = array('upload_data' => $this->upload->data());
-					$data["image"] = $filedata['upload_data']['file_name'];
-
-					$this->load->library('image_lib');
-					$config['image_library'] = 'gd2';
-					$config['source_image'] = $path.$data["image"];
-					$config['create_thumb'] = TRUE;
-					$config['maintain_ratio'] = TRUE;
-					$config['width'] = 300;
-					$config['height'] = 300;
-
-					$this->image_lib->initialize($config);
-					$this->image_lib->resize();
+					$upload_data = $this->upload->data();
 					
+					$this->my_func->image_resize($path, $upload_data, 1300, 1300);
+					
+					$data["image"] = $upload_data['file_name'];
 					$this->gm->update("client", ["client_id" => $client->client_id], $data);
 					
 					$result["msg"] = $this->lang->line("s_client_update");

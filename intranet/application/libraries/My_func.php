@@ -126,6 +126,26 @@ class My_func{
 		else echo "Error";
 	}
 	
+	public function image_resize($path, $upload_data, $w_max, $h_max, $is_thumb = false){
+		$w = $upload_data['image_width'];
+		$h = $upload_data['image_height'];
+		
+		if (($w > $w_max) or ($h > $h_max)){
+			$this->CI->load->library('image_lib');
+			$config = [
+				'image_library' => 'gd2',
+				'source_image' => $path.$upload_data['file_name'],
+				'create_thumb' => $is_thumb,
+				'maintain_ratio' => TRUE,
+				'width' => $w_max,
+				'height' => $h_max,
+			];
+			
+			$this->CI->image_lib->initialize($config);
+			$this->CI->image_lib->resize();
+		}
+	}
+	
 	function randomString($length, $characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"){
 		$randomString = '';
 		for ($i = 0; $i < $length; $i++) {
