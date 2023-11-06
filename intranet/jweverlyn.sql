@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- 생성 시간: 23-11-03 18:29
+-- 생성 시간: 23-11-06 18:01
 -- 서버 버전: 10.4.24-MariaDB
 -- PHP 버전: 7.4.29
 
@@ -3194,7 +3194,7 @@ INSERT INTO `client` (`client_id`, `doc_type_id`, `doc_number`, `name`, `tel`, `
 (17, 4, '20387144901', 'RD HIDRAULICA S.R.L.', '', '', '', '', NULL, 1, '2023-11-02 23:13:11', '2023-11-02 23:13:11'),
 (18, 4, '20408058261', 'CLINICA EVERLYN S.A.C.', '', '', '', '', NULL, 1, '2023-11-02 23:17:29', '2023-11-02 23:17:29'),
 (19, 4, '20448426701', 'ALE BIENES Y SERVICIOS EN GENERAL SOCIEDAD ANONIMA CERRADA', NULL, NULL, NULL, NULL, NULL, 1, '2023-11-03 19:18:11', '2023-11-03 19:18:11'),
-(20, 3, '000765804', 'Henry Calle', '345-6785', '908-237-473', 'h.calle@pontafina.com', 'Cl. Mexico ciudad 283, Cercado de Lima', '3_000765804_20231103182838.jpg', 1, '2023-11-03 23:22:13', '2023-11-03 20:37:49');
+(20, 3, '000765804', 'Henry Calle', '345-6785', '908-237-473', 'h.calle@pontafina.com', 'Cl. Mexico ciudad 283, Cercado de Lima', '3_000765804_20231104161853.jpg', 1, '2023-11-03 23:22:13', '2023-11-03 20:37:49');
 
 -- --------------------------------------------------------
 
@@ -3632,7 +3632,7 @@ INSERT INTO `product` (`product_id`, `category_id`, `code`, `product`, `price`, 
 (264, 15, 'zumodeguayaba-28695', 'Melocotón Zumo de uva Té negro Zumo de fresa', 46.41, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
 (265, 8, 'macadamia-169652', 'Sidra Compota Cava rosado Fruta de la pasión Vainilla', 92.25, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
 (266, 11, 'higo-292184', 'Banana Banana Ron Kiwi', 84.94, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(267, 9, 'vinorosado-63456', 'Agua con gas Aguacate Zumo de ciruela Nuez de Brasil Zumo de ciruela', 53.48, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(267, 9, 'vinorosado-63456', 'Agua con gas Aguacate Zumo de ciruela Nuez de Brasil Zumo de ciruela', 53.48, '20231106180034.jpg', 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
 (268, 10, 'zumodearándanos-451654', 'Pistachos Macadamia Kiwi', 50.37, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
 (269, 15, 'nispero-268062', 'Vino tinto Cacao Agua sin gas Cacahuetes Arándanos Nuez de Brasil', 98.86, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
 (270, 11, 'cavarosado-42141', 'Zumo de pera Cacao Sandía Cava blanco', 82.52, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
@@ -3748,7 +3748,19 @@ INSERT INTO `product_image` (`image_id`, `product_id`, `image`, `valid`) VALUES
 (27, 1, '20230829172933.png', 0),
 (28, 1, '20230829173001.png', 1),
 (29, 2, '20230829175952.png', 0),
-(30, 197, '20230919181851.png', 1);
+(30, 197, '20230919181851.png', 1),
+(31, 267, '20231106164736.jpg', 0),
+(32, 267, '20231106164925.jpg', 0),
+(33, 267, '20231106165038.jpg', 0),
+(34, 267, '20231106165050.png', 0),
+(35, 267, '20231106170122.jpeg', 0),
+(36, 267, '20231106170757.jpg', 0),
+(37, 267, '20231106170940.png', 0),
+(38, 267, '20231106171207.jpg', 0),
+(39, 267, '20231106171359.jpg', 0),
+(40, 267, '20231106175314.jpg', 0),
+(41, 267, '20231106175905.jpg', 0),
+(42, 267, '20231106180034.jpg', 1);
 
 -- --------------------------------------------------------
 
@@ -4422,7 +4434,7 @@ ALTER TABLE `product_category`
 -- 테이블의 AUTO_INCREMENT `product_image`
 --
 ALTER TABLE `product_image`
-  MODIFY `image_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `image_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- 테이블의 AUTO_INCREMENT `product_option`

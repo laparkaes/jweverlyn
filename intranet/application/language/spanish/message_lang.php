@@ -43,6 +43,7 @@ $lang['s_save_company_info']	= 'Información de empresa ha sido guardada.';
 //product image
 $lang['s_image_insert']			= 'Imagen de producto ha sido cargada con éxito.';
 $lang['s_image_delete']			= 'Imagen ha sido eliminada.';
+$lang['s_set_as_main_img']		= 'Imagen ha sido configuarada como principal.';
 
 //product option
 $lang['e_duplicate_option']		= 'Opción esta registrada en el sistema.';

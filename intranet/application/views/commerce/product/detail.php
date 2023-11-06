@@ -21,8 +21,7 @@
 		<div class="col-md-4">
 			<div class="card">
 				<div class="card-body profile-card pt-4 d-flex flex-column align-items-center text-center">
-					<?php  ?>
-					<img src="<?= $product->thumb ?>" id="main_image" alt="Thumb" style="max-width: 80%;">
+					<img src="<?= base_url() ?>uploads/prod/<?= $product->image ?>" id="main_image" style="max-width: 80%;">
 					<h2><?= $product->product ?></h2>
 					<h3><?= $product->category ?></h3>
 				</div>

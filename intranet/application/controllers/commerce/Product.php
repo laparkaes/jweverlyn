@@ -80,12 +80,12 @@ class Product extends CI_Controller {
 		$product = $this->gm->unique("product", "product_id", $product_id);
 		$product->category = $this->gm->unique("product_category", "category_id", $product->category_id)->category;
 		
-		if ($product->image){
-			$path = "uploads/prod/".$product->product_id."/".$product->image;
-			if (file_exists($path)) $product->thumb = base_url().$path;
-			else $product->thumb = base_url()."uploads/prod/no_img.png";
-		}else $product->thumb = base_url()."uploads/prod/no_img.png";
 		
+		if ($product->image){
+			$image_path = $product->product_id."/".$product->image;
+			if (file_exists("uploads/prod/".$image_path)) $product->image = $image_path;
+			else $product->image = "no_img.png";
+		}else $product->image = "no_img.png";
 		
 		$op_aux = $this->calculate_stock($product_id);
 		$options = $op_aux["options"];
@@ -320,26 +320,16 @@ class Product extends CI_Controller {
 				$this->load->library('upload', $config);
 				
 				if ($this->upload->do_upload('image')){
-					$filedata = array('upload_data' => $this->upload->data());
-					$data["image"] = $filedata['upload_data']['file_name'];
-
-					$this->load->library('image_lib');
-					$config['image_library'] = 'gd2';
-					$config['source_image'] = $path.$data["image"];
-					$config['create_thumb'] = TRUE;
-					$config['maintain_ratio'] = TRUE;
-					$config['width'] = 300;
-					$config['height'] = 300;
-
-					$this->image_lib->initialize($config);
-					$this->image_lib->resize();
+					$upload_data = $this->upload->data();
+					$this->my_func->image_resize($path, $upload_data, 1300, 1300);
 					
+					//insert new image record
+					$data["image"] = $upload_data['file_name'];
 					$this->gm->insert("product_image", $data);
-					if (!$this->gm->unique("product", "product_id", $data["product_id"])->image){
-						$aux = explode(".", $data["image"]);
-						$main_image = $aux[0]."_thumb.".$aux[1];
-						$this->gm->update("product", ["product_id" => $data["product_id"]], ["image" => $main_image]);
-					}
+					
+					//update product main image if doesn't have image
+					if (!$this->gm->unique("product", "product_id", $data["product_id"])->image)
+						$this->gm->update("product", ["product_id" => $data["product_id"]], ["image" => $data["image"]]);
 					
 					$result["images"] = $this->get_images($data["product_id"]);
 					$result["msg"] = $this->lang->line("s_image_insert");
@@ -352,23 +342,21 @@ class Product extends CI_Controller {
 	}
 
 	public function set_main_image(){
-		$type = "error"; $msg = null; $image = "";
+		$type = "error"; $msg = null; $img = "";
 		
 		if ($this->session->userdata('username')){
 			$image = $this->gm->unique("product_image", "image_id", $this->input->post("image_id"));
 			if ($image){
-				$aux = explode(".", $image->image);
-				$main_image = $aux[0]."_thumb.".$aux[1];
-				if ($this->gm->update("product", ["product_id" => $image->product_id], ["image" => $main_image])){
-					$image = base_url()."uploads/prod/".$image->product_id."/".$main_image;
+				if ($this->gm->update("product", ["product_id" => $image->product_id], ["image" => $image->image])){
+					$img = base_url()."uploads/prod/".$image->product_id."/".$image->image;
 					$type = "success";
-					$msg = $this->lang->line("s_option_delete");
+					$msg = $this->lang->line("s_set_as_main_img");
 				}else $msg = $this->lang->line("e_internal_again");
 			}else $msg = $this->lang->line("e_unknown_refresh");
 		}else $msg = $this->lang->line("e_finished_session");
 		
 		header('Content-Type: application/json');
-		echo json_encode(["type" => $type, "msg" => $msg, "image" => $image]);
+		echo json_encode(["type" => $type, "msg" => $msg, "image" => $img]);
 	}
 
 	public function delete_image(){

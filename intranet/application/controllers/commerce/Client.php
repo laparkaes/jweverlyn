@@ -151,7 +151,6 @@ class Client extends CI_Controller {
 				
 				if ($this->upload->do_upload('image')){
 					$upload_data = $this->upload->data();
-					
 					$this->my_func->image_resize($path, $upload_data, 1300, 1300);
 					
 					$data["image"] = $upload_data['file_name'];

@@ -122,7 +122,8 @@ function set_image_events(){
 function update_image(imgs){
 	$("#tbody_images").html("");
 	$(imgs).each(function(index, element) {
-		$("#tbody_images").append('<tr><th scope="row">' + (index + 1) + '</th><td><img src="' + element.thumb + '" alt="Thumb" style="max-height: 80px;"></td><td>' + element.image_path + '</td><td class="text-end"><button type="button" class="btn btn-outline-primary btn-sm border-0 btn_edit_image" value="' + element.image_id + '"><i class="bi bi-image"></i></button><button type="button" class="btn btn-outline-danger btn-sm border-0 btn_delete_image" value="' + element.image_id + '"><i class="bi bi-x-lg"></i></button></td></tr>');
+		console.log(element);
+		$("#tbody_images").append('<tr><th scope="row">' + (index + 1) + '</th><td><img src="' + element.image_path + '" alt="Thumb" style="max-height: 80px;"></td><td>' + element.image_path + '</td><td class="text-end"><button type="button" class="btn btn-outline-primary btn-sm border-0 btn_edit_image" value="' + element.image_id + '"><i class="bi bi-image"></i></button><button type="button" class="btn btn-outline-danger btn-sm border-0 btn_delete_image" value="' + element.image_id + '"><i class="bi bi-x-lg"></i></button></td></tr>');
 	});
 	set_image_events();
 }
