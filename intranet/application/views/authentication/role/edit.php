@@ -91,8 +91,7 @@
 						if (in_array($a->access_id, $access_ids)) $ch = "checked"; else $ch = ""; ?>
 						<tr>
 							<td scope="row"><?= $i_m + 1 ?>.<?= $i_a + 1 ?></td>
-							<td><?= $m->module ?></td>
-							<td><?= $a->access ?></td>
+							<td colspan="2"><?= $a->access ?></td>
 							<td class="text-end">
 								<div class="form-check form-switch">
 									<input class="form-check-input mx-0 btn_assign_access" type="checkbox" value="<?= $a->access_id ?>" <?= $ch ?>>

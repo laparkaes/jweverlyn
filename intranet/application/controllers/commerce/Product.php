@@ -44,24 +44,15 @@ class Product extends CI_Controller {
 		if (!$params["page"]) $params["page"] = 1;
 		
 		$w = $l = $w_in = [];
-		if ($params["search"]){
-			$l["product"] = $params["search"];
-			
-			$categories = $this->gm->filter("product_category", $w, ["category" => $params["search"]]);
-			if ($categories){
-				$cat_ids = [];
-				foreach($categories as $c) $cat_ids[] = $c->category_id;
-				$w_in[] = ["field" => "category_id", "values" => $cat_ids];	
-			}
-		}else unset($params["search"]);
+		if ($params["search"]) $l[] = ["field" => "product", "values" => explode(" ", $params["search"])];
+		else unset($params["search"]);
 		
-		$products = $this->gm->filter("product", $w, $l, $w_in, [["product", "asc"]], 25, 25 * ($params["page"] - 1), false);
+		$products = $this->gm->filter("product", $w, $l, $w_in, [["product", "asc"]], 25, 25 * ($params["page"] - 1));
 		foreach($products as $p){
 			if ($p->image) $p->image = $p->product_id."/".$p->image;
 			else $p->image = "no_img.png";
 			
 			$p->category = $this->gm->unique("product_category", "category_id", $p->category_id)->category;
-			$p->sold_qty = 0;
 			if ($p->valid) $p->color = "success"; else $p->color = "danger";
 		}
 		
@@ -328,8 +319,10 @@ class Product extends CI_Controller {
 					$this->gm->insert("product_image", $data);
 					
 					//update product main image if doesn't have image
-					if (!$this->gm->unique("product", "product_id", $data["product_id"])->image)
+					if (!$this->gm->unique("product", "product_id", $data["product_id"])->image){
 						$this->gm->update("product", ["product_id" => $data["product_id"]], ["image" => $data["image"]]);
+						$result["image"] = base_url()."uploads/prod/".$data["product_id"]."/".$data["image"];
+					}
 					
 					$result["images"] = $this->get_images($data["product_id"]);
 					$result["msg"] = $this->lang->line("s_image_insert");
@@ -360,7 +353,7 @@ class Product extends CI_Controller {
 	}
 
 	public function delete_image(){
-		$type = "error"; $msg = null; $images = [];
+		$type = "error"; $msg = null; $images = []; $img = base_url()."uploads/prod/no_img.png";
 		
 		if ($this->session->userdata('username')){
 			$image = $this->gm->unique("product_image", "image_id", $this->input->post("image_id"));
@@ -372,9 +365,9 @@ class Product extends CI_Controller {
 					
 					//product main image validation
 					$product = $this->gm->unique("product", "product_id", $image->product_id);
-					if (!file_exists($path.$product->image))
-						$this->gm->update("product", ["product_id" => $image->product_id], ["image" => null]);
-				
+					if (file_exists($path.$product->image)) $img = base_url()."uploads/prod/".$product->product_id."/".$product->image;
+					else $this->gm->update("product", ["product_id" => $image->product_id], ["image" => null]);
+					
 					$images = $this->get_images($image->product_id);
 					$type = "success";
 					$msg = $this->lang->line("s_option_delete");
@@ -383,6 +376,6 @@ class Product extends CI_Controller {
 		}else $msg = $this->lang->line("e_finished_session");
 		
 		header('Content-Type: application/json');
-		echo json_encode(["type" => $type, "msg" => $msg, "images" => $images]);
+		echo json_encode(["type" => $type, "msg" => $msg, "images" => $images, "image" => $img]);
 	}
 }

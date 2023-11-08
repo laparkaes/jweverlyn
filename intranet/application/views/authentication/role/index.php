@@ -29,7 +29,7 @@
 						<div class="col-md-4 col-12">
 							<form>
 								<div class="input-group mt-md-3 mb-3">
-									<input type="text" class="form-control" name="search" placeholder="Buscar" value="<?= $this->input->get("search") ?>">
+									<input type="text" class="form-control enter_on" name="search" placeholder="Buscar" value="<?= $this->input->get("search") ?>">
 									<button type="submit" class="btn btn-primary"><i class="bi bi-funnel-fill"></i></button>
 								</div>
 							</form>

@@ -30,8 +30,8 @@
 			<i class="bi bi-list toggle-sidebar-btn"></i>
 		</div>
 		<div class="search-bar">
-			<form class="search-form d-flex align-items-center" method="POST" action="#">
-				<input type="text" name="query" placeholder="Search" title="Enter search keyword">
+			<form class="search-form d-flex align-items-center" method="GET" action="<?= base_url() ?>commerce/client">
+				<input type="text" class="enter_on" name="search" placeholder="Buscar cliente">
 			<button type="submit" title="Search"><i class="bi bi-search"></i></button>
 			</form>
 		</div>

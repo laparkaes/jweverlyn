@@ -22,15 +22,9 @@ class Account extends CI_Controller {
 		
 		$w = $l = $w_in = [];
 		if ($params["search"]){
-			$l["username"] = $params["search"];
-			$l["name"] = $params["search"];
-			
-			$roles = $this->gm->filter("role", null, ["role" => $params["search"]], null, [], 25, 25 * ($params["page"] - 1));
-			if ($roles){
-				$role_ids = [];
-				foreach($roles as $r) $role_ids[] = $r->role_id;
-				$w_in[] = ["field" => "role_id", "values" => $role_ids];
-			}
+			$aux = explode(" ", $params["search"]);
+			$l[] = ["field" => "username", "values" => $aux];
+			$l[] = ["field" => "name", "values" => $aux];
 		}else unset($params["search"]);
 		
 		$accounts = $this->gm->filter("account", $w, $l, $w_in, [["username", "asc"]], 25, 25 * ($params["page"] - 1), false);

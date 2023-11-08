@@ -114,7 +114,10 @@ function set_image_events(){
 	$(".btn_delete_image").on('click',(function(e) {
 		ajax_simple_warning({image_id: $(this).val()}, b_url + "delete_image", "delete_image").done(function(res) {
 			swal(res.type, res.msg);
-			if (res.type == "success") update_image(res.images);
+			if (res.type == "success"){
+				update_image(res.images);
+				$("#main_image").prop("src", res.image);
+			}
 		});
 	}));
 }
@@ -137,6 +140,7 @@ $("#form_add_image").submit(function(e) {
 			update_image(res.images);
 			reset_form("#form_add_image");
 			$("#md_add_image").modal("hide");
+			if (res.image != "") $("#main_image").prop("src", res.image);
 		}
 	});
 });

@@ -52,9 +52,11 @@ const warning_msg = {
 }
 
 //disable form enter submit
-$('form input').on('keydown', function(event) {
-	//enter key code
-	if (event.keyCode === 13) event.preventDefault();
+$('form input').each(function(index, element) {
+	if (!$(element).hasClass("enter_on")) $(element).on('keydown', function(event) {
+		//enter key code
+		if (event.keyCode === 13) event.preventDefault();
+	});
 });
 
 function nf(num){//number format

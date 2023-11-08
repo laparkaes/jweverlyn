@@ -16,22 +16,14 @@ class Proforma extends CI_Controller {
 		
 		$params = [
 			"page" => $this->input->get("page"),
-			"from" => $this->input->get("from"),
-			"to" => $this->input->get("to"),
-			"client" => $this->input->get("client"),
+			"search" => $this->input->get("search"),
 		];
 		if (!$params["page"]) $params["page"] = 1;
-		$w = $l = $w_in = [];
 	
-		if (!$params["to"]) $params["to"] = Date("Y-m-d");
-		$w["registed_at <"] = Date("Y-m-d", strtotime("+1 day", strtotime($params["to"])));
-		
-		if (!$params["from"]) $params["from"] = Date("Y-m-d", strtotime("-1 months", strtotime($params["to"])));
-		$w["registed_at >="] = $params["from"];
-
-		if ($params["client"]){
+		$w = $l = $w_in = [];
+		if ($params["search"]){
 			$client_ids = [-1];
-			$clients = $this->gm->filter("client", null, ["name" => $params["client"]]);
+			$clients = $this->gm->filter("client", null, [["field" => "name", "values" => explode(" ", $params["search"])]]);
 			if ($clients) foreach($clients as $c) $client_ids[] = $c->client_id;
 			
 			$w_in[] = ["field" => "client_id", "values" => $client_ids];

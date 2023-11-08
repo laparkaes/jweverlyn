@@ -21,9 +21,8 @@ class Role extends CI_Controller {
 		if (!$params["page"]) $params["page"] = 1;
 		
 		$w = $l = $w_in = [];
-		if ($params["search"]){
-			$l["role"] = $params["search"];
-		}else unset($params["search"]);
+		if ($params["search"]) $l[] = ["field" => "role", "values" => explode(" ", $params["search"])];
+		else unset($params["search"]);
 		
 		$roles = $this->gm->filter("role", $w, $l, $w_in, [["role", "asc"]], 25, 25 * ($params["page"] - 1));
 		foreach($roles as $r){

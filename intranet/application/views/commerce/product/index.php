@@ -28,7 +28,7 @@
 						<div class="col-md-4 col-12">
 							<form>
 								<div class="input-group mt-md-3 mb-3">
-									<input type="text" class="form-control" name="search" placeholder="Buscar" value="<?= $this->input->get("search") ?>">
+									<input type="text" class="form-control enter_on" name="search" placeholder="Buscar" value="<?= $this->input->get("search") ?>">
 									<button type="submit" class="btn btn-primary"><i class="bi bi-funnel-fill"></i></button>
 								</div>
 							</form>
@@ -42,7 +42,6 @@
 									<th scope="col">Imagen</th>
 									<th scope="col">Categoría</th>
 									<th scope="col">Producto</th>
-									<th scope="col">Vendidos</th>
 									<th scope="col">Desde</th>
 									<th scope="col"></th>
 									<th scope="col"></th>
@@ -55,7 +54,6 @@
 									<td><img src="<?= base_url() ?>uploads/prod/<?= $p->image ?>" style="height: 60px;"></td>
 									<td><?= $p->category ?></td>
 									<td><?= $p->product ?></td>
-									<td><?= number_format($p->sold_qty) ?></td>
 									<td><?= date("Y-m-d", strtotime($p->registed_at)) ?></td>
 									<td><i class="bi bi-circle-fill text-<?= $p->color ?>"></i></td>
 									<td class="text-end">

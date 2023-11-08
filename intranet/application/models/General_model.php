@@ -17,15 +17,20 @@ class General_model extends CI_Model{
 	
 	function filter($tablename, $w, $l = null, $w_in = null, $orders = [], $limit = "", $offset = "", $check_valid = true){
 		if ($check_valid) $this->db->where("valid", true);
-		if ($w or $l or $w_in){
+		if ($w){ $this->db->group_start(); $this->db->where($w); $this->db->group_end(); }
+		if ($l){
 			$this->db->group_start();
-			if ($w){ $this->db->group_start(); $this->db->where($w); $this->db->group_end(); }
-			if ($l){ $this->db->group_start(); $this->db->or_like($l); $this->db->group_end(); }
-			if ($w_in){
-				$this->db->group_start();
-				foreach($w_in as $item) $this->db->where_in($item["field"], $item["values"]);
+			foreach($l as $item){
+				$this->db->or_group_start();
+				$values = $item["values"];
+				foreach($values as $v) $this->db->like($item["field"], $v);
 				$this->db->group_end();
 			}
+			$this->db->group_end();
+		}
+		if ($w_in){
+			$this->db->group_start();
+			foreach($w_in as $item) $this->db->where_in($item["field"], $item["values"]);
 			$this->db->group_end();
 		}
 		if ($orders) foreach($orders as $o) $this->db->order_by($o[0], $o[1]);
@@ -49,7 +54,16 @@ class General_model extends CI_Model{
 	function qty($tablename, $w = null, $l = null, $w_in = null, $group_by = null, $check_valid = true){
 		if ($check_valid) $this->db->where("valid", true);
 		if ($w){ $this->db->group_start(); $this->db->where($w); $this->db->group_end(); }
-		if ($l){ $this->db->group_start(); $this->db->or_like($l); $this->db->group_end(); }
+		if ($l){
+			$this->db->group_start();
+			foreach($l as $item){
+				$this->db->or_group_start();
+				$values = $item["values"];
+				foreach($values as $v) $this->db->like($item["field"], $v);
+				$this->db->group_end();
+			}
+			$this->db->group_end();
+		}
 		if ($w_in){
 			$this->db->group_start();
 			foreach($w_in as $item) $this->db->where_in($item["field"], $item["values"]);

@@ -22,8 +22,9 @@ class Client extends CI_Controller {
 		
 		$w = $l = $w_in = [];
 		if ($params["search"]){
-			$l["doc_number"] = $params["search"];
-			$l["name"] = $params["search"];
+			$aux = explode(" ", $params["search"]);
+			$l[] = ["field" => "name", "values" => $aux];
+			$l[] = ["field" => "doc_number", "values" => $aux];
 		}else unset($params["search"]);
 		
 		$clients = $this->gm->filter("client", $w, $l, $w_in, [["registed_at", "desc"]], 25, 25 * ($params["page"] - 1), false);
