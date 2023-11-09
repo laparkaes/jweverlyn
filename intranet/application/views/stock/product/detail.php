@@ -10,7 +10,7 @@
 			</nav>
 		</div>
 		<div>
-			<a href="<?= base_url() ?>commerce/product" type="button" class="btn btn-success">
+			<a href="<?= base_url() ?>stock/product" type="button" class="btn btn-success">
 				<i class="bi bi-arrow-left"></i>
 			</a>
 		</div>

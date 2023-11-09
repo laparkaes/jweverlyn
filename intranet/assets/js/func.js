@@ -182,6 +182,25 @@ function ajax_simple_warning(data, url, msg_index){
 	return deferred.promise();
 }
 
+$(".datepicker_set").datetimepicker({
+	locale: 'es',
+	allowInputToggle: true,
+	showClose: true,
+	showClear: true,
+	format: "YYYY-MM-DD",
+	widgetPositioning: {
+		horizontal: 'left',
+		vertical: 'bottom',
+	},
+	icons: {
+		previous: 'bi bi-chevron-left',
+		next: 'bi bi-chevron-right',
+		today: 'bi bi-calendar-event',
+		clear: 'bi bi-eraser',
+		close: 'bi bi-x-lg',
+	},
+});
+
 function set_date(dom_date, min){
 	/*
 	min = moment() // select from today
@@ -257,7 +276,7 @@ function set_dates_between(dom_from, dom_to){
 	});
 }
 
-/* search client functions start
+/* search client functions
 doms: #btn_search_person, #doc_type_id, #doc_number, #client_name */
 function set_search_client_ajax(){
 	function search_client(){
@@ -291,4 +310,21 @@ function set_search_client_ajax(){
 		search_client();
 	}));
 }
-/* search client functions end */
+
+/* control search block and button at index page */
+$("#btn_search_index").on('click',(function(e) {
+	if ($(this).hasClass("btn-primary")){
+		$("#bl_search_index").removeClass("d-none");
+		$(this).removeClass("btn-primary");
+		$(this).addClass("btn-outline-primary");
+	}else{
+		$("#bl_search_index").addClass("d-none");
+		$(this).removeClass("btn-outline-primary");
+		$(this).addClass("btn-primary");
+	}
+}));
+$("#btn_close_search_index").on('click',(function(e) {
+	$("#bl_search_index").addClass("d-none");
+	$("#btn_search_index").removeClass("btn-outline-primary");
+	$("#btn_search_index").addClass("btn-primary");
+}));

@@ -1,11 +1,29 @@
-let b_url = "commerce/product/";
+let b_url = "stock/product/";
 
 /* Category start */
+$("#btn_category_admin").on('click',(function(e) {
+	if ($(this).hasClass("btn-success")){
+		$("#bl_cat_admin").removeClass("d-none");
+		$(this).removeClass("btn-success");
+		$(this).addClass("btn-outline-success");
+	}else{
+		$("#bl_cat_admin").addClass("d-none");
+		$(this).removeClass("btn-outline-success");
+		$(this).addClass("btn-success");
+	}
+}));
+
+$(".btn_close_cat_admin").on('click',(function(e) {
+	$("#bl_cat_admin").addClass("d-none");
+	$("#btn_category_admin").removeClass("btn-outline-success");
+	$("#btn_category_admin").addClass("btn-success");
+}));
+
 $("#form_add_category").submit(function(e) {
 	e.preventDefault();
 	ajax_form_warning(this, b_url + "add_category", "add_category").done(function(res) {
 		set_msgs("#form_add_category", res.msgs);
-		swal_redirection(res.type, res.msg, base_url + b_url + "register");
+		swal_redirection(res.type, res.msg, base_url + b_url);
 	});
 });
 
@@ -13,7 +31,7 @@ $("#form_delete_category").submit(function(e) {
 	e.preventDefault();
 	ajax_form_warning(this, b_url + "delete_category", "delete_category").done(function(res) {
 		set_msgs("#form_delete_category", res.msgs);
-		swal_redirection(res.type, res.msg, base_url + b_url + "register");
+		swal_redirection(res.type, res.msg, base_url + b_url);
 	});
 });
 
@@ -21,7 +39,7 @@ $("#form_move_category").submit(function(e) {
 	e.preventDefault();
 	ajax_form_warning(this, b_url + "move_category", "move_category").done(function(res) {
 		set_msgs("#form_move_category", res.msgs);
-		swal_redirection(res.type, res.msg, base_url + b_url + "register");
+		swal_redirection(res.type, res.msg, base_url + b_url);
 	});
 });
 /* Category end */

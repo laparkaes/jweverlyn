@@ -16,18 +16,27 @@ class Sale extends CI_Controller {
 		
 		$params = [
 			"page" => $this->input->get("page"),
-			"search" => $this->input->get("search"),
+			"client" => $this->input->get("client"),
+			"date" => $this->input->get("date"),
+			"amount" => $this->input->get("amount"),
 		];
 		if (!$params["page"]) $params["page"] = 1;
 
 		$w = $l = $w_in = [];
-		if ($params["search"]){
+		if ($params["client"]){
 			$client_ids = [-1];
-			$clients = $this->gm->filter("client", null, [["field" => "name", "values" => explode(" ", $params["search"])]]);
+			$clients = $this->gm->filter("client", null, [["field" => "name", "values" => explode(" ", $params["client"])]]);
 			if ($clients) foreach($clients as $c) $client_ids[] = $c->client_id;
 			
 			$w_in[] = ["field" => "client_id", "values" => $client_ids];
 		}
+		
+		if ($params["date"]){
+			$w["registed_at <="] = $params["date"]." 23:59:59";
+			$w["registed_at >="] = $params["date"]." 00:00:00";
+		}
+		
+		if ($params["amount"]) $w["amount"] = str_replace(",", "", $params["amount"]);
 		
 		$sales = $this->gm->filter("sale", $w, $l, $w_in, [["registed_at", "desc"]], 25, 25 * ($params["page"] - 1), false);
 		foreach($sales as $s){
@@ -39,6 +48,7 @@ class Sale extends CI_Controller {
 		}
 		
 		$data = [
+			"is_filtered" => ($w or $l or $w_in),
 			"params" => $params,
 			"paging" => $this->my_func->paging($params["page"], $this->gm->qty("sale", $w, $l, $w_in)),
 			"sales" => $sales,

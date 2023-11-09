@@ -7,8 +7,8 @@ class Product extends CI_Controller {
 		parent::__construct();
 		$this->lang->load("message", "spanish");
 		$this->load->model('general_model','gm');
-		$this->nav_menu = ["commerce", "product"];
-		$this->js_init = "commerce/product.js";
+		$this->nav_menu = ["stock", "product"];
+		$this->js_init = "stock/product.js";
 	}
 	
 	private function calculate_stock($product_id){
@@ -39,28 +39,34 @@ class Product extends CI_Controller {
 		
 		$params = [
 			"page" => $this->input->get("page"),
-			"search" => $this->input->get("search"),
+			"category" => $this->input->get("category"),
+			"product" => $this->input->get("product"),
 		];
 		if (!$params["page"]) $params["page"] = 1;
 		
 		$w = $l = $w_in = [];
-		if ($params["search"]) $l[] = ["field" => "product", "values" => explode(" ", $params["search"])];
-		else unset($params["search"]);
+		if ($params["category"]) $w["category_id"] = $params["category"];
+		if ($params["product"]) $l[] = ["field" => "product", "values" => explode(" ", $params["product"])];
 		
+		$f_op = ["valid" => true];
 		$products = $this->gm->filter("product", $w, $l, $w_in, [["product", "asc"]], 25, 25 * ($params["page"] - 1));
 		foreach($products as $p){
 			if ($p->image) $p->image = $p->product_id."/".$p->image;
 			else $p->image = "no_img.png";
 			
+			$f_op["product_id"] = $p->product_id;
+			$p->stock = number_format($this->gm->sum("product_option", "stock", $f_op)->stock);
 			$p->category = $this->gm->unique("product_category", "category_id", $p->category_id)->category;
 			if ($p->valid) $p->color = "success"; else $p->color = "danger";
 		}
 		
 		$data = [
+			"is_filtered" => ($w or $l or $w_in),
 			"params" => $params,
 			"paging" => $this->my_func->paging($params["page"], $this->gm->qty("product", $w, $l, $w_in)),
+			"categories" => $this->gm->all("product_category", [["category", "asc"]]),
 			"products" => $products,
-			"main" => "commerce/product/index",
+			"main" => "stock/product/index",
 		];
 		$this->load->view('layout', $data);
 	}
@@ -87,7 +93,7 @@ class Product extends CI_Controller {
 			"options" => $options,
 			"images" => $this->get_images($product_id),
 			"categories" => $this->gm->all("product_category", [["category", "asc"]]),
-			"main" => "commerce/product/detail",
+			"main" => "stock/product/detail",
 		];
 		$this->load->view('layout', $data);
 	}
@@ -97,7 +103,7 @@ class Product extends CI_Controller {
 		
 		$data = [
 			"categories" => $this->gm->all("product_category", [["category", "asc"]]),
-			"main" => "commerce/product/register",
+			"main" => "stock/product/register",
 		];
 		$this->load->view('layout', $data);
 	}

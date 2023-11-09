@@ -188,37 +188,53 @@
 				</a>
 			</li>
 			<li class="nav-item">
+				<?php if ($this->nav_menu[0] === "stock"){ $c = ""; $c_ul = "show"; }else{ $c = "collapsed"; $c_ul = ""; } ?>
+				<a class="nav-link <?= $c ?>" data-bs-target="#stock-nav" data-bs-toggle="collapse" href="#">
+					<i class="bi bi-box"></i>
+					<span>Stock</span>
+					<i class="bi bi-chevron-down ms-auto"></i>
+				</a>
+				<ul id="stock-nav" class="nav-content collapse <?= $c_ul ?>" data-bs-parent="#stock-nav">
+					<li>
+						<?php if ($this->nav_menu[1] === "purchase") $c1 = "active"; else $c1 = ""; ?>
+						<a href="<?= base_url() ?>stock/purchase" class="<?= $c1 ?>">
+							<i class="bi bi-circle"></i><span>Compras</span>
+						</a>
+					</li>
+					<li>
+						<?php if ($this->nav_menu[1] === "product") $c1 = "active"; else $c1 = ""; ?>
+						<a href="<?= base_url() ?>stock/product" class="<?= $c1 ?>">
+							<i class="bi bi-circle"></i><span>Productos</span>
+						</a>
+					</li>
+					<li>
+						<?php if ($this->nav_menu[1] === "provider") $c1 = "active"; else $c1 = ""; ?>
+						<a href="<?= base_url() ?>stock/provider" class="<?= $c1 ?>">
+							<i class="bi bi-circle"></i><span>Proveedores</span>
+						</a>
+					</li>
+				</ul>
+			</li>
+			<li class="nav-item">
 				<?php if ($this->nav_menu[0] === "commerce"){ $c = ""; $c_ul = "show"; }else{ $c = "collapsed"; $c_ul = ""; } ?>
 				<a class="nav-link <?= $c ?>" data-bs-target="#commerce-nav" data-bs-toggle="collapse" href="#">
 					<i class="bi bi-shop"></i>
 					<span>Comercio</span>
 					<i class="bi bi-chevron-down ms-auto"></i>
 				</a>
-				<ul id="commerce-nav" class="nav-content collapse <?= $c_ul ?>" data-bs-parent="#sidebar-nav">
+				<ul id="commerce-nav" class="nav-content collapse <?= $c_ul ?>" data-bs-parent="#commerce-nav">
 					<li>
 						<?php if ($this->nav_menu[1] === "sale") $c1 = "active"; else $c1 = ""; ?>
 						<a href="<?= base_url() ?>commerce/sale" class="<?= $c1 ?>">
 							<i class="bi bi-circle"></i><span>Ventas</span>
 						</a>
 					</li>
-				</ul>
-				<ul id="commerce-nav" class="nav-content collapse <?= $c_ul ?>" data-bs-parent="#sidebar-nav">
 					<li>
 						<?php if ($this->nav_menu[1] === "proforma") $c1 = "active"; else $c1 = ""; ?>
 						<a href="<?= base_url() ?>commerce/proforma" class="<?= $c1 ?>">
 							<i class="bi bi-circle"></i><span>Proformas</span>
 						</a>
 					</li>
-				</ul>
-				<ul id="commerce-nav" class="nav-content collapse <?= $c_ul ?>" data-bs-parent="#sidebar-nav">
-					<li>
-						<?php if ($this->nav_menu[1] === "product") $c1 = "active"; else $c1 = ""; ?>
-						<a href="<?= base_url() ?>commerce/product" class="<?= $c1 ?>">
-							<i class="bi bi-circle"></i><span>Productos</span>
-						</a>
-					</li>
-				</ul>
-				<ul id="commerce-nav" class="nav-content collapse <?= $c_ul ?>" data-bs-parent="#sidebar-nav">
 					<li>
 						<?php if ($this->nav_menu[1] === "client") $c1 = "active"; else $c1 = ""; ?>
 						<a href="<?= base_url() ?>commerce/client" class="<?= $c1 ?>">
@@ -234,7 +250,7 @@
 					<span>Autenticación</span>
 					<i class="bi bi-chevron-down ms-auto"></i>
 				</a>
-				<ul id="authentication-nav" class="nav-content collapse <?= $c_ul ?>" data-bs-parent="#sidebar-nav">
+				<ul id="authentication-nav" class="nav-content collapse <?= $c_ul ?>" data-bs-parent="#authentication-nav">
 					<li>
 						<?php if ($this->nav_menu[1] === "account") $c1 = "active"; else $c1 = ""; ?>
 						<a href="<?= base_url() ?>authentication/account" class="<?= $c1 ?>">
