@@ -182,25 +182,6 @@ function ajax_simple_warning(data, url, msg_index){
 	return deferred.promise();
 }
 
-$(".datepicker_set").datetimepicker({
-	locale: 'es',
-	allowInputToggle: true,
-	showClose: true,
-	showClear: true,
-	format: "YYYY-MM-DD",
-	widgetPositioning: {
-		horizontal: 'left',
-		vertical: 'bottom',
-	},
-	icons: {
-		previous: 'bi bi-chevron-left',
-		next: 'bi bi-chevron-right',
-		today: 'bi bi-calendar-event',
-		clear: 'bi bi-eraser',
-		close: 'bi bi-x-lg',
-	},
-});
-
 function set_date(dom_date, min){
 	/*
 	min = moment() // select from today

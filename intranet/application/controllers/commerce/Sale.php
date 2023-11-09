@@ -17,8 +17,10 @@ class Sale extends CI_Controller {
 		$params = [
 			"page" => $this->input->get("page"),
 			"client" => $this->input->get("client"),
-			"date" => $this->input->get("date"),
-			"amount" => $this->input->get("amount"),
+			"from" => $this->input->get("from"),
+			"to" => $this->input->get("to"),
+			"amount_min" => $this->input->get("amount_min"),
+			"amount_max" => $this->input->get("amount_max"),
 		];
 		if (!$params["page"]) $params["page"] = 1;
 
@@ -31,12 +33,10 @@ class Sale extends CI_Controller {
 			$w_in[] = ["field" => "client_id", "values" => $client_ids];
 		}
 		
-		if ($params["date"]){
-			$w["registed_at <="] = $params["date"]." 23:59:59";
-			$w["registed_at >="] = $params["date"]." 00:00:00";
-		}
-		
-		if ($params["amount"]) $w["amount"] = str_replace(",", "", $params["amount"]);
+		if ($params["from"]) $w["registed_at >="] = $params["from"]." 00:00:00";
+		if ($params["to"]) $w["registed_at <="] = $params["to"]." 23:59:59";
+		if ($params["amount_min"]) $w["amount >="] = str_replace(",", "", $params["amount_min"]);
+		if ($params["amount_max"]) $w["amount <="] = str_replace(",", "", $params["amount_max"]);
 		
 		$sales = $this->gm->filter("sale", $w, $l, $w_in, [["registed_at", "desc"]], 25, 25 * ($params["page"] - 1), false);
 		foreach($sales as $s){

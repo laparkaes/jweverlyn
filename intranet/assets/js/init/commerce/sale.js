@@ -1,6 +1,6 @@
 let b_url = "commerce/sale/";
 
-set_date(".datepicker", null);
+set_dates_between("#f_from", "#f_to");
 set_search_client_ajax();
 
 function calculate_change(){

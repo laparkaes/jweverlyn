@@ -28,19 +28,25 @@
 				<div class="card-body">
 					<h5 class="card-title">Filtros</h5>
 					<form class="row g-3">
-						<div class="col-md-6 col-12">
+						<div class="col-md-5 col-12">
 							<label class="form-label">Cliente</label>
-							<input type="text" class="form-control enter_on" name="client" value="<?= $params["client"] ?>">
+							<input type="text" class="form-control" name="client" value="<?= $params["client"] ?>">
 						</div>
-						<div class="col-md-3 col-12">
+						<div class="col-md-4 col-12">
 							<label class="form-label">Fecha</label>
-							<input type="text" class="form-control enter_on datepicker_set" name="date" value="<?= $params["date"] ?>">
+							<div class="input-group">
+								<input type="text" class="form-control" id="f_from" name="from" value="<?= $params["from"] ?>">
+								<span class="input-group-text">~</span>
+								<input type="text" class="form-control" id="f_to" name="to" value="<?= $params["to"] ?>">
+							</div>
 						</div>
 						<div class="col-md-3 col-12">
 							<label class="form-label">Monto</label>
-							<div class="input-group mb-3">
-							  <span class="input-group-text">S/</span>
-							  <input type="text" class="form-control enter_on" name="amount" value="<?= $params["amount"] ?>">
+							<div class="input-group">
+								<span class="input-group-text">S/</span>
+								<input type="text" class="form-control" name="amount_min" value="<?= $params["amount_min"] ?>">
+								<span class="input-group-text">~</span>
+								<input type="text" class="form-control" name="amount_max" value="<?= $params["amount_max"] ?>">
 							</div>
 						</div>
 						<div class="text-center pt-3">

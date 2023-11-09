@@ -117,7 +117,7 @@
 				<div class="card-body">
 					<h5 class="card-title">Filtros</h5>
 					<form class="row g-3">
-						<div class="col-md-6 col-12">
+						<div class="col-md-4 col-12">
 							<label class="form-label">Categoría</label>
 							<select class="form-select" name="category">
 								<option value="">Categoría</option>
@@ -128,7 +128,7 @@
 								<?php } ?>
 							</select>
 						</div>
-						<div class="col-md-6 col-12">
+						<div class="col-md-8 col-12">
 							<label class="form-label">Producto</label>
 							<input type="text" class="form-control enter_on" name="product" value="<?= $params["product"] ?>">
 						</div>
