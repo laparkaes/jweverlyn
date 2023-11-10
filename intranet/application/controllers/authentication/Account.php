@@ -16,16 +16,16 @@ class Account extends CI_Controller {
 		
 		$params = [
 			"page" => $this->input->get("page"),
-			"search" => $this->input->get("search"),
+			"rid" => $this->input->get("rid"),//role_id
+			"u" => $this->input->get("u"),//username
+			"n" => $this->input->get("n"),//name
 		];
 		if (!$params["page"]) $params["page"] = 1;
 		
 		$w = $l = $w_in = [];
-		if ($params["search"]){
-			$aux = explode(" ", $params["search"]);
-			$l[] = ["field" => "username", "values" => $aux];
-			$l[] = ["field" => "name", "values" => $aux];
-		}else unset($params["search"]);
+		if ($params["rid"]) $w["role_id"] = $params["rid"];
+		if ($params["u"]) $l[] = ["field" => "username", "values" => explode(" ", $params["u"])];
+		if ($params["n"]) $l[] = ["field" => "name", "values" => explode(" ", $params["n"])];
 		
 		$accounts = $this->gm->filter("account", $w, $l, $w_in, [["username", "asc"]], 25, 25 * ($params["page"] - 1), false);
 		foreach($accounts as $a){
@@ -34,9 +34,11 @@ class Account extends CI_Controller {
 		}
 		
 		$data = [
+			"is_filtered" => ($w or $l or $w_in),
 			"params" => $params,
 			"paging" => $this->my_func->paging($params["page"], $this->gm->qty("account", $w, $l, $w_in)),
 			"accounts" => $accounts,
+			"roles" => $this->gm->all("role", [["role", "asc"]]),
 			"main" => "authentication/account/index",
 		];
 		$this->load->view('layout', $data);
@@ -73,13 +75,20 @@ class Account extends CI_Controller {
 		echo json_encode($result);
 	}
 	
-	public function edit($account_id){
+	public function detail($account_id){
 		if (!$this->session->userdata('username')) redirect("auth/login");
+		
+		$account = $this->gm->unique("account", "account_id", $account_id, false);
+		$account->role = $this->gm->unique("role", "role_id", $account->role_id)->role;
+		
+		if ($account->image){
+			if (!file_exists("uploads/account/".$account->image)) $account->image = "no_img.png";
+		}else $account->image = "no_img.png";
 		
 		$data = [
 			"roles" => $this->gm->all("role", [["role", "asc"]]),
-			"account" => $this->gm->unique("account", "account_id", $account_id, false),
-			"main" => "authentication/account/edit",
+			"account" => $account,
+			"main" => "authentication/account/detail",
 		];
 		$this->load->view('layout', $data);
 	}
@@ -98,6 +107,49 @@ class Account extends CI_Controller {
 				$result["msg"] = $this->lang->line("s_account_update");
 			}
 		}else $result = ["type" => "error", "msgs" => [], "msg" => $this->lang->line("e_finished_session")];
+		
+		header('Content-Type: application/json');
+		echo json_encode($result);
+	}
+	
+	public function update_image(){
+		$result = ["type" => "error", "msg" => null];
+		
+		if ($this->session->userdata('username')){
+			$data = $this->input->post();
+			$data["image"] = $_FILES["image"]["name"];
+			
+			$this->load->library('my_val');
+			$result = $this->my_val->add_image($data);
+			
+			if ($result["type"] === "success"){
+				$account = $this->gm->unique("account", "account_id", $data["account_id"], false);
+				
+				$path = './uploads/account/';
+				if (!is_dir($path)) mkdir($path, 0777, true);
+				
+				//removing uploaded files
+				if ($account->image)
+					if (file_exists($path.$account->image)) 
+						unlink($path.$account->image);
+				
+				$config['upload_path'] = $path;
+				$config['allowed_types'] = 'gif|jpg|jpeg|png';
+				$config['file_name'] = $account->doc_number."_".date("YmdHis");
+				$this->load->library('upload', $config);
+				
+				if ($this->upload->do_upload('image')){
+					$upload_data = $this->upload->data();
+					$this->my_func->image_resize($path, $upload_data, 1300, 1300);
+					
+					$data["image"] = $upload_data['file_name'];
+					$this->gm->update("account", ["account_id" => $account->account_id], $data);
+					
+					$result["msg"] = $this->lang->line("s_account_update");
+					$result["url"] = base_url()."authentication/account/detail/".$account->account_id;
+				}else $result = ["type" => "error", "msg" => $this->upload->display_errors()];
+			}else $result["msg"] = $this->lang->line("e_check_datas");
+		}else $result["msg"] = $this->lang->line("e_finished_session");
 		
 		header('Content-Type: application/json');
 		echo json_encode($result);

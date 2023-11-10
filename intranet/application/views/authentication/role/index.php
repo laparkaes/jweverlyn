@@ -5,12 +5,16 @@
 			<nav>
 				<ol class="breadcrumb">
 					<li class="breadcrumb-item">Autenticación</li>
-					<li class="breadcrumb-item">Rol</li>
-					<li class="breadcrumb-item active">Lista</li>
+					<li class="breadcrumb-item active">Roles</li>
 				</ol>
 			</nav>
 		</div>
 		<div>
+			<?php if ($is_filtered){ $btn_search = "btn-outline-primary"; $bl_search = "";
+			}else{ $btn_search = "btn-primary"; $bl_search = "d-none"; } ?>
+			<button type="submit" class="btn <?= $btn_search ?>" id="btn_search_index">
+				<i class="bi bi-funnel-fill"></i>
+			</button>
 			<a href="<?= base_url() ?>authentication/role/register" type="button" class="btn btn-success">
 				<i class="bi bi-plus-lg"></i>
 			</a>
@@ -20,29 +24,32 @@
 <section class="section">
 	<div class="row">
 		<div class="col">
-			<div class="card">
+			<div class="card <?= $bl_search ?>" id="bl_search_index">
 				<div class="card-body">
-					<div class="row">
-						<div class="col-md-8 col-12">
-							<h5 class="card-title">Lista de Roles</h5>
+					<h5 class="card-title">Filtros</h5>
+					<form class="row g-3">
+						<div class="col-md-12 col-12">
+							<label class="form-label">Rol</label>
+							<input type="text" class="form-control enter_on" name="role" value="<?= $params["role"] ?>">
 						</div>
-						<div class="col-md-4 col-12">
-							<form>
-								<div class="input-group mt-md-3 mb-3">
-									<input type="text" class="form-control enter_on" name="search" placeholder="Buscar" value="<?= $this->input->get("search") ?>">
-									<button type="submit" class="btn btn-primary"><i class="bi bi-funnel-fill"></i></button>
-								</div>
-							</form>
+						<div class="text-center pt-3">
+							<button type="button" class="btn btn-secondary" id="btn_close_search_index">Cerrar</button>
+							<a href="<?= base_url() ?>authentication/role" class="btn btn-danger">Remover</a>
+							<button type="submit" class="btn btn-primary">Buscar</button>
 						</div>
-					</div>
+					</form>
+				</div>
+			</div>
+			<div class="card">
+				<div class="card-body pt-3">
 					<div class="table-responsive">
 						<table class="table align-middle">
 							<thead>
 								<tr>
 									<th scope="col">#</th>
 									<th scope="col">Módulo</th>
-									<th scope="col">Usuarios</th>
-									<th scope="col">Accesos</th>
+									<th scope="col" class="text-end">Usuarios</th>
+									<th scope="col" class="text-end">Accesos</th>
 									<th scope="col"></th>
 								</tr>
 							</thead>
@@ -51,8 +58,8 @@
 								<tr>
 									<th scope="row"><?= $base_page + $i_r + 1 ?></th>
 									<td><?= $r->role ?></td>
-									<td><?= number_format($r->account_qty) ?></td>
-									<td><?= number_format($r->access_qty) ?></td>
+									<td class="text-end"><?= number_format($r->account_qty) ?></td>
+									<td class="text-end"><?= number_format($r->access_qty) ?></td>
 									<td class="text-end">
 										<a href="<?= base_url() ?>authentication/role/edit/<?= $r->role_id ?>" type="button" class="btn btn-outline-primary btn-sm border-0">
 											<i class="bi bi-pencil-fill"></i>

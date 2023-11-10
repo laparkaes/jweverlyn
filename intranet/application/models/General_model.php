@@ -21,7 +21,7 @@ class General_model extends CI_Model{
 		if ($l){
 			$this->db->group_start();
 			foreach($l as $item){
-				$this->db->or_group_start();
+				$this->db->group_start();
 				$values = $item["values"];
 				foreach($values as $v) $this->db->like($item["field"], $v);
 				$this->db->group_end();

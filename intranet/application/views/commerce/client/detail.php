@@ -4,6 +4,7 @@
 			<h1>Detalle de Cliente</h1>
 			<nav>
 				<ol class="breadcrumb">
+					<li class="breadcrumb-item">Comercio</li>
 					<li class="breadcrumb-item">Clientes</li>
 					<li class="breadcrumb-item active">Detalle</li>
 				</ol>
@@ -22,9 +23,10 @@
 			<div class="card">
 				<div class="card-body profile-card pt-4 d-flex flex-column align-items-center text-center">
 					<?php  ?>
-					<img src="<?= $client->thumb ?>" id="main_image" alt="Thumb" style="max-width: 80%;">
+					<img src="<?= base_url() ?>uploads/client/<?= $client->image ?>" id="main_image" alt="Thumb" style="max-width: 80%;">
 					<h2><?= $client->name ?></h2>
-					<h3 class="mt-1"><?= $client->doc_type ?><br/><?= $client->doc_number ?></h3>
+					<h3 class="mt-3 mb-0"><?= $client->doc_type ?></h3>
+					<h3 class="mt-1"><?= $client->doc_number ?></h3>
 				</div>
 			</div>
 		</div>
@@ -37,6 +39,9 @@
 						</li>
 						<li class="nav-item">
 							<button class="nav-link" data-bs-toggle="tab" data-bs-target="#edit">Editar</button>
+						</li>
+						<li class="nav-item">
+							<button class="nav-link" data-bs-toggle="tab" data-bs-target="#image">Imagen</button>
 						</li>
 						<li class="nav-item">
 							<button class="nav-link" data-bs-toggle="tab" data-bs-target="#sales">Ventas</button>
@@ -113,7 +118,8 @@
 									<button type="submit" class="btn btn-primary">Guardar</button>
 								</div>
 							</form>
-							<hr>
+						</div>
+						<div class="tab-pane fade profile-edit" id="image">
 							<form id="form_update_image">
 								<input type="hidden" name="client_id" value="<?= $client->client_id ?>">
 								<h5 class="card-title pt-0">Imagen</h5>

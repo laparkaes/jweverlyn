@@ -6,7 +6,7 @@
 				<ol class="breadcrumb">
 					<li class="breadcrumb-item">Autenticación</li>
 					<li class="breadcrumb-item">Roles</li>
-					<li class="breadcrumb-item active">Nuevo</li>
+					<li class="breadcrumb-item active">Detalle</li>
 				</ol>
 			</nav>
 		</div>

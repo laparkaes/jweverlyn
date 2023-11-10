@@ -16,13 +16,12 @@ class Role extends CI_Controller {
 		
 		$params = [
 			"page" => $this->input->get("page"),
-			"search" => $this->input->get("search"),
+			"role" => $this->input->get("role"),
 		];
 		if (!$params["page"]) $params["page"] = 1;
 		
 		$w = $l = $w_in = [];
-		if ($params["search"]) $l[] = ["field" => "role", "values" => explode(" ", $params["search"])];
-		else unset($params["search"]);
+		if ($params["role"]) $l[] = ["field" => "role", "values" => explode(" ", $params["role"])];
 		
 		$roles = $this->gm->filter("role", $w, $l, $w_in, [["role", "asc"]], 25, 25 * ($params["page"] - 1));
 		foreach($roles as $r){
@@ -31,6 +30,7 @@ class Role extends CI_Controller {
 		}
 		
 		$data = [
+			"is_filtered" => ($w or $l or $w_in),
 			"params" => $params,
 			"paging" => $this->my_func->paging($params["page"], $this->gm->qty("role", $w, $l, $w_in)),
 			"roles" => $roles,

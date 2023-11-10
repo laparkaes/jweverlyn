@@ -16,18 +16,31 @@ class Proforma extends CI_Controller {
 		
 		$params = [
 			"page" => $this->input->get("page"),
-			"search" => $this->input->get("search"),
+			"client" => $this->input->get("client"),
+			"i_from" => $this->input->get("i_from"),
+			"i_to" => $this->input->get("i_to"),
+			"v_from" => $this->input->get("v_from"),
+			"v_to" => $this->input->get("v_to"),
+			"a_min" => $this->input->get("a_min"),
+			"a_max" => $this->input->get("a_max"),
 		];
 		if (!$params["page"]) $params["page"] = 1;
 	
 		$w = $l = $w_in = [];
-		if ($params["search"]){
+		if ($params["client"]){
 			$client_ids = [-1];
-			$clients = $this->gm->filter("client", null, [["field" => "name", "values" => explode(" ", $params["search"])]]);
+			$clients = $this->gm->filter("client", null, [["field" => "name", "values" => explode(" ", $params["client"])]]);
 			if ($clients) foreach($clients as $c) $client_ids[] = $c->client_id;
 			
 			$w_in[] = ["field" => "client_id", "values" => $client_ids];
 		}
+		
+		if ($params["i_from"]) $w["registed_at >="] = $params["i_from"]." 00:00:00";
+		if ($params["i_to"]) $w["registed_at <="] = $params["i_to"]." 23:59:59";
+		if ($params["v_from"]) $w["validity >="] = $params["v_from"]." 00:00:00";
+		if ($params["v_to"]) $w["validity <="] = $params["v_to"]." 23:59:59";
+		if ($params["a_min"]) $w["amount >="] = str_replace(",", "", $params["a_min"]);
+		if ($params["a_max"]) $w["amount <="] = str_replace(",", "", $params["a_max"]);
 		
 		$proformas = $this->gm->filter("proforma", $w, $l, $w_in, [["registed_at", "desc"]], 25, 25 * ($params["page"] - 1), false);
 		foreach($proformas as $p){
@@ -38,6 +51,7 @@ class Proforma extends CI_Controller {
 		}
 		
 		$data = [
+			"is_filtered" => ($w or $l or $w_in),
 			"params" => $params,
 			"paging" => $this->my_func->paging($params["page"], $this->gm->qty("proforma", $w, $l, $w_in)),
 			"proformas" => $proformas,
