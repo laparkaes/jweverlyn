@@ -22,7 +22,9 @@
 		<div class="col-md-4">
 			<div class="card">
 				<div class="card-body profile-card pt-4 d-flex flex-column align-items-center text-center">
-					<?php  ?>
+					<?php if (!$account->valid){ ?>
+					<h1><span class="badge bg-danger">Desactivado</span></h1>
+					<?php } ?>
 					<img src="<?= base_url() ?>uploads/account/<?= $account->image ?>" id="main_image" alt="Thumb" style="max-width: 80%;">
 					<h2><?= $account->name ?></h2>
 					<h3 class="mt-3"><?= $account->role ?></h3>
@@ -102,16 +104,16 @@
 									</div>
 								</div>
 								<div class="row mb-3">
-									<label class="col-md-4 col-lg-3 col-form-label">Nombre</label>
+									<label class="col-md-4 col-lg-3 col-form-label"># Documento</label>
 									<div class="col-md-8 col-lg-9">
-										<input type="text" class="form-control" name="name" value="<?= $account->name ?>">
+										<input type="text" class="form-control" name="doc_number" value="<?= $account->doc_number ?>">
 										<div class="invalid-feedback"></div>
 									</div>
 								</div>
 								<div class="row mb-3">
-									<label class="col-md-4 col-lg-3 col-form-label"># Documento</label>
+									<label class="col-md-4 col-lg-3 col-form-label">Nombre</label>
 									<div class="col-md-8 col-lg-9">
-										<input type="text" class="form-control" name="doc_number" value="<?= $account->doc_number ?>">
+										<input type="text" class="form-control" name="name" value="<?= $account->name ?>">
 										<div class="invalid-feedback"></div>
 									</div>
 								</div>
