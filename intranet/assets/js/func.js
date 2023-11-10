@@ -48,6 +48,8 @@ const warning_msg = {
 		void_invoice: "¿Desea anular comprobante?",
 		add_client: "¿Desea agregar nuevo cliente?",
 		update_client: "¿Desea actualizar cliente?",
+		add_provider: "¿Desea agregar nuevo proveedor?",
+		update_provider: "¿Desea actualizar proveedor?",
 	},
 }
 
@@ -255,6 +257,41 @@ function set_dates_between(dom_from, dom_to){
 	$(dom_to).on("dp.change", function (e) {
 		$(dom_from).data("DateTimePicker").maxDate(e.date);
 	});
+}
+
+/* search provider functions
+doms: #btn_search_person, #doc_type_id, #doc_number, #provider_name */
+function set_search_provider_ajax(){
+	function search_provider(){
+		var data = {doc_type_id: $("#doc_type_id").val(), doc_number: $("#doc_number").val()};
+		ajax_simple(data, "stock/provider/search_provider_ajax").done(function(res) {
+			swal(res.type, res.msg);
+			if (res.type == "success") $("#provider_name").val(res.person.name);
+			else $("#provider_name").val("");
+		});
+	}
+	
+	$("#doc_type_id").on('change',(function(e) {
+		$("#doc_number, #provider_name").val("");
+		if ($("#doc_type_id option:selected").val() == 1){
+			$("#doc_number").prop("disabled", true);
+			$("#btn_search_person").prop("disabled", true);
+			$("#provider_name").prop("disabled", true);
+		}else{
+			$("#doc_number").prop("disabled", false);
+			$("#btn_search_person").prop("disabled", false);
+			$("#provider_name").prop("disabled", false);
+		}
+	}));
+
+	$("#doc_number").on('keyup',(function(e) {
+		if (e.key === "Enter") search_provider();
+		else $("#provider_name").prop("disabled", false);
+	}));
+
+	$("#btn_search_person").on('click',(function(e) {
+		search_provider();
+	}));
 }
 
 /* search client functions

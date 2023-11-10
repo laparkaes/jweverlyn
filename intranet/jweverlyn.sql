@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- 생성 시간: 23-11-09 19:17
+-- 생성 시간: 23-11-10 18:41
 -- 서버 버전: 10.4.24-MariaDB
 -- PHP 버전: 7.4.29
 
@@ -547,7 +547,7 @@ INSERT INTO `account` (`account_id`, `role_id`, `username`, `password`, `image`,
 (466, 1, 'wilson.chloe@gmail.com', '$2y$10$v5Uvg4VaZj3n1Zlv7qFZ2.b18YgJX1SA8/W5R6zgg0WGsz5l7M4EO', NULL, 'Wilson Chloe', '', NULL, NULL, NULL, 1, NULL, '2023-08-15 04:44:02', '2023-08-15 04:44:02'),
 (467, 5022, 'wilson.daniel@gmail.com', '$2y$10$POFFVNK0EFCPKNF7cuM06.XMf9mx.e0MR8BPyUHdn69m4jZ9IpXwm', NULL, 'Wilson Daniel', '', NULL, NULL, NULL, 1, NULL, '2023-08-15 04:44:02', '2023-08-15 04:44:02'),
 (468, 5020, 'wilson.emma@gmail.com', '$2y$10$tfd6ytgVEtes3eDciXZFTeGwhVBZAu6SEXqtnMm6fGRQ1HOtDLjCK', NULL, 'Wilson Emma', '', NULL, NULL, NULL, 1, NULL, '2023-08-15 04:44:02', '2023-08-15 04:44:02'),
-(469, 5013, 'anderson.alice@gmail.com', '$2y$10$1l1NFim3oQ4qq1NE6mnXzOjHAKqoa3ZxXILGg21ZhKUJi/k/1W2Ci', NULL, 'Anderson Alice android', '323290', '', '', '', 1, NULL, '2023-11-10 00:16:53', '2023-08-15 04:44:02'),
+(469, 5013, 'anderson.alice@gmail.com', '$2y$10$1l1NFim3oQ4qq1NE6mnXzOjHAKqoa3ZxXILGg21ZhKUJi/k/1W2Ci', NULL, 'Anderson Alice android', '323290', '', '', '', 1, NULL, '2023-11-10 19:57:33', '2023-08-15 04:44:02'),
 (470, 5020, 'anderson.bob@gmail.com', '$2y$10$fOWBxN6TgmvWuEygkg70lu/THZP2HoGGxyi91cm30XkcBC5MoqU5C', NULL, 'Anderson Bob', '', NULL, NULL, NULL, 1, NULL, '2023-08-15 17:05:31', '2023-08-15 04:44:02'),
 (471, 5028, 'anderson.charlie@gmail.com', '$2y$10$5j7tFVwbBEXvQMI.6m9N7.5MwWYG0vzoWITiv7MHIk2XTsS8abywG', NULL, 'Anderson Charlie', '', NULL, NULL, NULL, 1, NULL, '2023-11-07 23:46:26', '2023-08-15 04:44:02'),
 (472, 5021, 'anderson.david@gmail.com', '$2y$10$bCD/RHj7hZM8/8CMFvHooObWJ.Gs49Na2LaqbnOSdhvf7Zt7XZvAC', NULL, 'Anderson David', '', NULL, NULL, NULL, 1, NULL, '2023-08-15 04:44:03', '2023-08-15 04:44:03'),
@@ -3889,6 +3889,224 @@ INSERT INTO `proforma_product` (`proforma_product_id`, `proforma_id`, `product_i
 -- --------------------------------------------------------
 
 --
+-- 테이블 구조 `provider`
+--
+
+CREATE TABLE `provider` (
+  `provider_id` int(11) NOT NULL,
+  `doc_type_id` int(11) NOT NULL,
+  `doc_number` varchar(30) NOT NULL,
+  `name` varchar(250) NOT NULL,
+  `tel` varchar(20) DEFAULT NULL,
+  `mobile` varchar(50) DEFAULT NULL,
+  `email` varchar(200) DEFAULT NULL,
+  `address` varchar(200) DEFAULT NULL,
+  `image` varchar(100) DEFAULT NULL,
+  `valid` tinyint(1) NOT NULL DEFAULT 1,
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `registed_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- 테이블의 덤프 데이터 `provider`
+--
+
+INSERT INTO `provider` (`provider_id`, `doc_type_id`, `doc_number`, `name`, `tel`, `mobile`, `email`, `address`, `image`, `valid`, `updated_at`, `registed_at`) VALUES
+(1, 2, '76408531', 'LEA MABEL SILUPU MONTALVAN', '', '', NULL, '', NULL, 1, '2023-09-16 23:05:39', '2023-09-16 23:05:39'),
+(2, 2, '70614226', 'SOFIA LISSET CASAVERDE VALDIVIEZO', '', '', NULL, '', NULL, 1, '2023-09-17 20:50:05', '2023-09-17 20:50:05'),
+(3, 2, '75694084', 'FRANCESCA JENNIFER OLAYA CAMACHO', '', '', NULL, '', NULL, 1, '2023-09-17 22:19:28', '2023-09-17 22:19:28'),
+(4, 2, '75098340', 'YESABELLA ESPERANZA UBILLUS MORALES', '', '', NULL, '', NULL, 1, '2023-09-21 21:50:14', '2023-09-21 21:50:14'),
+(5, 2, '75763698', 'ESTHEFANY DE LOS MILAGROS HERRERA CHECA', '', '', NULL, '', NULL, 1, '2023-09-25 21:29:42', '2023-09-25 21:29:42'),
+(6, 2, '75112025', 'YARIS NAYELY CALLE CASTILLO', '', '', NULL, '', NULL, 1, '2023-10-05 00:33:52', '2023-10-05 00:33:52'),
+(7, 3, '000765808', 'Jeong Woo Park', '', '', NULL, '', NULL, 1, '2023-10-07 22:08:29', '2023-10-07 22:08:29'),
+(8, 2, '48098843', 'ROSA DEL CARMEN GARRIDO MORE', '', '', NULL, '', NULL, 1, '2023-10-07 23:11:35', '2023-10-07 23:11:35'),
+(9, 4, '20454193556', 'COMERCIAL FERNANDA\'S S.R.L.', '', '', NULL, '', NULL, 1, '2023-10-09 23:22:01', '2023-10-09 23:22:01'),
+(10, 2, '76147068', 'JACKELINE DEL PILAR ARCELES VINCES', '', '', NULL, '', NULL, 1, '2023-10-10 21:40:41', '2023-10-10 21:40:41'),
+(11, 2, '74896747', 'CARLOS DAVID VILELA VILCHEZ', '', '', NULL, '', NULL, 1, '2023-10-10 22:38:14', '2023-10-10 22:38:14'),
+(12, 4, '20405441862', 'INGEMET CPI EMPRESA INDIVIDUAL DE RESPONSABILIDAD LIMITADA', '', '', NULL, '', NULL, 1, '2023-10-20 22:37:38', '2023-10-20 22:37:38'),
+(13, 4, '20364169982', 'EMGESA S.A.C.', '', '', NULL, '', NULL, 1, '2023-10-20 22:57:43', '2023-10-20 22:57:43'),
+(14, 2, '72879477', 'MARIA FERNANDA VASQUEZ EVANGELISTA', '01 241 2345', '99 888 777', NULL, 'Av Aviacion 3204, San Borja, Lima, Peru', NULL, 1, '2023-10-23 20:30:42', '2023-10-23 20:30:42'),
+(15, 2, '76155454', 'Emily Delgado', NULL, NULL, NULL, NULL, NULL, 1, '2023-10-26 20:01:00', '2023-10-26 20:01:00'),
+(17, 4, '20387144901', 'RD HIDRAULICA S.R.L.', '', '', '', '', NULL, 1, '2023-11-02 23:13:11', '2023-11-02 23:13:11'),
+(18, 4, '20408058261', 'CLINICA EVERLYN S.A.C.', '', '', '', '', NULL, 1, '2023-11-02 23:17:29', '2023-11-02 23:17:29'),
+(19, 4, '20448426701', 'ALE BIENES Y SERVICIOS EN GENERAL SOCIEDAD ANONIMA CERRADA', NULL, NULL, NULL, NULL, '4_20448426701_20231109183244.jpg', 1, '2023-11-03 19:18:11', '2023-11-03 19:18:11'),
+(20, 3, '000765804', 'Henry Calle', '345-6785', '908-237-473', 'h.calle@pontafina.com', 'Cl. Mexico ciudad 283, Cercado de Lima', '3_000765804_20231104161853.jpg', 1, '2023-11-03 23:22:13', '2023-11-03 20:37:49'),
+(21, 5, 'M68303812', 'Jeong Woo fulanito', '241-29371', '999-123-5831', 'hola@dff.com1', '1', '5_M68303812_20231110163414.jpg', 1, '2023-11-10 21:22:00', '2023-11-10 20:46:12');
+
+-- --------------------------------------------------------
+
+--
+-- 테이블 구조 `provider_doc_type`
+--
+
+CREATE TABLE `provider_doc_type` (
+  `doc_type_id` int(11) NOT NULL,
+  `doc_type` varchar(100) NOT NULL,
+  `short` varchar(20) NOT NULL,
+  `sunat` varchar(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- 테이블의 덤프 데이터 `provider_doc_type`
+--
+
+INSERT INTO `provider_doc_type` (`doc_type_id`, `doc_type`, `short`, `sunat`) VALUES
+(1, 'Sin documento', '', '0'),
+(2, 'DNI - Documento Nacional de Identidad', 'DNI', '1'),
+(3, 'CE - Carnet de Extranjería', 'CE', '4'),
+(4, 'RUC - Registro Unico de Contributentes', 'RUC', '6'),
+(5, 'Pasaporte', 'Pasaporte', '7'),
+(6, 'CDI - Cédula Diplomática de Identidad', 'CDI', 'A');
+
+-- --------------------------------------------------------
+
+--
+-- 테이블 구조 `purchase`
+--
+
+CREATE TABLE `purchase` (
+  `purchase_id` int(11) NOT NULL,
+  `provider_id` int(11) DEFAULT NULL,
+  `proforma_id` int(11) DEFAULT NULL,
+  `amount` double NOT NULL,
+  `paid` double NOT NULL,
+  `balance` double NOT NULL,
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `registed_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `valid` tinyint(1) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- 테이블의 덤프 데이터 `purchase`
+--
+
+INSERT INTO `purchase` (`purchase_id`, `provider_id`, `proforma_id`, `amount`, `paid`, `balance`, `updated_at`, `registed_at`, `valid`) VALUES
+(1, 3, NULL, 363, 363, 0, '2023-10-02 16:26:10', '2023-09-17 22:19:28', 0),
+(2, 3, NULL, 363, 363, 0, '2023-10-02 16:20:43', '2023-09-17 22:19:34', 1),
+(3, 3, NULL, 363, 0, 363, '2023-10-02 16:13:43', '2023-09-17 22:19:58', 1),
+(4, 3, NULL, 363, 363, 0, '2023-10-02 16:17:28', '2023-09-17 22:21:19', 1),
+(5, NULL, NULL, 1975, 1975, 0, '2023-10-02 16:19:46', '2023-09-17 23:58:18', 1),
+(6, NULL, NULL, 1795, 0, 1795, '2023-10-06 19:13:29', '2023-09-21 21:48:37', 0),
+(7, NULL, NULL, 180, 0, 180, '2023-09-28 22:52:22', '2023-09-21 21:48:57', 1),
+(8, 4, NULL, 180, 180, 0, '2023-09-21 21:50:14', '2023-09-21 21:50:14', 1),
+(9, 5, NULL, 299, 299, 0, '2023-10-03 15:23:02', '2023-09-25 21:29:42', 1),
+(10, 6, NULL, 61.2, 61.2, 0, '2023-10-05 00:34:13', '2023-10-05 00:33:52', 1),
+(11, 10, NULL, 631.72, 631.72, 0, '2023-10-18 21:54:51', '2023-10-10 21:40:41', 0),
+(12, 14, 4, 280, 100, 180, '2023-10-24 21:27:48', '2023-10-24 21:27:48', 1),
+(13, 14, 4, 280, 100, 180, '2023-11-09 00:03:26', '2023-10-24 21:27:53', 0),
+(14, 14, 4, 280, 100, 180, '2023-10-24 21:43:00', '2023-10-24 21:43:00', 1),
+(15, 14, 4, 280, 100, 180, '2023-10-24 21:53:06', '2023-10-24 21:53:06', 1),
+(16, 14, 4, 280, 100, 180, '2023-10-24 21:53:46', '2023-10-24 21:53:46', 1),
+(17, 14, 4, 280, 100, 180, '2023-10-24 21:54:32', '2023-10-24 21:54:32', 1),
+(18, 14, 4, 280, 100, 180, '2023-10-24 21:55:48', '2023-10-24 21:55:48', 1),
+(19, 14, 4, 280, 280, 0, '2023-10-24 22:32:45', '2023-10-24 22:32:29', 1),
+(20, 14, 4, 280, 280, 0, '2023-10-24 23:02:45', '2023-10-24 23:02:34', 1),
+(21, 14, 4, 280, 280, 0, '2023-10-25 19:56:37', '2023-10-25 19:56:37', 1),
+(22, 14, 4, 280, 280, 0, '2023-10-30 00:15:22', '2023-10-30 00:14:38', 1),
+(23, 14, 4, 280, 280, 0, '2023-10-30 21:01:06', '2023-10-30 21:01:06', 1),
+(24, 1, NULL, 299.2, 299.2, 0, '2023-11-02 23:03:08', '2023-11-02 23:03:08', 1),
+(25, 19, NULL, 299.2, 299.2, 0, '2023-11-03 19:18:11', '2023-11-03 19:18:11', 1),
+(26, 14, 4, 280, 280, 0, '2023-11-10 23:40:41', '2023-11-07 21:14:48', 1);
+
+-- --------------------------------------------------------
+
+--
+-- 테이블 구조 `purchase_payment`
+--
+
+CREATE TABLE `purchase_payment` (
+  `payment_id` int(11) NOT NULL,
+  `purchase_id` int(11) NOT NULL,
+  `payment_method_id` int(11) NOT NULL,
+  `total` float NOT NULL,
+  `received` float NOT NULL,
+  `change` float NOT NULL,
+  `registed_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `valid` tinyint(1) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- 테이블의 덤프 데이터 `purchase_payment`
+--
+
+INSERT INTO `purchase_payment` (`payment_id`, `purchase_id`, `payment_method_id`, `total`, `received`, `change`, `registed_at`, `valid`) VALUES
+(1, 3, 1, 363.12, 400, 36.88, '2023-09-17 22:19:58', 0),
+(2, 4, 1, 363.12, 400, 36.88, '2023-09-17 22:21:19', 0),
+(3, 5, 3, 1974.72, 2000, 25.28, '2023-09-17 23:58:18', 0),
+(4, 6, 1, 1795.2, 1795.2, 0, '2023-09-21 21:48:37', 0),
+(5, 7, 1, 179.52, 200, 20.48, '2023-09-21 21:48:57', 0),
+(6, 8, 1, 179.52, 300, 120.48, '2023-09-21 21:50:14', 1),
+(7, 9, 1, 299.2, 300, 0.8, '2023-09-25 21:29:42', 0),
+(8, 9, 1, 299.2, 99.2, 0, '2023-10-02 15:36:27', 1),
+(9, 9, 1, 200, 100, 0, '2023-10-02 15:37:04', 1),
+(10, 9, 1, 100, 140, 40, '2023-10-02 15:40:33', 0),
+(11, 5, 1, 1974.72, 2000, 25.28, '2023-10-02 16:19:35', 0),
+(12, 9, 1, 100, 999, 899, '2023-10-03 15:15:35', 0),
+(13, 9, 1, 99.8, 9999, 9899.2, '2023-10-03 15:23:02', 1),
+(14, 10, 1, 61.2, 30, 0, '2023-10-05 00:33:52', 1),
+(15, 10, 1, 31.2, 50, 18.8, '2023-10-05 00:34:13', 1),
+(16, 11, 2, 631.72, 631.72, 0, '2023-10-10 21:40:41', 0),
+(17, 18, 1, 280, 100, 0, '2023-10-24 21:55:48', 1),
+(18, 19, 1, 280, 100, 0, '2023-10-24 22:32:29', 1),
+(19, 19, 1, 180, 300, 120, '2023-10-24 22:32:45', 1),
+(20, 20, 1, 280, 5, 0, '2023-10-24 23:02:34', 1),
+(21, 20, 1, 275, 300, 25, '2023-10-24 23:02:45', 1),
+(22, 21, 1, 280, 300, 20, '2023-10-25 19:56:37', 1),
+(23, 22, 1, 280, 120, 0, '2023-10-30 00:14:38', 1),
+(24, 22, 1, 160, 200, 40, '2023-10-30 00:15:22', 1),
+(25, 23, 1, 280, 300, 20, '2023-10-30 21:01:06', 1),
+(26, 24, 3, 299.2, 500, 200.8, '2023-11-02 23:03:08', 1),
+(27, 25, 3, 299.2, 299.2, 0, '2023-11-03 19:18:11', 1),
+(30, 26, 1, 280, 200, 0, '2023-11-10 23:31:24', 1),
+(31, 26, 1, 80, 300, 220, '2023-11-10 23:40:41', 1);
+
+-- --------------------------------------------------------
+
+--
+-- 테이블 구조 `purchase_product`
+--
+
+CREATE TABLE `purchase_product` (
+  `purchase_product_id` int(11) NOT NULL,
+  `purchase_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `option_id` int(11) NOT NULL,
+  `qty` int(11) NOT NULL,
+  `price` float NOT NULL,
+  `subtotal` float NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- 테이블의 덤프 데이터 `purchase_product`
+--
+
+INSERT INTO `purchase_product` (`purchase_product_id`, `purchase_id`, `product_id`, `option_id`, `qty`, `price`, `subtotal`) VALUES
+(1, 3, 197, 28, 3, 59.84, 179.52),
+(2, 4, 197, 28, 3, 59.84, 179.52),
+(3, 4, 1, 26, 12, 15.3, 183.6),
+(4, 5, 197, 28, 33, 59.84, 1974.72),
+(5, 6, 197, 27, 30, 59.84, 1795.2),
+(6, 7, 197, 28, 3, 59.84, 179.52),
+(7, 8, 197, 27, 3, 59.84, 179.52),
+(8, 9, 197, 28, 5, 59.84, 299.2),
+(9, 10, 1, 26, 4, 15.3, 61.2),
+(10, 11, 197, 28, 3, 59.84, 179.52),
+(11, 11, 197, 29, 5, 59.84, 299.2),
+(12, 11, 1, 26, 10, 15.3, 153),
+(14, 17, 1, 26, 20, 14, 280),
+(15, 18, 1, 26, 20, 14, 280),
+(16, 19, 1, 26, 20, 14, 280),
+(17, 20, 1, 26, 20, 14, 280),
+(18, 21, 1, 26, 20, 14, 280),
+(19, 22, 1, 26, 20, 14, 280),
+(20, 23, 1, 26, 20, 14, 280),
+(21, 24, 197, 27, 5, 59.84, 299.2),
+(22, 25, 197, 29, 5, 59.84, 299.2),
+(23, 26, 1, 26, 20, 14, 280);
+
+-- --------------------------------------------------------
+
+--
 -- 테이블 구조 `role`
 --
 
@@ -4309,6 +4527,43 @@ ALTER TABLE `proforma_product`
   ADD KEY `fk_proforma_option` (`option_id`);
 
 --
+-- 테이블의 인덱스 `provider`
+--
+ALTER TABLE `provider`
+  ADD PRIMARY KEY (`provider_id`),
+  ADD KEY `fk_provider_doc_type_id` (`doc_type_id`);
+
+--
+-- 테이블의 인덱스 `provider_doc_type`
+--
+ALTER TABLE `provider_doc_type`
+  ADD PRIMARY KEY (`doc_type_id`);
+
+--
+-- 테이블의 인덱스 `purchase`
+--
+ALTER TABLE `purchase`
+  ADD PRIMARY KEY (`purchase_id`),
+  ADD KEY `fk_purchase_provider` (`provider_id`),
+  ADD KEY `fk_purchase_proforma` (`proforma_id`);
+
+--
+-- 테이블의 인덱스 `purchase_payment`
+--
+ALTER TABLE `purchase_payment`
+  ADD PRIMARY KEY (`payment_id`),
+  ADD KEY `fk_payment_purchase` (`purchase_id`);
+
+--
+-- 테이블의 인덱스 `purchase_product`
+--
+ALTER TABLE `purchase_product`
+  ADD PRIMARY KEY (`purchase_product_id`),
+  ADD KEY `fk_purchase_product_purchase` (`purchase_id`),
+  ADD KEY `fk_purchase_product_product` (`product_id`),
+  ADD KEY `fk_purchase_product_option` (`option_id`);
+
+--
 -- 테이블의 인덱스 `role`
 --
 ALTER TABLE `role`
@@ -4478,6 +4733,36 @@ ALTER TABLE `proforma_product`
   MODIFY `proforma_product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
+-- 테이블의 AUTO_INCREMENT `provider`
+--
+ALTER TABLE `provider`
+  MODIFY `provider_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+
+--
+-- 테이블의 AUTO_INCREMENT `provider_doc_type`
+--
+ALTER TABLE `provider_doc_type`
+  MODIFY `doc_type_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- 테이블의 AUTO_INCREMENT `purchase`
+--
+ALTER TABLE `purchase`
+  MODIFY `purchase_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+
+--
+-- 테이블의 AUTO_INCREMENT `purchase_payment`
+--
+ALTER TABLE `purchase_payment`
+  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+
+--
+-- 테이블의 AUTO_INCREMENT `purchase_product`
+--
+ALTER TABLE `purchase_product`
+  MODIFY `purchase_product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+
+--
 -- 테이블의 AUTO_INCREMENT `role`
 --
 ALTER TABLE `role`
@@ -4566,6 +4851,33 @@ ALTER TABLE `proforma_product`
   ADD CONSTRAINT `fk_proforma_option` FOREIGN KEY (`option_id`) REFERENCES `product_option` (`option_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_proforma_product` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_proforma_proforma` FOREIGN KEY (`proforma_id`) REFERENCES `proforma` (`proforma_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- 테이블의 제약사항 `provider`
+--
+ALTER TABLE `provider`
+  ADD CONSTRAINT `fk_provider_doc_type_id` FOREIGN KEY (`doc_type_id`) REFERENCES `provider_doc_type` (`doc_type_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- 테이블의 제약사항 `purchase`
+--
+ALTER TABLE `purchase`
+  ADD CONSTRAINT `fk_purchase_proforma` FOREIGN KEY (`proforma_id`) REFERENCES `proforma` (`proforma_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_purchase_provider` FOREIGN KEY (`provider_id`) REFERENCES `provider` (`provider_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- 테이블의 제약사항 `purchase_payment`
+--
+ALTER TABLE `purchase_payment`
+  ADD CONSTRAINT `fk_payment_purchase` FOREIGN KEY (`purchase_id`) REFERENCES `purchase` (`purchase_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- 테이블의 제약사항 `purchase_product`
+--
+ALTER TABLE `purchase_product`
+  ADD CONSTRAINT `fk_purchase_product_option` FOREIGN KEY (`option_id`) REFERENCES `product_option` (`option_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_purchase_product_product` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_purchase_product_purchase` FOREIGN KEY (`purchase_id`) REFERENCES `purchase` (`purchase_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- 테이블의 제약사항 `role_access`

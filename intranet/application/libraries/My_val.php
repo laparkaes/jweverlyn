@@ -534,4 +534,24 @@ class My_val{
 		return ["type" => $this->get_type($msgs), "msgs" => $msgs];
 	}
 	
+	public function add_provider($provider){
+		$msgs = [];
+		
+		//provider validation
+		$msgs = $this->set_msg($msgs, "provider[doc_type_id]"); //no validation required
+		
+		if ($provider["doc_number"]){
+			$f = [
+				"doc_type_id" => $provider["doc_type_id"],
+				"doc_number" => $provider["doc_number"],
+			];
+			if (!$this->CI->gm->filter("provider", $f)) $msgs = $this->set_msg($msgs, "provider[doc_number]");
+			else $msgs = $this->set_msg($msgs, "provider[doc_number]", "e_provider_exists");
+		}else $msgs = $this->set_msg($msgs, "provider[doc_number]", "e_required_field");
+		
+		if ($provider["name"]) $msgs = $this->set_msg($msgs, "provider[name]");
+		else $msgs = $this->set_msg($msgs, "provider[name]", "e_required_field");
+		
+		return ["type" => $this->get_type($msgs), "msgs" => $msgs];
+	}
 }
