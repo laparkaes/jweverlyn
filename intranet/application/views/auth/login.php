@@ -41,12 +41,12 @@
 									<form class="row g-3" id="form_login_validation">
 										<div class="col-12">
 											<label class="form-label">Usuario</label>
-											<input type="text" name="username" class="form-control">
+											<input type="text" name="username" class="form-control enter_on">
 											<div class="invalid-feedback"></div>
 										</div>
 										<div class="col-12">
 											<label class="form-label">Contraseña</label>
-											<input type="password" name="password" class="form-control">
+											<input type="password" name="password" class="form-control enter_on">
 											<div class="invalid-feedback"></div>
 										</div>
 										<div class="col-12 py-3">

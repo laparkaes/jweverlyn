@@ -99,6 +99,103 @@ $("#keyword").on('keyup',(function(e) {
 /* payment amount end */
 
 /* product operation start */
+$("#btn_open_select_product").on('click',(function(e) {
+	$("#card_select_product").removeClass("d-none");
+}));
+
+$("#btn_close_select_product").on('click',(function(e) {
+	$("#card_select_product").addClass("d-none");
+}));
+
+function select_product(dom){
+	$("#form_select_product")[0].reset();
+	$(".btn_select_product").removeClass("list-group-item-primary");
+	$(dom).addClass("list-group-item-primary");
+	
+	ajax_simple({product_id: $(dom).val()}, b_url + "load_product").done(function(res) {
+		if (res.type == "success"){
+			$("#form_select_product input[name=product_id]").val(res.product.product_id);
+			$("#form_select_product input[name=produt]").val(res.product.product);
+			$("#form_select_product input[name=price_txt]").val(nf(0));
+			$("#form_select_product input[name=price]").val(0);
+			$("#form_select_product input[name=subtotal_txt]").val(nf(0));
+			$("#form_select_product input[name=subtotal]").val(0);
+			
+			var dom_select = $("#form_select_product select[name=option_id]");
+			dom_select.html("");
+			$(dom_select).append('<option value="">Elegir</option>');
+			$(res.options).each(function(index, element){
+				$(dom_select).append('<option value="' + element.option_id + '">' + element.option + ' (' + element.stock + ')</option>');
+			});
+			
+			$("#form_select_product").removeClass("d-none");
+		}else{
+			swal("error", res.msg);
+			$("#form_select_product").addClass("d-none");
+		}
+		
+		console.log(res);
+	});
+}
+
+$("#form_search_product").submit(function(e) {
+	e.preventDefault();
+	
+	ajax_form(this, b_url + "search_product").done(function(res) {
+		$("#msg_enter_keyword").addClass("d-none");
+		$("#bl_search_result").removeClass("d-none");
+		$("#search_result").html("");
+		
+		if (res.type == "success"){
+			$(res.products).each(function(index, element) {
+				$("#search_result").append('<button class="list-group-item list-group-item-action btn_select_product" value="' + element.product_id + '"><div class="d-flex w-100 justify-content-between"><h5 class="mb-1 me-3">' + element.product + '</h5><small class="text-nowrap">S/. ' + element.price + '</small></div><p class="mb-1">' + element.category + '</p><small>' + element.code + '</small></button>');
+			});
+			
+			$(".btn_select_product").on('click',(function(e) {
+				select_product(this);
+			}));
+		}else $("#search_result").html(res.msg);
+	});
+});
+
+$("#form_select_product").submit(function(e) {
+	e.preventDefault();
+	
+	// Serialize form data into an array
+	var formDataArray = $(this).serializeArray();
+
+	// Convert the array into an object
+	var formDataObject = {};
+	$.each(formDataArray, function(i, field){
+	  formDataObject[field.name] = field.value;
+	});
+
+	// Display the result in the console
+	console.log(formDataObject);
+	/*
+	ajax_form(this, b_url + "search_product").done(function(res) {
+		$("#msg_enter_keyword").addClass("d-none");
+		$("#bl_search_result").removeClass("d-none");
+		$("#search_result").html("");
+		
+		if (res.type == "success"){
+			$(res.products).each(function(index, element) {
+				$("#search_result").append('<button class="list-group-item list-group-item-action btn_select_product" value="' + element.product_id + '"><div class="d-flex w-100 justify-content-between"><h5 class="mb-1 me-3">' + element.product + '</h5><small class="text-nowrap">S/. ' + element.price + '</small></div><p class="mb-1">' + element.category + '</p><small>' + element.code + '</small></button>');
+			});
+			
+			$(".btn_select_product").on('click',(function(e) {
+				select_product(this);
+			}));
+		}else $("#search_result").html(res.msg);
+	});
+	*/
+});
+
+
+
+
+
+
 var row_num = 1;
 function add_product(dom){
 	ajax_simple({product_id: $(dom).val()}, b_url + "load_product").done(function(res) {
@@ -164,6 +261,12 @@ function search_product(keyword){
 	});
 }
 /* product operation end */
+
+
+
+
+
+
 
 
 

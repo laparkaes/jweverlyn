@@ -159,7 +159,7 @@ class Purchase extends CI_Controller {
 		echo json_encode(["type" => $type, "msg" => $msg, "url" => $url]);
 	}
 	
-	public function search_product(){
+	public function search_product(){//ok
 		$type = "error"; $msg = ""; $products = [];
 		$keyword = $this->input->post("keyword");
 		
@@ -182,13 +182,25 @@ class Purchase extends CI_Controller {
 	}
 	
 	public function load_product(){
-		$product = $this->gm->unique("product", "product_id", $this->input->post("product_id"));
-		$product->category = $this->gm->unique("product_category", "category_id", $product->category_id)->category;
+		$res = ["type" => "error", "msg" => null];
 		
-		$options = $this->gm->filter("product_option", ["product_id" => $product->product_id], null, null, [["option_id", "asc"]]);
+		$product = $this->gm->unique("product", "product_id", $this->input->post("product_id"));
+		if ($product){
+			$options = $this->gm->filter("product_option", ["product_id" => $product->product_id], null, null, [["option_id", "asc"]]);
+			
+			unset($product->category_id);
+			unset($product->image);
+			unset($product->valid);
+			unset($product->updated_at);
+			unset($product->registed_at);
+			
+			$res["type"] = "success";
+			$res["product"] = $product;
+			$res["options"] = $options;
+		}else $res["msg"] = $this->lang->line("e_no_product_registed");
 		
 		header('Content-Type: application/json');
-		echo json_encode(["product" => $product, "options" => $options]);
+		echo json_encode($res);
 	}
 	
 	public function register(){

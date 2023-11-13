@@ -30,8 +30,6 @@ $lang['s_proforma_void']		= "Proforma ha sido anulada.";
 $lang['e_doc_type_ruc']			= 'Elija RUC.';
 $lang['e_doc_number_enter']		= 'Ingrese número de documento.';
 $lang['e_select_product']		= 'Elija al menos un producto.';
-$lang['e_product_no_stock']		= 'Disponibilidad insuficiente de ';
-$lang['e_product_invalid_option']	= "Opción inválida de ";
 $lang['e_invalid_payment']		= "Monto de pago inválido.";
 $lang['e_no_payment_record']	= "No hay registro de pago. Actualice la página e inténtelo nuevamente.";
 $lang['e_unfinished_sale']		= "Venta no finalizada.";
@@ -52,6 +50,9 @@ $lang['s_set_as_main_img']		= 'Imagen ha sido configuarada como principal.';
 
 //product option
 $lang['e_duplicate_option']		= 'Opción esta registrada en el sistema.';
+$lang['e_no_product_registed']	= 'Producto no registrado.';
+$lang['e_product_no_stock']		= 'Stock no disponible.';
+$lang['e_product_invalid_option']	= "Opción inválida de ";
 $lang['s_option_insert']		= 'Opción de producto ha sido generada con éxito.';
 $lang['s_option_update']		= 'Opción ha sido actualizada.';
 $lang['s_option_delete']		= 'Opción ha sido eliminada.';
