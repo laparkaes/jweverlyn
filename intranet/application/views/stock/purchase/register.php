@@ -1,16 +1,17 @@
 <div class="pagetitle">
 	<div class="d-flex justify-content-between align-items-start">
 		<div>
-			<h1>Nueva Venta</h1>
+			<h1>Nueva Compra</h1>
 			<nav>
 				<ol class="breadcrumb">
-					<li class="breadcrumb-item">Ventas</li>
+					<li class="breadcrumb-item">Stock</li>
+					<li class="breadcrumb-item">Compras</li>
 					<li class="breadcrumb-item active">Nueva</li>
 				</ol>
 			</nav>
 		</div>
 		<div>
-			<a href="<?= base_url() ?>commerce/sale" type="button" class="btn btn-success">
+			<a href="<?= base_url() ?>stock/purchase" type="button" class="btn btn-success">
 				<i class="bi bi-arrow-left"></i>
 			</a>
 		</div>
@@ -48,7 +49,7 @@
 							<input type="hidden" name="product_id">
 							<div class="col-md-12">
 								<label class="form-label">Producto</label>
-								<input type="text" class="form-control" name="produt" readonly>
+								<input type="text" class="form-control" name="product" readonly>
 							</div>
 							<div class="col-md-12">
 								<label class="form-label">Opción</label>
@@ -57,21 +58,19 @@
 							<div class="col-md-6">
 								<label class="form-label">Precio Unitario</label>
 								<div class="input-group">
-									<span class="input-group-text">S/.</span>
-									<input type="hidden" class="form-control" name="price_txt">
-									<input type="text" class="form-control" name="price">
+									<span class="input-group-text">S/</span>
+									<input type="text" class="form-control" name="price" value="0">
 								</div>
 							</div>
 							<div class="col-md-6">
 								<label class="form-label">Cantidad</label>
-								<input type="text" class="form-control" name="qty">
+								<input type="text" class="form-control" name="qty" value="0">
 							</div>
 							<div class="col-md-12">
 								<label class="form-label">Subtotal</label>
 								<div class="input-group">
-									<span class="input-group-text">S/.</span>
-									<input type="hidden" class="form-control" name="subtotal_txt" readonly>
-									<input type="text" class="form-control" name="subtotal" readonly>
+									<span class="input-group-text">S/</span>
+									<input type="text" class="form-control" name="subtotal" value="0" readonly>
 								</div>
 							</div>
 							<div class="col-md-12 pt-3">
@@ -104,10 +103,10 @@
 								<tr>
 									<th scope="col">#</th>
 									<th scope="col">Producto</th>
-									<th scope="col">P/U</th>
 									<th scope="col">Opción</th>
-									<th scope="col">Cant.</th>
-									<th scope="col">Subtotal</th>
+									<th scope="col" class="text-end">P/U</th>
+									<th scope="col" class="text-end">Cant.</th>
+									<th scope="col" class="text-end">Subtotal</th>
 									<th scope="col"></th>
 								</tr>
 							</thead>
@@ -117,13 +116,11 @@
 				</div>
 			</div>
 		</div>
-	</div>
-	<div class="col-md-6">
 		<div class="card">
 			<div class="card-body">
 				<h5 class="card-title">Pago</h5>
 				<div class="row g-3">
-					<div class="col-md-6">
+					<div class="col-md-3">
 						<label class="form-label">Medio de Pago</label>
 						<select class="form-select" name="payment[payment_method_id]">
 							<?php foreach($payment_methods as $p){ ?>
@@ -132,7 +129,15 @@
 						</select>
 						<div class="invalid-feedback"></div>
 					</div>
-					<div class="col-md-6">
+					<div class="col-md-3">
+						<label class="form-label">Total</label>
+						<div class="input-group">
+							<span class="input-group-text">S/.</span>
+							<input type="hidden" id="total" name="payment[total]" value="0.00" readonly>
+							<input type="text" class="form-control" id="total_txt" value="0.00" disabled>
+						</div>
+					</div>
+					<div class="col-md-3">
 						<label class="form-label">Recibido</label>
 						<div class="input-group has-validation">
 							<span class="input-group-text">S/.</span>
@@ -141,15 +146,7 @@
 							<div class="invalid-feedback"></div>
 						</div>
 					</div>
-					<div class="col-md-6">
-						<label class="form-label">Total</label>
-						<div class="input-group">
-							<span class="input-group-text">S/.</span>
-							<input type="hidden" id="total" name="payment[total]" value="0.00" readonly>
-							<input type="text" class="form-control" id="total_txt" value="0.00" disabled>
-						</div>
-					</div>
-					<div class="col-md-6">
+					<div class="col-md-3">
 						<label class="form-label">Vuelto</label>
 						<div class="input-group">
 							<span class="input-group-text">S/.</span>

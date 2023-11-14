@@ -11,6 +11,12 @@ const alert_words = {
 	},
 }
 
+const error_msg = {
+	sp: {
+		qty_no_zero: "Cantidad debe ser mayor que cero.",
+	},
+}
+
 const warning_msg = {
 	sp: {
 		add_module: "¿Desea agregar nuevo módulo?",
@@ -50,6 +56,7 @@ const warning_msg = {
 		update_client: "¿Desea actualizar cliente?",
 		add_provider: "¿Desea agregar nuevo proveedor?",
 		update_provider: "¿Desea actualizar proveedor?",
+		no_product_option_selected: "Se creará una opción general por no elegir una opción de producto.",
 	},
 }
 
@@ -63,6 +70,14 @@ $('form input').each(function(index, element) {
 
 function nf(num){//number format
 	return parseFloat(num).toLocaleString('es-US', {maximumFractionDigits: 2, minimumFractionDigits: 2});
+}
+
+function nf_int(num){//number format
+	return parseInt(num).toLocaleString('es-US');
+}
+
+function nf_reverse(num){
+	return num.replace(/,/g, '');
 }
 
 function reset_form(form_id){
@@ -182,6 +197,19 @@ function ajax_simple_warning(data, url, msg_index){
 	});
 	
 	return deferred.promise();
+}
+
+function ob_from_form(dom_id){
+	// Serialize form data into an array
+	var formDataArray = $(dom_id).serializeArray();
+
+	// Convert the array into an object
+	var formDataObject = {};
+	$.each(formDataArray, function(i, field){
+		formDataObject[field.name] = field.value;
+	});
+	
+	return formDataObject;
 }
 
 function set_date(dom_date, min){

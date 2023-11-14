@@ -88,23 +88,24 @@ function calculate_amount(){
 $("#received_txt").on('change',(function(e) {
 	calculate_change();
 }));
-
-$("#btn_search_product").on('click',(function(e) {
-	search_product($("#keyword").val());
-}));
-
-$("#keyword").on('keyup',(function(e) {
-	if (e.key === "Enter") search_product($("#keyword").val());
-}));
 /* payment amount end */
 
 /* product operation start */
+function close_select_product(){
+	$("#card_select_product").addClass("d-none");
+	$("#form_select_product").addClass("d-none");
+	$("#form_select_product")[0].reset();
+	$("#form_search_product input").val("");
+	$("#msg_enter_keyword").removeClass("d-none");
+	$("#bl_search_result").addClass("d-none");
+}
+
 $("#btn_open_select_product").on('click',(function(e) {
 	$("#card_select_product").removeClass("d-none");
 }));
 
 $("#btn_close_select_product").on('click',(function(e) {
-	$("#card_select_product").addClass("d-none");
+	close_select_product();
 }));
 
 function select_product(dom){
@@ -115,17 +116,13 @@ function select_product(dom){
 	ajax_simple({product_id: $(dom).val()}, b_url + "load_product").done(function(res) {
 		if (res.type == "success"){
 			$("#form_select_product input[name=product_id]").val(res.product.product_id);
-			$("#form_select_product input[name=produt]").val(res.product.product);
-			$("#form_select_product input[name=price_txt]").val(nf(0));
-			$("#form_select_product input[name=price]").val(0);
-			$("#form_select_product input[name=subtotal_txt]").val(nf(0));
-			$("#form_select_product input[name=subtotal]").val(0);
+			$("#form_select_product input[name=product]").val(res.product.product);
 			
 			var dom_select = $("#form_select_product select[name=option_id]");
 			dom_select.html("");
 			$(dom_select).append('<option value="">Elegir</option>');
 			$(res.options).each(function(index, element){
-				$(dom_select).append('<option value="' + element.option_id + '">' + element.option + ' (' + element.stock + ')</option>');
+				$(dom_select).append('<option value="' + element.option_id + '">' + element.option + '</option>');
 			});
 			
 			$("#form_select_product").removeClass("d-none");
@@ -133,8 +130,6 @@ function select_product(dom){
 			swal("error", res.msg);
 			$("#form_select_product").addClass("d-none");
 		}
-		
-		console.log(res);
 	});
 }
 
@@ -158,46 +153,82 @@ $("#form_search_product").submit(function(e) {
 	});
 });
 
+$("#form_select_product input[name=price], #form_select_product input[name=qty]").on('change',(function(e) {
+	var price = nf_reverse($("#form_select_product input[name=price]").val());
+	var qty = nf_reverse($("#form_select_product input[name=qty]").val());
+	
+	$("#form_select_product input[name=price]").val(nf(price));
+	$("#form_select_product input[name=qty]").val(nf_int(qty));
+	$("#form_select_product input[name=subtotal]").val(nf(price * qty));
+}));
+
+var row_num = 1;
+function add_product(selected){
+	var prod = {
+		product_id: selected.product_id,
+		option_id: selected.option_id,
+		price: selected.price,
+		qty: selected.qty,
+	}
+	
+	$("#tb_product_list").append('<tr class="prod_row align-middle" id="prod_' + row_num + '"><th scope="row" class="num">' + ($(".prod_row").length + 1) + '</th><td>' + selected.product + '<textarea class="product_json d-none" name="products[]">' + JSON.stringify(prod) + '</textarea></td><td>' + selected.option + '</td><td class="text-nowrap text-end">S/ ' + nf(selected.price) + '</td><td class="text-end">' + nf_int(selected.qty) + '</td><td class="text-nowrap text-end">S/ ' + nf(selected.subtotal) + '</td><td class="text-end"><button type="button" class="btn btn-outline-danger btn-sm border-0 btn_delete_prod"><i class="bi bi-x-lg"></i></button></td></tr>');
+	
+	var row_id = "#prod_" + row_num;
+	$(row_id).find(".btn_delete_prod").on('click',(function(e) {
+		$(row_id).remove();
+		$($(".prod_row")).each(function(index, element){
+			$(this).find(".num").html(index + 1);
+		});
+		//calculate_amount();
+	}));
+	
+	/* calculate amount */
+	//calculate_amount();
+	
+	/* next row number for control delete operation */
+	row_num++;
+	
+	/* close select product block */
+	close_select_product();
+}
+
 $("#form_select_product").submit(function(e) {
 	e.preventDefault();
 	
-	// Serialize form data into an array
-	var formDataArray = $(this).serializeArray();
-
-	// Convert the array into an object
-	var formDataObject = {};
-	$.each(formDataArray, function(i, field){
-	  formDataObject[field.name] = field.value;
-	});
-
-	// Display the result in the console
-	console.log(formDataObject);
-	/*
-	ajax_form(this, b_url + "search_product").done(function(res) {
-		$("#msg_enter_keyword").addClass("d-none");
-		$("#bl_search_result").removeClass("d-none");
-		$("#search_result").html("");
-		
-		if (res.type == "success"){
-			$(res.products).each(function(index, element) {
-				$("#search_result").append('<button class="list-group-item list-group-item-action btn_select_product" value="' + element.product_id + '"><div class="d-flex w-100 justify-content-between"><h5 class="mb-1 me-3">' + element.product + '</h5><small class="text-nowrap">S/. ' + element.price + '</small></div><p class="mb-1">' + element.category + '</p><small>' + element.code + '</small></button>');
+	var selected = ob_from_form("#form_select_product");
+	selected.option = $("#form_select_product select[name=option_id] option:selected").text();
+	selected.qty = parseInt(nf_reverse(selected.qty));
+	selected.price = parseFloat(nf_reverse(selected.price));
+	selected.subtotal = selected.qty * selected.price;
+	
+	if (isNaN(selected.qty)) selected.qty = 0;
+	if (isNaN(selected.price)) selected.price = 0;
+	
+	if (selected.qty > 0){
+		if (selected.option_id == ""){
+			selected.option = "-";
+			Swal.fire({
+				title: "¡ " + alert_words[default_lang]["warning"].toUpperCase() + " !",
+				icon: "warning",
+				html: warning_msg[default_lang]["no_product_option_selected"],
+				confirmButtonText: alert_words[default_lang]["confirm"],
+				cancelButtonText: alert_words[default_lang]["cancel"],
+				showCancelButton: true,
+			}).then((result) => {
+				if (result.isConfirmed) add_product(selected);
 			});
-			
-			$(".btn_select_product").on('click',(function(e) {
-				select_product(this);
-			}));
-		}else $("#search_result").html(res.msg);
-	});
-	*/
+		}else add_product(selected);
+	}else swal("error", error_msg.sp["qty_no_zero"]);
 });
+/* product operation end */
 
 
 
 
 
 
-var row_num = 1;
-function add_product(dom){
+
+function add_product1(dom){//remove
 	ajax_simple({product_id: $(dom).val()}, b_url + "load_product").done(function(res) {
 		/* add doms to row */
 		$("#tb_product_list").append('<tr class="prod_row align-middle" id="prod_' + row_num + '"><th class="num" scope="row">' + ($(".prod_row").length + 1) + '<input type="hidden" name="products[' + row_num + '][product_id]" value="' + res.product.product_id + '"></th><td class="product">' + res.product.product + '<div class="product_json d-none">' + JSON.stringify(res.product) + '</div></td><td class="price text-nowrap">S/. ' + nf(res.product.price) + '</td><td class="options"></td><td class="qty"><input type="number" class="form-control ip_qty" name="products[' + row_num + '][qty]" value="1" min="1" style="width: 100px;"></td><td class="subtotal text-nowrap text-end">' + nf(res.product.price) + '</td><td class="text-end"><button type="button" class="btn btn-outline-danger btn-sm border-0 btn_delete_prod"><i class="bi bi-x-lg"></i></button></td></tr>');
@@ -246,7 +277,7 @@ function add_product(dom){
 	});
 }
 
-function search_product(keyword){
+function search_product(keyword){//remove
 	ajax_simple({keyword: keyword}, b_url + "search_product").done(function(res) {
 		$("#search_result").html("");
 		if (res.type == "success"){
@@ -260,7 +291,7 @@ function search_product(keyword){
 		}else $("#search_result").html(res.msg);
 	});
 }
-/* product operation end */
+
 
 
 
