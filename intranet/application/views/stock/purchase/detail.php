@@ -30,12 +30,12 @@
 						</li>
 						<li class="list-group-item d-flex justify-content-between align-items-center">
 							<strong>Monto</strong>
-							<span>S/. <?= number_format($purchase->amount, 2) ?></span>
+							<span>S/ <?= number_format($purchase->amount, 2) ?></span>
 						</li>
 						<?php if ($purchase->balance){ ?>
 						<li class="list-group-item d-flex justify-content-between align-items-center">
 							<strong>Saldo</strong>
-							<span>S/. <?= number_format($purchase->balance, 2) ?></span>
+							<span>S/ <?= number_format($purchase->balance, 2) ?></span>
 						</li>
 						<?php } ?>
 						<li class="list-group-item">
@@ -81,7 +81,29 @@
 					<h5 class="card-title">Agregar Pago</h5>
 					<form id="form_add_payment" class="row g-3">
 						<input type="hidden" name="purchase_id" value="<?= $purchase->purchase_id ?>">
-						<div class="col-md-6">
+						<div class="col-md-12">
+							<label class="form-label">Pagado</label>
+							<div class="input-group has-validation">
+								<span class="input-group-text border-primary">S/</span>
+								<input type="text" class="form-control border-primary" id="pay_paid" name="paid" value="0.00">
+								<div class="invalid-feedback"></div>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<label class="form-label">Total</label>
+							<div class="input-group">
+								<span class="input-group-text">S/</span>
+								<input type="text" class="form-control" id="pay_total" name="total" value="<?= number_format($purchase->balance, 2) ?>" readonly>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<label class="form-label">Saldo</label>
+							<div class="input-group">
+								<span class="input-group-text">S/.</span>
+								<input type="text" class="form-control" id="pay_balance" name="balance" value="0.00" readonly>
+							</div>
+						</div>
+						<div class="col-md-4">
 							<label class="form-label">Medio de Pago</label>
 							<select class="form-select" name="payment_method_id">
 								<?php foreach($payment_methods as $p){ ?>
@@ -89,31 +111,6 @@
 								<?php } ?>
 							</select>
 							<div class="invalid-feedback"></div>
-						</div>
-						<div class="col-md-6">
-							<label class="form-label">Recibido</label>
-							<div class="input-group has-validation">
-								<span class="input-group-text">S/.</span>
-								<input type="hidden" id="received" name="received" value="0.00">
-								<input type="text" class="form-control" id="received_txt" name="received_txt" value="0.00">
-								<div class="invalid-feedback"></div>
-							</div>
-						</div>
-						<div class="col-md-6">
-							<label class="form-label">Total</label>
-							<div class="input-group">
-								<span class="input-group-text">S/.</span>
-								<input type="hidden" id="total" name="total" value="<?= $purchase->balance ?>" readonly>
-								<input type="text" class="form-control" id="total_txt" value="<?= number_format($purchase->balance, 2) ?>" disabled>
-							</div>
-						</div>
-						<div class="col-md-6">
-							<label class="form-label">Vuelto</label>
-							<div class="input-group">
-								<span class="input-group-text">S/.</span>
-								<input type="hidden"id="change" name="change" value="0.00" readonly>
-								<input type="text" class="form-control" id="change_txt" value="0.00" disabled>
-							</div>
 						</div>
 						<div class="col-12 pt-3 text-center">
 							<button type="button" class="btn btn-secondary" id="btn_close_ap">Cerrar</button>
@@ -123,24 +120,48 @@
 				</div>
 			</div>
 			<?php } ?>
+			<div class="card d-none" id="card_add_note">
+				<div class="card-body">
+					<h5 class="card-title">Agregar Nota</h5>
+					<form id="form_add_note">
+						<input type="hidden" name="purchase_id" value="<?= $purchase->purchase_id ?>">
+						<div class="row g-3">
+							<div class="col-md-12">
+								<label class="form-label">Nota</label>
+								<textarea class="form-control" name="note" rows="5"></textarea>
+								<div class="invalid-feedback"></div>
+							</div>
+							<div class="col-md-12 pt-3 text-center">
+								<button type="button" class="btn btn-secondary" id="btn_close_an">Cerrar</button>
+								<button type="submit" class="btn btn-primary">Agregar</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
 			<div class="card">
 				<div class="card-body pt-3">
 					<?php if ($purchase->valid){ ?>
 					<div class="row">
-						<div class="col-md-4 d-grid">
+						<div class="col-md-3 d-grid">
 							<button type="button" class="btn btn-success mb-3" id="btn_file_upload">
-								<i class="bi bi-upload" style="font-size: 2rem;"></i><br/>Subir Archivo
+								<i class="bi bi-upload" style="font-size: 2rem;"></i><br/>Archivo
 							</button>
 						</div>
-						<div class="col-md-4 d-grid">
+						<div class="col-md-3 d-grid">
 							<?php if ($purchase->balance) $d = ""; else $d = "disabled"; ?>
 							<button type="button" class="btn btn-primary mb-3" <?= $d ?> id="btn_add_payment">
-								<i class="bi bi-credit-card" style="font-size: 2rem;"></i><br/>Agregar Pago
+								<i class="bi bi-credit-card" style="font-size: 2rem;"></i><br/>Pago
 							</button>
 						</div>
-						<div class="col-md-4 d-grid">
+						<div class="col-md-3 d-grid">
+							<button type="button" class="btn btn-primary mb-3" id="btn_add_note">
+								<i class="bi bi-journal-check" style="font-size: 2rem;"></i><br/>Nota
+							</button>
+						</div>
+						<div class="col-md-3 d-grid">
 							<button type="button" class="btn btn-outline-danger mb-3" id="btn_cancel_purchase" value="<?= $purchase->purchase_id ?>">
-								<i class="bi bi-trash" style="font-size: 2rem;"></i><br/>Anular Compra
+								<i class="bi bi-trash" style="font-size: 2rem;"></i><br/>Anular
 							</button>
 						</div>
 					</div>
@@ -186,9 +207,10 @@
 									<thead>
 										<tr>
 											<th scope="col">#</th>
-											<th scope="col">Metodo / Fecha</th>
-											<th scope="col">Recibido</th>
-											<th scope="col">Vuelto</th>
+											<th scope="col">Fecha</th>
+											<th scope="col">Metodo</th>
+											<th scope="col" class="text-end">Monto</th>
+											<th scope="col" class="text-end">Balance</th>
 											<th scope="col"></th>
 										</tr>
 									</thead>
@@ -196,9 +218,10 @@
 										<?php foreach($payments as $p_i => $p){ ?>
 										<tr>
 											<th scope="row"><?= number_format($p_i + 1) ?></th>
-											<td><?= $p->payment_method ?><br/><?= $p->registed_at ?></td>
-											<td class="text-nowrap text-end">S/ <?= number_format($p->received, 2) ?></td>
-											<td class="text-nowrap text-end">S/ <?= number_format($p->change, 2) ?></td>
+											<td><?= $p->registed_at ?></td>
+											<td><?= $p->payment_method ?></td>
+											<td class="text-nowrap text-end">S/ <?= number_format($p->paid, 2) ?></td>
+											<td class="text-nowrap text-end">S/ <?= number_format($p->balance, 2) ?></td>
 											<td class="text-end">
 												<button type="button" class="btn btn-outline-danger btn-sm border-0 btn_delete_payment" value="<?= $p->payment_id ?>">
 													<i class="bi bi-x-lg"></i>
@@ -216,26 +239,3 @@
 		</div>
 	</div>
 </section>
-
-<!-- modals -->
-<?php if ($purchase->balance){ ?>
-<div class="modal fade" id="md_add_payment" tabindex="-1">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			
-				
-				<div class="modal-header">
-					<h5 class="modal-title">Agregar Pago</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-				</div>
-				<div class="modal-body text-start">
-					
-				</div>
-				<div class="modal-footer">
-					
-				</div>
-			
-		</div>
-	</div>
-</div>
-<?php } ?>

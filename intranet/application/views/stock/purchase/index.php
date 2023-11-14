@@ -67,6 +67,7 @@
 									<th scope="col">Fecha</th>
 									<th scope="col">Proveedor</th>
 									<th scope="col" class="text-end">Monto</th>
+									<th scope="col" class="text-end">Saldo</th>
 									<th scope="col"></th>
 									<th scope="col"></th>
 								</tr>
@@ -78,6 +79,9 @@
 									<td><?= date("Y-m-d", strtotime($p->registed_at)) ?></td>
 									<td><?= $p->provider ?></td>
 									<td class="text-nowrap text-end">S/ <?= number_format($p->amount, 2) ?></td>
+									<td class="text-nowrap text-end">
+										<?php echo ($p->balance > 0) ? "S/ ".number_format($p->balance, 2) : "-"; ?>
+									</td>
 									<td class="text-center"><i class="bi bi-circle-fill text-<?= $p->color ?>"></i></td>
 									<td class="text-end">
 										<a href="<?= base_url() ?>stock/purchase/detail/<?= $p->purchase_id ?>" type="button" class="btn btn-outline-primary btn-sm border-0">

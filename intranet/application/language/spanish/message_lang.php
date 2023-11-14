@@ -9,6 +9,11 @@ $lang['e_numeric']				= 'Debe ser un número.';
 $lang['e_numeric_positive']		= 'Debe ser un número positivo.';
 $lang['e_no_result']			= 'No hay resultado de búsqueda.';
 $lang['e_enter_keyword']		= 'Ingrese palabra de búsqueda.';
+$lang['e_no_zero']				= 'Debe ser mayor que cero.';
+
+//purchase
+$lang['e_product_qty_zero']		= 'La cantidad de producto debe ser mayor a cero.';
+$lang['s_purchase_insert']		= "Compra ha sido registrada.";
 
 //proveedor
 $lang['e_provider_exists']		= 'Proveedor registrado.';

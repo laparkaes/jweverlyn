@@ -13,6 +13,7 @@ const alert_words = {
 
 const error_msg = {
 	sp: {
+		limited_payment: "Debe pagar igual o menos que total.",
 		qty_no_zero: "Cantidad debe ser mayor que cero.",
 	},
 }
@@ -56,7 +57,8 @@ const warning_msg = {
 		update_client: "¿Desea actualizar cliente?",
 		add_provider: "¿Desea agregar nuevo proveedor?",
 		update_provider: "¿Desea actualizar proveedor?",
-		no_product_option_selected: "Se creará una opción general por no elegir una opción de producto.",
+		no_product_option_selected: "Se creará una opción general por no elegir ninguna.",
+		add_purchase: "¿Desea agregar nueva compra?",
 	},
 }
 
@@ -68,17 +70,17 @@ $('form input').each(function(index, element) {
 	});
 });
 
-function nf(num){//number format
-	return parseFloat(num).toLocaleString('es-US', {maximumFractionDigits: 2, minimumFractionDigits: 2});
-}
+//move to top of page
+function move_top(){$("html, body").animate({ scrollTop: 0 }, "slow");}
 
-function nf_int(num){//number format
-	return parseInt(num).toLocaleString('es-US');
-}
+//number format 1,000,000.00
+function nf(num){return parseFloat(num).toLocaleString('es-US', {maximumFractionDigits: 2, minimumFractionDigits: 2});}
 
-function nf_reverse(num){
-	return num.replace(/,/g, '');
-}
+//number format 1,000,000
+function nf_int(num){return parseInt(num).toLocaleString('es-US');}
+
+//number format without comma
+function nf_reverse(num){return num.replace(/,/g, '');}
 
 function reset_form(form_id){
 	$(form_id)[0].reset();

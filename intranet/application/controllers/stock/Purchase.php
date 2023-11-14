@@ -101,12 +101,12 @@ class Purchase extends CI_Controller {
 		$this->load->view('layout', $data);
 	}
 	
-	private function update_balance($purchase_id){
+	private function update_balance($purchase_id){//ok
 		$purchase = $this->gm->unique("purchase", "purchase_id", $purchase_id);
 		
 		$paid = 0;
 		$payments = $this->gm->filter("purchase_payment", ["purchase_id" => $purchase->purchase_id]);
-		foreach($payments as $p) $paid = $paid + $p->received - $p->change;
+		foreach($payments as $p) $paid = $paid + $p->paid;
 		
 		$f = ["purchase_id" => $purchase->purchase_id];
 		$d = [
@@ -117,17 +117,19 @@ class Purchase extends CI_Controller {
 		$this->gm->update("purchase", $f, $d);
 	}
 	
-	public function add_payment(){
+	public function add_payment(){//ok
 		$result = ["type" => "error", "msg" => null, "url" => null];
 		
 		if ($this->session->userdata('username')){
 			$payment = $this->input->post();
+			$payment["paid"] = str_replace(",", "", $payment["paid"]);
+			$payment["total"] = str_replace(",", "", $payment["total"]);
+			$payment["balance"] = str_replace(",", "", $payment["balance"]);
 			
 			$this->load->library('my_val');
-			$result = $this->my_val->add_payment($payment);
+			$result = $this->my_val->add_payment_purchase($payment);
 			
 			if ($result["type"] === "success"){
-				unset($payment["received_txt"]);
 				$this->gm->insert("purchase_payment", $payment);
 				$this->update_balance($payment["purchase_id"]);
 				
@@ -140,7 +142,7 @@ class Purchase extends CI_Controller {
 		echo json_encode($result);
 	}
 	
-	public function delete_payment(){
+	public function delete_payment(){//ok
 		$type = "error"; $msg = null; $url = null;
 		$payment = $this->gm->unique("purchase_payment", "payment_id", $this->input->post('payment_id'));
 		
@@ -181,7 +183,7 @@ class Purchase extends CI_Controller {
 		echo json_encode(["type" => $type, "msg" => $msg, "products" => $products]);
 	}
 	
-	public function load_product(){
+	public function load_product(){//ok
 		$res = ["type" => "error", "msg" => null];
 		
 		$product = $this->gm->unique("product", "product_id", $this->input->post("product_id"));
@@ -203,7 +205,7 @@ class Purchase extends CI_Controller {
 		echo json_encode($res);
 	}
 	
-	public function register(){
+	public function register(){//ok
 		if (!$this->session->userdata('username')) redirect("auth/login");
 		
 		$data = [
@@ -214,13 +216,21 @@ class Purchase extends CI_Controller {
 		$this->load->view('layout', $data);
 	}
 	
-	public function add_purchase(){
+	public function add_purchase(){//ok
 		$result = ["type" => "error", "msg" => null];
 		
 		if ($this->session->userdata('username')){
-			$products = $this->input->post("products");
+			$products_json = $this->input->post("products");
 			$payment = $this->input->post("payment");
-			$provider = $this->input->post("provider");	
+			$provider = $this->input->post("provider");
+			
+			/* data processing */
+			$products = [];
+			if ($products_json) foreach($products_json as $p) $products[] = json_decode($p, true);
+			
+			$payment["paid"] = str_replace(",", "", $payment["paid"]);
+			$payment["total"] = str_replace(",", "", $payment["total"]);
+			$payment["balance"] = str_replace(",", "", $payment["balance"]);
 			
 			$this->load->library('my_val');
 			$result = $this->my_val->add_purchase($products, $payment, $provider);
@@ -229,50 +239,58 @@ class Purchase extends CI_Controller {
 				$now = date("Y-m-d H:i:s");
 				
 				//provider process
-				if ($provider["doc_type_id"] == 1) $provider_id = null; //case of no provider document
+				$provider_rec = $this->gm->filter("provider", $provider);
+				if ($provider_rec) $provider_id = $provider_rec[0]->provider_id;
 				else{
-					$provider_rec = $this->gm->filter("provider", $provider);
-					if ($provider_rec) $provider_id = $provider_rec[0]->provider_id;
-					else{
-						$provider["valid"] = true;
-						$provider["updated_at"] = $provider["registed_at"] = $now;	
-						$provider_id = $this->gm->insert("provider", $provider);
-					}
+					$provider["valid"] = true;
+					$provider["updated_at"] = $provider["registed_at"] = $now;	
+					$provider_id = $this->gm->insert("provider", $provider);
 				}
 				
 				//purchase process
+				$amount = 0;
+				foreach($products as $i => $p) $amount += $p["price"] * $p["qty"];
+				
 				$purchase = [
 					"provider_id" => $provider_id,
+					"amount" => $amount,
+					"paid" => $payment["paid"],
+					"balance" => $amount - $payment["paid"],
 					"updated_at" => $now,
 					"registed_at" => $now,
 				];
-				
-				$amount = 0;
-				foreach($products as $i => $p){
-					$prod = $this->gm->unique("product", "product_id", $p["product_id"]);
-					$products[$i]["price"] = $prod->price;
-					$products[$i]["subtotal"] = $prod->price * $products[$i]["qty"];
-					$amount += $products[$i]["subtotal"];
-				}
-				
-				$purchase["amount"] = $amount;
-				$purchase["paid"] = $payment["received"] - $payment["change"];
-				$purchase["balance"] = $purchase["amount"] - $purchase["paid"];
 				$purchase_id = $this->gm->insert("purchase", $purchase);
 				
 				//payment process
-				unset($payment["received_txt"]);
 				$payment["purchase_id"] = $purchase_id;
 				$payment["registed_at"] = $now;
 				$this->gm->insert("purchase_payment", $payment);
 				
 				//products process
 				foreach($products as $p){
+					if (!$p["option_id"]){
+						$option_id = 0;
+						$op_name = "-";
+						while (!$option_id){
+							if ($this->gm->filter("product_option", ["product_id" => $p["product_id"], "option" => $op_name])) $op_name = $op_name."-";
+							else{
+								$op = [
+									"product_id" => $p["product_id"],
+									"option" => $op_name,
+									"stock" => 0,
+								];
+								$option_id = $this->gm->insert("product_option", $op);
+							}
+						}
+						$p["option_id"] = $option_id;
+					}
+					
 					$p["purchase_id"] = $purchase_id;
+					$p["subtotal"] = $p["price"] * $p["qty"];
 					$this->gm->insert("purchase_product", $p);
 					
 					$option = $this->gm->unique("product_option", "option_id", $p["option_id"]);
-					$this->gm->update("product_option", ["option_id" => $p["option_id"]], ["stock" => $option->stock - $p["qty"]]);
+					$this->gm->update("product_option", ["option_id" => $p["option_id"]], ["stock" => $option->stock + $p["qty"]]);
 				}
 				
 				$result["purchase_id"] = $purchase_id;
@@ -305,195 +323,5 @@ class Purchase extends CI_Controller {
 		
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msg" => $msg, "url" => $url]);
-	}
-
-	public function send_to_sunat($invoice_id){
-		$this->load->library('my_greenter');
-		$result = $this->my_greenter->issue_invoice($invoice_id);
-		
-		if ($result["type"] === "success"){
-			$invoice = $this->gm->unique("invoice", "invoice_id", $invoice_id);
-			
-			//xml y cdr update in invoice record
-			$sunat_file = [
-				"invoice_id " => $invoice->invoice_id,
-				"purchase_id " => $invoice->purchase_id,
-				"xml" => $result["xml"], 
-				"cdr" => $result["cdr"],
-				"registed_at" => date("Y-m-d H:i:s"),
-			];
-			$this->gm->insert("sunat_file", $sunat_file);
-			$this->gm->update("invoice", ["invoice_id" => $invoice_id], ["is_sent_sunat" => true]);
-			
-			$result["url"] = base_url()."stock/purchase/view_invoice/".$invoice_id;	
-		}
-		
-		unset($result["xml"]);
-		unset($result["cdr"]);
-		
-		return $result;
-	}
-
-	public function issue_invoice(){
-		$result = ["type" => "error", "msg" => "", "url" => null];
-		
-		if ($this->session->userdata('username')){
-			$invoice = $this->input->post("invoice");
-			$provider = $this->input->post("provider");
-			
-			if (!$this->gm->unique("invoice", "purchase_id", $invoice["purchase_id"])){
-				$this->load->library('my_val');
-				$result = $this->my_val->issue_invoice($invoice, $provider);
-				
-				if ($result["type"] === "success"){
-					$purchase = $this->gm->unique("purchase", "purchase_id", $invoice["purchase_id"], false);
-					if (!$purchase->balance){
-						$now = date("Y-m-d H:i:s");
-						
-						//provider process
-						if ($provider["doc_type_id"] == 1) $provider_id = null; //case of no provider document
-						else{
-							$provider_rec = $this->gm->filter("provider", $provider);
-							if ($provider_rec) $provider_id = $provider_rec[0]->provider_id;
-							else{
-								$provider["valid"] = true;
-								$provider["updated_at"] = $provider["registed_at"] = $now;	
-								$provider_id = $this->gm->insert("provider", $provider);
-							}
-						}
-						
-						//invoice process
-						$invoice["provider_id"] = $provider_id;
-						
-						$f = [
-							"type_id" => $invoice["type_id"],
-							"serie_id" => $invoice["serie_id"],
-						];
-						$last_invoice = $this->gm->filter("invoice", $f, null, null, [["correlative", "desc"]], 1, 0, false);
-						if ($last_invoice) $invoice["correlative"] = $last_invoice[0]->correlative + 1;
-						else $invoice["correlative"] = 1;
-						
-						$invoice["total"] = $purchase->amount;
-						$invoice["amount"] = round($purchase->amount / 1.18, 2);
-						$invoice["vat"] = $invoice["total"] - $invoice["amount"];
-						$invoice["hash"] = substr(password_hash(date("Ymdhims"), PASSWORD_BCRYPT), -28, 28);
-						$invoice["registed_at"] = $now;
-						$invoice_id = $this->gm->insert("invoice", $invoice);
-						
-						//sent to sunat
-						$result = $this->send_to_sunat($invoice_id);
-					}else{
-						$result["type"] = "error";
-						$result["msg"] = $this->lang->line("e_unfinished_purchase");
-					}
-				}else $result["msg"] = $this->lang->line("e_check_datas");
-			}else $result["msg"] = $this->lang->line("e_invoice_issued");
-		}else $result["msg"] = $this->lang->line("e_finished_session");
-		
-		header('Content-Type: application/json');
-		echo json_encode($result);
-	}
-	
-	public function send_invoice(){
-		if ($this->session->userdata('username')) $result = $this->send_to_sunat($this->input->post("invoice_id"));
-		else $result = ["type" => "error", "msg" => $this->lang->line("e_finished_session")];
-		
-		header('Content-Type: application/json');
-		echo json_encode($result);
-	}
-	
-	public function view_invoice($invoice_id){
-		if (!$this->session->userdata('username')) redirect("auth/login");
-		
-		$invoice = $this->gm->unique("invoice", "invoice_id", $invoice_id);
-		if (!$invoice){
-			echo "No hay comprobante generado en la base de datos.";
-			return;
-		}
-		
-		$this->load->library('my_greenter');
-		$invoice = $this->my_greenter->set_invoice_greenter($invoice_id);
-		
-		$invoice_rec = $this->gm->unique("invoice", "invoice_id", $invoice_id);
-		$payments = $this->gm->filter("purchase_payment", ["purchase_id" => $invoice_rec->purchase_id]);
-		
-		$received = $change = 0;
-		foreach($payments as $p){
-			$received += $p->received;
-			$change += $p->change;
-		}
-		
-		if (count($payments) > 1) $method = $this->gm->unique("payment_method", "payment_method", "Efectivo", false);
-		else $method = $this->gm->unique("payment_method", "payment_method_id", $payments[0]->payment_method_id, false);
-		
-		$qr_data = [
-			$invoice->getCompany()->getRuc(), $invoice->getTipoDoc(), $invoice->getSerie(), $invoice->getCorrelativo(), 
-			$invoice->getTotalImpuestos(), $invoice->getMtoImpVenta(), $invoice->getFechaEmision()->format('Y-m-d'), 
-			$invoice->getprovider()->getTipoDoc(), $invoice->getprovider()->getNumDoc(), $invoice_rec->hash
-		];
-			
-		$this->load->library('ciqrcode');
-		$qr_params = array(
-			"data" => implode("|", $qr_data), "level" => 'H', 
-			"size" => 10, "savename" => FCPATH.'/uploads/qr.png'
-		);
-		
-		$data = [
-			"method" => $method->payment_method,
-			"received" => $received,
-			"change" => $change,
-			"qr" => base64_encode(file_get_contents($this->ciqrcode->generate($qr_params))),
-			"hash" => $invoice_rec->hash,
-		];
-		
-		$html = $this->load->view('stock/purchase/invoice', ["invoice" => $invoice, "data" => $data], true);
-		$this->my_func->make_pdf_ticket($html, $invoice->getSerie()." - ".str_pad($invoice->getCorrelativo(), 6, '0', STR_PAD_LEFT));
-	}
-	
-	public function void_invoice(){
-		$result = ["type" => "error", "msg" => ""];
-		
-		if ($this->session->userdata('username')){
-			$invoice_id = $this->input->post("invoice_id");
-			$invoice = $this->gm->unique("invoice", "invoice_id", $invoice_id);
-			
-			$this->load->library('my_greenter');
-			$result = $this->my_greenter->void_invoice($invoice);
-			
-			if ($result["type"] === "success"){
-				$now = date("Y-m-d H:i:s");
-				
-				//xml y cdr update in invoice record
-				$sunat_file = [
-					"invoice_id " => $invoice_id,
-					"purchase_id " => $invoice->purchase_id,
-					"xml" => $result["xml"], 
-					"cdr" => $result["cdr"],
-					"registed_at" => $now,
-				];
-				$this->gm->insert("sunat_file", $sunat_file);
-				
-				$sunat_resume = [
-					"date" => date("Y-m-d"),
-					"ticket" => $result["ticket"],
-					"correlative" => $result["correlative"],
-					"registed_at" => $now,
-				];
-				$this->gm->insert("sunat_resume", $sunat_resume);
-				
-				$this->gm->update("invoice", ["invoice_id" => $invoice_id], ["valid" => false]);
-			}
-			
-			unset($result["xml"]);
-			unset($result["cdr"]);
-		}else $result["msg"] = $this->lang->line("e_finished_session");
-		
-		header('Content-Type: application/json');
-		echo json_encode($result);
-	}
-	
-	public function convert_pem(){//convert *.pfx cert to *.pem for facturacion electronica
-		$this->load->library('my_greenter');
-		$this->my_greenter->convert_to_pem();
 	}
 }

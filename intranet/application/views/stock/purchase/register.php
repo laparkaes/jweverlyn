@@ -59,12 +59,12 @@
 								<label class="form-label">Precio Unitario</label>
 								<div class="input-group">
 									<span class="input-group-text">S/</span>
-									<input type="text" class="form-control" name="price" value="0">
+									<input type="text" class="form-control ps_price_qty" name="price" value="0">
 								</div>
 							</div>
 							<div class="col-md-6">
 								<label class="form-label">Cantidad</label>
-								<input type="text" class="form-control" name="qty" value="0">
+								<input type="text" class="form-control ps_price_qty" name="qty" value="0">
 							</div>
 							<div class="col-md-12">
 								<label class="form-label">Subtotal</label>
@@ -84,9 +84,7 @@
 		</div>
 	</div>
 </div>
-
-
-<form class="row" id="form_add_sale">
+<form class="row" id="form_add_purchase">
 	<div class="col-md-12">
 		<div class="card">
 			<div class="card-body">
@@ -111,6 +109,13 @@
 								</tr>
 							</thead>
 							<tbody id="tb_product_list"></tbody>
+							<tfoot>
+								<tr>
+									<th scope="col" colspan="5" class="text-end">Total:</th>
+									<th scope="col" class="text-end" id="tb_total">0.00</th>
+									<th scope="col"></th>
+								</tr>
+							</tfoot>
 						</table>
 					</div>
 				</div>
@@ -121,6 +126,28 @@
 				<h5 class="card-title">Pago</h5>
 				<div class="row g-3">
 					<div class="col-md-3">
+						<label class="form-label">Pagado</label>
+						<div class="input-group has-validation">
+							<span class="input-group-text border-primary">S/</span>
+							<input type="text" class="form-control border-primary" id="pay_paid" name="payment[paid]" value="0.00">
+							<div class="invalid-feedback"></div>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<label class="form-label">Total</label>
+						<div class="input-group">
+							<span class="input-group-text">S/</span>
+							<input type="text" class="form-control" id="pay_total" name="payment[total]" value="0.00" readonly>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<label class="form-label">Saldo</label>
+						<div class="input-group">
+							<span class="input-group-text">S/</span>
+							<input type="text" class="form-control" id="pay_balance" name="payment[balance]" value="0.00" readonly>
+						</div>
+					</div>
+					<div class="col-md-3">
 						<label class="form-label">Medio de Pago</label>
 						<select class="form-select" name="payment[payment_method_id]">
 							<?php foreach($payment_methods as $p){ ?>
@@ -129,69 +156,42 @@
 						</select>
 						<div class="invalid-feedback"></div>
 					</div>
-					<div class="col-md-3">
-						<label class="form-label">Total</label>
-						<div class="input-group">
-							<span class="input-group-text">S/.</span>
-							<input type="hidden" id="total" name="payment[total]" value="0.00" readonly>
-							<input type="text" class="form-control" id="total_txt" value="0.00" disabled>
-						</div>
-					</div>
-					<div class="col-md-3">
-						<label class="form-label">Recibido</label>
-						<div class="input-group has-validation">
-							<span class="input-group-text">S/.</span>
-							<input type="hidden" id="received" name="payment[received]" value="0.00">
-							<input type="text" class="form-control" id="received_txt" name="payment[received_txt]" value="0.00">
-							<div class="invalid-feedback"></div>
-						</div>
-					</div>
-					<div class="col-md-3">
-						<label class="form-label">Vuelto</label>
-						<div class="input-group">
-							<span class="input-group-text">S/.</span>
-							<input type="hidden"id="change" name="payment[change]" value="0.00" readonly>
-							<input type="text" class="form-control" id="change_txt" value="0.00" disabled>
-						</div>
-					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-	<div class="col-md-6">
 		<div class="card">
 			<div class="card-body">
 				<h5 class="card-title">Cliente</h5>
 				<div class="row g-3">
-					<div class="col-md-6">
+					<div class="col-md-3">
 						<label class="form-label">Documento</label>
-						<select class="form-select" name="client[doc_type_id]" id="doc_type_id">
-							<?php foreach($client_doc_types as $dt){ ?>
+						<select class="form-select" name="provider[doc_type_id]" id="doc_type_id">
+							<?php foreach($provider_doc_types as $dt){ if ($dt->short){ ?>
 							<option value="<?= $dt->doc_type_id ?>"><?= $dt->doc_type ?></option>
-							<?php } ?>
+							<?php }} ?>
 						</select>
 						<div class="invalid-feedback"></div>
 					</div>
-					<div class="col-md-6">
+					<div class="col-md-3">
 						<label class="form-label">Número</label>
 						<div class="input-group has-validation">
-							<input type="text" class="form-control" name="client[doc_number]" id="doc_number" disabled>
-							<button type="button" class="btn btn-primary" id="btn_search_person" disabled>
+							<input type="text" class="form-control" name="provider[doc_number]" id="doc_number">
+							<button type="button" class="btn btn-primary" id="btn_search_person">
 								<i class="bi bi-search"></i>
 							</button>
 							<div class="invalid-feedback"></div>
 						</div>
 					</div>
-					<div class="col-md-12">
+					<div class="col-md-6">
 						<label class="form-label">Nombre</label>
-						<input type="text" class="form-control" name="client[name]" id="client_name" disabled>
+						<input type="text" class="form-control" name="provider[name]" id="provider_name">
 						<div class="invalid-feedback"></div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<div class="col-md-12 d-grid">
-		<button type="button" class="btn btn-primary btn-lg mb-3" id="btn_add_sale">Agregar Venta</button>
+	<div class="col-md-12 py-3 d-grid">
+		<button type="submit" class="btn btn-primary btn-lg">Agregar Compra</button>
 	</div>
 </form>

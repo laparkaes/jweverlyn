@@ -20,7 +20,7 @@
 	<link href="<?= base_url() ?>assets/vendor/toastr/toastr.min.css" rel="stylesheet">
 	<link href="<?= base_url() ?>assets/css/style.css" rel="stylesheet">
 </head>
-<body>
+<body class="toggle-sidebar">
 	<header id="header" class="header fixed-top d-flex align-items-center">
 		<div class="d-flex align-items-center justify-content-between">
 			<a href="<?= base_url() ?>dashboard" class="logo d-flex align-items-center">

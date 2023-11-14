@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- 생성 시간: 23-11-10 18:41
+-- 생성 시간: 23-11-14 18:40
 -- 서버 버전: 10.4.24-MariaDB
 -- PHP 버전: 7.4.29
 
@@ -3825,11 +3825,18 @@ INSERT INTO `product_option` (`option_id`, `product_id`, `option`, `stock`, `val
 (24, 1, 'Talla S', 157, 0),
 (25, 1, 'Rosado', 77, 0),
 (26, 1, 'Negro', 124, 1),
-(27, 197, 'Talla S', 62, 1),
-(28, 197, 'Talla M', 73, 1),
-(29, 197, 'Talla L', 120, 1),
+(27, 197, 'Talla S', 69, 1),
+(28, 197, 'Talla M', 203, 1),
+(29, 197, 'Talla L', 350, 1),
 (30, 216, '7L', 300, 1),
-(31, 71, 'Verde', 300, 1);
+(31, 71, 'Verde', 300, 1),
+(32, 197, '-', 7, 0),
+(33, 254, '-', 100, 1),
+(34, 197, 'Talla XS', 7, 1),
+(35, 254, '--', 100, 1),
+(36, 197, 'Talla XL', 7, 1),
+(37, 254, '---', 100, 1),
+(38, 162, '-', 99, 1);
 
 -- --------------------------------------------------------
 
@@ -3931,7 +3938,8 @@ INSERT INTO `provider` (`provider_id`, `doc_type_id`, `doc_number`, `name`, `tel
 (18, 4, '20408058261', 'CLINICA EVERLYN S.A.C.', '', '', '', '', NULL, 1, '2023-11-02 23:17:29', '2023-11-02 23:17:29'),
 (19, 4, '20448426701', 'ALE BIENES Y SERVICIOS EN GENERAL SOCIEDAD ANONIMA CERRADA', NULL, NULL, NULL, NULL, '4_20448426701_20231109183244.jpg', 1, '2023-11-03 19:18:11', '2023-11-03 19:18:11'),
 (20, 3, '000765804', 'Henry Calle', '345-6785', '908-237-473', 'h.calle@pontafina.com', 'Cl. Mexico ciudad 283, Cercado de Lima', '3_000765804_20231104161853.jpg', 1, '2023-11-03 23:22:13', '2023-11-03 20:37:49'),
-(21, 5, 'M68303812', 'Jeong Woo fulanito', '241-29371', '999-123-5831', 'hola@dff.com1', '1', '5_M68303812_20231110163414.jpg', 1, '2023-11-10 21:22:00', '2023-11-10 20:46:12');
+(21, 5, 'M68303812', 'Jeong Woo fulanito', '241-29371', '999-123-5831', 'hola@dff.com1', '1', '5_M68303812_20231110163414.jpg', 1, '2023-11-10 21:22:00', '2023-11-10 20:46:12'),
+(22, 7, '38463498', 'Dongwon Hyd - Coreana', NULL, NULL, NULL, NULL, NULL, 1, '2023-11-14 22:06:17', '2023-11-14 22:06:17');
 
 -- --------------------------------------------------------
 
@@ -3956,7 +3964,8 @@ INSERT INTO `provider_doc_type` (`doc_type_id`, `doc_type`, `short`, `sunat`) VA
 (3, 'CE - Carnet de Extranjería', 'CE', '4'),
 (4, 'RUC - Registro Unico de Contributentes', 'RUC', '6'),
 (5, 'Pasaporte', 'Pasaporte', '7'),
-(6, 'CDI - Cédula Diplomática de Identidad', 'CDI', 'A');
+(6, 'CDI - Cédula Diplomática de Identidad', 'CDI', 'A'),
+(7, 'Tax ID - Extranjero', 'Tax ID', '0');
 
 -- --------------------------------------------------------
 
@@ -4006,7 +4015,15 @@ INSERT INTO `purchase` (`purchase_id`, `provider_id`, `proforma_id`, `amount`, `
 (23, 14, 4, 280, 280, 0, '2023-10-30 21:01:06', '2023-10-30 21:01:06', 1),
 (24, 1, NULL, 299.2, 299.2, 0, '2023-11-02 23:03:08', '2023-11-02 23:03:08', 1),
 (25, 19, NULL, 299.2, 299.2, 0, '2023-11-03 19:18:11', '2023-11-03 19:18:11', 1),
-(26, 14, 4, 280, 280, 0, '2023-11-10 23:40:41', '2023-11-07 21:14:48', 1);
+(26, 14, 4, 280, 280, 0, '2023-11-10 23:40:41', '2023-11-07 21:14:48', 1),
+(27, 22, NULL, 570, 70, 500, '2023-11-14 22:18:36', '2023-11-14 22:18:36', 1),
+(28, 22, NULL, 570, 70, 500, '2023-11-14 22:26:56', '2023-11-14 22:26:56', 1),
+(29, 22, NULL, 570, 70, 500, '2023-11-14 22:30:42', '2023-11-14 22:30:42', 1),
+(30, 22, NULL, 570, 70, 500, '2023-11-14 22:30:55', '2023-11-14 22:30:55', 1),
+(31, 22, NULL, 570, 70, 500, '2023-11-14 22:31:01', '2023-11-14 22:31:01', 1),
+(32, 22, NULL, 570, 70, 500, '2023-11-14 22:31:33', '2023-11-14 22:31:33', 1),
+(33, 22, NULL, 3830, 3830, 0, '2023-11-14 23:13:25', '2023-11-14 22:37:33', 1),
+(34, 17, NULL, 990, 990, 0, '2023-11-14 22:40:14', '2023-11-14 22:40:14', 1);
 
 -- --------------------------------------------------------
 
@@ -4019,8 +4036,8 @@ CREATE TABLE `purchase_payment` (
   `purchase_id` int(11) NOT NULL,
   `payment_method_id` int(11) NOT NULL,
   `total` float NOT NULL,
-  `received` float NOT NULL,
-  `change` float NOT NULL,
+  `paid` float NOT NULL,
+  `balance` float NOT NULL,
   `registed_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `valid` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -4029,7 +4046,7 @@ CREATE TABLE `purchase_payment` (
 -- 테이블의 덤프 데이터 `purchase_payment`
 --
 
-INSERT INTO `purchase_payment` (`payment_id`, `purchase_id`, `payment_method_id`, `total`, `received`, `change`, `registed_at`, `valid`) VALUES
+INSERT INTO `purchase_payment` (`payment_id`, `purchase_id`, `payment_method_id`, `total`, `paid`, `balance`, `registed_at`, `valid`) VALUES
 (1, 3, 1, 363.12, 400, 36.88, '2023-09-17 22:19:58', 0),
 (2, 4, 1, 363.12, 400, 36.88, '2023-09-17 22:21:19', 0),
 (3, 5, 3, 1974.72, 2000, 25.28, '2023-09-17 23:58:18', 0),
@@ -4058,7 +4075,20 @@ INSERT INTO `purchase_payment` (`payment_id`, `purchase_id`, `payment_method_id`
 (26, 24, 3, 299.2, 500, 200.8, '2023-11-02 23:03:08', 1),
 (27, 25, 3, 299.2, 299.2, 0, '2023-11-03 19:18:11', 1),
 (30, 26, 1, 280, 200, 0, '2023-11-10 23:31:24', 1),
-(31, 26, 1, 80, 300, 220, '2023-11-10 23:40:41', 1);
+(31, 26, 1, 80, 300, 220, '2023-11-10 23:40:41', 1),
+(32, 27, 1, 570, 70, 500, '2023-11-14 22:18:36', 1),
+(33, 28, 1, 570, 70, 500, '2023-11-14 22:26:56', 1),
+(34, 29, 1, 570, 70, 500, '2023-11-14 22:30:42', 1),
+(35, 30, 1, 570, 70, 500, '2023-11-14 22:30:55', 1),
+(36, 31, 1, 570, 70, 500, '2023-11-14 22:31:01', 1),
+(37, 32, 1, 570, 70, 500, '2023-11-14 22:31:33', 1),
+(38, 33, 5, 3830, 2000, 1830, '2023-11-14 22:37:33', 0),
+(39, 34, 1, 990, 990, 0, '2023-11-14 22:40:14', 1),
+(40, 33, 4, 3830, 3830, 0, '2023-11-14 23:11:50', 0),
+(41, 33, 1, 3830, 2000, 1830, '2023-11-14 23:12:08', 0),
+(42, 33, 5, 1830, 1830, 0, '2023-11-14 23:12:23', 1),
+(43, 33, 1, 2000, 450, 1550, '2023-11-14 23:12:44', 1),
+(44, 33, 1, 1550, 1550, 0, '2023-11-14 23:13:25', 1);
 
 -- --------------------------------------------------------
 
@@ -4102,7 +4132,16 @@ INSERT INTO `purchase_product` (`purchase_product_id`, `purchase_id`, `product_i
 (20, 23, 1, 26, 20, 14, 280),
 (21, 24, 197, 27, 5, 59.84, 299.2),
 (22, 25, 197, 29, 5, 59.84, 299.2),
-(23, 26, 1, 26, 20, 14, 280);
+(23, 26, 1, 26, 20, 14, 280),
+(26, 30, 197, 32, 7, 10, 0),
+(27, 30, 254, 33, 100, 5, 0),
+(28, 31, 197, 34, 7, 10, 0),
+(29, 31, 254, 35, 100, 5, 0),
+(30, 32, 197, 36, 7, 10, 0),
+(31, 32, 254, 37, 100, 5, 0),
+(32, 33, 197, 28, 130, 10, 0),
+(33, 33, 197, 29, 230, 11, 0),
+(34, 34, 162, 38, 99, 10, 990);
 
 -- --------------------------------------------------------
 
@@ -4718,7 +4757,7 @@ ALTER TABLE `product_image`
 -- 테이블의 AUTO_INCREMENT `product_option`
 --
 ALTER TABLE `product_option`
-  MODIFY `option_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `option_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- 테이블의 AUTO_INCREMENT `proforma`
@@ -4736,31 +4775,31 @@ ALTER TABLE `proforma_product`
 -- 테이블의 AUTO_INCREMENT `provider`
 --
 ALTER TABLE `provider`
-  MODIFY `provider_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `provider_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- 테이블의 AUTO_INCREMENT `provider_doc_type`
 --
 ALTER TABLE `provider_doc_type`
-  MODIFY `doc_type_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `doc_type_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- 테이블의 AUTO_INCREMENT `purchase`
 --
 ALTER TABLE `purchase`
-  MODIFY `purchase_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `purchase_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- 테이블의 AUTO_INCREMENT `purchase_payment`
 --
 ALTER TABLE `purchase_payment`
-  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- 테이블의 AUTO_INCREMENT `purchase_product`
 --
 ALTER TABLE `purchase_product`
-  MODIFY `purchase_product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `purchase_product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- 테이블의 AUTO_INCREMENT `role`

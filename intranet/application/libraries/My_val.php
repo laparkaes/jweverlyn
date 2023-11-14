@@ -438,6 +438,17 @@ class My_val{
 		return ["type" => $this->get_type($msgs), "msgs" => $msgs, "msg" => $msg];
 	}
 	
+	public function add_payment_purchase($payment){
+		$msgs = []; $msg = "";
+		
+		//payment validation
+		$msgs = $this->set_msg($msgs, "payment_method_id"); //no validation required
+		if ($payment["paid"] >= 0) $msgs = $this->set_msg($msgs, "paid");
+		else $msgs = $this->set_msg($msgs, "paid", "e_invalid_payment");
+		
+		return ["type" => $this->get_type($msgs), "msgs" => $msgs, "msg" => $msg];
+	}
+	
 	public function add_proforma($products, $client){
 		$msgs = []; $msg = "";
 		
@@ -553,5 +564,42 @@ class My_val{
 		else $msgs = $this->set_msg($msgs, "provider[name]", "e_required_field");
 		
 		return ["type" => $this->get_type($msgs), "msgs" => $msgs];
+	}
+	
+	public function add_purchase($products, $payment, $provider){
+		$msgs = []; $msg = null;
+		
+		//products
+		if ($products){
+			foreach($products as $p) if ($p["qty"] <= 0){
+				$msg = $this->CI->lang->line("e_product_qty_zero");
+				break;
+			}
+		}else $msg = $this->CI->lang->line("e_select_product");
+		
+		//payment
+		$msgs = $this->set_msg($msgs, "payment[total]");
+		$msgs = $this->set_msg($msgs, "payment[balance]");
+		$msgs = $this->set_msg($msgs, "payment[payment_method_id]");
+		if ($payment["paid"] > 0) $msgs = $this->set_msg($msgs, "payment[paid]");
+		else $msgs = $this->set_msg($msgs, "payment[paid]", "e_no_zero");
+		
+		//provider
+		$msgs = $this->set_msg($msgs, "provider[doc_type_id]");
+		if ($provider["doc_type_id"] != 1){//doc_type == Sin documento
+			if ($provider["doc_number"]) $msgs = $this->set_msg($msgs, "provider[doc_number]");
+			else $msgs = $this->set_msg($msgs, "provider[doc_number]", "e_required_field");
+			if ($provider["name"]) $msgs = $this->set_msg($msgs, "provider[name]");
+			else $msgs = $this->set_msg($msgs, "provider[name]", "e_required_field");
+		}else{
+			$msgs = $this->set_msg($msgs, "provider[doc_number]");
+			$msgs = $this->set_msg($msgs, "provider[name]");
+		}
+		
+		$type = $this->get_type($msgs);
+		if ($type === "error") $msg = $this->CI->lang->line("e_check_datas");
+		elseif ($msg) $type = "error";
+		
+		return ["type" => $type, "msgs" => $msgs, "msg" => $msg];
 	}
 }
