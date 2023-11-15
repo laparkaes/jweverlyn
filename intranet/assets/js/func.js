@@ -59,6 +59,8 @@ const warning_msg = {
 		update_provider: "¿Desea actualizar proveedor?",
 		no_product_option_selected: "Se creará una opción general por no elegir ninguna.",
 		add_purchase: "¿Desea agregar nueva compra?",
+		add_note: "¿Desea agregar nueva nota?",
+		delete_note: "¿Desea eliminar nota?",
 	},
 }
 

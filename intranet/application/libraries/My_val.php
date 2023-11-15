@@ -602,4 +602,13 @@ class My_val{
 		
 		return ["type" => $type, "msgs" => $msgs, "msg" => $msg];
 	}
+
+	public function add_note($note){
+		$msgs = [];
+		
+		if ($note["note"]) $msgs = $this->set_msg($msgs, "note");
+		else $msgs = $this->set_msg($msgs, "note", "e_required_field");
+		
+		return ["type" => $this->get_type($msgs), "msgs" => $msgs];
+	}
 }

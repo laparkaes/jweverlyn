@@ -60,9 +60,12 @@ class Purchase extends CI_Controller {
 	public function detail($purchase_id){
 		if (!$this->session->userdata('username')) redirect("auth/login");
 
+		
 		$purchase = $this->gm->unique("purchase", "purchase_id", $purchase_id, false);
 		if (!$purchase) redirect("no_page");
 			
+		$w = ["purchase_id" => $purchase_id];
+		
 		if ($purchase->provider_id){
 			$provider = $this->gm->unique("provider", "provider_id", $purchase->provider_id);
 			$provider->doc_type = $this->gm->unique("provider_doc_type", "doc_type_id", $provider->doc_type_id, false)->doc_type;
@@ -78,12 +81,12 @@ class Purchase extends CI_Controller {
 			case "danger": $purchase->status = "Anulado"; break;
 		}
 		
-		$payments = $this->gm->filter("purchase_payment", ["purchase_id" => $purchase->purchase_id], null, null, [["registed_at", "desc"]], "", "");
+		$payments = $this->gm->filter("purchase_payment", $w, null, null, [["registed_at", "desc"]], "", "");
 		foreach($payments as $p){
 			$p->payment_method = $this->gm->unique("payment_method", "payment_method_id", $p->payment_method_id, false)->payment_method;
 		}
 		
-		$products = $this->gm->filter("purchase_product", ["purchase_id" => $purchase->purchase_id], null, null, [["subtotal", "desc"]], "", "", false);
+		$products = $this->gm->filter("purchase_product", $w, null, null, [["subtotal", "desc"]], "", "", false);
 		foreach($products as $p){
 			$p->prod = $this->gm->unique("product", "product_id", $p->product_id);
 			$p->op = $this->gm->unique("product_option", "option_id", $p->option_id);
@@ -92,8 +95,9 @@ class Purchase extends CI_Controller {
 		$data = [
 			"purchase" => $purchase,
 			"provider" => $provider,
-			"payments" => $payments,
 			"products" => $products,
+			"payments" => $payments,
+			"notes" => $this->gm->filter("purchase_note", $w, null, null, [["registed_at", "desc"]]),
 			"payment_methods" => $this->gm->all_simple("payment_method", "payment_method_id", "asc"),
 			"provider_doc_types" => $this->gm->all_simple("provider_doc_type", "doc_type_id", "asc"),
 			"main" => "stock/purchase/detail",
@@ -117,6 +121,46 @@ class Purchase extends CI_Controller {
 		$this->gm->update("purchase", $f, $d);
 	}
 	
+	public function add_note(){//ok
+		$result = ["type" => "error", "msg" => null, "url" => null];
+		
+		if ($this->session->userdata('username')){
+			$note = $this->input->post();
+			
+			$this->load->library('my_val');
+			$result = $this->my_val->add_note($note);
+			
+			if ($result["type"] === "success"){
+				$note["note"] = trim($note["note"]);
+				$note["registed_at"] = date("Y-m-d H:i:s");
+				$this->gm->insert("purchase_note", $note);
+				
+				$result["msg"] = $this->lang->line("s_note_insert");
+				$result["url"] = base_url()."stock/purchase/detail/".$note["purchase_id"];
+			}
+		}else $result["msg"] = $this->lang->line("e_finished_session");
+		
+		header('Content-Type: application/json');
+		echo json_encode($result);
+	}
+	
+	public function delete_note(){//ok
+		$type = "error"; $msg = null; $url = null;
+		
+		if ($this->session->userdata('username')){
+			$note = $this->gm->unique("purchase_note", "note_id", $this->input->post('note_id'));
+			
+			$this->gm->update("purchase_note", ["note_id" => $note->note_id], ["valid" => false]);
+			
+			$type = "success";
+			$msg = $this->lang->line("s_note_delete");
+			$url = base_url()."stock/purchase/detail/".$note->purchase_id;
+		}else $msg = $this->lang->line("e_finished_session");
+		
+		header('Content-Type: application/json');
+		echo json_encode(["type" => $type, "msg" => $msg, "url" => $url]);
+	}
+	
 	public function add_payment(){//ok
 		$result = ["type" => "error", "msg" => null, "url" => null];
 		
@@ -130,6 +174,7 @@ class Purchase extends CI_Controller {
 			$result = $this->my_val->add_payment_purchase($payment);
 			
 			if ($result["type"] === "success"){
+				$payment["registed_at"] = date("Y-m-d H:i:s");
 				$this->gm->insert("purchase_payment", $payment);
 				$this->update_balance($payment["purchase_id"]);
 				

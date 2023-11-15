@@ -31,7 +31,7 @@
 		</div>
 		<div class="search-bar">
 			<form class="search-form d-flex align-items-center" method="GET" action="<?= base_url() ?>commerce/client">
-				<input type="text" class="enter_on" name="search" placeholder="Buscar cliente">
+				<input type="text" class="enter_on" name="client" placeholder="Buscar cliente">
 			<button type="submit" title="Search"><i class="bi bi-search"></i></button>
 			</form>
 		</div>

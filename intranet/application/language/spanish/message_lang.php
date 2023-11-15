@@ -14,6 +14,8 @@ $lang['e_no_zero']				= 'Debe ser mayor que cero.';
 //purchase
 $lang['e_product_qty_zero']		= 'La cantidad de producto debe ser mayor a cero.';
 $lang['s_purchase_insert']		= "Compra ha sido registrada.";
+$lang['s_note_insert']			= "Nota ha sido registrada.";
+$lang['s_note_delete']			= "Nota ha sido eliminada.";
 
 //proveedor
 $lang['e_provider_exists']		= 'Proveedor registrado.';

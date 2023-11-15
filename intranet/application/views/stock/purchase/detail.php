@@ -173,6 +173,9 @@
 						<li class="nav-item">
 							<button class="nav-link" data-bs-toggle="tab" data-bs-target="#payments">Pagos</button>
 						</li>
+						<li class="nav-item">
+							<button class="nav-link" data-bs-toggle="tab" data-bs-target="#notes">Notas</button>
+						</li>
 					</ul>
 					<div class="tab-content pt-4">
 						<div class="tab-pane fade show active" id="products">
@@ -224,6 +227,34 @@
 											<td class="text-nowrap text-end">S/ <?= number_format($p->balance, 2) ?></td>
 											<td class="text-end">
 												<button type="button" class="btn btn-outline-danger btn-sm border-0 btn_delete_payment" value="<?= $p->payment_id ?>">
+													<i class="bi bi-x-lg"></i>
+												</button>
+											</td>
+										</tr>
+										<?php } ?>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div class="tab-pane fade" id="notes">
+							<div class="table-responsive">
+								<table class="table align-middle">
+									<thead>
+										<tr>
+											<th scope="col">#</th>
+											<th scope="col">Fecha</th>
+											<th scope="col">Nota</th>
+											<th scope="col"></th>
+										</tr>
+									</thead>
+									<tbody id="tbody_images">
+										<?php foreach($notes as $n_i => $n){ ?>
+										<tr>
+											<th scope="row"><?= number_format($n_i + 1) ?></th>
+											<td><?= $n->registed_at ?></td>
+											<td style="white-space: pre-line;"><?= $n->note ?></td>
+											<td class="text-end">
+												<button type="button" class="btn btn-outline-danger btn-sm border-0 btn_delete_note" value="<?= $n->note_id ?>">
 													<i class="bi bi-x-lg"></i>
 												</button>
 											</td>
