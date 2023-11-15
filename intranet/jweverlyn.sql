@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- 생성 시간: 23-11-14 18:40
+-- 생성 시간: 23-11-15 01:19
 -- 서버 버전: 10.4.24-MariaDB
 -- PHP 버전: 7.4.29
 
@@ -3827,7 +3827,7 @@ INSERT INTO `product_option` (`option_id`, `product_id`, `option`, `stock`, `val
 (26, 1, 'Negro', 124, 1),
 (27, 197, 'Talla S', 69, 1),
 (28, 197, 'Talla M', 203, 1),
-(29, 197, 'Talla L', 350, 1),
+(29, 197, 'Talla L', 361, 1),
 (30, 216, '7L', 300, 1),
 (31, 71, 'Verde', 300, 1),
 (32, 197, '-', 7, 0),
@@ -4023,7 +4023,34 @@ INSERT INTO `purchase` (`purchase_id`, `provider_id`, `proforma_id`, `amount`, `
 (31, 22, NULL, 570, 70, 500, '2023-11-14 22:31:01', '2023-11-14 22:31:01', 1),
 (32, 22, NULL, 570, 70, 500, '2023-11-14 22:31:33', '2023-11-14 22:31:33', 1),
 (33, 22, NULL, 3830, 3830, 0, '2023-11-14 23:13:25', '2023-11-14 22:37:33', 1),
-(34, 17, NULL, 990, 990, 0, '2023-11-14 22:40:14', '2023-11-14 22:40:14', 1);
+(34, 17, NULL, 990, 990, 0, '2023-11-14 22:40:14', '2023-11-14 22:40:14', 1),
+(35, 17, NULL, 121, 121, 0, '2023-11-15 05:24:02', '2023-11-15 05:24:02', 1);
+
+-- --------------------------------------------------------
+
+--
+-- 테이블 구조 `purchase_note`
+--
+
+CREATE TABLE `purchase_note` (
+  `note_id` int(11) NOT NULL,
+  `purchase_id` int(11) NOT NULL,
+  `note` text NOT NULL,
+  `valid` tinyint(1) NOT NULL DEFAULT 1,
+  `registed_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- 테이블의 덤프 데이터 `purchase_note`
+--
+
+INSERT INTO `purchase_note` (`note_id`, `purchase_id`, `note`, `valid`, `registed_at`) VALUES
+(1, 35, 'afasfdsdfasdf', 1, '2023-11-15 05:56:54'),
+(2, 35, 'afasfdsdfasdf', 0, '2023-11-15 05:57:13'),
+(3, 35, 'nueva fecha de llegada : 2023 11 30', 0, '2023-11-15 05:57:52'),
+(4, 35, 'fasfasdfas\r\nfasdf\r\nasdf\r\nasf\r\nasf\r\nasfsdf', 0, '2023-11-15 06:05:09'),
+(5, 35, 'asfasdfasdf\r\n\r\n\r\nasdfasfsfd', 0, '2023-11-15 06:06:15'),
+(6, 35, 'hola\r\ncomo estas/\r\ntu no es', 1, '2023-11-15 06:17:49');
 
 -- --------------------------------------------------------
 
@@ -4088,7 +4115,8 @@ INSERT INTO `purchase_payment` (`payment_id`, `purchase_id`, `payment_method_id`
 (41, 33, 1, 3830, 2000, 1830, '2023-11-14 23:12:08', 0),
 (42, 33, 5, 1830, 1830, 0, '2023-11-14 23:12:23', 1),
 (43, 33, 1, 2000, 450, 1550, '2023-11-14 23:12:44', 1),
-(44, 33, 1, 1550, 1550, 0, '2023-11-14 23:13:25', 1);
+(44, 33, 1, 1550, 1550, 0, '2023-11-14 23:13:25', 1),
+(45, 35, 1, 121, 121, 0, '2023-11-15 05:24:02', 1);
 
 -- --------------------------------------------------------
 
@@ -4141,7 +4169,8 @@ INSERT INTO `purchase_product` (`purchase_product_id`, `purchase_id`, `product_i
 (31, 32, 254, 37, 100, 5, 0),
 (32, 33, 197, 28, 130, 10, 0),
 (33, 33, 197, 29, 230, 11, 0),
-(34, 34, 162, 38, 99, 10, 990);
+(34, 34, 162, 38, 99, 10, 990),
+(35, 35, 197, 29, 11, 11, 121);
 
 -- --------------------------------------------------------
 
@@ -4587,6 +4616,13 @@ ALTER TABLE `purchase`
   ADD KEY `fk_purchase_proforma` (`proforma_id`);
 
 --
+-- 테이블의 인덱스 `purchase_note`
+--
+ALTER TABLE `purchase_note`
+  ADD PRIMARY KEY (`note_id`),
+  ADD KEY `fk_note_purchase` (`purchase_id`);
+
+--
 -- 테이블의 인덱스 `purchase_payment`
 --
 ALTER TABLE `purchase_payment`
@@ -4787,19 +4823,25 @@ ALTER TABLE `provider_doc_type`
 -- 테이블의 AUTO_INCREMENT `purchase`
 --
 ALTER TABLE `purchase`
-  MODIFY `purchase_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `purchase_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+
+--
+-- 테이블의 AUTO_INCREMENT `purchase_note`
+--
+ALTER TABLE `purchase_note`
+  MODIFY `note_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- 테이블의 AUTO_INCREMENT `purchase_payment`
 --
 ALTER TABLE `purchase_payment`
-  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- 테이블의 AUTO_INCREMENT `purchase_product`
 --
 ALTER TABLE `purchase_product`
-  MODIFY `purchase_product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `purchase_product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- 테이블의 AUTO_INCREMENT `role`
@@ -4903,6 +4945,12 @@ ALTER TABLE `provider`
 ALTER TABLE `purchase`
   ADD CONSTRAINT `fk_purchase_proforma` FOREIGN KEY (`proforma_id`) REFERENCES `proforma` (`proforma_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_purchase_provider` FOREIGN KEY (`provider_id`) REFERENCES `provider` (`provider_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- 테이블의 제약사항 `purchase_note`
+--
+ALTER TABLE `purchase_note`
+  ADD CONSTRAINT `fk_note_purchase` FOREIGN KEY (`purchase_id`) REFERENCES `purchase` (`purchase_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- 테이블의 제약사항 `purchase_payment`
