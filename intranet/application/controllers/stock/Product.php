@@ -367,7 +367,7 @@ class Product extends CI_Controller {
 				if ($this->gm->update("product_image", ["image_id" => $image->image_id], ["valid" => false])){
 					//removing uploaded files
 					$path = "uploads/prod/".$image->product_id."/"; 
-					if (file_exists($path.$image->image)) unlink($path.$image->image);
+					if (file_exists($path.$image->image)) unlink($path.$image->image);//remove file on server
 					
 					//product main image validation
 					$product = $this->gm->unique("product", "product_id", $image->product_id);

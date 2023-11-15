@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- 생성 시간: 23-11-15 01:19
+-- 생성 시간: 23-11-15 18:31
 -- 서버 버전: 10.4.24-MariaDB
 -- PHP 버전: 7.4.29
 
@@ -3569,7 +3569,7 @@ INSERT INTO `product` (`product_id`, `category_id`, `code`, `product`, `price`, 
 (194, 5, 'guindas-351948', 'Manzana Zumo de sandía Tequila Whisky Zumo de limón Limón', 91.31, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
 (195, 16, 'limón-79641', 'Cacao Naranja Mango Melocotón Sidra', 35.07, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
 (196, 10, 'zumodelimón-351217', 'Zumo de fresa Mora Zumo de arándanos', 49.59, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(197, 8, 'vinorosado-291310', 'Agua Compota Zumo de sandía Guindas Zumo de papaya Higo', 59.84, '20230919181851_thumb.png', 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(197, 8, 'vinorosado-291310', 'Agua Compota Zumo de sandía Guindas Zumo de papaya Higo', 59.84, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
 (198, 15, 'tédehierbas-339222', 'Pistachos Nuez Guayaba Cacao', 67.31, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
 (199, 15, 'café-57373', 'Zumo de fresa Granada Cerveza Cacao Agua con gas Zumo de fruta de la pasión', 18.32, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
 (200, 10, 'mango-369255', 'Brandy Tónica Zumo de uva Zumo de naranja', 99.38, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
@@ -3758,7 +3758,7 @@ INSERT INTO `product_image` (`image_id`, `product_id`, `image`, `valid`) VALUES
 (27, 1, '20230829172933.png', 0),
 (28, 1, '20230829173001.png', 1),
 (29, 2, '20230829175952.png', 0),
-(30, 197, '20230919181851.png', 1),
+(30, 197, '20230919181851.png', 0),
 (31, 267, '20231106164736.jpg', 0),
 (32, 267, '20231106164925.jpg', 0),
 (33, 267, '20231106165038.jpg', 0),
@@ -3778,7 +3778,8 @@ INSERT INTO `product_image` (`image_id`, `product_id`, `image`, `valid`) VALUES
 (47, 267, '20231107153608.jpg', 0),
 (48, 71, '20231107181535.png', 1),
 (49, 303, '20231108170615.jpg', 1),
-(50, 267, '20231109154618.jpg', 1);
+(50, 267, '20231109154618.jpg', 1),
+(51, 197, '20231115183123.jpg', 0);
 
 -- --------------------------------------------------------
 
@@ -3827,16 +3828,21 @@ INSERT INTO `product_option` (`option_id`, `product_id`, `option`, `stock`, `val
 (26, 1, 'Negro', 124, 1),
 (27, 197, 'Talla S', 69, 1),
 (28, 197, 'Talla M', 203, 1),
-(29, 197, 'Talla L', 361, 1),
+(29, 197, 'Talla L', 12, 1),
 (30, 216, '7L', 300, 1),
 (31, 71, 'Verde', 300, 1),
 (32, 197, '-', 7, 0),
 (33, 254, '-', 100, 1),
-(34, 197, 'Talla XS', 7, 1),
-(35, 254, '--', 100, 1),
+(34, 197, 'Talla XS', 0, 1),
+(35, 254, '--', 0, 1),
 (36, 197, 'Talla XL', 7, 1),
 (37, 254, '---', 100, 1),
-(38, 162, '-', 99, 1);
+(38, 162, '-', 0, 1),
+(39, 8, '-', 0, 1),
+(40, 235, 'Talla M - Talla Asia', 0, 1),
+(41, 235, 'Talla M', 0, 0),
+(42, 235, 'Talla M', 0, 1),
+(43, 235, 'Talla L', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -4018,13 +4024,40 @@ INSERT INTO `purchase` (`purchase_id`, `provider_id`, `proforma_id`, `amount`, `
 (26, 14, 4, 280, 280, 0, '2023-11-10 23:40:41', '2023-11-07 21:14:48', 1),
 (27, 22, NULL, 570, 70, 500, '2023-11-14 22:18:36', '2023-11-14 22:18:36', 1),
 (28, 22, NULL, 570, 70, 500, '2023-11-14 22:26:56', '2023-11-14 22:26:56', 1),
-(29, 22, NULL, 570, 70, 500, '2023-11-14 22:30:42', '2023-11-14 22:30:42', 1),
+(29, 22, NULL, 570, 570, 0, '2023-11-15 23:28:37', '2023-11-14 22:30:42', 1),
 (30, 22, NULL, 570, 70, 500, '2023-11-14 22:30:55', '2023-11-14 22:30:55', 1),
-(31, 22, NULL, 570, 70, 500, '2023-11-14 22:31:01', '2023-11-14 22:31:01', 1),
+(31, 22, NULL, 570, 70, 500, '2023-11-15 20:47:20', '2023-11-14 22:31:01', 0),
 (32, 22, NULL, 570, 70, 500, '2023-11-14 22:31:33', '2023-11-14 22:31:33', 1),
 (33, 22, NULL, 3830, 3830, 0, '2023-11-14 23:13:25', '2023-11-14 22:37:33', 1),
-(34, 17, NULL, 990, 990, 0, '2023-11-14 22:40:14', '2023-11-14 22:40:14', 1),
-(35, 17, NULL, 121, 121, 0, '2023-11-15 05:24:02', '2023-11-15 05:24:02', 1);
+(34, 17, NULL, 990, 990, 0, '2023-11-15 23:28:08', '2023-11-14 22:40:14', 0),
+(35, 17, NULL, 121, 121, 0, '2023-11-15 20:46:15', '2023-11-15 05:24:02', 0),
+(36, 17, NULL, 10200, 10200, 0, '2023-11-15 21:20:29', '2023-11-15 20:50:08', 0);
+
+-- --------------------------------------------------------
+
+--
+-- 테이블 구조 `purchase_file`
+--
+
+CREATE TABLE `purchase_file` (
+  `file_id` int(11) NOT NULL,
+  `purchase_id` int(11) NOT NULL,
+  `description` varchar(200) NOT NULL,
+  `filename` varchar(100) NOT NULL,
+  `valid` tinyint(1) NOT NULL DEFAULT 1,
+  `registed_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- 테이블의 덤프 데이터 `purchase_file`
+--
+
+INSERT INTO `purchase_file` (`file_id`, `purchase_id`, `description`, `filename`, `valid`, `registed_at`) VALUES
+(1, 35, 'afadfasdf hola', '20231115132349.pdf', 1, '2023-11-15 19:35:41'),
+(2, 35, 'Proforma', '20231115132932.pdf', 1, '2023-11-15 19:35:41'),
+(3, 35, 'Proforma', '20231115133125.pdf', 1, '2023-11-15 19:35:32'),
+(4, 36, 'Proforma', '20231115161955.pdf', 0, '2023-11-15 21:20:10'),
+(5, 29, 'Cotizacion', '20231115182907.pdf', 1, '2023-11-15 23:29:07');
 
 -- --------------------------------------------------------
 
@@ -4050,7 +4083,9 @@ INSERT INTO `purchase_note` (`note_id`, `purchase_id`, `note`, `valid`, `registe
 (3, 35, 'nueva fecha de llegada : 2023 11 30', 0, '2023-11-15 05:57:52'),
 (4, 35, 'fasfasdfas\r\nfasdf\r\nasdf\r\nasf\r\nasf\r\nasfsdf', 0, '2023-11-15 06:05:09'),
 (5, 35, 'asfasdfasdf\r\n\r\n\r\nasdfasfsfd', 0, '2023-11-15 06:06:15'),
-(6, 35, 'hola\r\ncomo estas/\r\ntu no es', 1, '2023-11-15 06:17:49');
+(6, 35, 'hola\r\ncomo estas/\r\ntu no es', 1, '2023-11-15 06:17:49'),
+(7, 36, 'jeje\r\nestoy e\r\nes spharta', 1, '2023-11-15 21:19:18'),
+(8, 29, 'Muy espeso es el weon', 1, '2023-11-15 23:28:52');
 
 -- --------------------------------------------------------
 
@@ -4107,16 +4142,19 @@ INSERT INTO `purchase_payment` (`payment_id`, `purchase_id`, `payment_method_id`
 (33, 28, 1, 570, 70, 500, '2023-11-14 22:26:56', 1),
 (34, 29, 1, 570, 70, 500, '2023-11-14 22:30:42', 1),
 (35, 30, 1, 570, 70, 500, '2023-11-14 22:30:55', 1),
-(36, 31, 1, 570, 70, 500, '2023-11-14 22:31:01', 1),
+(36, 31, 1, 570, 70, 500, '2023-11-14 22:31:01', 0),
 (37, 32, 1, 570, 70, 500, '2023-11-14 22:31:33', 1),
 (38, 33, 5, 3830, 2000, 1830, '2023-11-14 22:37:33', 0),
-(39, 34, 1, 990, 990, 0, '2023-11-14 22:40:14', 1),
+(39, 34, 1, 990, 990, 0, '2023-11-14 22:40:14', 0),
 (40, 33, 4, 3830, 3830, 0, '2023-11-14 23:11:50', 0),
 (41, 33, 1, 3830, 2000, 1830, '2023-11-14 23:12:08', 0),
 (42, 33, 5, 1830, 1830, 0, '2023-11-14 23:12:23', 1),
 (43, 33, 1, 2000, 450, 1550, '2023-11-14 23:12:44', 1),
 (44, 33, 1, 1550, 1550, 0, '2023-11-14 23:13:25', 1),
-(45, 35, 1, 121, 121, 0, '2023-11-15 05:24:02', 1);
+(45, 35, 1, 121, 121, 0, '2023-11-15 05:24:02', 0),
+(46, 36, 5, 10200, 10200, 0, '2023-11-15 20:50:08', 0),
+(47, 29, 1, 500, 1, 499, '2023-11-15 23:28:28', 1),
+(48, 29, 1, 499, 499, 0, '2023-11-15 23:28:37', 1);
 
 -- --------------------------------------------------------
 
@@ -4170,7 +4208,9 @@ INSERT INTO `purchase_product` (`purchase_product_id`, `purchase_id`, `product_i
 (32, 33, 197, 28, 130, 10, 0),
 (33, 33, 197, 29, 230, 11, 0),
 (34, 34, 162, 38, 99, 10, 990),
-(35, 35, 197, 29, 11, 11, 121);
+(35, 35, 197, 29, 11, 11, 121),
+(36, 36, 8, 39, 12, 100, 1200),
+(37, 36, 235, 40, 300, 30, 9000);
 
 -- --------------------------------------------------------
 
@@ -4616,6 +4656,13 @@ ALTER TABLE `purchase`
   ADD KEY `fk_purchase_proforma` (`proforma_id`);
 
 --
+-- 테이블의 인덱스 `purchase_file`
+--
+ALTER TABLE `purchase_file`
+  ADD PRIMARY KEY (`file_id`),
+  ADD KEY `fk_file_purchase` (`purchase_id`);
+
+--
 -- 테이블의 인덱스 `purchase_note`
 --
 ALTER TABLE `purchase_note`
@@ -4787,13 +4834,13 @@ ALTER TABLE `product_category`
 -- 테이블의 AUTO_INCREMENT `product_image`
 --
 ALTER TABLE `product_image`
-  MODIFY `image_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `image_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 
 --
 -- 테이블의 AUTO_INCREMENT `product_option`
 --
 ALTER TABLE `product_option`
-  MODIFY `option_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `option_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
 -- 테이블의 AUTO_INCREMENT `proforma`
@@ -4823,25 +4870,31 @@ ALTER TABLE `provider_doc_type`
 -- 테이블의 AUTO_INCREMENT `purchase`
 --
 ALTER TABLE `purchase`
-  MODIFY `purchase_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `purchase_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+
+--
+-- 테이블의 AUTO_INCREMENT `purchase_file`
+--
+ALTER TABLE `purchase_file`
+  MODIFY `file_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- 테이블의 AUTO_INCREMENT `purchase_note`
 --
 ALTER TABLE `purchase_note`
-  MODIFY `note_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `note_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- 테이블의 AUTO_INCREMENT `purchase_payment`
 --
 ALTER TABLE `purchase_payment`
-  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
 -- 테이블의 AUTO_INCREMENT `purchase_product`
 --
 ALTER TABLE `purchase_product`
-  MODIFY `purchase_product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `purchase_product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- 테이블의 AUTO_INCREMENT `role`
@@ -4945,6 +4998,12 @@ ALTER TABLE `provider`
 ALTER TABLE `purchase`
   ADD CONSTRAINT `fk_purchase_proforma` FOREIGN KEY (`proforma_id`) REFERENCES `proforma` (`proforma_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_purchase_provider` FOREIGN KEY (`provider_id`) REFERENCES `provider` (`provider_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- 테이블의 제약사항 `purchase_file`
+--
+ALTER TABLE `purchase_file`
+  ADD CONSTRAINT `fk_file_purchase` FOREIGN KEY (`purchase_id`) REFERENCES `purchase` (`purchase_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- 테이블의 제약사항 `purchase_note`

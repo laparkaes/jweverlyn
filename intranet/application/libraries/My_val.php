@@ -305,11 +305,12 @@ class My_val{
 		$msgs = []; $msg = "";
 		
 		if ($data["option"]){
-			if (!$this->CI->gm->unique("product_option", "option", $data["option"])){
+			$f = ["product_id" => $data["product_id"], "option" => $data["option"]];
+			if (!$this->CI->gm->filter("product_option", $f)){
 				$msgs = $this->set_msg($msgs, "option");
 			}else $msgs = $this->set_msg($msgs, "option", "e_duplicate_option");
 		}else $msgs = $this->set_msg($msgs, "option", "e_required_field");
-		
+		/*
 		if ($data["stock"]){
 			if (filter_var($data["stock"], FILTER_VALIDATE_INT) !== false){
 				if ($data["stock"] > 0){
@@ -317,7 +318,7 @@ class My_val{
 				}else $msgs = $this->set_msg($msgs, "stock", "e_numeric_positive");
 			}else $msgs = $this->set_msg($msgs, "stock", "e_integer");
 		}else $msgs = $this->set_msg($msgs, "stock", "e_required_field");
-		
+		*/
 		return ["type" => $this->get_type($msgs), "msgs" => $msgs, "msg" => $msg];
 	}
 	
@@ -325,14 +326,14 @@ class My_val{
 		$msgs = []; $msg = "";
 		
 		if ($data["option"]){
-			$option = $this->CI->gm->unique("product_option", "option", $data["option"]);
-			if ($option) $aux = ($option->option_id == $data["option_id"]); else $aux = true;
+			$op = $this->CI->gm->unique("product_option", "option_id", $data["option_id"]);
 			
-			if ($aux){
+			$f = ["product_id" => $op->product_id, "option" => $data["option"]];
+			if (!$this->CI->gm->filter("product_option", $f)){
 				$msgs = $this->set_msg($msgs, "option");
 			}else $msgs = $this->set_msg($msgs, "option", "e_duplicate_option");
 		}else $msgs = $this->set_msg($msgs, "option", "e_required_field");
-		
+		/*
 		if ($data["stock"]){
 			if (filter_var($data["stock"], FILTER_VALIDATE_INT) !== false){
 				if ($data["stock"] >= 0){
@@ -340,7 +341,7 @@ class My_val{
 				}else $msgs = $this->set_msg($msgs, "stock", "e_numeric_positive");
 			}else $msgs = $this->set_msg($msgs, "stock", "e_integer");
 		}else $msgs = $this->set_msg($msgs, "stock", "e_required_field");
-		
+		*/
 		return ["type" => $this->get_type($msgs), "msgs" => $msgs, "msg" => $msg];
 	}
 	
@@ -608,6 +609,18 @@ class My_val{
 		
 		if ($note["note"]) $msgs = $this->set_msg($msgs, "note");
 		else $msgs = $this->set_msg($msgs, "note", "e_required_field");
+		
+		return ["type" => $this->get_type($msgs), "msgs" => $msgs];
+	}
+
+	public function file_upload_purchase($data){
+		$msgs = [];
+		
+		if ($data["description"]) $msgs = $this->set_msg($msgs, "description");
+		else $msgs = $this->set_msg($msgs, "description", "e_required_field");
+		
+		if ($data["filename"]) $msgs = $this->set_msg($msgs, "upload");
+		else $msgs = $this->set_msg($msgs, "upload", "e_required_field");
 		
 		return ["type" => $this->get_type($msgs), "msgs" => $msgs];
 	}

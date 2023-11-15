@@ -2,24 +2,24 @@ let b_url = "stock/purchase/";
 
 set_dates_between("#f_from", "#f_to");
 set_search_provider_ajax();
+btn_card_control("#btn_file_upload", "#btn_close_cfu", "#card_file_upload", "success");
+btn_card_control("#btn_add_payment", "#btn_close_ap", "#card_add_payment", "primary");
+btn_card_control("#btn_add_note", "#btn_close_an", "#card_add_note", "primary");
 
 /* detail - file upload */
-$("#btn_file_upload").on('click',(function(e) {
-	if ($("#card_file_upload").hasClass("d-none")){
-		$("#card_file_upload").removeClass("d-none");
-		$(this).removeClass("btn-success");
-		$(this).addClass("btn-outline-success");
-	}else{
-		$("#card_file_upload").addClass("d-none");
-		$(this).removeClass("btn-outline-success");
-		$(this).addClass("btn-success");
-	}
-}));
+$("#form_file_upload").submit(function(e) {
+	e.preventDefault();
+	ajax_form_warning(this, b_url + "add_file", "add_file").done(function(res) {
+		set_msgs("#form_file_upload", res.msgs);
+		if (res.type == "success") swal_redirection(res.type, res.msg, res.url);
+		else swal(res.type, res.msg);
+	});
+});
 
-$("#btn_close_cfu").on('click',(function(e) {
-	$("#card_file_upload").addClass("d-none");
-	$("#btn_file_upload").removeClass("btn-outline-success");
-	$("#btn_file_upload").addClass("btn-success");
+$(".btn_delete_file").on('click',(function(e) {
+	ajax_simple_warning({file_id: $(this).val()}, b_url + "delete_file", "delete_file").done(function(res) {
+		swal_redirection(res.type, res.msg, res.url);
+	});
 }));
 
 /* detail - payment */
@@ -38,24 +38,6 @@ $(".btn_delete_payment").on('click',(function(e) {
 	});
 }));
 
-$("#btn_add_payment").on('click',(function(e) {
-	if ($("#card_add_payment").hasClass("d-none")){
-		$("#card_add_payment").removeClass("d-none");
-		$(this).removeClass("btn-primary");
-		$(this).addClass("btn-outline-primary");
-	}else{
-		$("#card_add_payment").addClass("d-none");
-		$(this).removeClass("btn-outline-primary");
-		$(this).addClass("btn-primary");
-	}
-}));
-
-$("#btn_close_ap").on('click',(function(e) {
-	$("#card_add_payment").addClass("d-none");
-	$("#btn_add_payment").removeClass("btn-outline-primary");
-	$("#btn_add_payment").addClass("btn-primary");
-}));
-
 /* detail - note */
 $("#form_add_note").submit(function(e) {
 	e.preventDefault();
@@ -72,25 +54,7 @@ $(".btn_delete_note").on('click',(function(e) {
 	});
 }));
 
-$("#btn_add_note").on('click',(function(e) {
-	if ($("#card_add_note").hasClass("d-none")){
-		$("#card_add_note").removeClass("d-none");
-		$(this).removeClass("btn-primary");
-		$(this).addClass("btn-outline-primary");
-	}else{
-		$("#card_add_note").addClass("d-none");
-		$(this).removeClass("btn-outline-primary");
-		$(this).addClass("btn-primary");
-	}
-}));
-
-$("#btn_close_an").on('click',(function(e) {
-	$("#card_add_note").addClass("d-none");
-	$("#btn_add_note").removeClass("btn-outline-primary");
-	$("#btn_add_note").addClass("btn-primary");
-}));
-
-/* detail, register - payment amount start */
+/* detail, register - payment amount control */
 function calculate_balance(){
 	var total = parseFloat(nf_reverse($("#pay_total").val()));
 	var paid =  parseFloat(nf_reverse($("#pay_paid").val()));
@@ -277,13 +241,9 @@ $("#form_add_purchase").submit(function(e) {
 	});
 });
 
-
-////////////////////////////////
-
-
-
-$("#btn_cancel_sale").on('click',(function(e) {
-	ajax_simple_warning({sale_id: $(this).val()}, b_url + "cancel_sale", "cancel_sale").done(function(res) {
+/* detail - cancel purchase */
+$("#btn_cancel_purchase").on('click',(function(e) {
+	ajax_simple_warning({purchase_id: $(this).val()}, b_url + "cancel_purchase", "cancel_purchase").done(function(res) {
 		swal_redirection(res.type, res.msg, res.url);
 	});
 }));

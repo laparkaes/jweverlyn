@@ -59,8 +59,11 @@ const warning_msg = {
 		update_provider: "¿Desea actualizar proveedor?",
 		no_product_option_selected: "Se creará una opción general por no elegir ninguna.",
 		add_purchase: "¿Desea agregar nueva compra?",
+		cancel_purchase: "¿Desea cancelar compra?",
 		add_note: "¿Desea agregar nueva nota?",
 		delete_note: "¿Desea eliminar nota?",
+		add_file: "¿Desea subir archivo?",
+		delete_file: "¿Desea eliminar archivo?",
 	},
 }
 
@@ -72,8 +75,9 @@ $('form input').each(function(index, element) {
 	});
 });
 
-//move to top of page
+//move top & to
 function move_top(){$("html, body").animate({ scrollTop: 0 }, "slow");}
+function move_to(dom){$('html, body').animate({ scrollTop: $(dom).offset().top - 100 }, "slow");}
 
 //number format 1,000,000.00
 function nf(num){return parseFloat(num).toLocaleString('es-US', {maximumFractionDigits: 2, minimumFractionDigits: 2});}
@@ -361,20 +365,28 @@ function set_search_client_ajax(){
 	}));
 }
 
-/* control search block and button at index page */
-$("#btn_search_index").on('click',(function(e) {
-	if ($(this).hasClass("btn-primary")){
-		$("#bl_search_index").removeClass("d-none");
-		$(this).removeClass("btn-primary");
-		$(this).addClass("btn-outline-primary");
-	}else{
-		$("#bl_search_index").addClass("d-none");
-		$(this).removeClass("btn-outline-primary");
-		$(this).addClass("btn-primary");
-	}
-}));
-$("#btn_close_search_index").on('click',(function(e) {
-	$("#bl_search_index").addClass("d-none");
-	$("#btn_search_index").removeClass("btn-outline-primary");
-	$("#btn_search_index").addClass("btn-primary");
-}));
+/* control btn and card visibility */
+function btn_card_control(btn_open, btn_close, card, color){
+	$(btn_open).on('click',(function(e) {
+		if ($(card).hasClass("d-none")){
+			$(card).removeClass("d-none");
+			$(btn_open).removeClass("btn-" + color);
+			$(btn_open).addClass("btn-outline-" + color);
+			move_to(card);
+		}else{
+			$(card).addClass("d-none");
+			$(btn_open).removeClass("btn-outline-" + color);
+			$(btn_open).addClass("btn-" + color);
+		}
+	}));
+
+	$(btn_close).on('click',(function(e) {
+		$(card).addClass("d-none");
+		$(btn_open).removeClass("btn-outline-" + color);
+		$(btn_open).addClass("btn-" + color);
+		move_top();
+	}));	
+}
+
+/* control search card and button at index page */
+btn_card_control("#btn_search_index", "#btn_close_search_index", "#bl_search_index", "primary");

@@ -28,7 +28,7 @@
 				<div class="card-body">
 					<h5 class="card-title">Filtros</h5>
 					<form class="row g-3">
-						<div class="col-md-4 col-12">
+						<div class="col-md-12 col-12">
 							<label class="form-label">Proveedor</label>
 							<input type="text" class="form-control enter_on" name="provider" value="<?= $params["provider"] ?>">
 						</div>
@@ -47,6 +47,15 @@
 								<input type="text" class="form-control enter_on" name="a_min" value="<?= $params["a_min"] ?>">
 								<span class="input-group-text">~</span>
 								<input type="text" class="form-control enter_on" name="a_max" value="<?= $params["a_max"] ?>">
+							</div>
+						</div>
+						<div class="col-md-4 col-12">
+							<label class="form-label">Saldo</label>
+							<div class="input-group">
+								<span class="input-group-text">S/</span>
+								<input type="text" class="form-control enter_on" name="b_min" value="<?= $params["b_min"] ?>">
+								<span class="input-group-text">~</span>
+								<input type="text" class="form-control enter_on" name="b_max" value="<?= $params["b_max"] ?>">
 							</div>
 						</div>
 						<div class="text-center pt-3">

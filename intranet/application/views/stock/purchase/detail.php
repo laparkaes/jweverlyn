@@ -51,6 +51,35 @@
 			</div>
 		</div>
 		<div class="col-md-8">
+			<?php if ($purchase->valid){ ?>
+			<div class="card">
+				<div class="card-body pt-3">
+					<div class="row">
+						<div class="col-md-3 d-grid">
+							<button type="button" class="btn btn-success mb-md-0 mb-3" id="btn_file_upload">
+								<i class="bi bi-upload" style="font-size: 2rem;"></i><br/>Archivo
+							</button>
+						</div>
+						<div class="col-md-3 d-grid">
+							<?php if ($purchase->balance) $d = ""; else $d = "disabled"; ?>
+							<button type="button" class="btn btn-primary mb-md-0 mb-3" <?= $d ?> id="btn_add_payment">
+								<i class="bi bi-credit-card" style="font-size: 2rem;"></i><br/>Pago
+							</button>
+						</div>
+						<div class="col-md-3 d-grid">
+							<button type="button" class="btn btn-primary mb-md-0 mb-3" id="btn_add_note">
+								<i class="bi bi-journal-check" style="font-size: 2rem;"></i><br/>Nota
+							</button>
+						</div>
+						<div class="col-md-3 d-grid">
+							<button type="button" class="btn btn-outline-danger mb-0" id="btn_cancel_purchase" value="<?= $purchase->purchase_id ?>">
+								<i class="bi bi-trash" style="font-size: 2rem;"></i><br/>Anular
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<?php } ?>
 			<div class="card d-none" id="card_file_upload">
 				<div class="card-body">
 					<h5 class="card-title">Subir Archivo</h5>
@@ -58,13 +87,13 @@
 						<input type="hidden" name="purchase_id" value="<?= $purchase->purchase_id ?>">
 						<div class="row g-3">
 							<div class="col-md-12">
-								<label class="form-label">Nombre</label>
-								<input type="text" class="form-control" name="filename">
+								<label class="form-label">Descripción</label>
+								<input type="text" class="form-control" name="description">
 								<div class="invalid-feedback"></div>
 							</div>
 							<div class="col-md-12">
 								<label class="form-label">Archivo</label>
-								<input type="file" class="form-control" name="filename">
+								<input type="file" class="form-control" name="upload">
 								<div class="invalid-feedback"></div>
 							</div>
 							<div class="col-md-12 pt-3 text-center">
@@ -141,34 +170,12 @@
 			</div>
 			<div class="card">
 				<div class="card-body pt-3">
-					<?php if ($purchase->valid){ ?>
-					<div class="row">
-						<div class="col-md-3 d-grid">
-							<button type="button" class="btn btn-success mb-3" id="btn_file_upload">
-								<i class="bi bi-upload" style="font-size: 2rem;"></i><br/>Archivo
-							</button>
-						</div>
-						<div class="col-md-3 d-grid">
-							<?php if ($purchase->balance) $d = ""; else $d = "disabled"; ?>
-							<button type="button" class="btn btn-primary mb-3" <?= $d ?> id="btn_add_payment">
-								<i class="bi bi-credit-card" style="font-size: 2rem;"></i><br/>Pago
-							</button>
-						</div>
-						<div class="col-md-3 d-grid">
-							<button type="button" class="btn btn-primary mb-3" id="btn_add_note">
-								<i class="bi bi-journal-check" style="font-size: 2rem;"></i><br/>Nota
-							</button>
-						</div>
-						<div class="col-md-3 d-grid">
-							<button type="button" class="btn btn-outline-danger mb-3" id="btn_cancel_purchase" value="<?= $purchase->purchase_id ?>">
-								<i class="bi bi-trash" style="font-size: 2rem;"></i><br/>Anular
-							</button>
-						</div>
-					</div>
-					<?php } ?>
 					<ul class="nav nav-tabs nav-tabs-bordered">
 						<li class="nav-item">
 							<button class="nav-link active" data-bs-toggle="tab" data-bs-target="#products">Productos</button>
+						</li>
+						<li class="nav-item">
+							<button class="nav-link" data-bs-toggle="tab" data-bs-target="#files">Archivos</button>
 						</li>
 						<li class="nav-item">
 							<button class="nav-link" data-bs-toggle="tab" data-bs-target="#payments">Pagos</button>
@@ -186,8 +193,9 @@
 											<th scope="col">#</th>
 											<th scope="col">Producto</th>
 											<th scope="col">Cant.</th>
-											<th scope="col">P/U</th>
-											<th scope="col">Subtotal</th>
+											<th scope="col" class="text-end">P/U</th>
+											<th scope="col" class="text-end">Subtotal</th>
+											<th scope="col" class="text-end"></th>
 										</tr>
 									</thead>
 									<tbody id="tbody_images">
@@ -198,6 +206,39 @@
 											<td><?= number_format($p->qty) ?></td>
 											<td class="text-nowrap text-end">S/ <?= number_format($p->price, 2) ?></td>
 											<td class="text-nowrap text-end">S/ <?= number_format($p->subtotal, 2) ?></td>
+											<td class="text-nowrap text-end">
+												<a href="<?= base_url() ?>stock/product/detail/<?= $p->product_id ?>" class="btn btn-outline-primary btn-sm border-0" target="_blank"><i class="bi bi-search"></i></a>
+											</td>
+											
+										</tr>
+										<?php } ?>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div class="tab-pane fade" id="files">
+							<div class="table-responsive">
+								<table class="table align-middle">
+									<thead>
+										<tr>
+											<th scope="col">#</th>
+											<th scope="col">Fecha</th>
+											<th scope="col">Descripción</th>
+											<th scope="col"></th>
+										</tr>
+									</thead>
+									<tbody id="tbody_images">
+										<?php foreach($files as $f_i => $f){ ?>
+										<tr>
+											<th scope="row"><?= number_format($f_i + 1) ?></th>
+											<td><?= $f->registed_at ?></td>
+											<td><?= $f->description ?></td>
+											<td class="text-end">
+												<a href="<?= base_url() ?>/uploads/purchase/<?= $purchase->purchase_id ?>/<?= $f->filename ?>" download="<?= $f->description."_".$f->filename ?>" class="btn btn-outline-success btn-sm border-0"><i class="bi bi-download"></i></a>
+												<button type="button" class="btn btn-outline-danger btn-sm border-0 btn_delete_file" value="<?= $f->file_id ?>">
+													<i class="bi bi-x-lg"></i>
+												</button>
+											</td>
 										</tr>
 										<?php } ?>
 									</tbody>

@@ -151,6 +151,7 @@
 									<th scope="col">Categoría</th>
 									<th scope="col">Producto</th>
 									<th scope="col" class="text-end">Stock</th>
+									<th scope="col" class="text-end">Precio</th>
 									<th scope="col"></th>
 									<th scope="col"></th>
 								</tr>
@@ -162,7 +163,8 @@
 									<td><img src="<?= base_url() ?>uploads/prod/<?= $p->image ?>" style="height: 60px;"></td>
 									<td><?= $p->category ?></td>
 									<td><?= $p->product ?></td>
-									<td class="text-end"><?= $p->stock ?></td>
+									<td class="text-end"><?= ($p->stock > 0) ? number_format($p->stock) : "-" ?></td>
+									<td class="text-nowrap text-end">S/ <?= number_format($p->price, 2) ?></td>
 									<td><i class="bi bi-circle-fill text-<?= $p->color ?>"></i></td>
 									<td class="text-end">
 										<a href="<?= base_url() ?>stock/product/detail/<?= $p->product_id ?>" type="button" class="btn btn-outline-primary btn-sm border-0">

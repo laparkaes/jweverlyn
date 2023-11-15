@@ -1,24 +1,8 @@
 let b_url = "stock/product/";
 
+btn_card_control("#btn_category_admin", ".btn_close_cat_admin", "#bl_cat_admin", "success");
+
 /* Category start */
-$("#btn_category_admin").on('click',(function(e) {
-	if ($(this).hasClass("btn-success")){
-		$("#bl_cat_admin").removeClass("d-none");
-		$(this).removeClass("btn-success");
-		$(this).addClass("btn-outline-success");
-	}else{
-		$("#bl_cat_admin").addClass("d-none");
-		$(this).removeClass("btn-outline-success");
-		$(this).addClass("btn-success");
-	}
-}));
-
-$(".btn_close_cat_admin").on('click',(function(e) {
-	$("#bl_cat_admin").addClass("d-none");
-	$("#btn_category_admin").removeClass("btn-outline-success");
-	$("#btn_category_admin").addClass("btn-success");
-}));
-
 $("#form_add_category").submit(function(e) {
 	e.preventDefault();
 	ajax_form_warning(this, b_url + "add_category", "add_category").done(function(res) {

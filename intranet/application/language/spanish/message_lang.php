@@ -13,9 +13,13 @@ $lang['e_no_zero']				= 'Debe ser mayor que cero.';
 
 //purchase
 $lang['e_product_qty_zero']		= 'La cantidad de producto debe ser mayor a cero.';
+$lang['e_cancel_no_stock']		= 'No se puede cancelar la compra debido a la falta de stock de "%product%"';
 $lang['s_purchase_insert']		= "Compra ha sido registrada.";
+$lang['s_purchase_cancel']		= "Compra ha sido cancelada.";
 $lang['s_note_insert']			= "Nota ha sido registrada.";
 $lang['s_note_delete']			= "Nota ha sido eliminada.";
+$lang['s_file_upload']			= "Archivo ha sido cargado.";
+$lang['s_file_delete']			= "Archivo ha sido eliminado.";
 
 //proveedor
 $lang['e_provider_exists']		= 'Proveedor registrado.';

@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-
+/* last check 2023 1115 */
 class Purchase extends CI_Controller {
 	
 	public function __construct(){
@@ -11,7 +11,7 @@ class Purchase extends CI_Controller {
 		$this->js_init = "stock/purchase.js";
 	}
 	
-	public function index(){//ok
+	public function index(){
 		if (!$this->session->userdata('username')) redirect("auth/login");
 		
 		$params = [
@@ -21,6 +21,8 @@ class Purchase extends CI_Controller {
 			"to" => $this->input->get("to"),
 			"a_min" => $this->input->get("a_min"),
 			"a_max" => $this->input->get("a_max"),
+			"b_min" => $this->input->get("b_min"),
+			"b_max" => $this->input->get("b_max"),
 		];
 		if (!$params["page"]) $params["page"] = 1;
 
@@ -37,6 +39,8 @@ class Purchase extends CI_Controller {
 		if ($params["to"]) $w["registed_at <="] = $params["to"]." 23:59:59";
 		if ($params["a_min"]) $w["amount >="] = str_replace(",", "", $params["a_min"]);
 		if ($params["a_max"]) $w["amount <="] = str_replace(",", "", $params["a_max"]);
+		if ($params["b_min"]) $w["balance >="] = str_replace(",", "", $params["b_min"]);
+		if ($params["b_max"]) $w["balance <="] = str_replace(",", "", $params["b_max"]);
 		
 		$purchases = $this->gm->filter("purchase", $w, $l, $w_in, [["registed_at", "desc"]], 25, 25 * ($params["page"] - 1), false);
 		foreach($purchases as $s){
@@ -97,6 +101,7 @@ class Purchase extends CI_Controller {
 			"provider" => $provider,
 			"products" => $products,
 			"payments" => $payments,
+			"files" => $this->gm->filter("purchase_file", $w, null, null, [["registed_at", "desc"]]),
 			"notes" => $this->gm->filter("purchase_note", $w, null, null, [["registed_at", "desc"]]),
 			"payment_methods" => $this->gm->all_simple("payment_method", "payment_method_id", "asc"),
 			"provider_doc_types" => $this->gm->all_simple("provider_doc_type", "doc_type_id", "asc"),
@@ -105,7 +110,7 @@ class Purchase extends CI_Controller {
 		$this->load->view('layout', $data);
 	}
 	
-	private function update_balance($purchase_id){//ok
+	private function update_balance($purchase_id){
 		$purchase = $this->gm->unique("purchase", "purchase_id", $purchase_id);
 		
 		$paid = 0;
@@ -121,7 +126,59 @@ class Purchase extends CI_Controller {
 		$this->gm->update("purchase", $f, $d);
 	}
 	
-	public function add_note(){//ok
+	public function add_file(){
+		$result = ["type" => "error", "msg" => null, "url" => null];
+		
+		if ($this->session->userdata('username')){
+			$data = $this->input->post();
+			$data["filename"] = $_FILES["upload"]["name"];
+			
+			$this->load->library('my_val');
+			$result = $this->my_val->file_upload_purchase($data);
+			
+			if ($result["type"] === "success"){
+				$path = './uploads/purchase/'.$data["purchase_id"]."/";
+				if (!is_dir($path)) mkdir($path, 0777, true);
+				
+				$config['upload_path'] = $path;
+				$config['allowed_types'] = '*';
+				$config['file_name'] = date("YmdHis");
+				$this->load->library('upload', $config);
+				
+				if ($this->upload->do_upload('upload')){
+					$upload_data = $this->upload->data();
+					
+					$data["filename"] = $upload_data['file_name'];
+					$data["registed_at"] = date("Y-m-d H:i:s");
+					$this->gm->insert("purchase_file", $data);
+					
+					$result["msg"] = $this->lang->line("s_file_upload");
+					$result["url"] = base_url()."stock/purchase/detail/".$data["purchase_id"];
+				}else $result = ["type" => "error", "msg" => $this->upload->display_errors()];
+			}else $result["msg"] = $this->lang->line("e_check_datas");
+		}else $result["msg"] = $this->lang->line("e_finished_session");
+		
+		header('Content-Type: application/json');
+		echo json_encode($result);
+	}
+	
+	public function delete_file(){
+		$type = "error"; $msg = null; $url = null;
+		
+		if ($this->session->userdata('username')){
+			$file = $this->gm->unique("purchase_file", "file_id", $this->input->post('file_id'));
+			$this->gm->update("purchase_file", ["file_id" => $file->file_id], ["valid" => false]);
+			
+			$type = "success";
+			$msg = $this->lang->line("s_file_delete");
+			$url = base_url()."stock/purchase/detail/".$file->purchase_id;
+		}else $msg = $this->lang->line("e_finished_session");
+		
+		header('Content-Type: application/json');
+		echo json_encode(["type" => $type, "msg" => $msg, "url" => $url]);
+	}
+	
+	public function add_note(){
 		$result = ["type" => "error", "msg" => null, "url" => null];
 		
 		if ($this->session->userdata('username')){
@@ -137,14 +194,14 @@ class Purchase extends CI_Controller {
 				
 				$result["msg"] = $this->lang->line("s_note_insert");
 				$result["url"] = base_url()."stock/purchase/detail/".$note["purchase_id"];
-			}
+			}else $result["msg"] = $this->lang->line("e_check_datas");
 		}else $result["msg"] = $this->lang->line("e_finished_session");
 		
 		header('Content-Type: application/json');
 		echo json_encode($result);
 	}
 	
-	public function delete_note(){//ok
+	public function delete_note(){
 		$type = "error"; $msg = null; $url = null;
 		
 		if ($this->session->userdata('username')){
@@ -161,7 +218,7 @@ class Purchase extends CI_Controller {
 		echo json_encode(["type" => $type, "msg" => $msg, "url" => $url]);
 	}
 	
-	public function add_payment(){//ok
+	public function add_payment(){
 		$result = ["type" => "error", "msg" => null, "url" => null];
 		
 		if ($this->session->userdata('username')){
@@ -187,7 +244,7 @@ class Purchase extends CI_Controller {
 		echo json_encode($result);
 	}
 	
-	public function delete_payment(){//ok
+	public function delete_payment(){
 		$type = "error"; $msg = null; $url = null;
 		$payment = $this->gm->unique("purchase_payment", "payment_id", $this->input->post('payment_id'));
 		
@@ -206,7 +263,7 @@ class Purchase extends CI_Controller {
 		echo json_encode(["type" => $type, "msg" => $msg, "url" => $url]);
 	}
 	
-	public function search_product(){//ok
+	public function search_product(){
 		$type = "error"; $msg = ""; $products = [];
 		$keyword = $this->input->post("keyword");
 		
@@ -228,7 +285,7 @@ class Purchase extends CI_Controller {
 		echo json_encode(["type" => $type, "msg" => $msg, "products" => $products]);
 	}
 	
-	public function load_product(){//ok
+	public function load_product(){
 		$res = ["type" => "error", "msg" => null];
 		
 		$product = $this->gm->unique("product", "product_id", $this->input->post("product_id"));
@@ -250,7 +307,7 @@ class Purchase extends CI_Controller {
 		echo json_encode($res);
 	}
 	
-	public function register(){//ok
+	public function register(){
 		if (!$this->session->userdata('username')) redirect("auth/login");
 		
 		$data = [
@@ -261,7 +318,7 @@ class Purchase extends CI_Controller {
 		$this->load->view('layout', $data);
 	}
 	
-	public function add_purchase(){//ok
+	public function add_purchase(){
 		$result = ["type" => "error", "msg" => null];
 		
 		if ($this->session->userdata('username')){
@@ -352,18 +409,36 @@ class Purchase extends CI_Controller {
 		
 		if ($this->session->userdata('username')){
 			$purchase_id = $this->input->post("purchase_id");
+			$f = ["purchase_id" => $purchase_id];
 			
-			if (!$this->gm->unique("invoice", "purchase_id", $purchase_id)){
-				$f = ["purchase_id" => $purchase_id];
+			//stock validation
+			$products = $this->gm->filter("purchase_product", $f, null, null, [], "", "", false);
+			foreach($products as $p){
+				$op = $this->gm->unique("product_option", "option_id", $p->option_id);
+				if ($op->stock < $p->qty){
+					$pr = $this->gm->unique("product", "product_id", $p->product_id)->product;
+					$msg = str_replace("%product%", $pr, $this->lang->line("e_cancel_no_stock"))." (".$op->option.")";
+					break;
+				}
+			}
+			
+			//stock validation done
+			if (!$msg){
+				//product stock update
+				foreach($products as $p){
+					$op = $this->gm->unique("product_option", "option_id", $p->option_id);
+					$stock_new = $op->stock - $p->qty;
+					$this->gm->update("product_option", ["option_id" => $p->option_id], ["stock" => $stock_new]);
+				}
 				
-				// cancelar pagos y venta
+				// cancel payment and purchase
 				$this->gm->update("purchase_payment", $f, ["valid" => false]);
 				$this->gm->update("purchase", $f, ["updated_at" => date("Y-m-d H:i:s"), "valid" => false]);
 				
 				$type = "success";
 				$msg = $this->lang->line("s_purchase_cancel");
-				$url = base_url()."stock/purchase";	
-			}else $msg = $this->lang->line("e_invoice_issued");
+				$url = base_url()."stock/purchase/detail/".$purchase_id;
+			}
 		}else $msg = $this->lang->line("e_finished_session");
 		
 		header('Content-Type: application/json');

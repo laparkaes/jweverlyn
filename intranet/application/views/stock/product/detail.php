@@ -209,14 +209,9 @@
 				</div>
 				<div class="modal-body text-start">
 					<div class="row g-3">
-						<div class="col-6">
+						<div class="col-12">
 							<label class="form-label">Opción</label>
 							<input type="text" class="form-control" name="option">
-							<div class="invalid-feedback"></div>
-						</div>
-						<div class="col-6">
-							<label class="form-label">Stock</label>
-							<input type="text" class="form-control" name="stock">
 							<div class="invalid-feedback"></div>
 						</div>
 					</div>
@@ -241,14 +236,9 @@
 				</div>
 				<div class="modal-body text-start">
 					<div class="row g-3">
-						<div class="col-6">
+						<div class="col-12">
 							<label class="form-label">Opción</label>
 							<input type="text" class="form-control" name="option">
-							<div class="invalid-feedback"></div>
-						</div>
-						<div class="col-6">
-							<label class="form-label">Stock</label>
-							<input type="text" class="form-control" name="stock">
 							<div class="invalid-feedback"></div>
 						</div>
 					</div>
