@@ -284,14 +284,16 @@ class Product extends CI_Controller {
 		if ($this->session->userdata('username')){
 			$option = $this->gm->unique("product_option", "option_id", $this->input->post("option_id"));
 			if ($option){
-				if ($this->gm->update("product_option", ["option_id" => $option->option_id], ["valid" => false])){
-					$op_aux = $this->calculate_stock($option->product_id);
-					
-					$stock = $op_aux["stock"];
-					$options = $op_aux["options"];
-					$type = "success";
-					$msg = $this->lang->line("s_option_delete");
-				}else $msg = $this->lang->line("e_internal_again");
+				if (!$option->stock){
+					if ($this->gm->update("product_option", ["option_id" => $option->option_id], ["valid" => false])){
+						$op_aux = $this->calculate_stock($option->product_id);
+						
+						$stock = $op_aux["stock"];
+						$options = $op_aux["options"];
+						$type = "success";
+						$msg = $this->lang->line("s_option_delete");
+					}else $msg = $this->lang->line("e_internal_again");
+				}else $msg = $this->lang->line("e_option_stock");
 			}else $msg = $this->lang->line("e_unknown_refresh");
 		}else $msg = $this->lang->line("e_finished_session");
 		

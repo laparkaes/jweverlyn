@@ -385,7 +385,7 @@ function btn_card_control(btn_open, btn_close, card, color){
 		$(btn_open).removeClass("btn-outline-" + color);
 		$(btn_open).addClass("btn-" + color);
 		move_top();
-	}));	
+	}));
 }
 
 /* control search card and button at index page */

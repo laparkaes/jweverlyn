@@ -64,6 +64,7 @@ $lang['e_duplicate_option']		= 'Opción esta registrada en el sistema.';
 $lang['e_no_product_registed']	= 'Producto no registrado.';
 $lang['e_product_no_stock']		= 'Stock no disponible.';
 $lang['e_product_invalid_option']	= "Opción inválida de ";
+$lang['e_option_stock']			= 'No puede elminar una opción con stock.';
 $lang['s_option_insert']		= 'Opción de producto ha sido generada con éxito.';
 $lang['s_option_update']		= 'Opción ha sido actualizada.';
 $lang['s_option_delete']		= 'Opción ha sido eliminada.';

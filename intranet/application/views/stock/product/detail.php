@@ -28,6 +28,64 @@
 			</div>
 		</div>
 		<div class="col-md-8">
+			<div class="card d-none" id="card_add_option">
+				<div class="card-body">
+					<h5 class="card-title">Agregar Opción</h5>
+					<form id="form_add_option">
+						<input type="hidden" name="product_id" value="<?= $product->product_id ?>">
+						<div class="row g-3">
+							<div class="col-12">
+								<label class="form-label">Opción</label>
+								<input type="text" class="form-control" name="option">
+								<div class="invalid-feedback"></div>
+							</div>
+							<div class="col-12 pt-3 text-center">
+								<button type="button" class="btn btn-secondary" id="btn_close_ao">Cerrar</button>
+								<button type="submit" class="btn btn-primary">Agregar</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+			<div class="card d-none" id="card_update_option">
+				<div class="card-body">
+					<h5 class="card-title">Editar Opción</h5>
+					<form id="form_update_option">
+						<input type="hidden" name="option_id">
+						<input type="hidden" name="product_id" value="<?= $product->product_id ?>">
+						<div class="row g-3">
+							<div class="col-12">
+								<label class="form-label">Opción</label>
+								<input type="text" class="form-control" name="option">
+								<div class="invalid-feedback"></div>
+							</div>
+							<div class="col-12 pt-3 text-center">
+								<button type="button" class="btn btn-secondary" id="btn_close_uo">Cerrar</button>
+								<button type="submit" class="btn btn-primary">Actualizar</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+			<div class="card d-none" id="card_add_image">
+				<div class="card-body">
+					<h5 class="card-title">Agregar Imagen</h5>
+					<form id="form_add_image">
+						<input type="hidden" name="product_id" value="<?= $product->product_id ?>">
+						<div class="row g-3">
+							<div class="col-12">
+								<label class="form-label">Imagen</label>
+								<input type="file" class="form-control" name="image" accept=".jpg, .jpeg, .png, .gif">
+								<div class="invalid-feedback"></div>
+							</div>
+							<div class="col-12 pt-3 text-center">
+								<button type="button" class="btn btn-secondary" id="btn_close_ai">Cerrar</button>
+								<button type="submit" class="btn btn-primary">Agregar</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
 			<div class="card">
 				<div class="card-body pt-3">
 					<ul class="nav nav-tabs nav-tabs-bordered">
@@ -129,7 +187,7 @@
 											<th scope="col">Opción</th>
 											<th scope="col">Stock</th>
 											<th scope="col" class="text-end">
-												<button type="button" class="btn btn-success btn-sm border-0" data-bs-toggle="modal" data-bs-target="#md_add_option">
+												<button type="button" class="btn btn-success btn-sm border-0" id="btn_open_ao">
 													<i class="bi bi-plus-lg"></i>
 												</button>
 											</th>
@@ -142,7 +200,7 @@
 											<td><?= $o->option ?></td>
 											<td><?= $o->stock ?></td>
 											<td class="text-end">
-												<button type="button" class="btn btn-outline-primary btn-sm border-0 btn_edit_option" data-bs-toggle="modal" data-bs-target="#md_edit_option" value="<?= $o->option_id ?>">
+												<button type="button" class="btn btn-outline-primary btn-sm border-0 btn_open_uo" value="<?= $o->option_id ?>">
 													<i class="bi bi-pencil-fill"></i>
 												</button>
 												<button type="button" class="btn btn-outline-danger btn-sm border-0 btn_delete_option" value="<?= $o->option_id ?>">
@@ -164,7 +222,7 @@
 											<th scope="col">Imagen</th>
 											<th scope="col">Ruta</th>
 											<th scope="col" class="text-end">
-												<button type="button" class="btn btn-success btn-sm border-0" data-bs-toggle="modal" data-bs-target="#md_add_image">
+												<button type="button" class="btn btn-success btn-sm border-0" id="btn_open_ai">
 													<i class="bi bi-plus-lg"></i>
 												</button>
 											</th>
@@ -196,84 +254,3 @@
 		</div>
 	</div>
 </section>
-
-<!-- modals -->
-<div class="modal fade" id="md_add_option" tabindex="-1">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<form id="form_add_option">
-				<input type="hidden" name="product_id" value="<?= $product->product_id ?>">
-				<div class="modal-header">
-					<h5 class="modal-title">Agregar Opción</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-				</div>
-				<div class="modal-body text-start">
-					<div class="row g-3">
-						<div class="col-12">
-							<label class="form-label">Opción</label>
-							<input type="text" class="form-control" name="option">
-							<div class="invalid-feedback"></div>
-						</div>
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-					<button type="submit" class="btn btn-primary">Agregar</button>
-				</div>
-			</form>
-		</div>
-	</div>
-</div>
-<div class="modal fade" id="md_edit_option" tabindex="-1">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<form id="form_update_option">
-				<input type="hidden" name="option_id">
-				<input type="hidden" name="product_id" value="<?= $product->product_id ?>">
-				<div class="modal-header">
-					<h5 class="modal-title">Editar Opción</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-				</div>
-				<div class="modal-body text-start">
-					<div class="row g-3">
-						<div class="col-12">
-							<label class="form-label">Opción</label>
-							<input type="text" class="form-control" name="option">
-							<div class="invalid-feedback"></div>
-						</div>
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-					<button type="submit" class="btn btn-primary">Actualizar</button>
-				</div>
-			</form>
-		</div>
-	</div>
-</div>
-<div class="modal fade" id="md_add_image" tabindex="-1">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<form id="form_add_image">
-				<input type="hidden" name="product_id" value="<?= $product->product_id ?>">
-				<div class="modal-header">
-					<h5 class="modal-title">Agregar Imagen</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-				</div>
-				<div class="modal-body text-start">
-					<div class="row g-3">
-						<div class="col-12">
-							<label class="form-label">Imagen</label>
-							<input type="file" class="form-control" name="image" accept=".jpg, .jpeg, .png, .gif">
-							<div class="invalid-feedback"></div>
-						</div>
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-					<button type="submit" class="btn btn-primary">Agregar</button>
-				</div>
-			</form>
-		</div>
-	</div>
-</div>

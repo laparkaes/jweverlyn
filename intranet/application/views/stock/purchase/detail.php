@@ -86,17 +86,17 @@
 					<form id="form_file_upload">
 						<input type="hidden" name="purchase_id" value="<?= $purchase->purchase_id ?>">
 						<div class="row g-3">
-							<div class="col-md-12">
+							<div class="col-12">
 								<label class="form-label">Descripción</label>
 								<input type="text" class="form-control" name="description">
 								<div class="invalid-feedback"></div>
 							</div>
-							<div class="col-md-12">
+							<div class="col-12">
 								<label class="form-label">Archivo</label>
 								<input type="file" class="form-control" name="upload">
 								<div class="invalid-feedback"></div>
 							</div>
-							<div class="col-md-12 pt-3 text-center">
+							<div class="col-12 pt-3 text-center">
 								<button type="button" class="btn btn-secondary" id="btn_close_cfu">Cerrar</button>
 								<button type="submit" class="btn btn-primary">Subir</button>
 							</div>

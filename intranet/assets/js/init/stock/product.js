@@ -1,6 +1,9 @@
 let b_url = "stock/product/";
 
 btn_card_control("#btn_category_admin", ".btn_close_cat_admin", "#bl_cat_admin", "success");
+btn_card_control("#btn_open_ao", "#btn_close_ao", "#card_add_option", "success");
+btn_card_control("#btn_open_ai", "#btn_close_ai", "#card_add_image", "success");
+
 
 /* Category start */
 $("#form_add_category").submit(function(e) {
@@ -47,8 +50,22 @@ $("#form_update_product").submit(function(e) {
 /* Product end */
 
 /* Option start */
+$("#btn_close_uo").on('click',(function(e) {
+	$("#card_update_option").addClass("d-none");
+	$(".btn_open_uo").removeClass("btn-primary");
+	$(".btn_open_uo").addClass("btn-outline-primary");
+	move_top();
+}));
+
 function set_option_events(){
-	$(".btn_edit_option").on('click',(function(e) {
+	$(".btn_open_uo").on('click',(function(e) {
+		$("#card_update_option").removeClass("d-none");
+		$(".btn_open_uo").removeClass("btn-primary");
+		$(".btn_open_uo").addClass("btn-outline-primary");
+		$(this).removeClass("btn-outline-primary");
+		$(this).addClass("btn-primary");
+		move_to("#card_update_option");
+		
 		ajax_simple({option_id: $(this).val()}, b_url + "load_option").done(function(res) {
 			if (res.type == "success"){
 				$("#form_update_option input[name=option_id]").val(res.option.option_id);
@@ -83,7 +100,7 @@ $("#form_add_option").submit(function(e) {
 		if (res.type == "success"){
 			update_stock(res.options, res.stock);
 			reset_form("#form_add_option");
-			$("#md_add_option").modal("hide");
+			$("#btn_close_ao").trigger("click");
 		}
 	});
 });
@@ -96,7 +113,7 @@ $("#form_update_option").submit(function(e) {
 		if (res.type == "success"){
 			update_stock(res.options, res.stock);
 			reset_form("#form_update_option");
-			$("#md_edit_option").modal("hide");
+			$("#btn_close_uo").trigger("click");
 		}
 	});
 });
@@ -141,7 +158,7 @@ $("#form_add_image").submit(function(e) {
 		if (res.type == "success"){
 			update_image(res.images);
 			reset_form("#form_add_image");
-			$("#md_add_image").modal("hide");
+			$("#btn_close_ai").trigger("click");
 			if (res.image != "") $("#main_image").prop("src", res.image);
 		}
 	});
