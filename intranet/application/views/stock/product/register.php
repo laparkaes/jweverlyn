@@ -22,17 +22,7 @@
 			<div class="card-body">
 				<h5 class="card-title">Agregar Producto</h5>
 				<form class="row g-3" id="form_add_product">
-					<div class="col-md-8">
-						<label class="form-label">Producto</label>
-						<input type="text" class="form-control" name="product">
-						<div class="invalid-feedback"></div>
-					</div>
-					<div class="col-md-4">
-						<label class="form-label">Código</label>
-						<input type="text" class="form-control" name="code">
-						<div class="invalid-feedback"></div>
-					</div>
-					<div class="col-6">
+					<div class="col-4">
 						<label class="form-label">Categoría</label>
 						<select class="form-select" name="category_id">
 							<option value="">Elegir</option>
@@ -42,7 +32,32 @@
 						</select>
 						<div class="invalid-feedback"></div>
 					</div>
-					<div class="col-6">
+					<div class="col-4">
+						<label class="form-label">Tipo</label>
+						<select class="form-select" name="type_id">
+							<option value="">Elegir</option>
+							<?php foreach($types as $t){ ?>
+							<option value="<?= $t->type_id ?>"><?= $t->type ?></option>
+							<?php } ?>
+						</select>
+						<div class="invalid-feedback"></div>
+					</div>
+					<div class="col-md-4">
+						<label class="form-label">Código</label>
+						<div class="input-group has-validation">
+							<input type="text" class="form-control" name="code" id="ip_code">
+							<button type="button" class="btn btn-primary" id="btn_generate_code">
+								<i class="bi bi-arrow-clockwise"></i>
+							</button>
+							<div class="invalid-feedback"></div>
+						</div>
+					</div>
+					<div class="col-md-8">
+						<label class="form-label">Producto</label>
+						<input type="text" class="form-control" name="product">
+						<div class="invalid-feedback"></div>
+					</div>
+					<div class="col-4">
 						<label class="form-label">Precio</label>
 						<div class="input-group">
 							<span class="input-group-text" id="basic-addon1">S/</span>

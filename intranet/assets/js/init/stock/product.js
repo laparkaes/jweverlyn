@@ -4,7 +4,6 @@ btn_card_control("#btn_category_admin", ".btn_close_cat_admin", "#bl_cat_admin",
 btn_card_control("#btn_open_ao", "#btn_close_ao", "#card_add_option", "success");
 btn_card_control("#btn_open_ai", "#btn_close_ai", "#card_add_image", "success");
 
-
 /* Category start */
 $("#form_add_category").submit(function(e) {
 	e.preventDefault();
@@ -32,6 +31,13 @@ $("#form_move_category").submit(function(e) {
 /* Category end */
 
 /* Product start */
+$("#btn_generate_code").on('click',(function(e) {
+	ajax_simple({}, b_url + "generate_code").done(function(res) {
+		if (res.type == "success") $("#ip_code").val(res.code);
+		else swal(res.type, res.msg);
+	});
+}));
+
 $("#form_add_product").submit(function(e) {
 	e.preventDefault();
 	ajax_form_warning(this, b_url + "add", "add_product").done(function(res) {

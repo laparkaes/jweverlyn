@@ -258,7 +258,7 @@ class My_val{
 	
 	public function add_product($data){
 		$msgs = []; $msg = "";
-		$msgs = $this->check_blank($data, ["category_id", "product"], $msgs);
+		$msgs = $this->check_blank($data, ["category_id", "type_id", "product"], $msgs);
 		
 		if ($data["price"]){
 			if (is_numeric($data["price"])){
@@ -279,7 +279,7 @@ class My_val{
 	
 	public function update_product($data){
 		$msgs = []; $msg = "";
-		$msgs = $this->check_blank($data, ["category_id", "product"], $msgs);
+		$msgs = $this->check_blank($data, ["category_id", "type_id", "product"], $msgs);
 		
 		if ($data["price"]){
 			if (is_numeric($data["price"])){
@@ -621,6 +621,13 @@ class My_val{
 		
 		if ($data["filename"]) $msgs = $this->set_msg($msgs, "upload");
 		else $msgs = $this->set_msg($msgs, "upload", "e_required_field");
+		
+		return ["type" => $this->get_type($msgs), "msgs" => $msgs];
+	}
+
+	public function add_person($person){
+		$msgs = [];
+		$msgs = $this->check_blank($person, ["name"], $msgs);
 		
 		return ["type" => $this->get_type($msgs), "msgs" => $msgs];
 	}

@@ -59,11 +59,13 @@ class Provider extends CI_Controller {
 			if (!file_exists("uploads/provider/".$provider->image)) $provider->image = "no_img.png";
 		}else $provider->image = "no_img.png";
 		
-		$purchase_w = ["provider_id" => $provider_id];
+		$w = ["provider_id" => $provider_id, "valid" => true];
 		$data = [
 			"provider" => $provider,
-			"purchases" => $this->gm->filter("purchase", $purchase_w, null, null, [["registed_at", "desc"]], 25, 0),
-			"purchases_paging" => $this->my_func->paging(1, $this->gm->qty("purchase", $purchase_w, null, null)),
+			"purchases" => $this->gm->filter("purchase", $w, null, null, [["registed_at", "desc"]], 25, 0),
+			"purchases_paging" => $this->my_func->paging(1, $this->gm->qty("purchase", $w, null, null)),
+			"people" => $this->gm->filter("provider_person", $w, null, null, [["name", "asc"]]),
+			"notes" => $this->gm->filter("provider_note", $w, null, null, [["registed_at", "desc"]]),
 			"main" => "stock/provider/detail",
 		];
 		
@@ -107,14 +109,54 @@ class Provider extends CI_Controller {
 		
 		if ($this->session->userdata('username')){
 			$provider = $this->input->post();
-			$provider["updated_at"] = date("Y-m-d H:i:s");
+			$provider["name"] = trim($provider["name"]);
+			if ($provider["name"]){
+				$provider["updated_at"] = date("Y-m-d H:i:s");
+				$this->gm->update("provider", ["provider_id" => $provider["provider_id"]], $provider);
+				
+				$result["type"] = "success";
+				$result["msg"] = $this->lang->line("s_provider_update");
+				$result["url"] = base_url()."stock/provider/detail/".$provider["provider_id"];	
+			}else $result["msg"] = $this->lang->line("e_provider_name");
+		}else $result["msg"] = $this->lang->line("e_finished_session");
+		
+		header('Content-Type: application/json');
+		echo json_encode($result);
+	}
+	
+	public function add_person(){
+		$result = ["type" => "error", "msg" => null, "url" => null];
+		
+		if ($this->session->userdata('username')){
+			$person = $this->input->post();
 			
-			//no validation required
-			$this->gm->update("provider", ["provider_id" => $provider["provider_id"]], $provider);
+			$this->load->library('my_val');
+			$result = $this->my_val->add_person($person);
+			
+			if ($result["type"] === "success"){
+				$note["registed_at"] = date("Y-m-d H:i:s");
+				$this->gm->insert("provider_person", $person);
+				
+				$result["msg"] = $this->lang->line("s_person_insert");
+				$result["url"] = base_url()."stock/provider/detail/".$person["provider_id"];
+			}else $result["msg"] = $this->lang->line("e_check_datas");
+		}else $result["msg"] = $this->lang->line("e_finished_session");
+		
+		header('Content-Type: application/json');
+		echo json_encode($result);
+	}
+	
+	public function delete_person(){
+		$result = ["type" => "error", "msg" => null, "url" => null];
+		
+		if ($this->session->userdata('username')){
+			$person = $this->gm->unique("provider_person", "person_id", $this->input->post("person_id"));
+			
+			$this->gm->update("provider_person", ["person_id" => $person->person_id], ["valid" => false]);
 			
 			$result["type"] = "success";
-			$result["msg"] = $this->lang->line("s_provider_update");
-			$result["url"] = base_url()."stock/provider/detail/".$provider["provider_id"];
+			$result["msg"] = $this->lang->line("s_person_delete");
+			$result["url"] = base_url()."stock/provider/detail/".$person->provider_id;
 		}else $result["msg"] = $this->lang->line("e_finished_session");
 		
 		header('Content-Type: application/json');
@@ -162,6 +204,46 @@ class Provider extends CI_Controller {
 		
 		header('Content-Type: application/json');
 		echo json_encode($result);
+	}
+	
+	public function add_note(){
+		$result = ["type" => "error", "msg" => null, "url" => null];
+		
+		if ($this->session->userdata('username')){
+			$note = $this->input->post();
+			
+			$this->load->library('my_val');
+			$result = $this->my_val->add_note($note);
+			
+			if ($result["type"] === "success"){
+				$note["note"] = trim($note["note"]);
+				$note["registed_at"] = date("Y-m-d H:i:s");
+				$this->gm->insert("provider_note", $note);
+				
+				$result["msg"] = $this->lang->line("s_note_insert");
+				$result["url"] = base_url()."stock/provider/detail/".$note["provider_id"];
+			}else $result["msg"] = $this->lang->line("e_check_datas");
+		}else $result["msg"] = $this->lang->line("e_finished_session");
+		
+		header('Content-Type: application/json');
+		echo json_encode($result);
+	}
+	
+	public function delete_note(){
+		$type = "error"; $msg = null; $url = null;
+		
+		if ($this->session->userdata('username')){
+			$note = $this->gm->unique("provider_note", "note_id", $this->input->post('note_id'));
+			
+			$this->gm->update("provider_note", ["note_id" => $note->note_id], ["valid" => false]);
+			
+			$type = "success";
+			$msg = $this->lang->line("s_note_delete");
+			$url = base_url()."stock/provider/detail/".$note->provider_id;
+		}else $msg = $this->lang->line("e_finished_session");
+		
+		header('Content-Type: application/json');
+		echo json_encode(["type" => $type, "msg" => $msg, "url" => $url]);
 	}
 	
 	public function search_provider_ajax(){

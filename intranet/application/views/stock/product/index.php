@@ -117,7 +117,7 @@
 				<div class="card-body">
 					<h5 class="card-title">Filtros</h5>
 					<form class="row g-3">
-						<div class="col-md-6 col-12">
+						<div class="col-md-3 col-12">
 							<label class="form-label">Categoría</label>
 							<select class="form-select" name="category">
 								<option value="">Categoría</option>
@@ -128,14 +128,25 @@
 								<?php } ?>
 							</select>
 						</div>
+						<div class="col-md-3 col-12">
+							<label class="form-label">Tipo</label>
+							<select class="form-select" name="type">
+								<option value="">Tipo</option>
+								<?php 
+								$t_id = $this->input->get("type");
+								foreach($types as $t){ if ($t_id == $t->type_id) $s = "selected"; else $s = ""; ?>
+								<option value="<?= $t->type_id ?>" <?= $s ?>><?= $t->type ?></option>
+								<?php } ?>
+							</select>
+						</div>
 						<div class="col-md-6 col-12">
 							<label class="form-label">Producto</label>
 							<input type="text" class="form-control enter_on" name="product" value="<?= $params["product"] ?>">
 						</div>
 						<div class="text-center pt-3">
-							<button type="button" class="btn btn-secondary" id="btn_close_search_index">Cerrar</button>
-							<a href="<?= base_url() ?>stock/product" class="btn btn-danger">Remover</a>
-							<button type="submit" class="btn btn-primary">Buscar</button>
+							<button type="submit" class="btn btn-primary"><i class="bi bi-search"></i></button>
+							<a href="<?= base_url() ?>stock/product" class="btn btn-danger"><i class="bi bi-eraser"></i></a>
+							<button type="button" class="btn btn-secondary" id="btn_close_search_index"><i class="bi bi-x-lg"></i></button>
 						</div>
 					</form>
 				</div>
@@ -148,7 +159,7 @@
 								<tr>
 									<th scope="col">#</th>
 									<th scope="col">Imagen</th>
-									<th scope="col">Categoría</th>
+									<th scope="col">Tipo</th>
 									<th scope="col">Producto</th>
 									<th scope="col" class="text-end">Stock</th>
 									<th scope="col" class="text-end">Precio</th>
@@ -161,8 +172,8 @@
 								<tr>
 									<th scope="row"><?= $base_page + $i_p + 1 ?></th>
 									<td><img src="<?= base_url() ?>uploads/prod/<?= $p->image ?>" style="height: 60px;"></td>
-									<td><?= $p->category ?></td>
-									<td><?= $p->product ?></td>
+									<td><?= $p->type ?></td>
+									<td><?= $p->product ?><br/>> <?= $p->category ?></td>
 									<td class="text-end"><?= ($p->stock > 0) ? number_format($p->stock) : "-" ?></td>
 									<td class="text-nowrap text-end">S/ <?= number_format($p->price, 2) ?></td>
 									<td><i class="bi bi-circle-fill text-<?= $p->color ?>"></i></td>

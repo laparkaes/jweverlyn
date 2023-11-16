@@ -21,10 +21,13 @@ $lang['s_note_delete']			= "Nota ha sido eliminada.";
 $lang['s_file_upload']			= "Archivo ha sido cargado.";
 $lang['s_file_delete']			= "Archivo ha sido eliminado.";
 
-//proveedor
+//provider
 $lang['e_provider_exists']		= 'Proveedor registrado.';
+$lang['e_provider_name']		= 'Ingrese nombre del proveedor.';
 $lang['s_provider_insert']		= "Proveedor ha sido registrado.";
 $lang['s_provider_update']		= "Proveedor ha sido actualizado.";
+$lang['s_person_insert']		= "Persona ha sido registrada.";
+$lang['s_person_delete']		= "Persona ha sido eliminada.";
 
 //client
 $lang['e_client_exists']		= 'Cliente registrado.';

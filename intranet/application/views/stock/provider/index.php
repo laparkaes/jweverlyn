@@ -28,18 +28,18 @@
 				<div class="card-body">
 					<h5 class="card-title">Filtros</h5>
 					<form class="row g-3">
-						<div class="col-md-6 col-12">
+						<div class="col-md-8 col-12">
 							<label class="form-label">Proveedor</label>
 							<input type="text" class="form-control enter_on" name="provider" value="<?= $params["provider"] ?>">
 						</div>
-						<div class="col-md-6 col-12">
+						<div class="col-md-4 col-12">
 							<label class="form-label">Documento</label>
 							<input type="text" class="form-control enter_on" name="doc" value="<?= $params["doc"] ?>">
 						</div>
 						<div class="text-center pt-3">
-							<button type="button" class="btn btn-secondary" id="btn_close_search_index">Cerrar</button>
-							<a href="<?= base_url() ?>stock/provider" class="btn btn-danger">Remover</a>
-							<button type="submit" class="btn btn-primary">Buscar</button>
+							<button type="submit" class="btn btn-primary"><i class="bi bi-search"></i></button>
+							<a href="<?= base_url() ?>stock/provider" class="btn btn-danger"><i class="bi bi-eraser"></i></a>
+							<button type="button" class="btn btn-secondary" id="btn_close_search_index"><i class="bi bi-x-lg"></i></button>
 						</div>
 					</form>
 				</div>

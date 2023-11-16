@@ -68,7 +68,7 @@ class Purchase extends CI_Controller {
 		$purchase = $this->gm->unique("purchase", "purchase_id", $purchase_id, false);
 		if (!$purchase) redirect("no_page");
 			
-		$w = ["purchase_id" => $purchase_id];
+		$w = ["purchase_id" => $purchase_id, "valid" => true];
 		
 		if ($purchase->provider_id){
 			$provider = $this->gm->unique("provider", "provider_id", $purchase->provider_id);
@@ -90,7 +90,7 @@ class Purchase extends CI_Controller {
 			$p->payment_method = $this->gm->unique("payment_method", "payment_method_id", $p->payment_method_id, false)->payment_method;
 		}
 		
-		$products = $this->gm->filter("purchase_product", $w, null, null, [["subtotal", "desc"]], "", "", false);
+		$products = $this->gm->filter("purchase_product", ["purchase_id" => $purchase_id], null, null, [["subtotal", "desc"]], "", "", false);
 		foreach($products as $p){
 			$p->prod = $this->gm->unique("product", "product_id", $p->product_id);
 			$p->op = $this->gm->unique("product_option", "option_id", $p->option_id);
@@ -268,7 +268,9 @@ class Purchase extends CI_Controller {
 		$keyword = $this->input->post("keyword");
 		
 		if ($keyword){
-			$products_rec = $this->gm->filter_like("product", "product", $keyword, "", "", $check_valid = true);
+			$type_prod = $this->gm->unique("product_type", "type", "Producto", false);
+			$products_rec = $this->gm->filter("product", ["type_id" => $type_prod->type_id], [["field" => "product", "values" => explode(" ", $keyword)]]);
+			
 			if ($products_rec){
 				$categories = [];
 				$categories_rec = $this->gm->all("product_category", [], "", "", true);

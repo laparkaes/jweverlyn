@@ -64,6 +64,8 @@ const warning_msg = {
 		delete_note: "¿Desea eliminar nota?",
 		add_file: "¿Desea subir archivo?",
 		delete_file: "¿Desea eliminar archivo?",
+		add_person: "¿Desea agregar persona?",
+		delete_person: "¿Desea eliminar persona?",
 	},
 }
 
@@ -73,6 +75,11 @@ $('form input').each(function(index, element) {
 		//enter key code
 		if (event.keyCode === 13) event.preventDefault();
 	});
+});
+
+//form valid, invalid msg reset
+$('form input, form select, form textarea').on('change', function(event) {
+	$(this).removeClass("is-invalid").removeClass("is-valid");
 });
 
 //move top & to

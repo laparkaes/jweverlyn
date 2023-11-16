@@ -40,12 +40,14 @@ class Product extends CI_Controller {
 		$params = [
 			"page" => $this->input->get("page"),
 			"category" => $this->input->get("category"),
+			"type" => $this->input->get("type"),
 			"product" => $this->input->get("product"),
 		];
 		if (!$params["page"]) $params["page"] = 1;
 		
 		$w = $l = $w_in = [];
 		if ($params["category"]) $w["category_id"] = $params["category"];
+		if ($params["type"]) $w["type_id"] = $params["type"];
 		if ($params["product"]) $l[] = ["field" => "product", "values" => explode(" ", $params["product"])];
 		
 		$f_op = ["valid" => true];
@@ -57,6 +59,7 @@ class Product extends CI_Controller {
 			$f_op["product_id"] = $p->product_id;
 			$p->stock = number_format($this->gm->sum("product_option", "stock", $f_op)->stock);
 			$p->category = $this->gm->unique("product_category", "category_id", $p->category_id)->category;
+			$p->type = $this->gm->unique("product_type", "type_id", $p->type_id, false)->type;
 			if ($p->valid) $p->color = "success"; else $p->color = "danger";
 		}
 		
@@ -65,6 +68,7 @@ class Product extends CI_Controller {
 			"params" => $params,
 			"paging" => $this->my_func->paging($params["page"], $this->gm->qty("product", $w, $l, $w_in)),
 			"categories" => $this->gm->all("product_category", [["category", "asc"]]),
+			"types" => $this->gm->all_simple("product_type", "type", "asc"),
 			"products" => $products,
 			"main" => "stock/product/index",
 		];
@@ -76,7 +80,7 @@ class Product extends CI_Controller {
 		
 		$product = $this->gm->unique("product", "product_id", $product_id);
 		$product->category = $this->gm->unique("product_category", "category_id", $product->category_id)->category;
-		
+		$product->type = $this->gm->unique("product_type", "type_id", $product->type_id, false)->type;
 		
 		if ($product->image){
 			$image_path = $product->product_id."/".$product->image;
@@ -93,6 +97,7 @@ class Product extends CI_Controller {
 			"options" => $options,
 			"images" => $this->get_images($product_id),
 			"categories" => $this->gm->all("product_category", [["category", "asc"]]),
+			"types" => $this->gm->all_simple("product_type", "type", "asc"),
 			"main" => "stock/product/detail",
 		];
 		$this->load->view('layout', $data);
@@ -103,9 +108,28 @@ class Product extends CI_Controller {
 		
 		$data = [
 			"categories" => $this->gm->all("product_category", [["category", "asc"]]),
+			"types" => $this->gm->all_simple("product_type", "type", "asc"),
 			"main" => "stock/product/register",
 		];
 		$this->load->view('layout', $data);
+	}
+	
+	public function generate_code(){
+		$result = ["type" => "error", "msg" => null, "code" => null];
+		
+		if ($this->session->userdata('username')){
+			$available = false;
+			while(!$available){
+				$code = $this->my_func->randomString(10, "1234567890");
+				if (!$this->gm->filter("product", ["code" => $code], null, null, [], "", "", false)) $available = true;
+			}
+			
+			$result["code"] = $code;
+			$result["type"] = "success";
+		}else $result["msg"] = $this->lang->line("e_finished_session");
+		
+		header('Content-Type: application/json');
+		echo json_encode($result);
 	}
 	
 	public function add(){

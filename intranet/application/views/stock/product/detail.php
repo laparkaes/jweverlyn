@@ -36,7 +36,7 @@
 						<div class="row g-3">
 							<div class="col-12">
 								<label class="form-label">Opción</label>
-								<input type="text" class="form-control" name="option">
+								<input type="text" class="form-control enter_on" name="option">
 								<div class="invalid-feedback"></div>
 							</div>
 							<div class="col-12 pt-3 text-center">
@@ -56,7 +56,7 @@
 						<div class="row g-3">
 							<div class="col-12">
 								<label class="form-label">Opción</label>
-								<input type="text" class="form-control" name="option">
+								<input type="text" class="form-control enter_on" name="option">
 								<div class="invalid-feedback"></div>
 							</div>
 							<div class="col-12 pt-3 text-center">
@@ -109,12 +109,16 @@
 								<div class="col-lg-9 col-md-8"><?= $product->code ?></div>
 							</div>
 							<div class="row">
-								<div class="col-lg-3 col-md-4 label">Nombre</div>
-								<div class="col-lg-9 col-md-8"><?= $product->product ?></div>
-							</div>
-							<div class="row">
 								<div class="col-lg-3 col-md-4 label">Categoría</div>
 								<div class="col-lg-9 col-md-8"><?= $product->category ?></div>
+							</div>
+							<div class="row">
+								<div class="col-lg-3 col-md-4 label">Tipo</div>
+								<div class="col-lg-9 col-md-8"><?= $product->type ?></div>
+							</div>
+							<div class="row">
+								<div class="col-lg-3 col-md-4 label">Nombre</div>
+								<div class="col-lg-9 col-md-8"><?= $product->product ?></div>
 							</div>
 							<div class="row">
 								<div class="col-lg-3 col-md-4 label">Precio</div>
@@ -139,15 +143,13 @@
 								<div class="row mb-3">
 									<label class="col-md-4 col-lg-3 col-form-label">Código</label>
 									<div class="col-md-8 col-lg-9">
-										<input name="code" type="text" class="form-control" value="<?= $product->code ?>">
-										<div class="invalid-feedback"></div>
-									</div>
-								</div>
-								<div class="row mb-3">
-									<label class="col-md-4 col-lg-3 col-form-label">Producto</label>
-									<div class="col-md-8 col-lg-9">
-										<input name="product" type="text" class="form-control" value="<?= $product->product ?>">
-										<div class="invalid-feedback"></div>
+										<div class="input-group has-validation">
+											<input type="text" class="form-control" name="code" id="ip_code" value="<?= $product->code ?>">
+											<button type="button" class="btn btn-primary" id="btn_generate_code">
+												<i class="bi bi-arrow-clockwise"></i>
+											</button>
+											<div class="invalid-feedback"></div>
+										</div>
 									</div>
 								</div>
 								<div class="row mb-3">
@@ -160,6 +162,26 @@
 											<option value="<?= $c->category_id ?>" <?= $s ?>><?= $c->category ?></option>
 											<?php } ?>
 										</select>
+										<div class="invalid-feedback"></div>
+									</div>
+								</div>
+								<div class="row mb-3">
+									<label class="col-md-4 col-lg-3 col-form-label">Tipo</label>
+									<div class="col-md-8 col-lg-9">
+										<select class="form-select" name="type_id">
+											<option value="">Elegir</option>
+											<?php foreach($types as $t){ 
+											if ($t->type_id == $product->type_id) $s = "selected"; else $s = ""; ?>
+											<option value="<?= $t->type_id ?>" <?= $s ?>><?= $t->type ?></option>
+											<?php } ?>
+										</select>
+										<div class="invalid-feedback"></div>
+									</div>
+								</div>
+								<div class="row mb-3">
+									<label class="col-md-4 col-lg-3 col-form-label">Producto</label>
+									<div class="col-md-8 col-lg-9">
+										<input name="product" type="text" class="form-control" value="<?= $product->product ?>">
 										<div class="invalid-feedback"></div>
 									</div>
 								</div>

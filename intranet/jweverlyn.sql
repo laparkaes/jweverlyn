@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- 생성 시간: 23-11-15 18:31
+-- 생성 시간: 23-11-16 18:15
 -- 서버 버전: 10.4.24-MariaDB
 -- PHP 버전: 7.4.29
 
@@ -3359,6 +3359,7 @@ INSERT INTO `payment_method` (`payment_method_id`, `payment_method`, `sunat`) VA
 CREATE TABLE `product` (
   `product_id` int(11) NOT NULL,
   `category_id` int(11) NOT NULL,
+  `type_id` int(11) NOT NULL DEFAULT 1,
   `code` varchar(50) NOT NULL,
   `product` varchar(200) NOT NULL,
   `price` float NOT NULL,
@@ -3372,310 +3373,311 @@ CREATE TABLE `product` (
 -- 테이블의 덤프 데이터 `product`
 --
 
-INSERT INTO `product` (`product_id`, `category_id`, `code`, `product`, `price`, `image`, `valid`, `updated_at`, `registed_at`) VALUES
-(1, 4, 'asdf-2321', 'otra prueba', 15.3, '20230829173001_thumb.png', 1, '2023-08-16 22:48:15', '2023-08-15 21:40:42'),
-(2, 5, 'asdf-232', 'Un producto con codigo', 33.57, NULL, 1, '2023-08-16 16:56:20', '2023-08-16 16:48:54'),
-(3, 14, 'frambuesas-341294', 'Uvas Higo Vino Mango Ciruela Zumo de guayaba', 94.02, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(4, 8, 'melocotón-358282', 'Vino Higos pasos Té negro Higos secos Compota Zumo de pera', 52.65, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(5, 9, 'zumodegranada-365194', 'Nispero Aguacate Caqui', 37.4, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(6, 13, 'compota-194781', 'Sandía Pasas Zumo de mango Mermelada Moras Naranja', 99.07, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(7, 8, 'higossecos-299759', 'Arándanos Cava rosado Vodka', 53.23, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(8, 15, 'zumodesandía-385409', 'Agua con gas Compota Avellana', 99.18, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(9, 15, 'nuezdebrasil-251227', 'Moras Mango Melocotón Agua mineral', 17.91, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(10, 14, 'guayaba-402357', 'Sandía Pomelo Café Zumo de ciruela', 29.5, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(11, 15, 'zumodemelocotón-146292', 'Uvas Higos pasos Té negro Té verde', 35.25, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(12, 8, 'vinotinto-408744', 'Zumo de melocotón Aguacate Zumo de uva Chocolate Cola', 81.27, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(13, 5, 'macadamia-452789', 'Ciruela Coco Cacahuetes', 37.71, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(14, 9, 'ron-49718', 'Cava blanco Miel Ginebra Vino', 45.06, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(15, 16, 'tequila-20235', 'Papaya Zumo de naranja Nuez de Brasil Canela Coco Vino', 75.42, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(16, 4, 'sandía-372876', 'Avellana Coco Canela Miel Manzana', 66.24, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(17, 4, 'zumodepera-360261', 'Almendra Cereza Feijoa', 55.71, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(18, 9, 'zumo-350188', 'Zumo de pera Banana Ginebra Guayaba Anacardos Moras', 45.84, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(19, 5, 'sandía-15500', 'Zumo Fresas Nuez Agua sin gas Cereza Mango', 23.88, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(20, 13, 'avellana-43417', 'Melocotón Aguacate Agua Cacahuetes', 30.99, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(21, 16, 'melocotón-125893', 'Ginebra Chocolate Brandy Dátiles Té negro', 42.63, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(22, 5, 'naranjada-42816', 'Guayaba Banana Miel Té verde', 92.97, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(23, 5, 'higospasos-128781', 'Mango Coco rallado Macadamia', 21.26, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(24, 5, 'coco-303396', 'Feijoa Vino rosado Vodka', 93.26, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(25, 15, 'uvas-214005', 'Uvas pasas Brandy Melocotón Ginebra', 82.24, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(26, 4, 'cavablanco-132554', 'Vainilla Té de hierbas Banana Ron', 90.26, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(27, 9, 'guayaba-387526', 'Zumo de kiwi Ron Agua', 34.21, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(28, 4, 'feijoa-57940', 'Jalea Uvas Whisky Vodka Chocolate', 47.05, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(29, 15, 'zumodekiwi-148339', 'Uvas pasas Té de hierbas Zumo de naranja', 50.81, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(30, 15, 'piña-381985', 'Pomelo Cava blanco Agua mineral Miel Higos pasos Coco', 49.76, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(31, 9, 'champán-433764', 'Sandía Vino rosado Piña Pistachos', 66.73, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(32, 10, 'zumodepiña-132440', 'Zumo de manzana Cava rosado Zumo de pera Vino blanco Avellana', 25.1, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(33, 16, 'café-116567', 'Uvas pasas Pomelo Zumo de guayaba Piña Zumo Guindas', 10.29, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(34, 15, 'zumodepera-47980', 'Piña Zumo de frambuesa Agua', 99.46, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(35, 5, 'mermelada-141318', 'Granada Mango Uvas Té Manzana', 21.92, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(36, 16, 'higossecos-353630', 'Vino blanco Guayaba Macadamia Tónica Uvas pasas Zumo de limón', 99.19, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(37, 16, 'dátiles-6076', 'Naranjada Vino Vino tinto', 86.94, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(38, 15, 'moras-350378', 'Higos pasos Coco Té Cola Chirimoya', 13.71, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(39, 10, 'zumodekiwi-397752', 'Zumo de mora Vino tinto Zumo', 32.87, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(40, 9, 'nuezdebrasil-479142', 'Almendra confitada Avellana Vainilla Cava Champán Mango', 19.81, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(41, 15, 'almendra-438156', 'Zumo de fresa Nuez Pasas Zumo de piña Pomelo', 53.73, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(42, 10, 'nuez-477856', 'Zumo de fresa Agua mineral Nuez de Brasil', 54.15, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(43, 5, 'zumodeciruela-424155', 'Mango Limón Sidra Zumo de limón', 95.1, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(44, 10, 'compota-447672', 'Café Avellana Zumo de arándanos Vodka', 47.49, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(45, 11, 'vainilla-239249', 'Dátiles Vino blanco Té Higo Banana Fresas', 85.01, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(46, 11, 'mango-310849', 'Puré de fruta Uvas Compota Zumo de papaya', 64.9, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(47, 14, 'macadamia-201236', 'Agua mineral Kiwi Vino tinto', 10.94, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(48, 14, 'uvas-470763', 'Granada Cacahuetes Avellana Piña Higos pasos Zumo de uva', 71.72, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(49, 10, 'almendra-74928', 'Ron Zumo de manzana Ciruela Granada Nuez', 36.74, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(50, 9, 'higo-492876', 'Arándanos Zumo de melocotón Vino Uvas pasas Zumo de sandía Ron', 46.99, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(51, 15, 'zumodepapaya-265322', 'Granada Higos secos Zumo de uva Pistachos', 77.45, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(52, 8, 'nispero-153603', 'Zumo de melocotón Pomelo Zumo de pomelo', 61.54, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(53, 5, 'café-186849', 'Té Champán Cola Mango Dátiles', 37.13, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(54, 11, 'limonada-309833', 'Ron Cola Cola Cerveza Ron Sandía', 72.88, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(55, 15, 'guindas-268002', 'Zumo de granada Zumo Té', 52.83, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(56, 4, 'piña-456102', 'Limonada Mango Zumo de guayaba Mora', 64.32, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(57, 13, 'pasas-187367', 'Té de hierbas Agua sin gas Melocotón Cacao Ciruela Cava rosado', 28.26, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(58, 9, 'mora-77971', 'Naranjada Agua con gas Champán Zumo de papaya Piña Guindas', 88.81, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(59, 9, 'coco-229404', 'Zumo Higo Champán Castañas Granada Ron', 75.6, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(60, 16, 'aguamineral-302482', 'Compota Naranja Vino rosado Anacardos Agua sin gas', 77.3, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(61, 16, 'tédehierbas-184149', 'Zumo de pomelo Vino Limón Cava rosado Chirimoya', 69.39, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(62, 16, 'uvaspasas-108080', 'Cava tinto Canela Guindas Tónica Vino blanco Zumo', 23.77, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(63, 14, 'papaya-227317', 'Chocolate Nuez de Brasil Piña Zumo de pomelo Café', 37.08, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(64, 14, 'zumodelimón-290431', 'Guindas Zumo de piña Zumo de melocotón', 40.48, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(65, 13, 'zumodegranada-372144', 'Melocotón Nuez de Brasil Sandía Pistachos Ginebra', 29.03, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(66, 5, 'zumo-30684', 'Zumo de arándanos Agua Mermelada Agua mineral', 85.4, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(67, 9, 'vodka-227633', 'Cola Nispero Zumo Zumo de mora Higo Vino rosado', 36.86, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(68, 4, 'kiwi-173618', 'Uvas Higos secos Tequila', 13.9, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(69, 15, 'cerveza-303429', 'Caqui Agua mineral Almendra confitada Zumo de pera Almendra', 71.92, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(70, 9, 'tequila-202787', 'Zumo de fruta de la pasión Melocotón Cava', 47.42, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(71, 10, 'zumodegranada-290183', 'Agua con gas Feijoa Zumo de papaya Miel Coco rallado Té verde', 65, '20231107181535.png', 1, '2023-11-07 23:15:24', '2023-09-03 21:20:46'),
-(72, 15, 'cocorallado-166457', 'Anacardos Arándanos Almendra confitada Puré de fruta', 14.66, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(73, 15, 'moras-396878', 'Pomelo Champán Agua Almendra confitada Arándanos Cacao', 76.78, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(74, 16, 'kiwi-477018', 'Whisky Cereza Puré de fruta Zumo de uva', 22.9, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(75, 9, 'higossecos-27038', 'Tónica Agua mineral Zumo de piña', 96.35, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(76, 13, 'aguacongas-136564', 'Granada Almendra Té negro', 50.34, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(77, 8, 'uvas-202772', 'Anacardos Ginebra Higo Coco rallado Chirimoya', 83.19, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(78, 13, 'macadamia-415992', 'Cereza Melocotón Whisky', 60.4, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(79, 11, 'castañas-338674', 'Limonada Champán Granada Feijoa', 43.57, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(80, 15, 'macadamia-338593', 'Macadamia Mango Uvas', 78.6, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(81, 4, 'cola-282111', 'Pera Coco rallado Nuez Pasas Moras Puré de fruta', 58.27, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(82, 15, 'brandy-9903', 'Naranja Vodka Zumo de kiwi Cava rosado', 39.57, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(83, 14, 'refresco-86978', 'Higos secos Avellana Vino Té negro', 99.34, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
-(84, 10, 'aguacate-11863', 'Higo Café Cacahuetes Papaya', 96.32, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(85, 8, 'whisky-305112', 'Melocotón Cola Coco rallado Zumo de naranja', 90.03, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(86, 15, 'zumodekiwi-97341', 'Refresco Zumo de pera Café Cacahuetes', 93.95, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(87, 8, 'almendraconfitada-128677', 'Cola Kiwi Higos secos Papaya Zumo de frambuesa', 54.89, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(88, 9, 'cocorallado-479713', 'Guayaba Zumo de naranja Zumo de piña Cava', 66.24, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(89, 4, 'frambuesas-302912', 'Compota Zumo de papaya Dátiles Zumo de uva Zumo de arándanos', 82.37, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(90, 15, 'brandy-27355', 'Vino rosado Melocotón Agua Guindas', 75.86, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(91, 11, 'pomelo-491723', 'Coco rallado Ginebra Café Té negro Guayaba Manzana', 66.39, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(92, 15, 'tédehierbas-124726', 'Cacahuetes Tequila Zumo de sandía', 20.26, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(93, 4, 'anacardos-32107', 'Café Cerveza Vino tinto Zumo de mango', 32.32, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(94, 15, 'melocotón-333009', 'Miel Mora Frambuesas Cerveza Ciruela', 20.81, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(95, 15, 'té-368204', 'Coco Manzana Cava Zumo de naranja', 58.88, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(96, 11, 'anacardos-410660', 'Canela Refresco Sidra', 58.23, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(97, 13, 'zumodemango-204856', 'Miel Pera Avellana', 49.69, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(98, 9, 'higo-211602', 'Compota Anacardos Cerveza Higo', 33.67, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(99, 14, 'pera-11096', 'Cereza Mango Sandía Zumo de granada', 88.11, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(100, 15, 'champán-174458', 'Ciruela Pistachos Zumo de fresa Naranja', 99.13, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(101, 10, 'cerveza-191286', 'Zumo de piña Zumo de kiwi Avellana Zumo de arándanos', 41.6, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(102, 11, 'zumodemanzana-138058', 'Castañas Uvas Feijoa Zumo de granada Ginebra', 60.57, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(103, 4, 'limonada-287242', 'Granada Agua con gas Vainilla Aguacate Caqui', 89.13, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(104, 4, 'vodka-397495', 'Zumo de fresa Ciruela Zumo de guayaba Vino blanco', 10.9, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(105, 5, 'compota-277064', 'Frambuesas Castañas Zumo de frambuesa Coco Zumo de fruta de la pasión', 26.66, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(106, 9, 'compota-482664', 'Cava rosado Banana Brandy Ron', 52.89, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(107, 15, 'mango-49979', 'Chocolate Coco Naranja Nuez de Brasil Zumo de arándanos Pistachos', 89.38, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(108, 8, 'castañas-158862', 'Zumo Zumo de sandía Zumo Limonada', 30.6, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(109, 5, 'nuezdebrasil-160422', 'Higos secos Compota Pomelo Moras Castañas', 74.13, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(110, 5, 'sandía-348171', 'Uvas pasas Vainilla Vino tinto Macadamia', 22.21, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(111, 5, 'frutadelapasión-106054', 'Agua Zumo de kiwi Banana Anacardos Pistachos Tónica', 71.69, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(112, 5, 'almendraconfitada-490646', 'Puré de fruta Cola Zumo de kiwi', 86.25, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(113, 16, 'pasas-207451', 'Aguacate Agua mineral Macadamia', 51.15, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(114, 15, 'cava-314893', 'Vino tinto Macadamia Zumo de fruta de la pasión', 96.81, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(115, 9, 'fresas-436075', 'Canela Sidra Nuez', 11.89, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(116, 13, 'mora-389237', 'Nuez Naranjada Fruta de la pasión Higos pasos Chirimoya Zumo de manzana', 76.62, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(117, 16, 'zumodeuva-224003', 'Naranja Higos secos Whisky', 93.3, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(118, 15, 'zumodepapaya-360288', 'Fruta de la pasión Zumo de kiwi Zumo', 53.72, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(119, 13, 'agua-221284', 'Higos pasos Zumo Puré de fruta', 96.87, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(120, 9, 'cacahuetes-17956', 'Té negro Té verde Zumo de guayaba Mora Zumo', 62.23, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(121, 10, 'papaya-89588', 'Zumo de pera Dátiles Agua con gas Moras Agua sin gas Zumo de sandía', 37.1, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(122, 10, 'manzana-170558', 'Zumo de guayaba Frambuesas Naranjada', 58.7, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(123, 5, 'feijoa-402128', 'Vino tinto Arándanos Zumo Macadamia Zumo de fruta de la pasión', 77.42, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(124, 16, 'compota-431568', 'Vino tinto Almendra confitada Miel Caqui Vodka', 10.42, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(125, 11, 'zumodesandía-105252', 'Tequila Sidra Whisky', 22.81, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(126, 5, 'brandy-42743', 'Guindas Zumo de melocotón Cacahuetes Puré de fruta Zumo de frambuesa', 35.37, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(127, 14, 'café-341236', 'Zumo de pera Anacardos Cola Almendra', 10.05, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(128, 16, 'purédefruta-150705', 'Feijoa Jalea Zumo de manzana Zumo de sandía Canela Pasas', 82.87, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(129, 15, 'zumodeuva-202001', 'Piña Agua sin gas Zumo de limón Zumo de uva Uvas Aguacate', 40.92, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(130, 16, 'refresco-19799', 'Moras Zumo de guayaba Almendra confitada', 34.82, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(131, 9, 'ciruela-68275', 'Higo Cava Vino tinto Agua Zumo de fresa Zumo de granada', 50.29, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(132, 5, 'zumodemelocotón-125076', 'Pasas Guayaba Aguacate Vino blanco Zumo de naranja', 79.12, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(133, 15, 'zumodegranada-355581', 'Kiwi Brandy Fruta de la pasión Moras Nuez Zumo de pomelo', 14.03, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(134, 13, 'tequila-267313', 'Pistachos Zumo de fruta de la pasión Papaya Banana', 56.06, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(135, 5, 'frambuesas-35943', 'Zumo de piña Higo Anacardos Moras', 43.84, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(136, 5, 'limón-248778', 'Zumo de fruta de la pasión Agua sin gas Zumo de piña', 25.07, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(137, 14, 'nuez-488525', 'Zumo de kiwi Agua mineral Zumo de uva', 15.24, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(138, 8, 'arándanos-327001', 'Uvas Canela Zumo de piña Compota Mora Té verde', 78.21, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(139, 10, 'té-137739', 'Café Zumo de ciruela Mango Coco rallado Zumo de uva Zumo de papaya', 96.28, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(140, 15, 'agua-216614', 'Chocolate Cerveza Zumo de limón', 91.09, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(141, 13, 'nuezdebrasil-218806', 'Zumo de arándanos Manzana Zumo de pomelo Vino blanco Almendra', 84.09, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(142, 15, 'naranjada-187316', 'Zumo de mora Nuez de Brasil Zumo de limón Cava blanco Almendra confitada Moras', 67.26, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(143, 16, 'cava-334819', 'Cacahuetes Zumo de kiwi Aguacate Melocotón Limonada', 52.86, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(144, 5, 'vino-354594', 'Whisky Zumo de kiwi Fruta de la pasión Tónica', 81.89, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(145, 14, 'mora-306970', 'Cola Fruta de la pasión Limonada Coco Ron', 67.11, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(146, 11, 'castañas-154107', 'Canela Anacardos Cava tinto Vino blanco Anacardos Cava tinto', 32.68, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(147, 13, 'zumodeciruela-400440', 'Chirimoya Pera Zumo de guayaba Agua con gas', 67.1, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(148, 8, 'moras-109099', 'Zumo de kiwi Dátiles Champán', 54.4, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(149, 9, 'té-145520', 'Almendra Té de hierbas Fruta de la pasión Limonada', 33.5, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(150, 14, 'ciruela-252797', 'Cereza Nuez de Brasil Fruta de la pasión Avellana Fruta de la pasión', 47.4, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(151, 13, 'whisky-497892', 'Café Cola Whisky Chocolate Zumo de melocotón', 80.97, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(152, 14, 'aguasingas-441124', 'Fruta de la pasión Sandía Mango', 96.89, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(153, 14, 'almendra-124356', 'Melocotón Té Mora Zumo Pera', 65.87, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(154, 15, 'zumodenaranja-373774', 'Zumo de pera Frambuesas Canela Tónica', 65.33, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(155, 5, 'vinotinto-45459', 'Ginebra Castañas Ron Feijoa Ginebra', 57.5, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(156, 4, 'ron-265980', 'Kiwi Frambuesas Zumo de mora', 45.15, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(157, 11, 'dátiles-206398', 'Cava rosado Agua Tequila Cereza Coco Pistachos', 69.33, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(158, 10, 'zumodefrutadelapasión-201060', 'Aguacate Naranjada Uvas Canela Feijoa', 21.14, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(159, 11, 'zumodekiwi-187134', 'Cava rosado Cereza Sandía Coco rallado Té negro', 82.24, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(160, 15, 'kiwi-350953', 'Limonada Zumo de piña Mermelada Granada', 54.84, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(161, 5, 'anacardos-411127', 'Cola Agua mineral Cola Zumo de papaya Almendra', 62.07, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(162, 16, 'pistachos-263286', 'Brandy Champán Zumo de pera Cava rosado Manzana Higos pasos', 76.04, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(163, 11, 'zumodemango-127824', 'Zumo de piña Cereza Guayaba Zumo de piña Agua', 33.38, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(164, 4, 'uvaspasas-455721', 'Zumo de mora Almendra confitada Fruta de la pasión Cerveza', 40.45, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(165, 8, 'pistachos-306135', 'Moras Cereza Zumo de sandía Sandía Kiwi Canela', 51.48, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(166, 16, 'caqui-333221', 'Naranja Té Cacao Refresco Ron Uvas pasas', 99.09, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(167, 9, 'coco-95018', 'Zumo de melocotón Papaya Jalea Zumo de ciruela', 99.36, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(168, 11, 'cereza-384833', 'Zumo de arándanos Cava blanco Uvas Vino tinto Cacahuetes Banana', 35.5, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(169, 15, 'dátiles-489227', 'Melocotón Té Manzana', 47.84, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(170, 15, 'vinotinto-291158', 'Uvas Zumo de sandía Guindas Compota Agua con gas', 41.48, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(171, 15, 'cerveza-480959', 'Zumo de frambuesa Zumo de manzana Tónica Tónica Ginebra', 46.38, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(172, 9, 'zumodesandía-101665', 'Zumo de uva Zumo de arándanos Guindas Pera Moras Caqui', 85.59, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(173, 10, 'sidra-32379', 'Coco Zumo de pera Zumo de fruta de la pasión Zumo de piña', 61.02, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(174, 5, 'téverde-17312', 'Pistachos Chocolate Zumo de mango', 24, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(175, 8, 'limón-247272', 'Sidra Chirimoya Almendra Mermelada Fruta de la pasión', 17.03, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(176, 8, 'coco-473367', 'Guindas Zumo de melocotón Piña Guayaba', 58.48, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(177, 14, 'zumodefrutadelapasión-16008', 'Zumo de granada Zumo de uva Ginebra', 29.42, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(178, 13, 'té-169537', 'Pasas Té Higo Nispero', 39.46, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(179, 16, 'vodka-462277', 'Avellana Zumo de arándanos Cola Cereza', 72.85, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(180, 13, 'cavablanco-415368', 'Ron Fresas Naranja', 33.07, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(181, 10, 'zumodemelocotón-375836', 'Cava Chirimoya Uvas pasas Caqui', 37.52, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(182, 8, 'manzana-409703', 'Pasas Higo Tónica Nuez', 34.11, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(183, 9, 'cola-456206', 'Kiwi Cava blanco Pistachos Pera Ron', 69.51, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(184, 14, 'zumodemango-306153', 'Refresco Uvas Fresas Chirimoya Papaya Whisky', 37.4, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(185, 8, 'pistachos-245988', 'Pasas Zumo Zumo de frambuesa Papaya', 69.26, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(186, 4, 'brandy-47512', 'Fruta de la pasión Zumo de ciruela Ciruela Manzana Puré de fruta Higo', 15.3, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(187, 13, 'whisky-254561', 'Cava blanco Ciruela Agua', 69.63, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(188, 15, 'melocotón-404563', 'Ron Zumo de mango Cerveza', 68.78, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(189, 16, 'cerveza-11614', 'Zumo de fruta de la pasión Zumo Vino rosado', 65.7, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(190, 5, 'limonada-142244', 'Macadamia Agua con gas Ciruela Coco rallado', 40.14, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(191, 13, 'avellana-481634', 'Vodka Zumo de kiwi Vino blanco Zumo de papaya Limón', 64.05, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(192, 16, 'zumodegranada-306831', 'Vainilla Zumo de pomelo Tequila Tequila Mora', 34.31, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(193, 11, 'macadamia-90966', 'Vino blanco Zumo de guayaba Zumo de sandía Fresas', 48.33, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(194, 5, 'guindas-351948', 'Manzana Zumo de sandía Tequila Whisky Zumo de limón Limón', 91.31, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(195, 16, 'limón-79641', 'Cacao Naranja Mango Melocotón Sidra', 35.07, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(196, 10, 'zumodelimón-351217', 'Zumo de fresa Mora Zumo de arándanos', 49.59, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(197, 8, 'vinorosado-291310', 'Agua Compota Zumo de sandía Guindas Zumo de papaya Higo', 59.84, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(198, 15, 'tédehierbas-339222', 'Pistachos Nuez Guayaba Cacao', 67.31, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(199, 15, 'café-57373', 'Zumo de fresa Granada Cerveza Cacao Agua con gas Zumo de fruta de la pasión', 18.32, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(200, 10, 'mango-369255', 'Brandy Tónica Zumo de uva Zumo de naranja', 99.38, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(201, 4, 'nuezdebrasil-162841', 'Fruta de la pasión Limón Higo Coco rallado Almendra confitada', 40.03, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(202, 13, 'té-90502', 'Zumo de uva Zumo de sandía Nispero Pasas', 82.95, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(203, 15, 'anacardos-201838', 'Dátiles Zumo de guayaba Pasas', 28.43, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(204, 16, 'champán-288392', 'Zumo de kiwi Zumo de melocotón Caqui Uvas Guayaba Coco rallado', 81.88, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(205, 16, 'zumodeuva-77761', 'Tónica Ron Jalea', 16.83, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(206, 13, 'compota-438933', 'Manzana Café Ron Zumo de melocotón Tequila', 56.62, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(207, 15, 'mermelada-402828', 'Tequila Cacahuetes Ron Guayaba', 38.83, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(208, 5, 'cavatinto-210369', 'Agua mineral Zumo de fruta de la pasión Anacardos', 30.11, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(209, 15, 'higospasos-2534', 'Arándanos Zumo de melocotón Zumo de limón Zumo de ciruela Zumo de granada', 74.35, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(210, 16, 'zumodesandía-235121', 'Café Macadamia Pasas Nuez de Brasil', 53.44, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(211, 8, 'cacao-177859', 'Agua sin gas Naranjada Higos pasos Mango Mora', 79.29, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(212, 9, 'ron-261862', 'Agua Nuez de Brasil Refresco Papaya Caqui Zumo de guayaba', 27.22, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(213, 4, 'zumo-163705', 'Nuez Nuez Uvas pasas Moras Frambuesas Puré de fruta', 83.11, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(214, 13, 'zumodearándanos-471277', 'Nispero Zumo de granada Dátiles Feijoa Tequila', 48.75, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(215, 5, 'castañas-480942', 'Zumo de ciruela Cereza Zumo de pomelo Zumo de manzana', 65.41, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(216, 10, 'ron-404963', 'Agua sin gas Canela Pera Cerveza', 99.99, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(217, 8, 'zumodepiña-4820', 'Zumo de manzana Cacahuetes Cacahuetes Melocotón', 54.68, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(218, 13, 'manzana-285670', 'Naranja Sidra Cava tinto Cava blanco', 79.97, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(219, 15, 'frutadelapasión-284392', 'Zumo de piña Té de hierbas Sidra Nuez Zumo de papaya Zumo de frambuesa', 66.29, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(220, 15, 'tédehierbas-50955', 'Castañas Vino rosado Zumo de melocotón Cacao Mermelada', 33.47, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(221, 9, 'arándanos-80202', 'Nuez Higos secos Zumo de granada Higos secos Zumo de papaya', 46.51, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(222, 9, 'agua-178296', 'Miel Granada Castañas', 43.93, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(223, 10, 'cavablanco-293270', 'Cerveza Zumo de fruta de la pasión Nispero Zumo de papaya Coco rallado Zumo de mora', 17.9, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(224, 10, 'zumodeguayaba-454255', 'Cola Café Zumo de limón Zumo de ciruela', 48.61, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(225, 8, 'higo-378958', 'Miel Naranjada Moras Tónica Zumo de sandía', 94.37, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(226, 11, 'nuez-425308', 'Cacahuetes Mora Vino tinto', 95.54, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(227, 15, 'vinoblanco-408456', 'Zumo de fruta de la pasión Pistachos Caqui Refresco', 97.84, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(228, 15, 'feijoa-39178', 'Higos pasos Chocolate Cava rosado Cerveza', 11.9, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(229, 15, 'cavatinto-85991', 'Cava rosado Higos pasos Champán Manzana Zumo de arándanos Cacahuetes', 28.3, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(230, 15, 'zumodegranada-165668', 'Feijoa Arándanos Cerveza Zumo de papaya Mermelada', 79.46, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(231, 4, 'aguamineral-158902', 'Té verde Zumo de fruta de la pasión Zumo de granada', 20.87, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(232, 9, 'ténegro-418321', 'Banana Té Cerveza Refresco Zumo de limón Ron', 38.95, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(233, 16, 'chirimoya-289459', 'Ciruela Pomelo Agua sin gas Uvas', 17.96, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(234, 10, 'guindas-21162', 'Sandía Nispero Canela Uvas Zumo de mora Té negro', 72.18, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(235, 13, 'café-256554', 'Agua mineral Macadamia Vainilla', 24.9, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(236, 15, 'limonada-46165', 'Zumo de piña Naranja Zumo de piña Melocotón Agua', 99.02, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(237, 5, 'aguacate-52640', 'Agua mineral Ginebra Limón', 39.37, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(238, 14, 'naranja-4721', 'Pomelo Banana Cola Limonada Feijoa', 56.42, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(239, 16, 'zumodefrutadelapasión-323943', 'Aguacate Mango Coco', 20.9, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(240, 4, 'limonada-339033', 'Vino Vino rosado Mora Zumo de mora', 44.44, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(241, 9, 'arándanos-200850', 'Zumo de fresa Papaya Papaya Chirimoya Vino blanco', 75.32, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(242, 5, 'pasas-218466', 'Melocotón Zumo de papaya Zumo de limón', 29.44, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(243, 11, 'ciruela-69879', 'Kiwi Chirimoya Zumo de pera Zumo de pera Zumo de guayaba Zumo de mora', 87.5, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(244, 14, 'guayaba-127457', 'Sandía Chocolate Ron', 48.57, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(245, 15, 'cacahuetes-380895', 'Cacao Nuez Pasas Coco rallado', 20.95, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(246, 8, 'zumodeciruela-149968', 'Sidra Chirimoya Cava rosado Té verde Pistachos Zumo de uva', 14.9, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(247, 15, 'vinorosado-298472', 'Guayaba Compota Avellana Mora Champán', 95.42, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(248, 8, 'guayaba-241773', 'Almendra confitada Cola Ginebra', 86.64, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(249, 8, 'vino-256053', 'Zumo de kiwi Cerveza Cava blanco Refresco Moras Frambuesas', 69.04, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(250, 10, 'purédefruta-372670', 'Avellana Feijoa Agua sin gas', 14.15, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(251, 16, 'té-374882', 'Canela Zumo de arándanos Banana Brandy Mermelada Banana', 23, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(252, 4, 'naranja-33902', 'Vino rosado Vino Chocolate Zumo de melocotón Cacao', 51.66, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(253, 8, 'cereza-482914', 'Miel Agua sin gas Cava Pasas Vino tinto Papaya', 42.78, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(254, 10, 'pomelo-465312', 'Agua mineral Fresas Vino tinto Pomelo Higo Zumo de frambuesa', 68.1, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(255, 11, 'zumodepapaya-422270', 'Canela Vodka Zumo de pomelo', 37.97, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(256, 15, 'frutadelapasión-88865', 'Sandía Zumo de granada Sandía Zumo de piña Ron', 34.47, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(257, 8, 'vinoblanco-276851', 'Manzana Anacardos Brandy Sidra', 68.65, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(258, 13, 'pasas-354089', 'Zumo de piña Nispero Té Coco rallado Frambuesas Higos pasos', 24.83, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(259, 8, 'zumodefrutadelapasión-252148', 'Ron Almendra confitada Puré de fruta', 88.59, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(260, 9, 'anacardos-105455', 'Refresco Cerveza Zumo de arándanos', 16.09, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(261, 11, 'refresco-411050', 'Chirimoya Cacao Chirimoya Coco Ginebra', 48.83, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(262, 9, 'zumodemanzana-161175', 'Compota Cava blanco Aguacate Chirimoya', 71, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(263, 11, 'zumodeguayaba-29836', 'Melocotón Higos secos Zumo de papaya Zumo de fruta de la pasión Zumo de sandía', 42.79, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(264, 15, 'zumodeguayaba-28695', 'Melocotón Zumo de uva Té negro Zumo de fresa', 46.41, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(265, 8, 'macadamia-169652', 'Sidra Compota Cava rosado Fruta de la pasión Vainilla', 92.25, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(266, 11, 'higo-292184', 'Banana Banana Ron Kiwi', 84.94, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(267, 9, 'vinorosado-63456', 'Agua con gas Aguacate Zumo de ciruela Nuez de Brasil Zumo de ciruela', 53.48, '20231109154618.jpg', 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(268, 10, 'zumodearándanos-451654', 'Pistachos Macadamia Kiwi', 50.37, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(269, 15, 'nispero-268062', 'Vino tinto Cacao Agua sin gas Cacahuetes Arándanos Nuez de Brasil', 98.86, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(270, 11, 'cavarosado-42141', 'Zumo de pera Cacao Sandía Cava blanco', 82.52, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(271, 15, 'vodka-90958', 'Mango Chocolate Pasas', 93.1, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(272, 15, 'dátiles-274959', 'Zumo de pomelo Avellana Castañas Vino rosado', 55.26, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(273, 8, 'anacardos-17707', 'Cerveza Agua mineral Coco rallado Chirimoya Té verde', 25.44, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(274, 5, 'zumodepiña-352911', 'Cava blanco Zumo de granada Zumo de fruta de la pasión', 24.21, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(275, 16, 'papaya-331894', 'Uvas Zumo de melocotón Café', 65.22, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(276, 8, 'compota-43614', 'Canela Fresas Pistachos Papaya Almendra confitada Nispero', 88.61, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(277, 16, 'higossecos-335922', 'Vino Zumo de melocotón Zumo de granada Kiwi Mermelada Arándanos', 50.09, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(278, 15, 'guayaba-229030', 'Anacardos Agua con gas Papaya', 73.5, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(279, 5, 'guindas-1806', 'Caqui Vino blanco Chirimoya Mango Refresco Frambuesas', 76.63, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(280, 11, 'ténegro-317843', 'Zumo de naranja Zumo Jalea Champán', 86.27, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(281, 8, 'mermelada-176715', 'Fresas Pasas Té verde Agua con gas Ron Canela', 28.14, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(282, 16, 'zumodekiwi-100642', 'Jalea Naranja Mora', 76.31, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(283, 9, 'uvaspasas-385795', 'Nuez Limón Cacahuetes', 94.01, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(284, 13, 'arándanos-487747', 'Zumo de mora Puré de fruta Vino Zumo de guayaba', 62.89, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(285, 14, 'sidra-136725', 'Zumo de manzana Kiwi Arándanos', 63.35, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(286, 14, 'ginebra-445754', 'Zumo de mora Agua Zumo de limón Té de hierbas', 68.86, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(287, 11, 'canela-134930', 'Zumo de manzana Higos secos Cacao Cereza Zumo de fresa Té negro', 29.75, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(288, 10, 'macadamia-389785', 'Feijoa Higo Feijoa Miel', 68.77, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(289, 15, 'champán-230129', 'Zumo de mango Compota Agua con gas', 93.27, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(290, 11, 'cereza-157496', 'Cola Zumo de limón Ron Miel Cola Papaya', 42.03, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(291, 4, 'kiwi-59455', 'Anacardos Cereza Frambuesas Guayaba Cava tinto Zumo de piña', 54.48, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(292, 14, 'mora-195864', 'Zumo de kiwi Puré de fruta Manzana', 29.31, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(293, 10, 'zumodelimón-270729', 'Vino blanco Vino Ron Zumo de sandía Cava rosado', 50.66, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(294, 16, 'chirimoya-291831', 'Anacardos Agua Papaya Zumo de piña Caqui Ron', 34.26, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(295, 13, 'pomelo-311526', 'Cava blanco Sandía Zumo de manzana Sidra Cerveza Pera', 83.82, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(296, 4, 'miel-204245', 'Castañas Vino tinto Mermelada', 15, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(297, 8, 'vinoblanco-475855', 'Refresco Higo Chocolate Cava blanco Ron', 59.81, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(298, 14, 'melocotón-209947', 'Cereza Té de hierbas Naranja', 68.61, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(299, 14, 'whisky-80183', 'Macadamia Té Ciruela Arándanos Sidra', 33.94, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(300, 11, 'frambuesas-283222', 'Cava Brandy Cacahuetes Jalea', 74.44, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(301, 4, 'frutadelapasión-382543', 'Piña Pistachos Agua sin gas Té Higos pasos Refresco', 22.35, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(302, 8, 'cavatinto-261408', 'Brandy Agua con gas Nispero Zumo de limón Zumo de frambuesa', 47.58, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
-(303, 18, 'CI19283', 'Cualqueira vaina', 33.29, '20231108170615.jpg', 1, '2023-11-08 22:06:04', '2023-11-08 22:06:04');
+INSERT INTO `product` (`product_id`, `category_id`, `type_id`, `code`, `product`, `price`, `image`, `valid`, `updated_at`, `registed_at`) VALUES
+(1, 4, 1, 'asdf-2321', 'otra prueba', 15.3, '20230829173001_thumb.png', 1, '2023-08-16 22:48:15', '2023-08-15 21:40:42'),
+(2, 5, 1, 'asdf-232', 'Un producto con codigo', 33.57, NULL, 1, '2023-08-16 16:56:20', '2023-08-16 16:48:54'),
+(3, 14, 1, 'frambuesas-341294', 'Uvas Higo Vino Mango Ciruela Zumo de guayaba', 94.02, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(4, 8, 1, 'melocotón-358282', 'Vino Higos pasos Té negro Higos secos Compota Zumo de pera', 52.65, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(5, 9, 1, 'zumodegranada-365194', 'Nispero Aguacate Caqui', 37.4, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(6, 13, 1, 'compota-194781', 'Sandía Pasas Zumo de mango Mermelada Moras Naranja', 99.07, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(7, 8, 1, 'higossecos-299759', 'Arándanos Cava rosado Vodka', 53.23, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(8, 15, 1, 'zumodesandía-385409', 'Agua con gas Compota Avellana', 99.18, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(9, 15, 1, 'nuezdebrasil-251227', 'Moras Mango Melocotón Agua mineral', 17.91, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(10, 14, 1, 'guayaba-402357', 'Sandía Pomelo Café Zumo de ciruela', 29.5, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(11, 15, 1, 'zumodemelocotón-146292', 'Uvas Higos pasos Té negro Té verde', 35.25, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(12, 8, 1, 'vinotinto-408744', 'Zumo de melocotón Aguacate Zumo de uva Chocolate Cola', 81.27, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(13, 5, 1, 'macadamia-452789', 'Ciruela Coco Cacahuetes', 37.71, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(14, 9, 1, 'ron-49718', 'Cava blanco Miel Ginebra Vino', 45.06, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(15, 16, 1, 'tequila-20235', 'Papaya Zumo de naranja Nuez de Brasil Canela Coco Vino', 75.42, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(16, 4, 1, 'sandía-372876', 'Avellana Coco Canela Miel Manzana', 66.24, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(17, 4, 1, 'zumodepera-360261', 'Almendra Cereza Feijoa', 55.71, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(18, 9, 1, 'zumo-350188', 'Zumo de pera Banana Ginebra Guayaba Anacardos Moras', 45.84, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(19, 5, 1, 'sandía-15500', 'Zumo Fresas Nuez Agua sin gas Cereza Mango', 23.88, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(20, 13, 1, 'avellana-43417', 'Melocotón Aguacate Agua Cacahuetes', 30.99, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(21, 16, 1, 'melocotón-125893', 'Ginebra Chocolate Brandy Dátiles Té negro', 42.63, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(22, 5, 1, 'naranjada-42816', 'Guayaba Banana Miel Té verde', 92.97, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(23, 5, 1, 'higospasos-128781', 'Mango Coco rallado Macadamia', 21.26, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(24, 5, 1, 'coco-303396', 'Feijoa Vino rosado Vodka', 93.26, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(25, 15, 1, 'uvas-214005', 'Uvas pasas Brandy Melocotón Ginebra', 82.24, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(26, 4, 1, 'cavablanco-132554', 'Vainilla Té de hierbas Banana Ron', 90.26, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(27, 9, 1, 'guayaba-387526', 'Zumo de kiwi Ron Agua', 34.21, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(28, 4, 1, 'feijoa-57940', 'Jalea Uvas Whisky Vodka Chocolate', 47.05, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(29, 15, 1, 'zumodekiwi-148339', 'Uvas pasas Té de hierbas Zumo de naranja', 50.81, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(30, 15, 1, 'piña-381985', 'Pomelo Cava blanco Agua mineral Miel Higos pasos Coco', 49.76, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(31, 9, 1, 'champán-433764', 'Sandía Vino rosado Piña Pistachos', 66.73, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(32, 10, 1, 'zumodepiña-132440', 'Zumo de manzana Cava rosado Zumo de pera Vino blanco Avellana', 25.1, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(33, 16, 1, 'café-116567', 'Uvas pasas Pomelo Zumo de guayaba Piña Zumo Guindas', 10.29, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(34, 15, 1, 'zumodepera-47980', 'Piña Zumo de frambuesa Agua', 99.46, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(35, 5, 1, 'mermelada-141318', 'Granada Mango Uvas Té Manzana', 21.92, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(36, 16, 1, 'higossecos-353630', 'Vino blanco Guayaba Macadamia Tónica Uvas pasas Zumo de limón', 99.19, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(37, 16, 1, 'dátiles-6076', 'Naranjada Vino Vino tinto', 86.94, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(38, 15, 1, 'moras-350378', 'Higos pasos Coco Té Cola Chirimoya', 13.71, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(39, 10, 1, 'zumodekiwi-397752', 'Zumo de mora Vino tinto Zumo', 32.87, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(40, 9, 1, 'nuezdebrasil-479142', 'Almendra confitada Avellana Vainilla Cava Champán Mango', 19.81, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(41, 15, 1, 'almendra-438156', 'Zumo de fresa Nuez Pasas Zumo de piña Pomelo', 53.73, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(42, 10, 1, 'nuez-477856', 'Zumo de fresa Agua mineral Nuez de Brasil', 54.15, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(43, 5, 1, 'zumodeciruela-424155', 'Mango Limón Sidra Zumo de limón', 95.1, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(44, 10, 1, 'compota-447672', 'Café Avellana Zumo de arándanos Vodka', 47.49, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(45, 11, 1, 'vainilla-239249', 'Dátiles Vino blanco Té Higo Banana Fresas', 85.01, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(46, 11, 1, 'mango-310849', 'Puré de fruta Uvas Compota Zumo de papaya', 64.9, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(47, 14, 1, 'macadamia-201236', 'Agua mineral Kiwi Vino tinto', 10.94, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(48, 14, 1, 'uvas-470763', 'Granada Cacahuetes Avellana Piña Higos pasos Zumo de uva', 71.72, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(49, 10, 1, 'almendra-74928', 'Ron Zumo de manzana Ciruela Granada Nuez', 36.74, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(50, 9, 1, 'higo-492876', 'Arándanos Zumo de melocotón Vino Uvas pasas Zumo de sandía Ron', 46.99, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(51, 15, 1, 'zumodepapaya-265322', 'Granada Higos secos Zumo de uva Pistachos', 77.45, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(52, 8, 1, 'nispero-153603', 'Zumo de melocotón Pomelo Zumo de pomelo', 61.54, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(53, 5, 1, 'café-186849', 'Té Champán Cola Mango Dátiles', 37.13, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(54, 11, 1, 'limonada-309833', 'Ron Cola Cola Cerveza Ron Sandía', 72.88, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(55, 15, 1, 'guindas-268002', 'Zumo de granada Zumo Té', 52.83, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(56, 4, 1, 'piña-456102', 'Limonada Mango Zumo de guayaba Mora', 64.32, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(57, 13, 1, 'pasas-187367', 'Té de hierbas Agua sin gas Melocotón Cacao Ciruela Cava rosado', 28.26, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(58, 9, 1, 'mora-77971', 'Naranjada Agua con gas Champán Zumo de papaya Piña Guindas', 88.81, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(59, 9, 1, 'coco-229404', 'Zumo Higo Champán Castañas Granada Ron', 75.6, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(60, 16, 1, 'aguamineral-302482', 'Compota Naranja Vino rosado Anacardos Agua sin gas', 77.3, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(61, 16, 1, 'tédehierbas-184149', 'Zumo de pomelo Vino Limón Cava rosado Chirimoya', 69.39, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(62, 16, 1, 'uvaspasas-108080', 'Cava tinto Canela Guindas Tónica Vino blanco Zumo', 23.77, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(63, 14, 1, 'papaya-227317', 'Chocolate Nuez de Brasil Piña Zumo de pomelo Café', 37.08, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(64, 14, 1, 'zumodelimón-290431', 'Guindas Zumo de piña Zumo de melocotón', 40.48, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(65, 13, 1, 'zumodegranada-372144', 'Melocotón Nuez de Brasil Sandía Pistachos Ginebra', 29.03, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(66, 5, 1, 'zumo-30684', 'Zumo de arándanos Agua Mermelada Agua mineral', 85.4, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(67, 9, 1, 'vodka-227633', 'Cola Nispero Zumo Zumo de mora Higo Vino rosado', 36.86, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(68, 4, 1, 'kiwi-173618', 'Uvas Higos secos Tequila', 13.9, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(69, 15, 1, 'cerveza-303429', 'Caqui Agua mineral Almendra confitada Zumo de pera Almendra', 71.92, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(70, 9, 1, 'tequila-202787', 'Zumo de fruta de la pasión Melocotón Cava', 47.42, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(71, 10, 1, 'zumodegranada-290183', 'Agua con gas Feijoa Zumo de papaya Miel Coco rallado Té verde', 65, '20231107181535.png', 1, '2023-11-07 23:15:24', '2023-09-03 21:20:46'),
+(72, 15, 1, 'cocorallado-166457', 'Anacardos Arándanos Almendra confitada Puré de fruta', 14.66, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(73, 15, 1, 'moras-396878', 'Pomelo Champán Agua Almendra confitada Arándanos Cacao', 76.78, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(74, 16, 1, 'kiwi-477018', 'Whisky Cereza Puré de fruta Zumo de uva', 22.9, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(75, 9, 1, 'higossecos-27038', 'Tónica Agua mineral Zumo de piña', 96.35, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(76, 13, 1, 'aguacongas-136564', 'Granada Almendra Té negro', 50.34, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(77, 8, 1, 'uvas-202772', 'Anacardos Ginebra Higo Coco rallado Chirimoya', 83.19, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(78, 13, 1, 'macadamia-415992', 'Cereza Melocotón Whisky', 60.4, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(79, 11, 1, 'castañas-338674', 'Limonada Champán Granada Feijoa', 43.57, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(80, 15, 1, 'macadamia-338593', 'Macadamia Mango Uvas', 78.6, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(81, 4, 1, 'cola-282111', 'Pera Coco rallado Nuez Pasas Moras Puré de fruta', 58.27, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(82, 15, 1, 'brandy-9903', 'Naranja Vodka Zumo de kiwi Cava rosado', 39.57, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(83, 14, 1, 'refresco-86978', 'Higos secos Avellana Vino Té negro', 99.34, NULL, 1, '2023-09-03 21:20:46', '2023-09-03 21:20:46'),
+(84, 10, 1, 'aguacate-11863', 'Higo Café Cacahuetes Papaya', 96.32, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(85, 8, 1, 'whisky-305112', 'Melocotón Cola Coco rallado Zumo de naranja', 90.03, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(86, 15, 1, 'zumodekiwi-97341', 'Refresco Zumo de pera Café Cacahuetes', 93.95, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(87, 8, 1, 'almendraconfitada-128677', 'Cola Kiwi Higos secos Papaya Zumo de frambuesa', 54.89, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(88, 9, 1, 'cocorallado-479713', 'Guayaba Zumo de naranja Zumo de piña Cava', 66.24, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(89, 4, 1, 'frambuesas-302912', 'Compota Zumo de papaya Dátiles Zumo de uva Zumo de arándanos', 82.37, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(90, 15, 1, 'brandy-27355', 'Vino rosado Melocotón Agua Guindas', 75.86, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(91, 11, 1, 'pomelo-491723', 'Coco rallado Ginebra Café Té negro Guayaba Manzana', 66.39, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(92, 15, 1, 'tédehierbas-124726', 'Cacahuetes Tequila Zumo de sandía', 20.26, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(93, 4, 1, 'anacardos-32107', 'Café Cerveza Vino tinto Zumo de mango', 32.32, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(94, 15, 1, 'melocotón-333009', 'Miel Mora Frambuesas Cerveza Ciruela', 20.81, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(95, 15, 1, 'té-368204', 'Coco Manzana Cava Zumo de naranja', 58.88, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(96, 11, 1, 'anacardos-410660', 'Canela Refresco Sidra', 58.23, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(97, 13, 1, 'zumodemango-204856', 'Miel Pera Avellana', 49.69, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(98, 9, 1, 'higo-211602', 'Compota Anacardos Cerveza Higo', 33.67, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(99, 14, 1, 'pera-11096', 'Cereza Mango Sandía Zumo de granada', 88.11, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(100, 15, 1, 'champán-174458', 'Ciruela Pistachos Zumo de fresa Naranja', 99.13, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(101, 10, 1, 'cerveza-191286', 'Zumo de piña Zumo de kiwi Avellana Zumo de arándanos', 41.6, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(102, 11, 1, 'zumodemanzana-138058', 'Castañas Uvas Feijoa Zumo de granada Ginebra', 60.57, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(103, 4, 1, 'limonada-287242', 'Granada Agua con gas Vainilla Aguacate Caqui', 89.13, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(104, 4, 1, 'vodka-397495', 'Zumo de fresa Ciruela Zumo de guayaba Vino blanco', 10.9, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(105, 5, 1, 'compota-277064', 'Frambuesas Castañas Zumo de frambuesa Coco Zumo de fruta de la pasión', 26.66, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(106, 9, 1, 'compota-482664', 'Cava rosado Banana Brandy Ron', 52.89, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(107, 15, 1, 'mango-49979', 'Chocolate Coco Naranja Nuez de Brasil Zumo de arándanos Pistachos', 89.38, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(108, 8, 1, 'castañas-158862', 'Zumo Zumo de sandía Zumo Limonada', 30.6, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(109, 5, 1, 'nuezdebrasil-160422', 'Higos secos Compota Pomelo Moras Castañas', 74.13, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(110, 5, 1, 'sandía-348171', 'Uvas pasas Vainilla Vino tinto Macadamia', 22.21, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(111, 5, 1, 'frutadelapasión-106054', 'Agua Zumo de kiwi Banana Anacardos Pistachos Tónica', 71.69, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(112, 5, 1, 'almendraconfitada-490646', 'Puré de fruta Cola Zumo de kiwi', 86.25, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(113, 16, 1, 'pasas-207451', 'Aguacate Agua mineral Macadamia', 51.15, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(114, 15, 1, 'cava-314893', 'Vino tinto Macadamia Zumo de fruta de la pasión', 96.81, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(115, 9, 1, 'fresas-436075', 'Canela Sidra Nuez', 11.89, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(116, 13, 1, 'mora-389237', 'Nuez Naranjada Fruta de la pasión Higos pasos Chirimoya Zumo de manzana', 76.62, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(117, 16, 1, 'zumodeuva-224003', 'Naranja Higos secos Whisky', 93.3, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(118, 15, 1, 'zumodepapaya-360288', 'Fruta de la pasión Zumo de kiwi Zumo', 53.72, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(119, 13, 1, 'agua-221284', 'Higos pasos Zumo Puré de fruta', 96.87, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(120, 9, 1, 'cacahuetes-17956', 'Té negro Té verde Zumo de guayaba Mora Zumo', 62.23, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(121, 10, 1, 'papaya-89588', 'Zumo de pera Dátiles Agua con gas Moras Agua sin gas Zumo de sandía', 37.1, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(122, 10, 1, 'manzana-170558', 'Zumo de guayaba Frambuesas Naranjada', 58.7, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(123, 5, 1, 'feijoa-402128', 'Vino tinto Arándanos Zumo Macadamia Zumo de fruta de la pasión', 77.42, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(124, 16, 1, 'compota-431568', 'Vino tinto Almendra confitada Miel Caqui Vodka', 10.42, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(125, 11, 1, 'zumodesandía-105252', 'Tequila Sidra Whisky', 22.81, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(126, 5, 1, 'brandy-42743', 'Guindas Zumo de melocotón Cacahuetes Puré de fruta Zumo de frambuesa', 35.37, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(127, 14, 1, 'café-341236', 'Zumo de pera Anacardos Cola Almendra', 10.05, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(128, 16, 1, 'purédefruta-150705', 'Feijoa Jalea Zumo de manzana Zumo de sandía Canela Pasas', 82.87, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(129, 15, 1, 'zumodeuva-202001', 'Piña Agua sin gas Zumo de limón Zumo de uva Uvas Aguacate', 40.92, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(130, 16, 1, 'refresco-19799', 'Moras Zumo de guayaba Almendra confitada', 34.82, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(131, 9, 1, 'ciruela-68275', 'Higo Cava Vino tinto Agua Zumo de fresa Zumo de granada', 50.29, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(132, 5, 1, 'zumodemelocotón-125076', 'Pasas Guayaba Aguacate Vino blanco Zumo de naranja', 79.12, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(133, 15, 1, 'zumodegranada-355581', 'Kiwi Brandy Fruta de la pasión Moras Nuez Zumo de pomelo', 14.03, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(134, 13, 1, 'tequila-267313', 'Pistachos Zumo de fruta de la pasión Papaya Banana', 56.06, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(135, 5, 1, 'frambuesas-35943', 'Zumo de piña Higo Anacardos Moras', 43.84, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(136, 5, 1, 'limón-248778', 'Zumo de fruta de la pasión Agua sin gas Zumo de piña', 25.07, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(137, 14, 1, 'nuez-488525', 'Zumo de kiwi Agua mineral Zumo de uva', 15.24, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(138, 8, 1, 'arándanos-327001', 'Uvas Canela Zumo de piña Compota Mora Té verde', 78.21, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(139, 10, 1, 'té-137739', 'Café Zumo de ciruela Mango Coco rallado Zumo de uva Zumo de papaya', 96.28, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(140, 15, 1, 'agua-216614', 'Chocolate Cerveza Zumo de limón', 91.09, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(141, 13, 1, 'nuezdebrasil-218806', 'Zumo de arándanos Manzana Zumo de pomelo Vino blanco Almendra', 84.09, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(142, 15, 1, 'naranjada-187316', 'Zumo de mora Nuez de Brasil Zumo de limón Cava blanco Almendra confitada Moras', 67.26, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(143, 16, 1, 'cava-334819', 'Cacahuetes Zumo de kiwi Aguacate Melocotón Limonada', 52.86, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(144, 5, 1, 'vino-354594', 'Whisky Zumo de kiwi Fruta de la pasión Tónica', 81.89, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(145, 14, 1, 'mora-306970', 'Cola Fruta de la pasión Limonada Coco Ron', 67.11, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(146, 11, 1, 'castañas-154107', 'Canela Anacardos Cava tinto Vino blanco Anacardos Cava tinto', 32.68, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(147, 13, 1, 'zumodeciruela-400440', 'Chirimoya Pera Zumo de guayaba Agua con gas', 67.1, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(148, 8, 1, 'moras-109099', 'Zumo de kiwi Dátiles Champán', 54.4, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(149, 9, 1, 'té-145520', 'Almendra Té de hierbas Fruta de la pasión Limonada', 33.5, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(150, 14, 1, 'ciruela-252797', 'Cereza Nuez de Brasil Fruta de la pasión Avellana Fruta de la pasión', 47.4, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(151, 13, 1, 'whisky-497892', 'Café Cola Whisky Chocolate Zumo de melocotón', 80.97, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(152, 14, 1, 'aguasingas-441124', 'Fruta de la pasión Sandía Mango', 96.89, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(153, 14, 1, 'almendra-124356', 'Melocotón Té Mora Zumo Pera', 65.87, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(154, 15, 1, 'zumodenaranja-373774', 'Zumo de pera Frambuesas Canela Tónica', 65.33, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(155, 5, 1, 'vinotinto-45459', 'Ginebra Castañas Ron Feijoa Ginebra', 57.5, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(156, 4, 1, 'ron-265980', 'Kiwi Frambuesas Zumo de mora', 45.15, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(157, 11, 1, 'dátiles-206398', 'Cava rosado Agua Tequila Cereza Coco Pistachos', 69.33, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(158, 10, 1, 'zumodefrutadelapasión-201060', 'Aguacate Naranjada Uvas Canela Feijoa', 21.14, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(159, 11, 1, 'zumodekiwi-187134', 'Cava rosado Cereza Sandía Coco rallado Té negro', 82.24, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(160, 15, 1, 'kiwi-350953', 'Limonada Zumo de piña Mermelada Granada', 54.84, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(161, 5, 1, 'anacardos-411127', 'Cola Agua mineral Cola Zumo de papaya Almendra', 62.07, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(162, 16, 1, 'pistachos-263286', 'Brandy Champán Zumo de pera Cava rosado Manzana Higos pasos', 76.04, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(163, 11, 1, 'zumodemango-127824', 'Zumo de piña Cereza Guayaba Zumo de piña Agua', 33.38, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(164, 4, 1, 'uvaspasas-455721', 'Zumo de mora Almendra confitada Fruta de la pasión Cerveza', 40.45, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(165, 8, 1, 'pistachos-306135', 'Moras Cereza Zumo de sandía Sandía Kiwi Canela', 51.48, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(166, 16, 1, 'caqui-333221', 'Naranja Té Cacao Refresco Ron Uvas pasas', 99.09, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(167, 9, 1, 'coco-95018', 'Zumo de melocotón Papaya Jalea Zumo de ciruela', 99.36, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(168, 11, 1, 'cereza-384833', 'Zumo de arándanos Cava blanco Uvas Vino tinto Cacahuetes Banana', 35.5, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(169, 15, 1, 'dátiles-489227', 'Melocotón Té Manzana', 47.84, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(170, 15, 1, 'vinotinto-291158', 'Uvas Zumo de sandía Guindas Compota Agua con gas', 41.48, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(171, 15, 1, 'cerveza-480959', 'Zumo de frambuesa Zumo de manzana Tónica Tónica Ginebra', 46.38, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(172, 9, 1, 'zumodesandía-101665', 'Zumo de uva Zumo de arándanos Guindas Pera Moras Caqui', 85.59, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(173, 10, 1, 'sidra-32379', 'Coco Zumo de pera Zumo de fruta de la pasión Zumo de piña', 61.02, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(174, 5, 1, 'téverde-17312', 'Pistachos Chocolate Zumo de mango', 24, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(175, 8, 1, 'limón-247272', 'Sidra Chirimoya Almendra Mermelada Fruta de la pasión', 17.03, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(176, 8, 1, 'coco-473367', 'Guindas Zumo de melocotón Piña Guayaba', 58.48, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(177, 14, 1, 'zumodefrutadelapasión-16008', 'Zumo de granada Zumo de uva Ginebra', 29.42, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(178, 13, 1, 'té-169537', 'Pasas Té Higo Nispero', 39.46, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(179, 16, 1, 'vodka-462277', 'Avellana Zumo de arándanos Cola Cereza', 72.85, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(180, 13, 1, 'cavablanco-415368', 'Ron Fresas Naranja', 33.07, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(181, 10, 1, 'zumodemelocotón-375836', 'Cava Chirimoya Uvas pasas Caqui', 37.52, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(182, 8, 1, 'manzana-409703', 'Pasas Higo Tónica Nuez', 34.11, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(183, 9, 1, 'cola-456206', 'Kiwi Cava blanco Pistachos Pera Ron', 69.51, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(184, 14, 1, 'zumodemango-306153', 'Refresco Uvas Fresas Chirimoya Papaya Whisky', 37.4, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(185, 8, 1, 'pistachos-245988', 'Pasas Zumo Zumo de frambuesa Papaya', 69.26, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(186, 4, 1, 'brandy-47512', 'Fruta de la pasión Zumo de ciruela Ciruela Manzana Puré de fruta Higo', 15.3, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(187, 13, 1, 'whisky-254561', 'Cava blanco Ciruela Agua', 69.63, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(188, 15, 1, 'melocotón-404563', 'Ron Zumo de mango Cerveza', 68.78, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(189, 16, 1, 'cerveza-11614', 'Zumo de fruta de la pasión Zumo Vino rosado', 65.7, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(190, 5, 1, 'limonada-142244', 'Macadamia Agua con gas Ciruela Coco rallado', 40.14, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(191, 13, 1, 'avellana-481634', 'Vodka Zumo de kiwi Vino blanco Zumo de papaya Limón', 64.05, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(192, 16, 1, 'zumodegranada-306831', 'Vainilla Zumo de pomelo Tequila Tequila Mora', 34.31, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(193, 11, 1, 'macadamia-90966', 'Vino blanco Zumo de guayaba Zumo de sandía Fresas', 48.33, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(194, 5, 1, 'guindas-351948', 'Manzana Zumo de sandía Tequila Whisky Zumo de limón Limón', 91.31, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(195, 16, 1, 'limón-79641', 'Cacao Naranja Mango Melocotón Sidra', 35.07, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(196, 10, 1, 'zumodelimón-351217', 'Zumo de fresa Mora Zumo de arándanos', 49.59, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(197, 8, 1, 'vinorosado-291310', 'Agua Compota Zumo de sandía Guindas Zumo de papaya Higo', 59.84, '20231116141958.jpg', 1, '2023-11-16 20:48:25', '2023-09-03 21:20:47'),
+(198, 15, 1, 'tédehierbas-339222', 'Pistachos Nuez Guayaba Cacao', 67.31, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(199, 15, 1, 'café-57373', 'Zumo de fresa Granada Cerveza Cacao Agua con gas Zumo de fruta de la pasión', 18.32, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(200, 10, 1, 'mango-369255', 'Brandy Tónica Zumo de uva Zumo de naranja', 99.38, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(201, 4, 1, 'nuezdebrasil-162841', 'Fruta de la pasión Limón Higo Coco rallado Almendra confitada', 40.03, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(202, 13, 1, 'té-90502', 'Zumo de uva Zumo de sandía Nispero Pasas', 82.95, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(203, 15, 1, 'anacardos-201838', 'Dátiles Zumo de guayaba Pasas', 28.43, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(204, 16, 1, 'champán-288392', 'Zumo de kiwi Zumo de melocotón Caqui Uvas Guayaba Coco rallado', 81.88, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(205, 16, 1, 'zumodeuva-77761', 'Tónica Ron Jalea', 16.83, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(206, 13, 1, 'compota-438933', 'Manzana Café Ron Zumo de melocotón Tequila', 56.62, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(207, 15, 1, 'mermelada-402828', 'Tequila Cacahuetes Ron Guayaba', 38.83, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(208, 5, 1, 'cavatinto-210369', 'Agua mineral Zumo de fruta de la pasión Anacardos', 30.11, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(209, 15, 1, 'higospasos-2534', 'Arándanos Zumo de melocotón Zumo de limón Zumo de ciruela Zumo de granada', 74.35, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(210, 16, 1, 'zumodesandía-235121', 'Café Macadamia Pasas Nuez de Brasil', 53.44, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(211, 8, 1, 'cacao-177859', 'Agua sin gas Naranjada Higos pasos Mango Mora', 79.29, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(212, 9, 1, 'ron-261862', 'Agua Nuez de Brasil Refresco Papaya Caqui Zumo de guayaba', 27.22, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(213, 4, 1, 'zumo-163705', 'Nuez Nuez Uvas pasas Moras Frambuesas Puré de fruta', 83.11, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(214, 13, 1, 'zumodearándanos-471277', 'Nispero Zumo de granada Dátiles Feijoa Tequila', 48.75, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(215, 5, 1, 'castañas-480942', 'Zumo de ciruela Cereza Zumo de pomelo Zumo de manzana', 65.41, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(216, 10, 1, 'ron-404963', 'Agua sin gas Canela Pera Cerveza', 99.99, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(217, 8, 1, 'zumodepiña-4820', 'Zumo de manzana Cacahuetes Cacahuetes Melocotón', 54.68, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(218, 13, 1, 'manzana-285670', 'Naranja Sidra Cava tinto Cava blanco', 79.97, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(219, 15, 1, 'frutadelapasión-284392', 'Zumo de piña Té de hierbas Sidra Nuez Zumo de papaya Zumo de frambuesa', 66.29, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(220, 15, 1, 'tédehierbas-50955', 'Castañas Vino rosado Zumo de melocotón Cacao Mermelada', 33.47, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(221, 9, 1, 'arándanos-80202', 'Nuez Higos secos Zumo de granada Higos secos Zumo de papaya', 46.51, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(222, 9, 1, 'agua-178296', 'Miel Granada Castañas', 43.93, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(223, 10, 1, 'cavablanco-293270', 'Cerveza Zumo de fruta de la pasión Nispero Zumo de papaya Coco rallado Zumo de mora', 17.9, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(224, 10, 1, 'zumodeguayaba-454255', 'Cola Café Zumo de limón Zumo de ciruela', 48.61, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(225, 8, 1, 'higo-378958', 'Miel Naranjada Moras Tónica Zumo de sandía', 94.37, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(226, 11, 1, 'nuez-425308', 'Cacahuetes Mora Vino tinto', 95.54, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(227, 15, 1, 'vinoblanco-408456', 'Zumo de fruta de la pasión Pistachos Caqui Refresco', 97.84, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(228, 15, 1, 'feijoa-39178', 'Higos pasos Chocolate Cava rosado Cerveza', 11.9, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(229, 15, 1, 'cavatinto-85991', 'Cava rosado Higos pasos Champán Manzana Zumo de arándanos Cacahuetes', 28.3, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(230, 15, 1, 'zumodegranada-165668', 'Feijoa Arándanos Cerveza Zumo de papaya Mermelada', 79.46, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(231, 4, 1, 'aguamineral-158902', 'Té verde Zumo de fruta de la pasión Zumo de granada', 20.87, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(232, 9, 1, 'ténegro-418321', 'Banana Té Cerveza Refresco Zumo de limón Ron', 38.95, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(233, 16, 1, 'chirimoya-289459', 'Ciruela Pomelo Agua sin gas Uvas', 17.96, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(234, 10, 1, 'guindas-21162', 'Sandía Nispero Canela Uvas Zumo de mora Té negro', 72.18, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(235, 13, 1, 'café-256554', 'Agua mineral Macadamia Vainilla', 24.9, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(236, 15, 1, 'limonada-46165', 'Zumo de piña Naranja Zumo de piña Melocotón Agua', 99.02, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(237, 5, 1, 'aguacate-52640', 'Agua mineral Ginebra Limón', 39.37, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(238, 14, 1, 'naranja-4721', 'Pomelo Banana Cola Limonada Feijoa', 56.42, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(239, 16, 1, 'zumodefrutadelapasión-323943', 'Aguacate Mango Coco', 20.9, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(240, 4, 1, 'limonada-339033', 'Vino Vino rosado Mora Zumo de mora', 44.44, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(241, 9, 1, 'arándanos-200850', 'Zumo de fresa Papaya Papaya Chirimoya Vino blanco', 75.32, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(242, 5, 1, 'pasas-218466', 'Melocotón Zumo de papaya Zumo de limón', 29.44, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(243, 11, 1, 'ciruela-69879', 'Kiwi Chirimoya Zumo de pera Zumo de pera Zumo de guayaba Zumo de mora', 87.5, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(244, 14, 1, 'guayaba-127457', 'Sandía Chocolate Ron', 48.57, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(245, 15, 1, 'cacahuetes-380895', 'Cacao Nuez Pasas Coco rallado', 20.95, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(246, 8, 1, 'zumodeciruela-149968', 'Sidra Chirimoya Cava rosado Té verde Pistachos Zumo de uva', 14.9, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(247, 15, 1, 'vinorosado-298472', 'Guayaba Compota Avellana Mora Champán', 95.42, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(248, 8, 1, 'guayaba-241773', 'Almendra confitada Cola Ginebra', 86.64, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(249, 8, 1, 'vino-256053', 'Zumo de kiwi Cerveza Cava blanco Refresco Moras Frambuesas', 69.04, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(250, 10, 1, 'purédefruta-372670', 'Avellana Feijoa Agua sin gas', 14.15, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(251, 16, 1, 'té-374882', 'Canela Zumo de arándanos Banana Brandy Mermelada Banana', 23, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(252, 4, 1, 'naranja-33902', 'Vino rosado Vino Chocolate Zumo de melocotón Cacao', 51.66, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(253, 8, 1, 'cereza-482914', 'Miel Agua sin gas Cava Pasas Vino tinto Papaya', 42.78, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(254, 10, 1, 'pomelo-465312', 'Agua mineral Fresas Vino tinto Pomelo Higo Zumo de frambuesa', 68.1, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(255, 11, 1, 'zumodepapaya-422270', 'Canela Vodka Zumo de pomelo', 37.97, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(256, 15, 1, 'frutadelapasión-88865', 'Sandía Zumo de granada Sandía Zumo de piña Ron', 34.47, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(257, 8, 1, 'vinoblanco-276851', 'Manzana Anacardos Brandy Sidra', 68.65, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(258, 13, 1, 'pasas-354089', 'Zumo de piña Nispero Té Coco rallado Frambuesas Higos pasos', 24.83, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(259, 8, 1, 'zumodefrutadelapasión-252148', 'Ron Almendra confitada Puré de fruta', 88.59, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(260, 9, 1, 'anacardos-105455', 'Refresco Cerveza Zumo de arándanos', 16.09, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(261, 11, 1, 'refresco-411050', 'Chirimoya Cacao Chirimoya Coco Ginebra', 48.83, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(262, 9, 1, 'zumodemanzana-161175', 'Compota Cava blanco Aguacate Chirimoya', 71, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(263, 11, 1, 'zumodeguayaba-29836', 'Melocotón Higos secos Zumo de papaya Zumo de fruta de la pasión Zumo de sandía', 42.79, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(264, 15, 1, 'zumodeguayaba-28695', 'Melocotón Zumo de uva Té negro Zumo de fresa', 46.41, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(265, 8, 1, 'macadamia-169652', 'Sidra Compota Cava rosado Fruta de la pasión Vainilla', 92.25, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(266, 11, 1, 'higo-292184', 'Banana Banana Ron Kiwi', 84.94, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(267, 9, 2, '9302326155', 'Agua con gas Aguacate Zumo de ciruela Nuez de Brasil Zumo de ciruela', 53.48, '20231109154618.jpg', 1, '2023-11-16 21:03:19', '2023-09-03 21:20:47'),
+(268, 10, 1, 'zumodearándanos-451654', 'Pistachos Macadamia Kiwi', 50.37, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(269, 15, 1, 'nispero-268062', 'Vino tinto Cacao Agua sin gas Cacahuetes Arándanos Nuez de Brasil', 98.86, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(270, 11, 1, 'cavarosado-42141', 'Zumo de pera Cacao Sandía Cava blanco', 82.52, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(271, 15, 1, 'vodka-90958', 'Mango Chocolate Pasas', 93.1, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(272, 15, 1, 'dátiles-274959', 'Zumo de pomelo Avellana Castañas Vino rosado', 55.26, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(273, 8, 1, 'anacardos-17707', 'Cerveza Agua mineral Coco rallado Chirimoya Té verde', 25.44, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(274, 5, 1, 'zumodepiña-352911', 'Cava blanco Zumo de granada Zumo de fruta de la pasión', 24.21, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(275, 16, 1, 'papaya-331894', 'Uvas Zumo de melocotón Café', 65.22, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(276, 8, 1, 'compota-43614', 'Canela Fresas Pistachos Papaya Almendra confitada Nispero', 88.61, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(277, 16, 1, 'higossecos-335922', 'Vino Zumo de melocotón Zumo de granada Kiwi Mermelada Arándanos', 50.09, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(278, 15, 1, 'guayaba-229030', 'Anacardos Agua con gas Papaya', 73.5, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(279, 5, 1, 'guindas-1806', 'Caqui Vino blanco Chirimoya Mango Refresco Frambuesas', 76.63, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(280, 11, 1, 'ténegro-317843', 'Zumo de naranja Zumo Jalea Champán', 86.27, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(281, 8, 1, 'mermelada-176715', 'Fresas Pasas Té verde Agua con gas Ron Canela', 28.14, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(282, 16, 1, 'zumodekiwi-100642', 'Jalea Naranja Mora', 76.31, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(283, 9, 1, 'uvaspasas-385795', 'Nuez Limón Cacahuetes', 94.01, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(284, 13, 1, 'arándanos-487747', 'Zumo de mora Puré de fruta Vino Zumo de guayaba', 62.89, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(285, 14, 1, 'sidra-136725', 'Zumo de manzana Kiwi Arándanos', 63.35, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(286, 14, 1, 'ginebra-445754', 'Zumo de mora Agua Zumo de limón Té de hierbas', 68.86, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(287, 11, 1, 'canela-134930', 'Zumo de manzana Higos secos Cacao Cereza Zumo de fresa Té negro', 29.75, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(288, 10, 1, 'macadamia-389785', 'Feijoa Higo Feijoa Miel', 68.77, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(289, 15, 1, 'champán-230129', 'Zumo de mango Compota Agua con gas', 93.27, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(290, 11, 1, 'cereza-157496', 'Cola Zumo de limón Ron Miel Cola Papaya', 42.03, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(291, 4, 1, 'kiwi-59455', 'Anacardos Cereza Frambuesas Guayaba Cava tinto Zumo de piña', 54.48, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(292, 14, 1, 'mora-195864', 'Zumo de kiwi Puré de fruta Manzana', 29.31, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(293, 10, 1, 'zumodelimón-270729', 'Vino blanco Vino Ron Zumo de sandía Cava rosado', 50.66, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(294, 16, 1, 'chirimoya-291831', 'Anacardos Agua Papaya Zumo de piña Caqui Ron', 34.26, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(295, 13, 1, 'pomelo-311526', 'Cava blanco Sandía Zumo de manzana Sidra Cerveza Pera', 83.82, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(296, 4, 1, 'miel-204245', 'Castañas Vino tinto Mermelada', 15, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(297, 8, 1, 'vinoblanco-475855', 'Refresco Higo Chocolate Cava blanco Ron', 59.81, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(298, 14, 1, 'melocotón-209947', 'Cereza Té de hierbas Naranja', 68.61, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(299, 14, 1, 'whisky-80183', 'Macadamia Té Ciruela Arándanos Sidra', 33.94, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(300, 11, 1, 'frambuesas-283222', 'Cava Brandy Cacahuetes Jalea', 74.44, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(301, 4, 1, 'frutadelapasión-382543', 'Piña Pistachos Agua sin gas Té Higos pasos Refresco', 22.35, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(302, 8, 1, 'cavatinto-261408', 'Brandy Agua con gas Nispero Zumo de limón Zumo de frambuesa', 47.58, NULL, 1, '2023-09-03 21:20:47', '2023-09-03 21:20:47'),
+(303, 9, 1, 'CI19283', 'Cualqueira vaina', 33.29, '20231108170615.jpg', 1, '2023-11-16 21:04:40', '2023-11-08 22:06:04'),
+(304, 8, 2, '1442931302', 'Consulta medica de fulanito', 33, '20231116152247.jpg', 1, '2023-11-16 20:22:58', '2023-11-16 20:14:10');
 
 -- --------------------------------------------------------
 
@@ -3710,7 +3712,7 @@ INSERT INTO `product_category` (`category_id`, `category`, `valid`) VALUES
 (15, 'Gaseosa', 1),
 (16, 'Pizzas', 1),
 (17, 'nueva categoria', 1),
-(18, 'new bla bla', 1);
+(18, 'new bla bla', 0);
 
 -- --------------------------------------------------------
 
@@ -3779,7 +3781,12 @@ INSERT INTO `product_image` (`image_id`, `product_id`, `image`, `valid`) VALUES
 (48, 71, '20231107181535.png', 1),
 (49, 303, '20231108170615.jpg', 1),
 (50, 267, '20231109154618.jpg', 1),
-(51, 197, '20231115183123.jpg', 0);
+(51, 197, '20231115183123.jpg', 0),
+(52, 197, '20231116141717.jpg', 0),
+(53, 197, '20231116141738.jpg', 0),
+(54, 197, '20231116141948.jpg', 0),
+(55, 197, '20231116141958.jpg', 1),
+(56, 304, '20231116152247.jpg', 1);
 
 -- --------------------------------------------------------
 
@@ -3826,8 +3833,8 @@ INSERT INTO `product_option` (`option_id`, `product_id`, `option`, `stock`, `val
 (24, 1, 'Talla S', 157, 0),
 (25, 1, 'Rosado', 77, 0),
 (26, 1, 'Negro', 124, 1),
-(27, 197, 'Talla S', 69, 1),
-(28, 197, 'Talla M', 203, 1),
+(27, 197, 'Talla SS', 69, 1),
+(28, 197, 'Talla MM', 203, 1),
 (29, 197, 'Talla L', 12, 1),
 (30, 216, '7L', 300, 1),
 (31, 71, 'Verde', 300, 1),
@@ -3835,14 +3842,34 @@ INSERT INTO `product_option` (`option_id`, `product_id`, `option`, `stock`, `val
 (33, 254, '-', 100, 1),
 (34, 197, 'Talla XS', 0, 1),
 (35, 254, '--', 0, 1),
-(36, 197, 'Talla XL', 7, 1),
-(37, 254, '---', 100, 1),
+(36, 197, 'Talla XL', 0, 1),
+(37, 254, '---', 0, 1),
 (38, 162, '-', 0, 1),
 (39, 8, '-', 0, 1),
 (40, 235, 'Talla M - Talla Asia', 0, 1),
 (41, 235, 'Talla M', 0, 0),
 (42, 235, 'Talla M', 0, 1),
-(43, 235, 'Talla L', 0, 1);
+(43, 235, 'Talla L', 0, 1),
+(44, 197, 'dfsdaf', 0, 1);
+
+-- --------------------------------------------------------
+
+--
+-- 테이블 구조 `product_type`
+--
+
+CREATE TABLE `product_type` (
+  `type_id` int(11) NOT NULL,
+  `type` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- 테이블의 덤프 데이터 `product_type`
+--
+
+INSERT INTO `product_type` (`type_id`, `type`) VALUES
+(1, 'Producto'),
+(2, 'Servicio');
 
 -- --------------------------------------------------------
 
@@ -3945,7 +3972,8 @@ INSERT INTO `provider` (`provider_id`, `doc_type_id`, `doc_number`, `name`, `tel
 (19, 4, '20448426701', 'ALE BIENES Y SERVICIOS EN GENERAL SOCIEDAD ANONIMA CERRADA', NULL, NULL, NULL, NULL, '4_20448426701_20231109183244.jpg', 1, '2023-11-03 19:18:11', '2023-11-03 19:18:11'),
 (20, 3, '000765804', 'Henry Calle', '345-6785', '908-237-473', 'h.calle@pontafina.com', 'Cl. Mexico ciudad 283, Cercado de Lima', '3_000765804_20231104161853.jpg', 1, '2023-11-03 23:22:13', '2023-11-03 20:37:49'),
 (21, 5, 'M68303812', 'Jeong Woo fulanito', '241-29371', '999-123-5831', 'hola@dff.com1', '1', '5_M68303812_20231110163414.jpg', 1, '2023-11-10 21:22:00', '2023-11-10 20:46:12'),
-(22, 7, '38463498', 'Dongwon Hyd - Coreana', NULL, NULL, NULL, NULL, NULL, 1, '2023-11-14 22:06:17', '2023-11-14 22:06:17');
+(22, 7, '38463498', 'Dongwon Hyd - Coreana', NULL, NULL, NULL, NULL, NULL, 1, '2023-11-14 22:06:17', '2023-11-14 22:06:17'),
+(23, 4, '20517206955', 'HEADMARK CORPORATION S.A.C.', '', '', '', '', '4_20517206955_20231116180033.png', 1, '2023-11-16 23:04:54', '2023-11-16 21:40:36');
 
 -- --------------------------------------------------------
 
@@ -3972,6 +4000,53 @@ INSERT INTO `provider_doc_type` (`doc_type_id`, `doc_type`, `short`, `sunat`) VA
 (5, 'Pasaporte', 'Pasaporte', '7'),
 (6, 'CDI - Cédula Diplomática de Identidad', 'CDI', 'A'),
 (7, 'Tax ID - Extranjero', 'Tax ID', '0');
+
+-- --------------------------------------------------------
+
+--
+-- 테이블 구조 `provider_note`
+--
+
+CREATE TABLE `provider_note` (
+  `note_id` int(11) NOT NULL,
+  `provider_id` int(11) NOT NULL,
+  `note` text NOT NULL,
+  `valid` tinyint(1) NOT NULL DEFAULT 1,
+  `registed_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- 테이블의 덤프 데이터 `provider_note`
+--
+
+INSERT INTO `provider_note` (`note_id`, `provider_id`, `note`, `valid`, `registed_at`) VALUES
+(1, 23, 'pide mucho descuento', 1, '2023-11-16 22:57:35'),
+(2, 23, 'este cliente\r\ncanta bien\r\ny toma poco', 0, '2023-11-16 22:57:46');
+
+-- --------------------------------------------------------
+
+--
+-- 테이블 구조 `provider_person`
+--
+
+CREATE TABLE `provider_person` (
+  `person_id` int(11) NOT NULL,
+  `provider_id` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `position` varchar(100) DEFAULT NULL,
+  `tel` varchar(100) DEFAULT NULL,
+  `email` varchar(150) DEFAULT NULL,
+  `valid` tinyint(1) NOT NULL DEFAULT 1,
+  `registed_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- 테이블의 덤프 데이터 `provider_person`
+--
+
+INSERT INTO `provider_person` (`person_id`, `provider_id`, `name`, `position`, `tel`, `email`, `valid`, `registed_at`) VALUES
+(1, 23, 'Jorge Ravines', '', '', '', 0, '2023-11-16 22:23:19'),
+(2, 23, 'Jorge Ravines', 'Gerente General', '+51)992533099', 'laparaejhdf@Sdfsdf.com', 1, '2023-11-16 22:40:44');
 
 -- --------------------------------------------------------
 
@@ -4027,7 +4102,7 @@ INSERT INTO `purchase` (`purchase_id`, `provider_id`, `proforma_id`, `amount`, `
 (29, 22, NULL, 570, 570, 0, '2023-11-15 23:28:37', '2023-11-14 22:30:42', 1),
 (30, 22, NULL, 570, 70, 500, '2023-11-14 22:30:55', '2023-11-14 22:30:55', 1),
 (31, 22, NULL, 570, 70, 500, '2023-11-15 20:47:20', '2023-11-14 22:31:01', 0),
-(32, 22, NULL, 570, 70, 500, '2023-11-14 22:31:33', '2023-11-14 22:31:33', 1),
+(32, 22, NULL, 570, 570, 0, '2023-11-16 23:10:31', '2023-11-14 22:31:33', 0),
 (33, 22, NULL, 3830, 3830, 0, '2023-11-14 23:13:25', '2023-11-14 22:37:33', 1),
 (34, 17, NULL, 990, 990, 0, '2023-11-15 23:28:08', '2023-11-14 22:40:14', 0),
 (35, 17, NULL, 121, 121, 0, '2023-11-15 20:46:15', '2023-11-15 05:24:02', 0),
@@ -4143,7 +4218,7 @@ INSERT INTO `purchase_payment` (`payment_id`, `purchase_id`, `payment_method_id`
 (34, 29, 1, 570, 70, 500, '2023-11-14 22:30:42', 1),
 (35, 30, 1, 570, 70, 500, '2023-11-14 22:30:55', 1),
 (36, 31, 1, 570, 70, 500, '2023-11-14 22:31:01', 0),
-(37, 32, 1, 570, 70, 500, '2023-11-14 22:31:33', 1),
+(37, 32, 1, 570, 70, 500, '2023-11-14 22:31:33', 0),
 (38, 33, 5, 3830, 2000, 1830, '2023-11-14 22:37:33', 0),
 (39, 34, 1, 990, 990, 0, '2023-11-14 22:40:14', 0),
 (40, 33, 4, 3830, 3830, 0, '2023-11-14 23:11:50', 0),
@@ -4154,7 +4229,8 @@ INSERT INTO `purchase_payment` (`payment_id`, `purchase_id`, `payment_method_id`
 (45, 35, 1, 121, 121, 0, '2023-11-15 05:24:02', 0),
 (46, 36, 5, 10200, 10200, 0, '2023-11-15 20:50:08', 0),
 (47, 29, 1, 500, 1, 499, '2023-11-15 23:28:28', 1),
-(48, 29, 1, 499, 499, 0, '2023-11-15 23:28:37', 1);
+(48, 29, 1, 499, 499, 0, '2023-11-15 23:28:37', 1),
+(49, 32, 1, 500, 500, 0, '2023-11-16 23:10:22', 0);
 
 -- --------------------------------------------------------
 
@@ -4596,7 +4672,9 @@ ALTER TABLE `payment_method`
 -- 테이블의 인덱스 `product`
 --
 ALTER TABLE `product`
-  ADD PRIMARY KEY (`product_id`);
+  ADD PRIMARY KEY (`product_id`),
+  ADD KEY `fk_product_type` (`type_id`),
+  ADD KEY `fk_product_category` (`category_id`);
 
 --
 -- 테이블의 인덱스 `product_category`
@@ -4617,6 +4695,12 @@ ALTER TABLE `product_image`
 ALTER TABLE `product_option`
   ADD PRIMARY KEY (`option_id`),
   ADD KEY `fk_option_product` (`product_id`);
+
+--
+-- 테이블의 인덱스 `product_type`
+--
+ALTER TABLE `product_type`
+  ADD PRIMARY KEY (`type_id`);
 
 --
 -- 테이블의 인덱스 `proforma`
@@ -4646,6 +4730,20 @@ ALTER TABLE `provider`
 --
 ALTER TABLE `provider_doc_type`
   ADD PRIMARY KEY (`doc_type_id`);
+
+--
+-- 테이블의 인덱스 `provider_note`
+--
+ALTER TABLE `provider_note`
+  ADD PRIMARY KEY (`note_id`),
+  ADD KEY `fk_note_provider` (`provider_id`);
+
+--
+-- 테이블의 인덱스 `provider_person`
+--
+ALTER TABLE `provider_person`
+  ADD PRIMARY KEY (`person_id`),
+  ADD KEY `fk_person_provider` (`provider_id`);
 
 --
 -- 테이블의 인덱스 `purchase`
@@ -4822,7 +4920,7 @@ ALTER TABLE `payment_method`
 -- 테이블의 AUTO_INCREMENT `product`
 --
 ALTER TABLE `product`
-  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=304;
+  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=305;
 
 --
 -- 테이블의 AUTO_INCREMENT `product_category`
@@ -4834,13 +4932,19 @@ ALTER TABLE `product_category`
 -- 테이블의 AUTO_INCREMENT `product_image`
 --
 ALTER TABLE `product_image`
-  MODIFY `image_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `image_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
 
 --
 -- 테이블의 AUTO_INCREMENT `product_option`
 --
 ALTER TABLE `product_option`
-  MODIFY `option_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `option_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+
+--
+-- 테이블의 AUTO_INCREMENT `product_type`
+--
+ALTER TABLE `product_type`
+  MODIFY `type_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- 테이블의 AUTO_INCREMENT `proforma`
@@ -4858,13 +4962,25 @@ ALTER TABLE `proforma_product`
 -- 테이블의 AUTO_INCREMENT `provider`
 --
 ALTER TABLE `provider`
-  MODIFY `provider_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `provider_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- 테이블의 AUTO_INCREMENT `provider_doc_type`
 --
 ALTER TABLE `provider_doc_type`
   MODIFY `doc_type_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- 테이블의 AUTO_INCREMENT `provider_note`
+--
+ALTER TABLE `provider_note`
+  MODIFY `note_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- 테이블의 AUTO_INCREMENT `provider_person`
+--
+ALTER TABLE `provider_person`
+  MODIFY `person_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- 테이블의 AUTO_INCREMENT `purchase`
@@ -4888,7 +5004,7 @@ ALTER TABLE `purchase_note`
 -- 테이블의 AUTO_INCREMENT `purchase_payment`
 --
 ALTER TABLE `purchase_payment`
-  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 
 --
 -- 테이블의 AUTO_INCREMENT `purchase_product`
@@ -4961,6 +5077,13 @@ ALTER TABLE `client`
   ADD CONSTRAINT `fk_doc_type_id` FOREIGN KEY (`doc_type_id`) REFERENCES `client_doc_type` (`doc_type_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- 테이블의 제약사항 `product`
+--
+ALTER TABLE `product`
+  ADD CONSTRAINT `fk_product_category` FOREIGN KEY (`category_id`) REFERENCES `product_category` (`category_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_product_type` FOREIGN KEY (`type_id`) REFERENCES `product_type` (`type_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- 테이블의 제약사항 `product_image`
 --
 ALTER TABLE `product_image`
@@ -4991,6 +5114,18 @@ ALTER TABLE `proforma_product`
 --
 ALTER TABLE `provider`
   ADD CONSTRAINT `fk_provider_doc_type_id` FOREIGN KEY (`doc_type_id`) REFERENCES `provider_doc_type` (`doc_type_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- 테이블의 제약사항 `provider_note`
+--
+ALTER TABLE `provider_note`
+  ADD CONSTRAINT `fk_note_provider` FOREIGN KEY (`provider_id`) REFERENCES `provider` (`provider_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- 테이블의 제약사항 `provider_person`
+--
+ALTER TABLE `provider_person`
+  ADD CONSTRAINT `fk_person_provider` FOREIGN KEY (`provider_id`) REFERENCES `provider` (`provider_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- 테이블의 제약사항 `purchase`
