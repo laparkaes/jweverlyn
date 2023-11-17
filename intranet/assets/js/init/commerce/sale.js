@@ -2,49 +2,108 @@ let b_url = "commerce/sale/";
 
 set_dates_between("#f_from", "#f_to");
 set_search_client_ajax();
+btn_card_control("#btn_file_upload", "#btn_close_cfu", "#card_file_upload", "success");
+btn_card_control("#btn_open_an", "#btn_close_an", "#card_add_note", "primary");
+btn_card_control("#btn_open_ap", "#btn_close_ap", "#card_add_payment", "primary");
 
+/* detail - invoice */
+$("#btn_issue_invoice").on('click',(function(e) {
+	$("#form_issue_invoice").submit();
+}));
+
+$("#form_issue_invoice").submit(function(e) {
+	e.preventDefault();
+	ajax_form_warning(this, b_url + "issue_invoice", "issue_invoice").done(function(res) {
+		set_msgs("#form_issue_invoice", res.msgs);
+		swal_redirection(res.type, res.msg, window.location.href);
+		if (res.type == "success") window.open(res.url, '_blank');
+	});
+});
+
+$("#btn_send_invoice").on('click',(function(e) {
+	ajax_simple_warning({invoice_id: $(this).val()}, b_url + "send_invoice", "send_invoice").done(function(res) {
+		set_msgs("#form_issue_invoice", res.msgs);
+		swal_redirection(res.type, res.msg, window.location.href);
+		if (res.type == "success") window.open(res.url, '_blank');
+	});
+}));
+
+$("#btn_void_invoice").on('click',(function(e) {
+	ajax_simple_warning({invoice_id: $(this).val()}, b_url + "void_invoice", "void_invoice").done(function(res) {
+		swal_redirection(res.type, res.msg, window.location.href);
+	});
+}));
+
+/* detail - file upload */
+$("#form_file_upload").submit(function(e) {
+	e.preventDefault();
+	ajax_form_warning(this, b_url + "add_file", "add_file").done(function(res) {
+		set_msgs("#form_file_upload", res.msgs);
+		if (res.type == "success") swal_redirection(res.type, res.msg, res.url);
+		else swal(res.type, res.msg);
+	});
+});
+
+$(".btn_delete_file").on('click',(function(e) {
+	ajax_simple_warning({file_id: $(this).val()}, b_url + "delete_file", "delete_file").done(function(res) {
+		swal_redirection(res.type, res.msg, res.url);
+	});
+}));
+
+/* detail - payment */
+$(".btn_delete_payment").on('click',(function(e) {
+	ajax_simple_warning({payment_id: $(this).val()}, b_url + "delete_payment", "delete_payment").done(function(res) {
+		swal_redirection(res.type, res.msg, res.url);
+	});
+}));
+
+$("#form_add_payment").submit(function(e) {
+	e.preventDefault();
+	ajax_form_warning(this, b_url + "add_payment", "add_payment").done(function(res) {
+		set_msgs("#form_add_payment", res.msgs);
+		if (res.type == "success") swal_redirection(res.type, res.msg, res.url);
+		else swal(res.type, res.msg);
+	});
+});
+
+/* detail, register - payment amount control */
 function calculate_change(){
-	var total = parseFloat($("#total").val());
-	var received =  parseFloat($("#received_txt").val());
-	if (isNaN(received) || received <= 0) received = total;
+	var total = parseFloat(nf_reverse($("#pay_total").val()));
+	var received =  parseFloat(nf_reverse($("#pay_received").val()));
+	if (isNaN(received) || received <= 0) received = 0;
 	
 	var change = received - total;
 	if (change < 0) change = 0;
 	
-	$("#received_txt").val(nf(received));
-	$("#received").val(received);
-	
-	$("#change_txt").val(nf(change));
-	$("#change").val(change);
+	$("#pay_change").val(nf(change));
+	$("#pay_received").val(nf(received));
 }
 
-function calculate_amount(){
-	var total = 0;
-	$($(".prod_row")).each(function(index, element){
-		if ($(element).find(".product_json").length > 0 && $(element).find(".stocks_json").length > 0){
-			var data = JSON.parse($(element).find(".product_json").html());
-			var stocks = JSON.parse($(element).find(".stocks_json").html());
-			var option_id = $(element).find(".option_id").val();
-			var qty = $(element).find(".ip_qty").val();
-			if (qty < 1) qty = 1;
-			else if (qty > parseInt(stocks[option_id])){
-				qty = stocks[option_id];
-				swal("warning", "Disponibilidad: " + qty);
-			}
-			$(element).find(".ip_qty").val(qty);
-			
-			var subtotal = qty * data.price;
-			$(element).find(".subtotal").html("S/. " + nf(subtotal));
-			total = total + subtotal;	
-		}
+$("#pay_received").on('change',(function(e) {
+	calculate_change();
+})).on('keyup',(function(e) {
+	if (event.which === 13) calculate_change();
+}));
+
+/* detail - note */
+$("#form_add_note").submit(function(e) {
+	e.preventDefault();
+	ajax_form_warning(this, b_url + "add_note", "add_note").done(function(res) {
+		set_msgs("#form_add_note", res.msgs);
+		if (res.type == "success") swal_redirection(res.type, res.msg, res.url);
+		else swal(res.type, res.msg);
 	});
-	
-	$("#total, #received").val(total);
-	$("#total_txt, #received_txt").val(nf(total));
-	
-	$("#change_txt").val(nf(0));
-	$("#change").val(0);
-}
+});
+
+$(".btn_delete_note").on('click',(function(e) {
+	ajax_simple_warning({note_id: $(this).val()}, b_url + "delete_note", "delete_note").done(function(res) {
+		swal_redirection(res.type, res.msg, res.url);
+	});
+}));
+
+
+
+
 
 var row_num = 1;
 function add_product(dom){
@@ -144,54 +203,8 @@ $("#form_add_sale").submit(function(e) {
 	});
 });
 
-$(".btn_delete_payment").on('click',(function(e) {
-	ajax_simple_warning({payment_id: $(this).val()}, b_url + "delete_payment", "delete_payment").done(function(res) {
-		swal_redirection(res.type, res.msg, res.url);
-	});
-}));
-
-$("#btn_add_payment").on('click',(function(e) {
-	$("#form_add_payment").submit();
-}));
-
-$("#form_add_payment").submit(function(e) {
-	e.preventDefault();
-	ajax_form_warning(this, b_url + "add_payment", "add_payment").done(function(res) {
-		set_msgs("#form_add_payment", res.msgs);
-		if (res.type == "success") swal_redirection(res.type, res.msg, res.url);
-		else swal(res.type, res.msg);
-	});
-});
-
 $("#btn_cancel_sale").on('click',(function(e) {
 	ajax_simple_warning({sale_id: $(this).val()}, b_url + "cancel_sale", "cancel_sale").done(function(res) {
 		swal_redirection(res.type, res.msg, res.url);
-	});
-}));
-
-$("#btn_issue_invoice").on('click',(function(e) {
-	$("#form_issue_invoice").submit();
-}));
-
-$("#form_issue_invoice").submit(function(e) {
-	e.preventDefault();
-	ajax_form_warning(this, b_url + "issue_invoice", "issue_invoice").done(function(res) {
-		set_msgs("#form_issue_invoice", res.msgs);
-		swal_redirection(res.type, res.msg, window.location.href);
-		if (res.type == "success") window.open(res.url, '_blank');
-	});
-});
-
-$("#btn_send_invoice").on('click',(function(e) {
-	ajax_simple_warning({invoice_id: $(this).val()}, b_url + "send_invoice", "send_invoice").done(function(res) {
-		set_msgs("#form_issue_invoice", res.msgs);
-		swal_redirection(res.type, res.msg, window.location.href);
-		if (res.type == "success") window.open(res.url, '_blank');
-	});
-}));
-
-$("#btn_void_invoice").on('click',(function(e) {
-	ajax_simple_warning({invoice_id: $(this).val()}, b_url + "void_invoice", "void_invoice").done(function(res) {
-		swal_redirection(res.type, res.msg, window.location.href);
 	});
 }));

@@ -38,22 +38,6 @@ $(".btn_delete_payment").on('click',(function(e) {
 	});
 }));
 
-/* detail - note */
-$("#form_add_note").submit(function(e) {
-	e.preventDefault();
-	ajax_form_warning(this, b_url + "add_note", "add_note").done(function(res) {
-		set_msgs("#form_add_note", res.msgs);
-		if (res.type == "success") swal_redirection(res.type, res.msg, res.url);
-		else swal(res.type, res.msg);
-	});
-});
-
-$(".btn_delete_note").on('click',(function(e) {
-	ajax_simple_warning({note_id: $(this).val()}, b_url + "delete_note", "delete_note").done(function(res) {
-		swal_redirection(res.type, res.msg, res.url);
-	});
-}));
-
 /* detail, register - payment amount control */
 function calculate_balance(){
 	var total = parseFloat(nf_reverse($("#pay_total").val()));
@@ -75,6 +59,22 @@ $("#pay_paid").on('change',(function(e) {
 	calculate_balance();
 })).on('keyup',(function(e) {
 	if (event.which === 13) calculate_balance();
+}));
+
+/* detail - note */
+$("#form_add_note").submit(function(e) {
+	e.preventDefault();
+	ajax_form_warning(this, b_url + "add_note", "add_note").done(function(res) {
+		set_msgs("#form_add_note", res.msgs);
+		if (res.type == "success") swal_redirection(res.type, res.msg, res.url);
+		else swal(res.type, res.msg);
+	});
+});
+
+$(".btn_delete_note").on('click',(function(e) {
+	ajax_simple_warning({note_id: $(this).val()}, b_url + "delete_note", "delete_note").done(function(res) {
+		swal_redirection(res.type, res.msg, res.url);
+	});
 }));
 
 /* register - product selection */

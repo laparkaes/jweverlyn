@@ -4,7 +4,8 @@
 			<h1>Detalle de Venta</h1>
 			<nav>
 				<ol class="breadcrumb">
-					<li class="breadcrumb-item">Venta</li>
+					<li class="breadcrumb-item">Comercio</li>
+					<li class="breadcrumb-item">Ventas</li>
 					<li class="breadcrumb-item active">Detalle</li>
 				</ol>
 			</nav>
@@ -21,7 +22,25 @@
 		<div class="col-md-4">
 			<div class="card">
 				<div class="card-body profile-card pt-4 d-flex flex-column align-items-center text-center">
-					<?php if ($client){ ?><h2 class="mb-5"><?= $client->name ?></h2><?php } ?>
+					<?php if ($client){ ?><h2 class="mb-3"><?= $client->name ?></h2><?php } ?>
+					<?php if ($sale->proforma_id){ ?>
+					<div class="d-grid gap-2 w-100 mb-3">
+						<a href="<?= base_url() ?>commerce/proforma/detail/<?= $sale->proforma_id ?>" class="btn btn-primary" target="_blank">
+							Ver Proforma
+						</a>
+					</div>
+					<?php } ?>
+					<div class="d-grid gap-2 w-100 mb-3">
+						<?php if ($invoice){ ?>
+						<a href="<?= base_url()?>commerce/sale/view_invoice/<?= $invoice->invoice_id ?>" class="btn btn-success" target="_blank">
+							Ver <?= $invoice->type ?>
+						</a>
+						<?php }else{ if ($sale->balance) $d = "disabled"; else $d = ""; ?>
+						<button type="button" class="btn btn-success" <?= $d ?> data-bs-toggle="modal" data-bs-target="#md_issue_invoice">
+							Comprobante
+						</button>
+						<?php } ?>
+					</div>
 					<ul class="list-group w-100">
 						<li class="list-group-item d-flex justify-content-between align-items-center">
 							<strong>Estado</strong>
@@ -80,163 +99,105 @@
 			</div>
 		</div>
 		<div class="col-md-8">
+			<?php if ($sale->valid){ ?>
 			<div class="card">
 				<div class="card-body pt-3">
-					<?php if ($sale->valid){ ?>
 					<div class="row">
-						<div class="col-md-4 d-grid">
-							<?php if ($invoice){ ?>
-							<a href="<?= base_url()?>commerce/sale/view_invoice/<?= $invoice->invoice_id ?>" class="btn btn-success mb-3" target="_blank">
-								<i class="bi bi-file-earmark-text-fill" style="font-size: 2rem;"></i><br/><?= $invoice->type ?>
-							</a>
-							<?php }else{ if ($sale->balance) $d = "disabled"; else $d = ""; ?>
-							<button type="button" class="btn btn-success mb-3" <?= $d ?> data-bs-toggle="modal" data-bs-target="#md_issue_invoice">
-								<i class="bi bi-file-earmark-text-fill" style="font-size: 2rem;"></i><br/>Comprobante
+						<div class="col-md-3 d-grid">
+							<button type="button" class="btn btn-success mb-md-0 mb-3" id="btn_file_upload">
+								<i class="bi bi-upload" style="font-size: 2rem;"></i><br/>Archivo
 							</button>
-							<?php } ?>
 						</div>
-						<div class="col-md-4 d-grid">
+						<div class="col-md-3 d-grid">
 							<?php if ($sale->balance) $d = ""; else $d = "disabled"; ?>
-							<button type="button" class="btn btn-primary mb-3" <?= $d ?> data-bs-toggle="modal" data-bs-target="#md_add_payment">
-								<i class="bi bi-piggy-bank-fill" style="font-size: 2rem;"></i><br/>Agregar Pago
+							<button type="button" class="btn btn-primary mb-md-0 mb-3" <?= $d ?> id="btn_open_ap">
+								<i class="bi bi-credit-card" style="font-size: 2rem;"></i><br/>Pago
 							</button>
 						</div>
-						<div class="col-md-4 d-grid">
-							<button type="button" class="btn btn-outline-danger mb-3" id="btn_cancel_sale" value="<?= $sale->sale_id ?>">
-								<i class="bi bi-trash" style="font-size: 2rem;"></i><br/>Anular Venta
+						<div class="col-md-3 d-grid">
+							<button type="button" class="btn btn-primary mb-md-0 mb-3" id="btn_open_an">
+								<i class="bi bi-journal-check" style="font-size: 2rem;"></i><br/>Nota
 							</button>
 						</div>
-					</div>
-					<?php } ?>
-					<ul class="nav nav-tabs nav-tabs-bordered">
-						<li class="nav-item">
-							<button class="nav-link active" data-bs-toggle="tab" data-bs-target="#products">Productos</button>
-						</li>
-						<li class="nav-item">
-							<button class="nav-link" data-bs-toggle="tab" data-bs-target="#payments">Pagos</button>
-						</li>
-					</ul>
-					<div class="tab-content pt-4">
-						<div class="tab-pane fade show active" id="products">
-							<div class="table-responsive">
-								<table class="table align-middle">
-									<thead>
-										<tr>
-											<th scope="col">#</th>
-											<th scope="col">Producto</th>
-											<th scope="col">Cant.</th>
-											<th scope="col">P/U</th>
-											<th scope="col">Subtotal</th>
-										</tr>
-									</thead>
-									<tbody id="tbody_images">
-										<?php foreach($products as $p_i => $p){ ?>
-										<tr>
-											<th scope="row"><?= number_format($p_i + 1) ?></th>
-											<td><?= $p->prod->product ?><br><small><?= $p->op->option ?></small></td>
-											<td><?= number_format($p->qty) ?></td>
-											<td class="text-nowrap text-end">S/ <?= number_format($p->price, 2) ?></td>
-											<td class="text-nowrap text-end">S/ <?= number_format($p->subtotal, 2) ?></td>
-										</tr>
-										<?php } ?>
-									</tbody>
-								</table>
-							</div>
-						</div>
-						<div class="tab-pane fade" id="payments">
-							<div class="table-responsive">
-								<table class="table align-middle">
-									<thead>
-										<tr>
-											<th scope="col">#</th>
-											<th scope="col">Metodo / Fecha</th>
-											<th scope="col">Recibido</th>
-											<th scope="col">Vuelto</th>
-											<th scope="col"></th>
-										</tr>
-									</thead>
-									<tbody id="tbody_images">
-										<?php foreach($payments as $p_i => $p){ ?>
-										<tr>
-											<th scope="row"><?= number_format($p_i + 1) ?></th>
-											<td><?= $p->payment_method ?><br/><?= $p->registed_at ?></td>
-											<td class="text-nowrap text-end">S/ <?= number_format($p->received, 2) ?></td>
-											<td class="text-nowrap text-end">S/ <?= number_format($p->change, 2) ?></td>
-											<td class="text-end">
-												<button type="button" class="btn btn-outline-danger btn-sm border-0 btn_delete_payment" value="<?= $p->payment_id ?>">
-													<i class="bi bi-x-lg"></i>
-												</button>
-											</td>
-										</tr>
-										<?php } ?>
-									</tbody>
-								</table>
-							</div>
+						<div class="col-md-3 d-grid">
+							<button type="button" class="btn btn-outline-danger" id="btn_cancel_sale" value="<?= $sale->sale_id ?>">
+								<i class="bi bi-trash" style="font-size: 2rem;"></i><br/>Anular
+							</button>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-	</div>
-</section>
-
-<!-- modals -->
-<?php if ($sale->balance){ ?>
-<div class="modal fade" id="md_add_payment" tabindex="-1">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<form id="form_add_payment">
-				<input type="hidden" name="sale_id" value="<?= $sale->sale_id ?>">
-				<div class="modal-header">
-					<h5 class="modal-title">Agregar Pago</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-				</div>
-				<div class="modal-body text-start">
-					<div class="row g-3">
-						<div class="col-md-6">
-							<label class="form-label">Medio de Pago</label>
-							<select class="form-select" name="payment_method_id">
-								<?php foreach($payment_methods as $p){ ?>
-								<option value="<?= $p->payment_method_id ?>"><?= $p->payment_method ?></option>
-								<?php } ?>
-							</select>
-							<div class="invalid-feedback"></div>
-						</div>
-						<div class="col-md-6">
-							<label class="form-label">Recibido</label>
-							<div class="input-group has-validation">
-								<span class="input-group-text">S/.</span>
-								<input type="hidden" id="received" name="received" value="0.00">
-								<input type="text" class="form-control" id="received_txt" name="received_txt" value="0.00">
+			<div class="card d-none" id="card_file_upload">
+				<div class="card-body">
+					<h5 class="card-title">Subir Archivo</h5>
+					<form id="form_file_upload">
+						<input type="hidden" name="sale_id" value="<?= $sale->sale_id ?>">
+						<div class="row g-3">
+							<div class="col-12">
+								<label class="form-label">Descripción</label>
+								<input type="text" class="form-control" name="description">
 								<div class="invalid-feedback"></div>
 							</div>
-						</div>
-						<div class="col-md-6">
-							<label class="form-label">Total</label>
-							<div class="input-group">
-								<span class="input-group-text">S/.</span>
-								<input type="hidden" id="total" name="total" value="<?= $sale->balance ?>" readonly>
-								<input type="text" class="form-control" id="total_txt" value="<?= number_format($sale->balance, 2) ?>" disabled>
+							<div class="col-12">
+								<label class="form-label">Archivo</label>
+								<input type="file" class="form-control" name="upload">
+								<div class="invalid-feedback"></div>
+							</div>
+							<div class="col-12 pt-3 text-center">
+								<button type="button" class="btn btn-secondary" id="btn_close_cfu">Cerrar</button>
+								<button type="submit" class="btn btn-primary">Subir</button>
 							</div>
 						</div>
-						<div class="col-md-6">
-							<label class="form-label">Vuelto</label>
-							<div class="input-group">
-								<span class="input-group-text">S/.</span>
-								<input type="hidden"id="change" name="change" value="0.00" readonly>
-								<input type="text" class="form-control" id="change_txt" value="0.00" disabled>
+					</form>
+				</div>
+			</div>
+			<?php if ($sale->balance){ ?>
+			<div class="card d-none" id="card_add_payment">
+				<div class="card-body">
+					<h5 class="card-title">Agregar Pago</h5>
+					<form id="form_add_payment">
+						<input type="hidden" name="sale_id" value="<?= $sale->sale_id ?>">
+						<div class="row g-3">
+							<div class="col-md-12">
+								<label class="form-label">Recibido</label>
+								<div class="input-group has-validation">
+									<span class="input-group-text border-primary">S/</span>
+									<input type="text" class="form-control border-primary" id="pay_received" name="received" value="0.00">
+									<div class="invalid-feedback"></div>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<label class="form-label">Total</label>
+								<div class="input-group">
+									<span class="input-group-text">S/</span>
+									<input type="text" class="form-control" id="pay_total" name="total" value="<?= number_format($sale->balance, 2) ?>" readonly>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<label class="form-label">Vuelto</label>
+								<div class="input-group">
+									<span class="input-group-text">S/</span>
+									<input type="text" class="form-control" id="pay_change" name="change" value="0.00" readonly>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<label class="form-label">Medio de Pago</label>
+								<select class="form-select" name="payment_method_id">
+									<?php foreach($payment_methods as $p){ ?>
+									<option value="<?= $p->payment_method_id ?>"><?= $p->payment_method ?></option>
+									<?php } ?>
+								</select>
+								<div class="invalid-feedback"></div>
+							</div>
+							<div class="col-md-12 pt-3 text-center">
+								<button type="button" class="btn btn-secondary" id="btn_close_ap">Cerrar</button>
+								<button type="submit" class="btn btn-primary">Agregar</button>
 							</div>
 						</div>
-					</div>
+					</form>
 				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-					<button type="button" class="btn btn-primary" id="btn_add_payment">Agregar</button>
-				</div>
-			</form>
-		</div>
-	</div>
-</div>
+			</div>
+			
 <?php }else{ ?>
 <div class="modal fade" id="md_issue_invoice" tabindex="-1">
 	<div class="modal-dialog">
@@ -313,4 +274,168 @@
 		</div>
 	</div>
 </div>
-<?php } ?>
+<?php } ?>		
+
+
+			<div class="card d-none" id="card_add_note">
+				<div class="card-body">
+					<h5 class="card-title">Agregar Nota</h5>
+					<form id="form_add_note">
+						<input type="hidden" name="sale_id" value="<?= $sale->sale_id ?>">
+						<div class="row g-3">
+							<div class="col-md-12">
+								<label class="form-label">Nota</label>
+								<textarea class="form-control" name="note" rows="5"></textarea>
+								<div class="invalid-feedback"></div>
+							</div>
+							<div class="col-md-12 pt-3 text-center">
+								<button type="button" class="btn btn-secondary" id="btn_close_an">Cerrar</button>
+								<button type="submit" class="btn btn-primary">Agregar</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+			<?php } ?>
+			<div class="card">
+				<div class="card-body pt-3">
+					<ul class="nav nav-tabs nav-tabs-bordered">
+						<li class="nav-item">
+							<button class="nav-link active" data-bs-toggle="tab" data-bs-target="#products">Productos</button>
+						</li>
+						<li class="nav-item">
+							<button class="nav-link" data-bs-toggle="tab" data-bs-target="#files">Archivos</button>
+						</li>
+						<li class="nav-item">
+							<button class="nav-link" data-bs-toggle="tab" data-bs-target="#payments">Pagos</button>
+						</li>
+						<li class="nav-item">
+							<button class="nav-link" data-bs-toggle="tab" data-bs-target="#notes">Notas</button>
+						</li>
+					</ul>
+					<div class="tab-content pt-4">
+						<div class="tab-pane fade show active" id="products">
+							<div class="table-responsive">
+								<table class="table align-middle">
+									<thead>
+										<tr>
+											<th scope="col">#</th>
+											<th scope="col">Producto</th>
+											<th scope="col">Cant.</th>
+											<th scope="col" class="text-end">P/U</th>
+											<th scope="col" class="text-end">Subtotal</th>
+											<th scope="col"></th>
+										</tr>
+									</thead>
+									<tbody id="tbody_images">
+										<?php foreach($products as $p_i => $p){ ?>
+										<tr>
+											<th scope="row"><?= number_format($p_i + 1) ?></th>
+											<td><?= $p->prod->product ?><br><small><?= $p->op->option ?></small></td>
+											<td><?= number_format($p->qty) ?></td>
+											<td class="text-nowrap text-end">S/ <?= number_format($p->price, 2) ?></td>
+											<td class="text-nowrap text-end">S/ <?= number_format($p->subtotal, 2) ?></td>
+											<td class="text-nowrap text-end">
+												<a href="<?= base_url() ?>stock/product/detail/<?= $p->product_id ?>" class="btn btn-outline-primary btn-sm border-0" target="_blank"><i class="bi bi-search"></i></a>
+											</td>
+										</tr>
+										<?php } ?>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div class="tab-pane fade" id="files">
+							<div class="table-responsive">
+								<table class="table align-middle">
+									<thead>
+										<tr>
+											<th scope="col">#</th>
+											<th scope="col">Fecha</th>
+											<th scope="col">Descripción</th>
+											<th scope="col"></th>
+										</tr>
+									</thead>
+									<tbody id="tbody_images">
+										<?php foreach($files as $f_i => $f){ ?>
+										<tr>
+											<th scope="row"><?= number_format($f_i + 1) ?></th>
+											<td><?= $f->registed_at ?></td>
+											<td><?= $f->description ?></td>
+											<td class="text-end">
+												<a href="<?= base_url() ?>/uploads/sale/<?= $sale->sale_id ?>/<?= $f->filename ?>" download="<?= $f->description."_".$f->filename ?>" class="btn btn-outline-success btn-sm border-0"><i class="bi bi-download"></i></a>
+												<button type="button" class="btn btn-outline-danger btn-sm border-0 btn_delete_file" value="<?= $f->file_id ?>">
+													<i class="bi bi-x-lg"></i>
+												</button>
+											</td>
+										</tr>
+										<?php } ?>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div class="tab-pane fade" id="payments">
+							<div class="table-responsive">
+								<table class="table align-middle">
+									<thead>
+										<tr>
+											<th scope="col">#</th>
+											<th scope="col">Fecha</th>
+											<th scope="col">Metodo</th>
+											<th scope="col" class="text-end">Recibido</th>
+											<th scope="col" class="text-end">Vuelto</th>
+											<th scope="col"></th>
+										</tr>
+									</thead>
+									<tbody id="tbody_images">
+										<?php foreach($payments as $p_i => $p){ ?>
+										<tr>
+											<th scope="row"><?= number_format($p_i + 1) ?></th>
+											<td><?= $p->registed_at ?></td>
+											<td><?= $p->payment_method ?></td>
+											<td class="text-nowrap text-end">S/ <?= number_format($p->received, 2) ?></td>
+											<td class="text-nowrap text-end">S/ <?= number_format($p->change, 2) ?></td>
+											<td class="text-end">
+												<button type="button" class="btn btn-outline-danger btn-sm border-0 btn_delete_payment" value="<?= $p->payment_id ?>">
+													<i class="bi bi-x-lg"></i>
+												</button>
+											</td>
+										</tr>
+										<?php } ?>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div class="tab-pane fade" id="notes">
+							<div class="table-responsive">
+								<table class="table align-middle">
+									<thead>
+										<tr>
+											<th scope="col">#</th>
+											<th scope="col">Fecha</th>
+											<th scope="col">Nota</th>
+											<th scope="col"></th>
+										</tr>
+									</thead>
+									<tbody id="tbody_images">
+										<?php foreach($notes as $n_i => $n){ ?>
+										<tr>
+											<th scope="row"><?= number_format($n_i + 1) ?></th>
+											<td><?= $n->registed_at ?></td>
+											<td style="white-space: pre-line;"><?= $n->note ?></td>
+											<td class="text-end">
+												<button type="button" class="btn btn-outline-danger btn-sm border-0 btn_delete_note" value="<?= $n->note_id ?>">
+													<i class="bi bi-x-lg"></i>
+												</button>
+											</td>
+										</tr>
+										<?php } ?>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

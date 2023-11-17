@@ -21,6 +21,8 @@ class Sale extends CI_Controller {
 			"to" => $this->input->get("to"),
 			"a_min" => $this->input->get("a_min"),
 			"a_max" => $this->input->get("a_max"),
+			"b_min" => $this->input->get("b_min"),
+			"b_max" => $this->input->get("b_max"),
 		];
 		if (!$params["page"]) $params["page"] = 1;
 
@@ -37,6 +39,8 @@ class Sale extends CI_Controller {
 		if ($params["to"]) $w["registed_at <="] = $params["to"]." 23:59:59";
 		if ($params["a_min"]) $w["amount >="] = str_replace(",", "", $params["a_min"]);
 		if ($params["a_max"]) $w["amount <="] = str_replace(",", "", $params["a_max"]);
+		if ($params["b_min"]) $w["balance >="] = str_replace(",", "", $params["b_min"]);
+		if ($params["b_max"]) $w["balance <="] = str_replace(",", "", $params["b_max"]);
 		
 		$sales = $this->gm->filter("sale", $w, $l, $w_in, [["registed_at", "desc"]], 25, 25 * ($params["page"] - 1), false);
 		foreach($sales as $s){
@@ -78,7 +82,9 @@ class Sale extends CI_Controller {
 			case "danger": $sale->status = "Anulado"; break;
 		}
 		
-		$payments = $this->gm->filter("sale_payment", ["sale_id" => $sale->sale_id], null, null, [["registed_at", "desc"]], "", "");
+		$w = ["sale_id" => $sale->sale_id, "valid" => true];
+		
+		$payments = $this->gm->filter("sale_payment", $w, null, null, [["registed_at", "desc"]], "", "");
 		foreach($payments as $p){
 			$p->payment_method = $this->gm->unique("payment_method", "payment_method_id", $p->payment_method_id, false)->payment_method;
 		}
@@ -101,6 +107,8 @@ class Sale extends CI_Controller {
 			"products" => $products,
 			"invoice" => $invoice,
 			"sunat_files" => $sunat_files,
+			"notes" => $this->gm->filter("sale_note", $w, null, null, [["registed_at", "desc"]]),
+			"files" => $this->gm->filter("sale_file", $w, null, null, [["registed_at", "desc"]]),
 			"payment_methods" => $this->gm->all_simple("payment_method", "payment_method_id", "asc"),
 			"invoice_types" => $this->gm->all_simple("invoice_type", "type", "asc"),
 			"client_doc_types" => $this->gm->all_simple("client_doc_type", "doc_type_id", "asc"),
@@ -124,6 +132,58 @@ class Sale extends CI_Controller {
 			"updated_at" => date("Y-m-d H:i:s"),
 		];
 		$this->gm->update("sale", $f, $d);
+	}
+	
+	public function add_file(){
+		$result = ["type" => "error", "msg" => null, "url" => null];
+		
+		if ($this->session->userdata('username')){
+			$data = $this->input->post();
+			$data["filename"] = $_FILES["upload"]["name"];
+			
+			$this->load->library('my_val');
+			$result = $this->my_val->file_upload_purchase($data);
+			
+			if ($result["type"] === "success"){
+				$path = './uploads/sale/'.$data["sale_id"]."/";
+				if (!is_dir($path)) mkdir($path, 0777, true);
+				
+				$config['upload_path'] = $path;
+				$config['allowed_types'] = '*';
+				$config['file_name'] = date("YmdHis");
+				$this->load->library('upload', $config);
+				
+				if ($this->upload->do_upload('upload')){
+					$upload_data = $this->upload->data();
+					
+					$data["filename"] = $upload_data['file_name'];
+					$data["registed_at"] = date("Y-m-d H:i:s");
+					$this->gm->insert("sale_file", $data);
+					
+					$result["msg"] = $this->lang->line("s_file_upload");
+					$result["url"] = base_url()."commerce/sale/detail/".$data["sale_id"];
+				}else $result = ["type" => "error", "msg" => $this->upload->display_errors()];
+			}else $result["msg"] = $this->lang->line("e_check_datas");
+		}else $result["msg"] = $this->lang->line("e_finished_session");
+		
+		header('Content-Type: application/json');
+		echo json_encode($result);
+	}
+	
+	public function delete_file(){
+		$type = "error"; $msg = null; $url = null;
+		
+		if ($this->session->userdata('username')){
+			$file = $this->gm->unique("sale_file", "file_id", $this->input->post('file_id'));
+			$this->gm->update("sale_file", ["file_id" => $file->file_id], ["valid" => false]);
+			
+			$type = "success";
+			$msg = $this->lang->line("s_file_delete");
+			$url = base_url()."commerce/sale/detail/".$file->sale_id;
+		}else $msg = $this->lang->line("e_finished_session");
+		
+		header('Content-Type: application/json');
+		echo json_encode(["type" => $type, "msg" => $msg, "url" => $url]);
 	}
 	
 	public function add_payment(){
@@ -298,6 +358,46 @@ class Sale extends CI_Controller {
 				$msg = $this->lang->line("s_sale_cancel");
 				$url = base_url()."commerce/sale";	
 			}else $msg = $this->lang->line("e_invoice_issued");
+		}else $msg = $this->lang->line("e_finished_session");
+		
+		header('Content-Type: application/json');
+		echo json_encode(["type" => $type, "msg" => $msg, "url" => $url]);
+	}
+
+	public function add_note(){
+		$result = ["type" => "error", "msg" => null, "url" => null];
+		
+		if ($this->session->userdata('username')){
+			$note = $this->input->post();
+			
+			$this->load->library('my_val');
+			$result = $this->my_val->add_note($note);
+			
+			if ($result["type"] === "success"){
+				$note["note"] = trim($note["note"]);
+				$note["registed_at"] = date("Y-m-d H:i:s");
+				$this->gm->insert("sale_note", $note);
+				
+				$result["msg"] = $this->lang->line("s_note_insert");
+				$result["url"] = base_url()."commerce/sale/detail/".$note["sale_id"];
+			}else $result["msg"] = $this->lang->line("e_check_datas");
+		}else $result["msg"] = $this->lang->line("e_finished_session");
+		
+		header('Content-Type: application/json');
+		echo json_encode($result);
+	}
+	
+	public function delete_note(){
+		$type = "error"; $msg = null; $url = null;
+		
+		if ($this->session->userdata('username')){
+			$note = $this->gm->unique("sale_note", "note_id", $this->input->post('note_id'));
+			
+			$this->gm->update("sale_note", ["note_id" => $note->note_id], ["valid" => false]);
+			
+			$type = "success";
+			$msg = $this->lang->line("s_note_delete");
+			$url = base_url()."commerce/sale/detail/".$note->sale_id;
 		}else $msg = $this->lang->line("e_finished_session");
 		
 		header('Content-Type: application/json');

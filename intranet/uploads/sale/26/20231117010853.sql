@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- 생성 시간: 23-11-17 01:20
+-- 생성 시간: 23-11-16 18:15
 -- 서버 버전: 10.4.24-MariaDB
 -- PHP 버전: 7.4.29
 
@@ -4103,7 +4103,7 @@ INSERT INTO `purchase` (`purchase_id`, `provider_id`, `proforma_id`, `amount`, `
 (30, 22, NULL, 570, 70, 500, '2023-11-14 22:30:55', '2023-11-14 22:30:55', 1),
 (31, 22, NULL, 570, 70, 500, '2023-11-15 20:47:20', '2023-11-14 22:31:01', 0),
 (32, 22, NULL, 570, 570, 0, '2023-11-16 23:10:31', '2023-11-14 22:31:33', 0),
-(33, 22, NULL, 3830, 3830, 0, '2023-11-17 06:17:08', '2023-11-14 22:37:33', 1),
+(33, 22, NULL, 3830, 3830, 0, '2023-11-14 23:13:25', '2023-11-14 22:37:33', 1),
 (34, 17, NULL, 990, 990, 0, '2023-11-15 23:28:08', '2023-11-14 22:40:14', 0),
 (35, 17, NULL, 121, 121, 0, '2023-11-15 20:46:15', '2023-11-15 05:24:02', 0),
 (36, 17, NULL, 10200, 10200, 0, '2023-11-15 21:20:29', '2023-11-15 20:50:08', 0);
@@ -4160,8 +4160,7 @@ INSERT INTO `purchase_note` (`note_id`, `purchase_id`, `note`, `valid`, `registe
 (5, 35, 'asfasdfasdf\r\n\r\n\r\nasdfasfsfd', 0, '2023-11-15 06:06:15'),
 (6, 35, 'hola\r\ncomo estas/\r\ntu no es', 1, '2023-11-15 06:17:49'),
 (7, 36, 'jeje\r\nestoy e\r\nes spharta', 1, '2023-11-15 21:19:18'),
-(8, 29, 'Muy espeso es el weon', 1, '2023-11-15 23:28:52'),
-(9, 33, 'TC: S/ 3.78 = US$ 1', 1, '2023-11-16 23:45:16');
+(8, 29, 'Muy espeso es el weon', 1, '2023-11-15 23:28:52');
 
 -- --------------------------------------------------------
 
@@ -4226,13 +4225,12 @@ INSERT INTO `purchase_payment` (`payment_id`, `purchase_id`, `payment_method_id`
 (41, 33, 1, 3830, 2000, 1830, '2023-11-14 23:12:08', 0),
 (42, 33, 5, 1830, 1830, 0, '2023-11-14 23:12:23', 1),
 (43, 33, 1, 2000, 450, 1550, '2023-11-14 23:12:44', 1),
-(44, 33, 1, 1550, 1550, 0, '2023-11-14 23:13:25', 0),
+(44, 33, 1, 1550, 1550, 0, '2023-11-14 23:13:25', 1),
 (45, 35, 1, 121, 121, 0, '2023-11-15 05:24:02', 0),
 (46, 36, 5, 10200, 10200, 0, '2023-11-15 20:50:08', 0),
 (47, 29, 1, 500, 1, 499, '2023-11-15 23:28:28', 1),
 (48, 29, 1, 499, 499, 0, '2023-11-15 23:28:37', 1),
-(49, 32, 1, 500, 500, 0, '2023-11-16 23:10:22', 0),
-(50, 33, 1, 1550, 1550, 0, '2023-11-17 06:17:08', 1);
+(49, 32, 1, 500, 500, 0, '2023-11-16 23:10:22', 0);
 
 -- --------------------------------------------------------
 
@@ -4413,55 +4411,7 @@ INSERT INTO `sale` (`sale_id`, `client_id`, `proforma_id`, `amount`, `paid`, `ba
 (23, 14, 4, 280, 280, 0, '2023-10-30 21:01:06', '2023-10-30 21:01:06', 1),
 (24, 1, NULL, 299.2, 299.2, 0, '2023-11-02 23:03:08', '2023-11-02 23:03:08', 1),
 (25, 19, NULL, 299.2, 299.2, 0, '2023-11-03 19:18:11', '2023-11-03 19:18:11', 1),
-(26, 14, 4, 280, 280, 0, '2023-11-17 05:56:44', '2023-11-07 21:14:48', 1);
-
--- --------------------------------------------------------
-
---
--- 테이블 구조 `sale_file`
---
-
-CREATE TABLE `sale_file` (
-  `file_id` int(11) NOT NULL,
-  `sale_id` int(11) NOT NULL,
-  `description` varchar(200) NOT NULL,
-  `filename` varchar(100) NOT NULL,
-  `valid` tinyint(1) NOT NULL DEFAULT 1,
-  `registed_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- 테이블의 덤프 데이터 `sale_file`
---
-
-INSERT INTO `sale_file` (`file_id`, `sale_id`, `description`, `filename`, `valid`, `registed_at`) VALUES
-(6, 26, 'asdf asdf asdf asdf sd', '20231117011128.sql', 0, '2023-11-17 06:15:20'),
-(7, 26, 'asd fas fsadf asd sd ', '20231117011201.jpeg', 0, '2023-11-17 06:14:50'),
-(8, 26, 'asdf sadf sa fsad f', '20231117011541.png', 0, '2023-11-17 06:15:45'),
-(9, 26, 'as dfaf asf as f', '20231117011602.txt', 0, '2023-11-17 06:16:17');
-
--- --------------------------------------------------------
-
---
--- 테이블 구조 `sale_note`
---
-
-CREATE TABLE `sale_note` (
-  `note_id` int(11) NOT NULL,
-  `sale_id` int(11) NOT NULL,
-  `note` text NOT NULL,
-  `valid` tinyint(1) NOT NULL DEFAULT 1,
-  `registed_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- 테이블의 덤프 데이터 `sale_note`
---
-
-INSERT INTO `sale_note` (`note_id`, `sale_id`, `note`, `valid`, `registed_at`) VALUES
-(10, 26, 'asd fsf sad f\r\ns fsa f', 1, '2023-11-17 04:49:57'),
-(11, 26, 'sda fasdf asd fasd fasd f\r\nasd fsadf \r\nasd f\r\nasd \r\nfasd \r\nasd f', 0, '2023-11-17 04:50:25'),
-(12, 26, 'sdaf sadf sad fasd asd fasd ds \r\n \r\nfasd \r\nfasd \r\nfasd asd asd', 1, '2023-11-17 04:54:31');
+(26, 14, 4, 280, 280, 0, '2023-11-07 21:14:48', '2023-11-07 21:14:48', 1);
 
 -- --------------------------------------------------------
 
@@ -4512,10 +4462,7 @@ INSERT INTO `sale_payment` (`payment_id`, `sale_id`, `payment_method_id`, `total
 (25, 23, 1, 280, 300, 20, '2023-10-30 21:01:06', 1),
 (26, 24, 3, 299.2, 500, 200.8, '2023-11-02 23:03:08', 1),
 (27, 25, 3, 299.2, 299.2, 0, '2023-11-03 19:18:11', 1),
-(28, 26, 1, 280, 300, 20, '2023-11-07 21:14:48', 0),
-(29, 26, 1, 280, 290, 10, '2023-11-17 05:55:30', 0),
-(30, 26, 5, 280, 150, 0, '2023-11-17 05:56:23', 1),
-(31, 26, 5, 130, 150, 20, '2023-11-17 05:56:44', 1);
+(28, 26, 1, 280, 300, 20, '2023-11-07 21:14:48', 1);
 
 -- --------------------------------------------------------
 
@@ -4858,20 +4805,6 @@ ALTER TABLE `sale`
   ADD KEY `fk_sale_proforma` (`proforma_id`);
 
 --
--- 테이블의 인덱스 `sale_file`
---
-ALTER TABLE `sale_file`
-  ADD PRIMARY KEY (`file_id`),
-  ADD KEY `fk_file_sale` (`sale_id`);
-
---
--- 테이블의 인덱스 `sale_note`
---
-ALTER TABLE `sale_note`
-  ADD PRIMARY KEY (`note_id`),
-  ADD KEY `fk_note_sale` (`sale_id`);
-
---
 -- 테이블의 인덱스 `sale_payment`
 --
 ALTER TABLE `sale_payment`
@@ -5065,13 +4998,13 @@ ALTER TABLE `purchase_file`
 -- 테이블의 AUTO_INCREMENT `purchase_note`
 --
 ALTER TABLE `purchase_note`
-  MODIFY `note_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `note_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- 테이블의 AUTO_INCREMENT `purchase_payment`
 --
 ALTER TABLE `purchase_payment`
-  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 
 --
 -- 테이블의 AUTO_INCREMENT `purchase_product`
@@ -5092,22 +5025,10 @@ ALTER TABLE `sale`
   MODIFY `sale_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
--- 테이블의 AUTO_INCREMENT `sale_file`
---
-ALTER TABLE `sale_file`
-  MODIFY `file_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
-
---
--- 테이블의 AUTO_INCREMENT `sale_note`
---
-ALTER TABLE `sale_note`
-  MODIFY `note_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
-
---
 -- 테이블의 AUTO_INCREMENT `sale_payment`
 --
 ALTER TABLE `sale_payment`
-  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- 테이블의 AUTO_INCREMENT `sale_product`
@@ -5252,12 +5173,6 @@ ALTER TABLE `role_access`
 ALTER TABLE `sale`
   ADD CONSTRAINT `fk_sale_client` FOREIGN KEY (`client_id`) REFERENCES `client` (`client_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_sale_proforma` FOREIGN KEY (`proforma_id`) REFERENCES `proforma` (`proforma_id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- 테이블의 제약사항 `sale_note`
---
-ALTER TABLE `sale_note`
-  ADD CONSTRAINT `fk_note_sale` FOREIGN KEY (`sale_id`) REFERENCES `sale` (`sale_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- 테이블의 제약사항 `sale_payment`

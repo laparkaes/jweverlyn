@@ -22,7 +22,7 @@
 		<div class="col-md-4">
 			<div class="card">
 				<div class="card-body profile-card pt-4 d-flex flex-column align-items-center text-center">
-					<?php if ($provider){ ?><h2 class="mb-5"><?= $provider->name ?></h2><?php } ?>
+					<?php if ($provider){ ?><h2 class="mb-3"><?= $provider->name ?></h2><?php } ?>
 					<ul class="list-group w-100">
 						<li class="list-group-item d-flex justify-content-between align-items-center">
 							<strong>Estado</strong>
@@ -79,7 +79,6 @@
 					</div>
 				</div>
 			</div>
-			<?php } ?>
 			<div class="card d-none" id="card_file_upload">
 				<div class="card-body">
 					<h5 class="card-title">Subir Archivo</h5>
@@ -128,7 +127,7 @@
 						<div class="col-md-4">
 							<label class="form-label">Saldo</label>
 							<div class="input-group">
-								<span class="input-group-text">S/.</span>
+								<span class="input-group-text">S/</span>
 								<input type="text" class="form-control" id="pay_balance" name="balance" value="0.00" readonly>
 							</div>
 						</div>
@@ -168,6 +167,7 @@
 					</form>
 				</div>
 			</div>
+			<?php } ?>
 			<div class="card">
 				<div class="card-body pt-3">
 					<ul class="nav nav-tabs nav-tabs-bordered">
@@ -209,7 +209,6 @@
 											<td class="text-nowrap text-end">
 												<a href="<?= base_url() ?>stock/product/detail/<?= $p->product_id ?>" class="btn btn-outline-primary btn-sm border-0" target="_blank"><i class="bi bi-search"></i></a>
 											</td>
-											
 										</tr>
 										<?php } ?>
 									</tbody>
