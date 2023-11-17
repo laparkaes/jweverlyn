@@ -85,13 +85,14 @@ function close_select_product(){
 	$("#form_search_product input").val("");
 	$("#msg_enter_keyword").removeClass("d-none");
 	$("#bl_search_result").addClass("d-none");
+	move_top();
 }
 
 $("#btn_open_select_product").on('click',(function(e) {
 	$("#card_select_product").removeClass("d-none");
 }));
 
-$("#btn_close_select_product").on('click',(function(e) {
+$(".btn_close_select_product").on('click',(function(e) {
 	close_select_product();
 }));
 

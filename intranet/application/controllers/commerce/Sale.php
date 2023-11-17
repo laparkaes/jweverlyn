@@ -134,7 +134,7 @@ class Sale extends CI_Controller {
 		$this->gm->update("sale", $f, $d);
 	}
 	
-	public function add_file(){
+	public function add_file(){//ok
 		$result = ["type" => "error", "msg" => null, "url" => null];
 		
 		if ($this->session->userdata('username')){
@@ -170,7 +170,7 @@ class Sale extends CI_Controller {
 		echo json_encode($result);
 	}
 	
-	public function delete_file(){
+	public function delete_file(){//ok
 		$type = "error"; $msg = null; $url = null;
 		
 		if ($this->session->userdata('username')){
@@ -186,7 +186,7 @@ class Sale extends CI_Controller {
 		echo json_encode(["type" => $type, "msg" => $msg, "url" => $url]);
 	}
 	
-	public function add_payment(){
+	public function add_payment(){//ok
 		$result = ["type" => "error", "msg" => null, "url" => null];
 		
 		if ($this->session->userdata('username')){
@@ -209,7 +209,7 @@ class Sale extends CI_Controller {
 		echo json_encode($result);
 	}
 	
-	public function delete_payment(){
+	public function delete_payment(){//ok
 		$type = "error"; $msg = null; $url = null;
 		$payment = $this->gm->unique("sale_payment", "payment_id", $this->input->post('payment_id'));
 		
@@ -228,12 +228,13 @@ class Sale extends CI_Controller {
 		echo json_encode(["type" => $type, "msg" => $msg, "url" => $url]);
 	}
 	
-	public function search_product(){
+	public function search_product(){//ok
 		$type = "error"; $msg = ""; $products = [];
 		$keyword = $this->input->post("keyword");
 		
 		if ($keyword){
-			$products_rec = $this->gm->filter_like("product", "product", $keyword, "", "", $check_valid = true);
+			$products_rec = $this->gm->filter("product", [], [["field" => "product", "values" => explode(" ", $keyword)]]);
+			
 			if ($products_rec){
 				$categories = [];
 				$categories_rec = $this->gm->all("product_category", [], "", "", true);
@@ -250,14 +251,61 @@ class Sale extends CI_Controller {
 		echo json_encode(["type" => $type, "msg" => $msg, "products" => $products]);
 	}
 	
-	public function load_product(){
-		$product = $this->gm->unique("product", "product_id", $this->input->post("product_id"));
-		$product->category = $this->gm->unique("product_category", "category_id", $product->category_id)->category;
+	public function load_product(){//ok
+		$res = ["type" => "error", "msg" => null];
 		
-		$options = $this->gm->filter("product_option", ["product_id" => $product->product_id], null, null, [["option_id", "asc"]]);
+		$product = $this->gm->unique("product", "product_id", $this->input->post("product_id"));
+		if ($product){
+			unset($product->category_id);
+			unset($product->image);
+			unset($product->valid);
+			unset($product->updated_at);
+			unset($product->registed_at);
+			
+			$type_prod = $this->gm->unique("product_type", "type", "Producto", false);
+			if ($product->type_id == $type_prod->type_id){//Product
+				$options = $this->gm->filter("product_option", ["product_id" => $product->product_id], null, null, [["option_id", "asc"]]);
+				foreach($options as $i_o => $op) if (!$op->stock) unset($options[$i_o]);
+				
+				if ($options){
+					$res["type"] = "success";
+					$res["product"] = $product;
+					$res["options"] = $options;
+				}else $res["msg"] = $this->lang->line("e_product_no_stock");
+			}else{//Service
+				$res["type"] = "success";
+				$res["product"] = $product;
+				$res["options"] = [];
+			}
+		}else $res["msg"] = $this->lang->line("e_no_product_registed");
 		
 		header('Content-Type: application/json');
-		echo json_encode(["product" => $product, "options" => $options]);
+		echo json_encode($res);
+	}
+	
+	public function check_stock(){//ok
+		$res = ["type" => "success", "msg" => null];
+		
+		$prod = $this->input->post("prod");
+		$product = $this->gm->unique("product", "product_id", $prod["product_id"]);
+		$type = $this->gm->unique("product_type", "type_id", $product->type_id, false);
+		
+		if ($type->type === "Producto"){
+			if ($prod["option_id"]){
+				$option = $this->gm->unique("product_option", "option_id", $prod["option_id"]);
+				
+				if ($prod["qty"] > $option->stock){
+					$res["type"] = "error";
+					$res["msg"] = $this->lang->line("e_product_no_stock")." (Max: ".number_format($option->stock).")";
+				}	
+			}else{
+				$res["type"] = "error";
+				$res["msg"] = $this->lang->line("e_option_select");
+			}
+		}
+		
+		header('Content-Type: application/json');
+		echo json_encode($res);
 	}
 	
 	public function register(){

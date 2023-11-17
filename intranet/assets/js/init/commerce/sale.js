@@ -101,90 +101,158 @@ $(".btn_delete_note").on('click',(function(e) {
 	});
 }));
 
+/* register - product selection */
+function close_select_product(){
+	$("#card_select_product").addClass("d-none");
+	$("#form_select_product").addClass("d-none");
+	$("#form_select_product")[0].reset();
+	$("#form_search_product input").val("");
+	$("#msg_enter_keyword").removeClass("d-none");
+	$("#bl_search_result").addClass("d-none");
+	move_top();
+}
 
+$("#btn_open_select_product").on('click',(function(e) {
+	$("#card_select_product").removeClass("d-none");
+}));
 
+$(".btn_close_select_product").on('click',(function(e) {
+	close_select_product();
+}));
 
-
-var row_num = 1;
-function add_product(dom){
+function select_product(dom){
+	$("#form_select_product")[0].reset();
+	$(".btn_select_product").removeClass("list-group-item-primary");
+	$(dom).addClass("list-group-item-primary");
+	
 	ajax_simple({product_id: $(dom).val()}, b_url + "load_product").done(function(res) {
-		/* add doms to row */
-		$("#tb_product_list").append('<tr class="prod_row align-middle" id="prod_' + row_num + '"><th class="num" scope="row">' + ($(".prod_row").length + 1) + '<input type="hidden" name="products[' + row_num + '][product_id]" value="' + res.product.product_id + '"></th><td class="product">' + res.product.product + '<div class="product_json d-none">' + JSON.stringify(res.product) + '</div></td><td class="price text-nowrap">S/. ' + nf(res.product.price) + '</td><td class="options"></td><td class="qty"><input type="number" class="form-control ip_qty" name="products[' + row_num + '][qty]" value="1" min="1" style="width: 100px;"></td><td class="subtotal text-nowrap text-end">' + nf(res.product.price) + '</td><td class="text-end"><button type="button" class="btn btn-outline-danger btn-sm border-0 btn_delete_prod"><i class="bi bi-x-lg"></i></button></td></tr>');
-		
-		let row_id = "#prod_" + row_num;
-		if (res.options.length > 0){
-			$(row_id).find(".options").html('<select class="form-select option_id" name="products[' + row_num + '][option_id]" style="width: 150px;"></select>');
+		if (res.type == "success"){
+			$("#form_select_product input[name=product_id]").val(res.product.product_id);
+			$("#form_select_product input[name=product]").val(res.product.product);
+			$("#form_select_product input[name=price]").val(nf(res.product.price));
+			$("#form_select_product input[name=qty]").val(nf_int(1));
+			$("#form_select_product input[name=subtotal]").val(nf(res.product.price));
 			
-			var stocks = {};
-			var dom_select = $(row_id).find(".option_id");
+			var dom_select = $("#form_select_product select[name=option_id]");
+			dom_select.html("");
+			$(dom_select).append('<option value="">Elegir</option>');
 			$(res.options).each(function(index, element){
-				$(dom_select).append('<option value="' + element.option_id + '">' + element.option + ' (' + element.stock + ')</option>');
-				stocks[element.option_id] = element.stock;
+				$(dom_select).append('<option value="' + element.option_id + '">' + element.option + '</option>');
 			});
-			$(row_id).find(".options").append('<div class="stocks_json d-none">' + JSON.stringify(stocks) + '</div>');
+			
+			$("#form_select_product").removeClass("d-none");
 		}else{
-			$(row_id).find(".options").html('<span class="text-nowrap text-danger">No stock</span>');
-			$(row_id).find(".qty").html('');
-			$(row_id).find(".subtotal").html('');
+			swal("error", res.msg);
+			$("#form_select_product").addClass("d-none");
 		}
-		
-		/* add events */
-		$(row_id).find(".ip_qty").on('change',(function(e) {
-			calculate_amount();
-		}));
-		
-		$(row_id).find(".option_id").on('change',(function(e) {
-			$(this).closest("tr").find(".ip_qty").val(1);
-			calculate_amount();
-		}));
-		
-		$(row_id).find(".btn_delete_prod").on('click',(function(e) {
-			$(row_id).remove();
-			$($(".prod_row")).each(function(index, element){
-				$(this).find(".num").html(index + 1);
-			});
-			calculate_amount();
-		}));
-		
-		/* close modal */
-		$("#md_add_product").modal("hide");
-		row_num++;
-		
-		/* calculate amount */
-		calculate_amount();
 	});
 }
 
-function search_product(keyword){
-	ajax_simple({keyword: keyword}, b_url + "search_product").done(function(res) {
+$("#form_search_product").submit(function(e) {
+	e.preventDefault();
+	
+	ajax_form(this, b_url + "search_product").done(function(res) {
+		$("#msg_enter_keyword").addClass("d-none");
+		$("#bl_search_result").removeClass("d-none");
 		$("#search_result").html("");
+		
 		if (res.type == "success"){
 			$(res.products).each(function(index, element) {
-				$("#search_result").append('<button class="list-group-item list-group-item-action btn_add_product" value="' + element.product_id + '"><div class="d-flex w-100 justify-content-between"><h5 class="mb-1 me-3">' + element.product + '</h5><small class="text-nowrap">S/. ' + element.price + '</small></div><p class="mb-1">' + element.category + '</p><small>' + element.code + '</small></button>');
+				$("#search_result").append('<button class="list-group-item list-group-item-action btn_select_product" value="' + element.product_id + '"><div class="d-flex w-100 justify-content-between"><h5 class="mb-1 me-3">' + element.product + '</h5></div><p class="mb-1">' + element.category + '</p><small>' + element.code + '</small></button>');
 			});
 			
-			$(".btn_add_product").on('click',(function(e) {
-				add_product(this);
+			$(".btn_select_product").on('click',(function(e) {
+				select_product(this);
 			}));
 		}else $("#search_result").html(res.msg);
 	});
+});
+
+function calculate_subtotal(){
+	var price = nf_reverse($("#form_select_product input[name=price]").val());
+	var qty = nf_reverse($("#form_select_product input[name=qty]").val());
+	
+	$("#form_select_product input[name=price]").val(nf(price));
+	$("#form_select_product input[name=qty]").val(nf_int(qty));
+	$("#form_select_product input[name=subtotal]").val(nf(price * qty));	
 }
 
-$("#received_txt").on('change',(function(e) {
+$(".ps_price_qty").on('change',(function(e) {
+	calculate_subtotal();
+})).on('keyup',(function(e) {
+	if (event.which === 13) calculate_subtotal();
+})).on('focusout',(function(e) {
+	calculate_subtotal();
+}));
+
+function calculate_total(){
+	var aux_prod;
+	var total = 0;
+	$($(".prod_row")).each(function(index, element){
+		aux_prod = JSON.parse($(element).find(".product_json").html());
+		total += aux_prod.price * aux_prod.qty;
+	});
+	
+	$("#tb_total").html("S/ " + nf(total));
+	$("#pay_total").val(nf(total));
+	
 	calculate_change();
-}));
+}
 
-$("#btn_search_product").on('click',(function(e) {
-	search_product($("#keyword").val());
-}));
+var row_num = 1;
+function add_product(selected){
+	var prod = {
+		product_id: selected.product_id,
+		option_id: selected.option_id,
+		price: selected.price,
+		qty: selected.qty,
+	}
+	
+	ajax_simple({prod: prod}, b_url + "check_stock").done(function(res) {
+		if (res.type == "success"){
+			$("#tb_product_list").append('<tr class="prod_row align-middle" id="prod_' + row_num + '"><th scope="row" class="num">' + ($(".prod_row").length + 1) + '</th><td>' + selected.product + '<textarea class="product_json d-none" name="products[]">' + JSON.stringify(prod) + '</textarea></td><td>' + selected.option + '</td><td class="text-nowrap text-end">S/ ' + nf(selected.price) + '</td><td class="text-end">' + nf_int(selected.qty) + '</td><td class="text-nowrap text-end">S/ ' + nf(selected.subtotal) + '</td><td class="text-end"><button type="button" class="btn btn-outline-danger btn-sm border-0 btn_delete_prod"><i class="bi bi-x-lg"></i></button></td></tr>');
+			
+			var row_id = "#prod_" + row_num;
+			$(row_id).find(".btn_delete_prod").on('click',(function(e) {
+				$(row_id).remove();
+				$($(".prod_row")).each(function(index, element){
+					$(this).find(".num").html(index + 1);
+				});
+				calculate_total();
+			}));
+			
+			/* calculate total amount to pay */
+			calculate_total();
+			
+			/* next row number for control delete operation */
+			row_num++;
+			
+			/* close select product block and move to top */
+			close_select_product();
+			move_top();
+		}else swal(res.type, res.msg);
+	});
+}
 
-$("#keyword").on('keyup',(function(e) {
-	if (e.key === "Enter") search_product($("#keyword").val());
-}));
+$("#form_select_product").submit(function(e) {
+	e.preventDefault();
+	
+	var selected = ob_from_form("#form_select_product");
+	selected.option = $("#form_select_product select[name=option_id] option:selected").text();
+	selected.qty = parseInt(nf_reverse(selected.qty));
+	selected.price = parseFloat(nf_reverse(selected.price));
+	selected.subtotal = selected.qty * selected.price;
+	
+	if (isNaN(selected.qty)) selected.qty = 0;
+	if (isNaN(selected.price)) selected.price = 0;
+	
+	if (selected.qty > 0) add_product(selected);
+	else swal("error", error_msg.sp["qty_no_zero"]);
+});
 
-$("#btn_add_sale").on('click',(function(e) {
-	$("#form_add_sale").submit();
-}));
+
+
+
 
 $("#form_add_sale").submit(function(e) {
 	e.preventDefault();

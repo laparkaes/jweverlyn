@@ -21,7 +21,12 @@
 	<div class="col-md-12">
 		<div class="card d-none" id="card_select_product">
 			<div class="card-body">
-				<h5 class="card-title">Elegir producto</h5>
+				<div class="d-flex justify-content-between align-items-center">
+					<h5 class="card-title">Elegir producto</h5>
+					<button type="button" class="btn btn-danger btn-sm btn_close_select_product">
+						<i class="bi bi-x-lg"></i>
+					</button>
+				</div>
 				<div class="row">
 					<div class="col-md-6 col-12">
 						<form class="row g-3" id="form_search_product">
@@ -75,7 +80,7 @@
 							</div>
 							<div class="col-md-12 pt-3">
 								<button type="submit" class="btn btn-primary">Agregar</button>
-								<button type="button" class="btn btn-secondary" id="btn_close_select_product">Cerrar</button>
+								<button type="button" class="btn btn-secondary btn_close_select_product">Cerrar</button>
 							</div>
 						</form>
 					</div>

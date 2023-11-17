@@ -63,6 +63,7 @@ $lang['s_image_delete']			= 'Imagen ha sido eliminada.';
 $lang['s_set_as_main_img']		= 'Imagen ha sido configuarada como principal.';
 
 //product option
+$lang['e_option_select']		= 'Elija una opción.';
 $lang['e_duplicate_option']		= 'Opción esta registrada en el sistema.';
 $lang['e_no_product_registed']	= 'Producto no registrado.';
 $lang['e_product_no_stock']		= 'Stock no disponible.';
