@@ -308,7 +308,7 @@ class Sale extends CI_Controller {
 		echo json_encode($res);
 	}
 	
-	public function register(){
+	public function register(){//ok
 		if (!$this->session->userdata('username')) redirect("auth/login");
 		
 		$data = [
