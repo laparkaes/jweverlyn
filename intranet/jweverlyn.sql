@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- 생성 시간: 23-11-17 01:20
+-- 생성 시간: 23-11-18 16:10
 -- 서버 버전: 10.4.24-MariaDB
 -- PHP 버전: 7.4.29
 
@@ -3262,7 +3262,8 @@ INSERT INTO `invoice` (`invoice_id`, `type_id`, `client_id`, `sale_id`, `serie_i
 (34, 1, 14, 21, 1, 5, 280, 237.29, 42.71, 'adMsXuxvtRa//Nz6R5doEwHoyHjS', 1, 1, '2023-10-25 19:56:53'),
 (35, 1, 1, 24, 1, 6, 299.2, 253.56, 45.64, '6O2Lk5YT8M6VH2Blk4vbqzfZtztS', 1, 1, '2023-11-02 23:03:15'),
 (36, 2, 19, 25, 1, 2, 299.2, 253.56, 45.64, '0gDUwWJxq4.OGuIPvETHadKZuGRK', 1, 1, '2023-11-03 19:18:42'),
-(37, 1, 14, 26, 1, 7, 280, 237.29, 42.71, 'voUqfs4eZnlpk09HfoJ.oXTxPJqC', 1, 1, '2023-11-07 21:14:58');
+(37, 1, 14, 26, 1, 7, 280, 237.29, 42.71, 'voUqfs4eZnlpk09HfoJ.oXTxPJqC', 1, 1, '2023-11-07 21:14:58'),
+(38, 1, 1, 34, 1, 8, 1436.16, 1217.08, 219.08, 'q1kCJwDqOgEhkkCu1JA61I9Bjzzq', 1, 1, '2023-11-17 23:16:56');
 
 -- --------------------------------------------------------
 
@@ -3832,14 +3833,14 @@ INSERT INTO `product_option` (`option_id`, `product_id`, `option`, `stock`, `val
 (23, 1, 'Rosado', 12375, 0),
 (24, 1, 'Talla S', 157, 0),
 (25, 1, 'Rosado', 77, 0),
-(26, 1, 'Negro', 124, 1),
+(26, 1, 'Negro', 88, 1),
 (27, 197, 'Talla SS', 69, 1),
-(28, 197, 'Talla MM', 203, 1),
+(28, 197, 'Talla MM', 179, 1),
 (29, 197, 'Talla L', 12, 1),
-(30, 216, '7L', 300, 1),
+(30, 216, '7L', 289, 1),
 (31, 71, 'Verde', 300, 1),
 (32, 197, '-', 7, 0),
-(33, 254, '-', 100, 1),
+(33, 254, '-', 58, 1),
 (34, 197, 'Talla XS', 0, 1),
 (35, 254, '--', 0, 1),
 (36, 197, 'Talla XL', 0, 1),
@@ -3879,7 +3880,7 @@ INSERT INTO `product_type` (`type_id`, `type`) VALUES
 
 CREATE TABLE `proforma` (
   `proforma_id` int(11) NOT NULL,
-  `client_id` int(11) NOT NULL,
+  `client_id` int(11) DEFAULT NULL,
   `amount` double NOT NULL,
   `validity` date DEFAULT NULL,
   `remark` text NOT NULL,
@@ -3896,7 +3897,8 @@ INSERT INTO `proforma` (`proforma_id`, `client_id`, `amount`, `validity`, `remar
 (2, 8, 150, '2023-10-21', 'cliente no tiene dinero', 1, '2023-10-07 23:11:35'),
 (3, 11, 1000, '2024-01-30', 'Descuento por compra mayor', 0, '2023-10-10 22:38:14'),
 (4, 14, 280, '2023-11-30', 'Descuento por mayorista', 1, '2023-10-23 20:30:42'),
-(5, 15, 164, '2023-11-02', '- Termino de Pago: 30% adelanto / 70% dia de instalacion\r\n- Para una clinica\r\n- Descuento especial por mayor', 1, '2023-10-26 20:01:00');
+(5, 15, 164, '2023-11-02', '- Termino de Pago: 30% adelanto / 70% dia de instalacion\r\n- Para una clinica\r\n- Descuento especial por mayor', 1, '2023-10-26 20:01:00'),
+(6, NULL, 198.9, '2023-11-18', '', 1, '2023-11-18 21:09:46');
 
 -- --------------------------------------------------------
 
@@ -3924,7 +3926,8 @@ INSERT INTO `proforma_product` (`proforma_product_id`, `proforma_id`, `product_i
 (4, 3, 197, 29, 50, 20),
 (5, 4, 1, 26, 14, 20),
 (6, 5, 1, 26, 14, 1),
-(7, 5, 197, 27, 50, 3);
+(7, 5, 197, 27, 50, 3),
+(8, 6, 1, 26, 15.3, 13);
 
 -- --------------------------------------------------------
 
@@ -4413,7 +4416,16 @@ INSERT INTO `sale` (`sale_id`, `client_id`, `proforma_id`, `amount`, `paid`, `ba
 (23, 14, 4, 280, 280, 0, '2023-10-30 21:01:06', '2023-10-30 21:01:06', 1),
 (24, 1, NULL, 299.2, 299.2, 0, '2023-11-02 23:03:08', '2023-11-02 23:03:08', 1),
 (25, 19, NULL, 299.2, 299.2, 0, '2023-11-03 19:18:11', '2023-11-03 19:18:11', 1),
-(26, 14, 4, 280, 280, 0, '2023-11-17 05:56:44', '2023-11-07 21:14:48', 1);
+(26, 14, 4, 280, 280, 0, '2023-11-17 05:56:44', '2023-11-07 21:14:48', 1),
+(27, 17, NULL, 1710.66, 1710.66, 0, '2023-11-17 21:35:38', '2023-11-17 21:35:38', 1),
+(28, 17, NULL, 1710.66, 1710.66, 0, '2023-11-17 21:36:20', '2023-11-17 21:36:20', 1),
+(29, 17, NULL, 1710.66, 1710.66, 0, '2023-11-17 21:37:11', '2023-11-17 21:37:11', 1),
+(30, 17, NULL, 1710.66, 1710.66, 0, '2023-11-17 21:38:19', '2023-11-17 21:38:19', 1),
+(31, 17, NULL, 1710.66, 1710.66, 0, '2023-11-17 21:45:23', '2023-11-17 21:38:28', 1),
+(32, NULL, NULL, 204.3, 204.3, 0, '2023-11-17 21:52:09', '2023-11-17 21:50:57', 0),
+(33, NULL, NULL, 1099.89, 1099.89, 0, '2023-11-17 23:00:12', '2023-11-17 21:52:41', 0),
+(34, 1, NULL, 1436.16, 1436.16, 0, '2023-11-17 23:06:41', '2023-11-17 23:06:41', 1),
+(35, NULL, 6, 198.9, 198.9, 0, '2023-11-18 21:10:07', '2023-11-18 21:10:07', 1);
 
 -- --------------------------------------------------------
 
@@ -4515,7 +4527,19 @@ INSERT INTO `sale_payment` (`payment_id`, `sale_id`, `payment_method_id`, `total
 (28, 26, 1, 280, 300, 20, '2023-11-07 21:14:48', 0),
 (29, 26, 1, 280, 290, 10, '2023-11-17 05:55:30', 0),
 (30, 26, 5, 280, 150, 0, '2023-11-17 05:56:23', 1),
-(31, 26, 5, 130, 150, 20, '2023-11-17 05:56:44', 1);
+(31, 26, 5, 130, 150, 20, '2023-11-17 05:56:44', 1),
+(32, 27, 5, 1710.66, 1710.66, 0, '2023-11-17 21:35:38', 1),
+(33, 28, 5, 1710.66, 1710.66, 0, '2023-11-17 21:36:20', 1),
+(34, 29, 5, 1710.66, 1710.66, 0, '2023-11-17 21:37:11', 1),
+(35, 30, 5, 1710.66, 1710.66, 0, '2023-11-17 21:38:19', 1),
+(36, 31, 5, 1710.66, 1710.66, 0, '2023-11-17 21:38:28', 0),
+(37, 31, 1, 1, 1, 0, '2023-11-17 21:41:51', 0),
+(38, 31, 1, 1, 2, 289.34, '2023-11-17 21:43:45', 0),
+(39, 31, 1, 1710.66, 2000, 289.34, '2023-11-17 21:45:23', 1),
+(40, 32, 1, 204.3, 220, 15.7, '2023-11-17 21:50:57', 0),
+(41, 33, 1, 1099.89, 1100, 0.11, '2023-11-17 21:52:41', 0),
+(42, 34, 1, 1436.16, 1500, 63.84, '2023-11-17 23:06:41', 1),
+(43, 35, 1, 198.9, 200, 1.1, '2023-11-18 21:10:07', 1);
 
 -- --------------------------------------------------------
 
@@ -4527,7 +4551,7 @@ CREATE TABLE `sale_product` (
   `sale_product_id` int(11) NOT NULL,
   `sale_id` int(11) NOT NULL,
   `product_id` int(11) NOT NULL,
-  `option_id` int(11) NOT NULL,
+  `option_id` int(11) DEFAULT NULL,
   `qty` int(11) NOT NULL,
   `price` float NOT NULL,
   `subtotal` float NOT NULL
@@ -4559,7 +4583,20 @@ INSERT INTO `sale_product` (`sale_product_id`, `sale_id`, `product_id`, `option_
 (20, 23, 1, 26, 20, 14, 280),
 (21, 24, 197, 27, 5, 59.84, 299.2),
 (22, 25, 197, 29, 5, 59.84, 299.2),
-(23, 26, 1, 26, 20, 14, 280);
+(23, 26, 1, 26, 20, 14, 280),
+(26, 29, 267, NULL, 12, 53.48, 641.76),
+(27, 29, 1, 26, 12, 15.3, 183.6),
+(28, 29, 254, 33, 13, 68.1, 885.3),
+(29, 30, 267, NULL, 12, 53.48, 641.76),
+(30, 30, 1, 26, 12, 15.3, 183.6),
+(31, 30, 254, 33, 13, 68.1, 885.3),
+(32, 31, 267, NULL, 12, 53.48, 641.76),
+(33, 31, 1, 26, 12, 15.3, 183.6),
+(34, 31, 254, 33, 13, 68.1, 885.3),
+(35, 32, 254, 33, 3, 68.1, 204.3),
+(36, 33, 216, 30, 11, 99.99, 1099.89),
+(37, 34, 197, 28, 24, 59.84, 1436.16),
+(38, 35, 1, 26, 13, 15.3, 198.9);
 
 -- --------------------------------------------------------
 
@@ -4616,7 +4653,8 @@ INSERT INTO `sunat_file` (`file_id`, `sale_id`, `invoice_id`, `xml`, `cdr`, `reg
 (30, 22, 35, '20610879668-03-B001-6.xml', 'R-20610879668-03-B001-6.zip', '2023-10-30 00:16:16'),
 (31, 24, 35, '20610879668-03-B001-6.xml', 'R-20610879668-03-B001-6.zip', '2023-11-02 23:03:15'),
 (32, 25, 36, '20610879668-01-F001-2.xml', 'R-20610879668-01-F001-2.zip', '2023-11-03 19:18:42'),
-(33, 26, 37, '20610879668-03-B001-7.xml', 'R-20610879668-03-B001-7.zip', '2023-11-07 21:14:58');
+(33, 26, 37, '20610879668-03-B001-7.xml', 'R-20610879668-03-B001-7.zip', '2023-11-07 21:14:58'),
+(34, 34, 38, '20610879668-03-B001-8.xml', 'R-20610879668-03-B001-8.zip', '2023-11-17 23:16:56');
 
 -- --------------------------------------------------------
 
@@ -4957,7 +4995,7 @@ ALTER TABLE `client_doc_type`
 -- 테이블의 AUTO_INCREMENT `invoice`
 --
 ALTER TABLE `invoice`
-  MODIFY `invoice_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+  MODIFY `invoice_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- 테이블의 AUTO_INCREMENT `invoice_serie`
@@ -5017,13 +5055,13 @@ ALTER TABLE `product_type`
 -- 테이블의 AUTO_INCREMENT `proforma`
 --
 ALTER TABLE `proforma`
-  MODIFY `proforma_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `proforma_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- 테이블의 AUTO_INCREMENT `proforma_product`
 --
 ALTER TABLE `proforma_product`
-  MODIFY `proforma_product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `proforma_product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- 테이블의 AUTO_INCREMENT `provider`
@@ -5089,7 +5127,7 @@ ALTER TABLE `role`
 -- 테이블의 AUTO_INCREMENT `sale`
 --
 ALTER TABLE `sale`
-  MODIFY `sale_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `sale_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- 테이블의 AUTO_INCREMENT `sale_file`
@@ -5107,13 +5145,13 @@ ALTER TABLE `sale_note`
 -- 테이블의 AUTO_INCREMENT `sale_payment`
 --
 ALTER TABLE `sale_payment`
-  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
 -- 테이블의 AUTO_INCREMENT `sale_product`
 --
 ALTER TABLE `sale_product`
-  MODIFY `sale_product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `sale_product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- 테이블의 AUTO_INCREMENT `setting_company`
@@ -5125,7 +5163,7 @@ ALTER TABLE `setting_company`
 -- 테이블의 AUTO_INCREMENT `sunat_file`
 --
 ALTER TABLE `sunat_file`
-  MODIFY `file_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `file_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- 테이블의 AUTO_INCREMENT `sunat_resume`

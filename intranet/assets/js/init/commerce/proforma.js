@@ -4,6 +4,7 @@ set_dates_between("#f_i_from", "#f_i_to");
 set_dates_between("#f_v_from", "#f_v_to");
 set_search_client_ajax();
 btn_card_control("#btn_open_gs", "#btn_close_gs", "#card_generate_sale", "success");
+btn_card_control("#btn_open_sp", "#btn_close_sp", "#card_select_product", "success");
 
 /* detail, register - payment amount control */
 function calculate_change(){
@@ -24,6 +25,18 @@ $("#pay_received").on('change',(function(e) {
 	if (event.which === 13) calculate_change();
 }));
 
+function calculate_total(){
+	var aux_prod;
+	var total = 0;
+	$($(".prod_row")).each(function(index, element){
+		aux_prod = JSON.parse($(element).find(".product_json").html());
+		total += aux_prod.price * aux_prod.qty;
+	});
+	
+	$("#tb_total").html("S/ " + nf(total));
+	$("#proforma_amount").val(nf(total));
+}
+
 /* detail - add sale form */
 $("#form_add_sale").submit(function(e) {
 	e.preventDefault();
@@ -34,148 +47,147 @@ $("#form_add_sale").submit(function(e) {
 	});
 });
 
-
-
-
-
-function calculate_change1(){
-	var total = parseFloat($("#total").val());
-	var received =  parseFloat($("#received_txt").val());
-	if (isNaN(received) || received <= 0) received = total;
-	
-	var change = received - total;
-	if (change < 0) change = 0;
-
-	$("#received_txt").val(nf(received));
-	$("#received").val(received);
-	
-	$("#change_txt").val(nf(change));
-	$("#change").val(change);
+/* register - add proforma */
+function close_select_product(){
+	$("#card_select_product").addClass("d-none");
+	$("#form_select_product").addClass("d-none");
+	$("#form_select_product")[0].reset();
+	$("#form_search_product input").val("");
+	$("#msg_enter_keyword").removeClass("d-none");
+	$("#bl_search_result").addClass("d-none");
+	move_top();
 }
 
-function calculate_amount(){
-	var total = 0;
-	$($(".prod_row")).each(function(index, element){
-		if ($(element).find(".product_json").length > 0 && $(element).find(".stocks_json").length > 0){
-			var price = $(element).find(".price").val();
-			var stocks = JSON.parse($(element).find(".stocks_json").html());
-			var option_id = $(element).find(".option_id").val();
-			var qty = $(element).find(".ip_qty").val();
-			if (qty < 1) qty = 1;
-			else if (qty > parseInt(stocks[option_id])){
-				qty = stocks[option_id];
-				swal("warning", "Disponibilidad: " + qty);
-			}
-			$(element).find(".ip_qty").val(qty);
-			
-			var subtotal = qty * price;
-			$(element).find(".subtotal").html("S/. " + nf(subtotal));
-			total = total + subtotal;	
-		}
-	});
-	
-	$("#proforma_amount").val(total);
-	$("#proforma_amount_txt").val(nf(total));
-}
+$("#btn_open_select_product").on('click',(function(e) {
+	$("#card_select_product").removeClass("d-none");
+}));
 
-var row_num = 1;
-function add_product(dom){
+$(".btn_close_select_product").on('click',(function(e) {
+	close_select_product();
+}));
+
+function select_product(dom){
+	$("#form_select_product")[0].reset();
+	$(".btn_select_product").removeClass("list-group-item-primary");
+	$(dom).addClass("list-group-item-primary");
+	
 	ajax_simple({product_id: $(dom).val()}, b_url + "load_product").done(function(res) {
-		/* add doms to row */
-		$("#tb_product_list").append('<tr class="prod_row align-middle" id="prod_' + row_num + '"><th class="num" scope="row">' + ($(".prod_row").length + 1) + '<input type="hidden" name="products[' + row_num + '][product_id]" value="' + res.product.product_id + '"></th><td class="product">' + res.product.product + '<div class="product_json d-none">' + JSON.stringify(res.product) + '</div></td><td><div class="input-group" style="width:150px;"><span class="input-group-text">S/</span><input type="text" class="form-control price_txt" value="' + nf(res.product.price) + '"></div><input type="hidden" class="price" value="' + res.product.price + '" name="products[' + row_num + '][price]"></td><td class="options"></td><td class="qty"><input type="number" class="form-control ip_qty" name="products[' + row_num + '][qty]" value="1" min="1" style="width: 100px;"></td><td class="subtotal text-nowrap text-end">' + nf(res.product.price) + '</td><td class="text-end"><button type="button" class="btn btn-outline-danger btn-sm border-0 btn_delete_prod"><i class="bi bi-x-lg"></i></button></td></tr>');
-		
-		let row_id = "#prod_" + row_num;
-		if (res.options.length > 0){
-			$(row_id).find(".options").html('<select class="form-select option_id" name="products[' + row_num + '][option_id]" style="width: 150px;"></select>');
+		if (res.type == "success"){
+			$("#form_select_product input[name=product_id]").val(res.product.product_id);
+			$("#form_select_product input[name=product]").val(res.product.product);
+			$("#form_select_product input[name=price]").val(nf(res.product.price));
+			$("#form_select_product input[name=qty]").val(nf_int(1));
+			$("#form_select_product input[name=subtotal]").val(nf(res.product.price));
 			
-			var stocks = {};
-			var dom_select = $(row_id).find(".option_id");
+			var dom_select = $("#form_select_product select[name=option_id]");
+			dom_select.html("");
+			$(dom_select).append('<option value="">Elegir</option>');
 			$(res.options).each(function(index, element){
-				$(dom_select).append('<option value="' + element.option_id + '">' + element.option + ' (' + element.stock + ')</option>');
-				stocks[element.option_id] = element.stock;
+				$(dom_select).append('<option value="' + element.option_id + '">' + element.option + '</option>');
 			});
-			$(row_id).find(".options").append('<div class="stocks_json d-none">' + JSON.stringify(stocks) + '</div>');
+			
+			$("#form_select_product").removeClass("d-none");
 		}else{
-			$(row_id).find(".options").html('<span class="text-nowrap text-danger">No stock</span>');
-			$(row_id).find(".qty").html('');
-			$(row_id).find(".subtotal").html('');
+			swal("error", res.msg);
+			$("#form_select_product").addClass("d-none");
 		}
-		
-		/* add events */
-		$(row_id).find(".price_txt").on('change',(function(e) {
-			$(row_id).find(".price").val($(this).val().replace(/,/g, ''));
-			calculate_amount();
-		}));
-		
-		$(row_id).find(".price_txt").on('keyup',(function(e) {
-			if (e.key === "Enter"){
-				var num = $(this).val().replace(/,/g, '');
-				$(row_id).find(".price_txt").val(nf(num));
-				$(row_id).find(".price").val(num);
-				calculate_amount();
-			}
-		}));
-		
-		$(row_id).find(".ip_qty").on('change',(function(e) {
-			calculate_amount();
-		}));
-		
-		$(row_id).find(".option_id").on('change',(function(e) {
-			$(this).closest("tr").find(".ip_qty").val(1);
-			calculate_amount();
-		}));
-		
-		$(row_id).find(".btn_delete_prod").on('click',(function(e) {
-			$(row_id).remove();
-			$($(".prod_row")).each(function(index, element){
-				$(this).find(".num").html(index + 1);
-			});
-			calculate_amount();
-		}));
-		
-		/* close modal */
-		$("#md_add_product").modal("hide");
-		row_num++;
-		
-		/* calculate amount */
-		calculate_amount();
 	});
 }
 
-function search_product(keyword){
-	ajax_simple({keyword: keyword}, b_url + "search_product").done(function(res) {
+$("#form_search_product").submit(function(e) {
+	e.preventDefault();
+	
+	ajax_form(this, b_url + "search_product").done(function(res) {
+		$("#msg_enter_keyword").addClass("d-none");
+		$("#bl_search_result").removeClass("d-none");
 		$("#search_result").html("");
+		
 		if (res.type == "success"){
 			$(res.products).each(function(index, element) {
-				$("#search_result").append('<button class="list-group-item list-group-item-action btn_add_product" value="' + element.product_id + '"><div class="d-flex w-100 justify-content-between"><h5 class="mb-1 me-3">' + element.product + '</h5><small class="text-nowrap">S/. ' + element.price + '</small></div><p class="mb-1">' + element.category + '</p><small>' + element.code + '</small></button>');
+				$("#search_result").append('<button class="list-group-item list-group-item-action btn_select_product" value="' + element.product_id + '"><h5 class="mb-1 me-3">' + element.product + '</h5><p class="mb-1">' + element.category + '</p><div class="d-flex w-100 justify-content-between"><small>' + element.code + '</small>' + element.stock + '</div></button>');
 			});
 			
-			$(".btn_add_product").on('click',(function(e) {
-				add_product(this);
+			$(".btn_select_product").on('click',(function(e) {
+				select_product(this);
 			}));
 		}else $("#search_result").html(res.msg);
 	});
+});
+
+function calculate_subtotal(){
+	var price = nf_reverse($("#form_select_product input[name=price]").val());
+	var qty = nf_reverse($("#form_select_product input[name=qty]").val());
+	
+	if (isNaN(price) || price <= 0) price = 0;
+	if (isNaN(qty) || qty <= 0) qty = 1;
+	
+	$("#form_select_product input[name=price]").val(nf(price));
+	$("#form_select_product input[name=qty]").val(nf_int(qty));
+	$("#form_select_product input[name=subtotal]").val(nf(price * qty));	
 }
 
-$("#btn_search_product").on('click',(function(e) {
-	search_product($("#keyword").val());
+$(".ps_price_qty").on('change',(function(e) {
+	calculate_subtotal();
+})).on('keyup',(function(e) {
+	if (event.which === 13) calculate_subtotal();
+})).on('focusout',(function(e) {
+	calculate_subtotal();
 }));
 
-$("#keyword").on('keyup',(function(e) {
-	if (e.key === "Enter") search_product($("#keyword").val());
-}));
+var row_num = 1;
+function add_product(selected){
+	var prod = {
+		product_id: selected.product_id,
+		option_id: selected.option_id,
+		price: selected.price,
+		qty: selected.qty,
+	}
+	
+	ajax_simple({prod: prod}, b_url + "check_stock").done(function(res) {
+		if (res.type == "success"){
+			$("#tb_product_list").append('<tr class="prod_row align-middle" id="prod_' + row_num + '"><th scope="row" class="num">' + ($(".prod_row").length + 1) + '</th><td>' + selected.product + '<textarea class="product_json d-none" name="products[]">' + JSON.stringify(prod) + '</textarea></td><td>' + selected.option + '</td><td class="text-nowrap text-end">S/ ' + nf(selected.price) + '</td><td class="text-end">' + nf_int(selected.qty) + '</td><td class="text-nowrap text-end">S/ ' + nf(selected.subtotal) + '</td><td class="text-end"><button type="button" class="btn btn-outline-danger btn-sm border-0 btn_delete_prod"><i class="bi bi-x-lg"></i></button></td></tr>');
+			
+			var row_id = "#prod_" + row_num;
+			$(row_id).find(".btn_delete_prod").on('click',(function(e) {
+				$(row_id).remove();
+				$($(".prod_row")).each(function(index, element){
+					$(this).find(".num").html(index + 1);
+				});
+				calculate_total();
+			}));
+			
+			/* calculate total amount to pay */
+			calculate_total();
+			
+			/* next row number for control delete operation */
+			row_num++;
+			
+			/* close select product block and move to top */
+			close_select_product();
+			move_top();
+		}else swal(res.type, res.msg);
+	});
+}
 
-$("#btn_add_proforma").on('click',(function(e) {
-	$("#form_add_proforma").submit();
-}));
+$("#form_select_product").submit(function(e) {
+	e.preventDefault();
+	
+	var selected = ob_from_form("#form_select_product");
+	selected.option = $("#form_select_product select[name=option_id] option:selected").text();
+	selected.qty = parseInt(nf_reverse(selected.qty));
+	selected.price = parseFloat(nf_reverse(selected.price));
+	selected.subtotal = selected.qty * selected.price;
+	
+	if (selected.option == "Elegir") selected.option = "-";
+	if (isNaN(selected.qty)) selected.qty = 0;
+	if (isNaN(selected.price)) selected.price = 0;
+	
+	if (selected.qty > 0) add_product(selected);
+	else swal("error", error_msg.sp["qty_no_zero"]);
+});
 
 $("#form_add_proforma").submit(function(e) {
 	e.preventDefault();
-	
-	//clean no stock products
-	$($(".prod_row")).each(function(index, element){
-		if ($(element).find(".option_id").length == 0) $(element).remove();
-	});
 	
 	ajax_form_warning(this, b_url + "add_proforma", "add_proforma").done(function(res) {
 		if (res.type == "success") swal_redirection(res.type, res.msg, base_url + b_url + "detail/" + res.proforma_id);

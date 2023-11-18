@@ -94,37 +94,62 @@ class Proforma extends CI_Controller {
 		];
 		$this->load->view('layout', $data);
 	}
-
-	public function search_product(){
-		$type = "error"; $msg = ""; $products = [];
-		$keyword = $this->input->post("keyword");
+	
+	public function load_product(){//ok
+		$res = ["type" => "error", "msg" => null];
 		
-		if ($keyword){
-			$products_rec = $this->gm->filter_like("product", "product", $keyword, "", "", $check_valid = true);
-			if ($products_rec){
-				$categories = [];
-				$categories_rec = $this->gm->all("product_category", [], "", "", true);
-				foreach($categories_rec as $c) $categories[$c->category_id] = $c->category;
+		$product = $this->gm->unique("product", "product_id", $this->input->post("product_id"));
+		if ($product){
+			unset($product->category_id);
+			unset($product->image);
+			unset($product->valid);
+			unset($product->updated_at);
+			unset($product->registed_at);
+			
+			$type_prod = $this->gm->unique("product_type", "type", "Producto", false);
+			if ($product->type_id == $type_prod->type_id){//Product
+				$options = $this->gm->filter("product_option", ["product_id" => $product->product_id], null, null, [["option_id", "asc"]]);
+				foreach($options as $i_o => $op) if (!$op->stock) unset($options[$i_o]);
 				
-				$products = [];
-				foreach($products_rec as $p) $products[] = ["product_id" => $p->product_id, "category" => $categories[$p->category_id], "product" => $p->product, "price" => number_format($p->price, 2), "code" => $p->code];
-				
-				$type = "success";
-			}else $msg = $this->lang->line("e_no_result");
-		}else $msg = $this->lang->line("e_enter_keyword");
+				if ($options){
+					$res["type"] = "success";
+					$res["product"] = $product;
+					$res["options"] = $options;
+				}else $res["msg"] = $this->lang->line("e_product_no_stock");
+			}else{//Service
+				$res["type"] = "success";
+				$res["product"] = $product;
+				$res["options"] = [];
+			}
+		}else $res["msg"] = $this->lang->line("e_no_product_registed");
 		
 		header('Content-Type: application/json');
-		echo json_encode(["type" => $type, "msg" => $msg, "products" => $products]);
+		echo json_encode($res);
 	}
 	
-	public function load_product(){
-		$product = $this->gm->unique("product", "product_id", $this->input->post("product_id"));
-		$product->category = $this->gm->unique("product_category", "category_id", $product->category_id)->category;
+	public function check_stock(){//ok
+		$res = ["type" => "success", "msg" => null];
 		
-		$options = $this->gm->filter("product_option", ["product_id" => $product->product_id], null, null, [["option_id", "asc"]]);
+		$prod = $this->input->post("prod");
+		$product = $this->gm->unique("product", "product_id", $prod["product_id"]);
+		$type = $this->gm->unique("product_type", "type_id", $product->type_id, false);
+		
+		if ($type->type === "Producto"){
+			if ($prod["option_id"]){
+				$option = $this->gm->unique("product_option", "option_id", $prod["option_id"]);
+				
+				if ($prod["qty"] > $option->stock){
+					$res["type"] = "error";
+					$res["msg"] = $this->lang->line("e_product_no_stock")." (Max: ".number_format($option->stock).")";
+				}	
+			}else{
+				$res["type"] = "error";
+				$res["msg"] = $this->lang->line("e_option_select");
+			}
+		}
 		
 		header('Content-Type: application/json');
-		echo json_encode(["product" => $product, "options" => $options]);
+		echo json_encode($res);
 	}
 	
 	public function register(){
@@ -137,13 +162,53 @@ class Proforma extends CI_Controller {
 		$this->load->view('layout', $data);
 	}
 	
+	public function search_product(){//ok
+		$type = "error"; $msg = ""; $products = [];
+		$keyword = $this->input->post("keyword");
+		
+		if ($keyword){
+			$products_rec = $this->gm->filter("product", [], [["field" => "product", "values" => explode(" ", $keyword)]], null, [["product", "asc"]]);
+			
+			if ($products_rec){
+				$categories = [];
+				$categories_rec = $this->gm->all("product_category", [], "", "", true);
+				foreach($categories_rec as $c) $categories[$c->category_id] = $c->category;
+				
+				$type_prod = $this->gm->unique("product_type", "type", "Producto", false);
+				
+				$products = [];
+				foreach($products_rec as $p){
+					if ($p->type_id == $type_prod->type_id){
+						$stock = $this->gm->sum("product_option", "stock", ["product_id" => $p->product_id, "valid" => true])->stock;
+						if ($stock) $stock = number_format($stock)." disponibles";
+						else $stock = "<span class='text-danger'>No disponible</span>";	
+					}else $stock = "-";
+					
+					
+					$products[] = ["product_id" => $p->product_id, "category" => $categories[$p->category_id], "product" => $p->product, "price" => number_format($p->price, 2), "code" => $p->code, "stock" => $stock];
+				}
+				
+				$type = "success";
+			}else $msg = $this->lang->line("e_no_result");
+		}else $msg = $this->lang->line("e_enter_keyword");
+		
+		header('Content-Type: application/json');
+		echo json_encode(["type" => $type, "msg" => $msg, "products" => $products]);
+	}
+	
 	public function add_proforma(){
 		$result = ["type" => "error", "msg" => null];
 		
 		if ($this->session->userdata('username')){
-			$products = $this->input->post("products");
+			$products_json = $this->input->post("products");
 			$proforma = $this->input->post("proforma");
 			$client = $this->input->post("client");	
+			
+			/* data processing */
+			$products = [];
+			if ($products_json) foreach($products_json as $p) $products[] = json_decode($p, true);
+			
+			$proforma["amount"] = round(str_replace(",", "", $proforma["amount"]), 2);
 			
 			$this->load->library('my_val');
 			$result = $this->my_val->add_proforma($products, $client);
@@ -167,7 +232,7 @@ class Proforma extends CI_Controller {
 				$amount = 0;
 				foreach($products as $prod) $amount += $prod["price"] * $prod["qty"];
 				
-				if (!$data["validity"]) $data["validity"] = null;
+				if (!$proforma["validity"]) $proforma["validity"] = null;
 				
 				$proforma["client_id"] = $client_id;
 				$proforma["amount"] = $amount;

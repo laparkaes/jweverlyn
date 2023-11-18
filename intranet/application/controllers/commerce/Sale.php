@@ -61,7 +61,7 @@ class Sale extends CI_Controller {
 		$this->load->view('layout', $data);
 	}
 	
-	public function detail($sale_id){
+	public function detail($sale_id){//ok
 		if (!$this->session->userdata('username')) redirect("auth/login");
 
 		$sale = $this->gm->unique("sale", "sale_id", $sale_id, false);
@@ -118,7 +118,7 @@ class Sale extends CI_Controller {
 		$this->load->view('layout', $data);
 	}
 	
-	private function update_balance($sale_id){
+	private function update_balance($sale_id){//ok
 		$sale = $this->gm->unique("sale", "sale_id", $sale_id);
 		
 		$paid = 0;
@@ -334,7 +334,7 @@ class Sale extends CI_Controller {
 		$this->load->view('layout', $data);
 	}
 	
-	public function add_sale(){
+	public function add_sale(){//ok
 		$result = ["type" => "error", "msg" => null];
 		
 		if ($this->session->userdata('username')){
@@ -414,7 +414,7 @@ class Sale extends CI_Controller {
 		echo json_encode($result);
 	}
 	
-	public function cancel_sale(){
+	public function cancel_sale(){//ok
 		$type = "error"; $msg = null; $url = "";
 		
 		if ($this->session->userdata('username')){
@@ -504,7 +504,7 @@ class Sale extends CI_Controller {
 		return $result;
 	}
 
-	public function issue_invoice(){
+	public function issue_invoice(){//ok
 		$result = ["type" => "error", "msg" => "", "url" => null];
 		
 		if ($this->session->userdata('username')){
@@ -564,7 +564,7 @@ class Sale extends CI_Controller {
 		echo json_encode($result);
 	}
 	
-	public function send_invoice(){
+	public function send_invoice(){//ok
 		if ($this->session->userdata('username')) $result = $this->send_to_sunat($this->input->post("invoice_id"));
 		else $result = ["type" => "error", "msg" => $this->lang->line("e_finished_session")];
 		
@@ -572,7 +572,7 @@ class Sale extends CI_Controller {
 		echo json_encode($result);
 	}
 	
-	public function view_invoice($invoice_id){
+	public function view_invoice($invoice_id){//ok
 		if (!$this->session->userdata('username')) redirect("auth/login");
 		
 		$invoice = $this->gm->unique("invoice", "invoice_id", $invoice_id);
@@ -620,7 +620,7 @@ class Sale extends CI_Controller {
 		$this->my_func->make_pdf_ticket($html, $invoice->getSerie()." - ".str_pad($invoice->getCorrelativo(), 6, '0', STR_PAD_LEFT));
 	}
 	
-	public function void_invoice(){
+	public function void_invoice(){//ok
 		$result = ["type" => "error", "msg" => ""];
 		
 		if ($this->session->userdata('username')){
