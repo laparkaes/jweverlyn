@@ -36,7 +36,7 @@
 							Ver <?= $invoice->type ?>
 						</a>
 						<?php }else{ if ($sale->balance) $d = "disabled"; else $d = ""; ?>
-						<button type="button" class="btn btn-success" <?= $d ?> data-bs-toggle="modal" data-bs-target="#md_issue_invoice">
+						<button type="button" class="btn btn-success" <?= $d ?> id="btn_open_ii">
 							Comprobante
 						</button>
 						<?php } ?>
@@ -197,78 +197,91 @@
 					</form>
 				</div>
 			</div>
-			
-<?php }else{ ?>
-<div class="modal fade" id="md_issue_invoice" tabindex="-1">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<form id="form_issue_invoice">
-				<input type="hidden" name="invoice[sale_id]" value="<?= $sale->sale_id ?>">
-				<div class="modal-header">
-					<h5 class="modal-title">Emitir Comprobante</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-				</div>
-				<div class="modal-body text-start">
-					<div class="row g-3">
-						<div class="col-md-6">
-							<label class="form-label">Serie</label>
-							<select class="form-select" name="invoice[serie_id]">
-								<?php foreach($invoice_series as $is){ ?>
-								<option value="<?= $is->serie_id ?>"><?= $is->serie." - ".$is->description ?></option>
-								<?php } ?>
-							</select>
-							<div class="invalid-feedback"></div>
-						</div>
-						<div class="col-md-6">
-							<label class="form-label">Tipo</label>
-							<select class="form-select" name="invoice[type_id]" id="invoice_type_id">
-								<?php foreach($invoice_types as $it){ ?>
-								<option value="<?= $it->type_id ?>"><?= $it->type ?></option>
-								<?php } ?>
-							</select>
-							<div class="invalid-feedback"></div>
-						</div>
-						<div class="col-md-6">
-							<label class="form-label">Documento</label>
-							<select class="form-select" name="client[doc_type_id]" id="doc_type_id">
-								<?php foreach($client_doc_types as $dt){ 
-								if ($client){
-									if ($client->doc_type_id == $dt->doc_type_id) $s = "selected";
-									else $s = "";
-								}else $s = ""; ?>
-								<option value="<?= $dt->doc_type_id ?>" <?= $s ?>><?= $dt->doc_type ?></option>
-								<?php } ?>
-							</select>
-							<div class="invalid-feedback"></div>
-						</div>
-						<?php if ($client){
-							$doc_number = $client->doc_number;
-							$name = $client->name;
-							$d = "";
-						}else{
-							$doc_number = $name = "";
-							$d = "disabled";
-						} ?>
-						<div class="col-md-6">
-							<label class="form-label">Número</label>
-							<div class="input-group has-validation">
-								<input type="text" class="form-control" name="client[doc_number]" id="doc_number" value="<?= $doc_number ?>" <?= $d ?>>
-								<button type="button" class="btn btn-primary" id="btn_search_person" <?= $d ?>>
-									<i class="bi bi-search"></i>
-								</button>
+			<?php }else{ ?>
+			<div class="card d-none" id="card_issue_invoice">
+				<div class="card-body">
+					<h5 class="card-title">Emitir Comprobante</h5>
+					<form id="form_issue_invoice">
+						<input type="hidden" name="invoice[sale_id]" value="<?= $sale->sale_id ?>">
+						<div class="row g-3">
+							<div class="col-md-6">
+								<label class="form-label">Serie</label>
+								<select class="form-select" name="invoice[serie_id]">
+									<?php foreach($invoice_series as $is){ ?>
+									<option value="<?= $is->serie_id ?>"><?= $is->serie." - ".$is->description ?></option>
+									<?php } ?>
+								</select>
 								<div class="invalid-feedback"></div>
 							</div>
+							<div class="col-md-6">
+								<label class="form-label">Tipo</label>
+								<select class="form-select" name="invoice[type_id]" id="invoice_type_id">
+									<?php foreach($invoice_types as $it){ ?>
+									<option value="<?= $it->type_id ?>"><?= $it->type ?></option>
+									<?php } ?>
+								</select>
+								<div class="invalid-feedback"></div>
+							</div>
+							<div class="col-md-6">
+								<label class="form-label">Documento</label>
+								<select class="form-select" name="client[doc_type_id]" id="doc_type_id">
+									<?php foreach($client_doc_types as $dt){ 
+									if ($client){
+										if ($client->doc_type_id == $dt->doc_type_id) $s = "selected";
+										else $s = "";
+									}else $s = ""; ?>
+									<option value="<?= $dt->doc_type_id ?>" <?= $s ?>><?= $dt->doc_type ?></option>
+									<?php } ?>
+								</select>
+								<div class="invalid-feedback"></div>
+							</div>
+							<?php if ($client){
+								$doc_number = $client->doc_number;
+								$name = $client->name;
+								$d = "";
+							}else{
+								$doc_number = $name = "";
+								$d = "disabled";
+							} ?>
+							<div class="col-md-6">
+								<label class="form-label">Número</label>
+								<div class="input-group has-validation">
+									<input type="text" class="form-control" name="client[doc_number]" id="doc_number" value="<?= $doc_number ?>" <?= $d ?>>
+									<button type="button" class="btn btn-primary" id="btn_search_person" <?= $d ?>>
+										<i class="bi bi-search"></i>
+									</button>
+									<div class="invalid-feedback"></div>
+								</div>
+							</div>
+							<div class="col-md-12">
+								<label class="form-label">Nombre</label>
+								<input type="text" class="form-control" name="client[name]" id="client_name" value="<?= $name ?>" <?= $d ?>>
+								<div class="invalid-feedback"></div>
+							</div>
+							<div class="col-md-12 pt-3 text-center">
+								<button type="button" class="btn btn-secondary" id="btn_close_ii">Cerrar</button>
+								<button type="submit" class="btn btn-primary">Emitir</button>
+							</div>
 						</div>
-						<div class="col-md-12">
-							<label class="form-label">Nombre</label>
-							<input type="text" class="form-control" name="client[name]" id="client_name" value="<?= $name ?>" <?= $d ?>>
-							<div class="invalid-feedback"></div>
-						</div>
+					</form>
+				</div>
+			</div>
+
+
+
+
+<div class="modal fade" id="md_" tabindex="-1">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form id="">
+				
+				<div class="modal-body text-start">
+					<div class="row g-3">
 					</div>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-					<button type="button" class="btn btn-primary" id="btn_issue_invoice">Emitir</button>
+					<button type="button" class="btn btn-primary" id="">Emitir</button>
 				</div>
 			</form>
 		</div>
@@ -331,7 +344,12 @@
 										<?php foreach($products as $p_i => $p){ ?>
 										<tr>
 											<th scope="row"><?= number_format($p_i + 1) ?></th>
-											<td><?= $p->prod->product ?><br><small><?= $p->op->option ?></small></td>
+											<td>
+												<?= $p->prod->product ?><br>
+												<?php if ($p->option_id){ ?>
+												<small><?= $p->op->option ?></small>
+												<?php } ?>
+											</td>
 											<td><?= number_format($p->qty) ?></td>
 											<td class="text-nowrap text-end">S/ <?= number_format($p->price, 2) ?></td>
 											<td class="text-nowrap text-end">S/ <?= number_format($p->subtotal, 2) ?></td>

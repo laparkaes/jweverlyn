@@ -5,12 +5,9 @@ set_search_client_ajax();
 btn_card_control("#btn_file_upload", "#btn_close_cfu", "#card_file_upload", "success");
 btn_card_control("#btn_open_an", "#btn_close_an", "#card_add_note", "primary");
 btn_card_control("#btn_open_ap", "#btn_close_ap", "#card_add_payment", "primary");
+btn_card_control("#btn_open_ii", "#btn_close_ii", "#card_issue_invoice", "primary");
 
 /* detail - invoice */
-$("#btn_issue_invoice").on('click',(function(e) {
-	$("#form_issue_invoice").submit();
-}));
-
 $("#form_issue_invoice").submit(function(e) {
 	e.preventDefault();
 	ajax_form_warning(this, b_url + "issue_invoice", "issue_invoice").done(function(res) {
@@ -158,7 +155,7 @@ $("#form_search_product").submit(function(e) {
 		
 		if (res.type == "success"){
 			$(res.products).each(function(index, element) {
-				$("#search_result").append('<button class="list-group-item list-group-item-action btn_select_product" value="' + element.product_id + '"><div class="d-flex w-100 justify-content-between"><h5 class="mb-1 me-3">' + element.product + '</h5></div><p class="mb-1">' + element.category + '</p><small>' + element.code + '</small></button>');
+				$("#search_result").append('<button class="list-group-item list-group-item-action btn_select_product" value="' + element.product_id + '"><h5 class="mb-1 me-3">' + element.product + '</h5><p class="mb-1">' + element.category + '</p><div class="d-flex w-100 justify-content-between"><small>' + element.code + '</small>' + element.stock + '</div></button>');
 			});
 			
 			$(".btn_select_product").on('click',(function(e) {
@@ -243,6 +240,7 @@ $("#form_select_product").submit(function(e) {
 	selected.price = parseFloat(nf_reverse(selected.price));
 	selected.subtotal = selected.qty * selected.price;
 	
+	if (selected.option == "Elegir") selected.option = "-";
 	if (isNaN(selected.qty)) selected.qty = 0;
 	if (isNaN(selected.price)) selected.price = 0;
 	
@@ -250,18 +248,9 @@ $("#form_select_product").submit(function(e) {
 	else swal("error", error_msg.sp["qty_no_zero"]);
 });
 
-
-
-
-
+/* register - add sale */
 $("#form_add_sale").submit(function(e) {
 	e.preventDefault();
-	
-	//clean no stock products
-	$($(".prod_row")).each(function(index, element){
-		if ($(element).find(".option_id").length == 0) $(element).remove();
-	});
-	
 	ajax_form_warning(this, b_url + "add_sale", "add_sale").done(function(res) {
 		if (res.type == "success") swal_redirection(res.type, res.msg, base_url + b_url + "detail/" + res.sale_id);
 		else{

@@ -3,6 +3,7 @@ let b_url = "commerce/proforma/";
 set_dates_between("#f_i_from", "#f_i_to");
 set_dates_between("#f_v_from", "#f_v_to");
 set_search_client_ajax();
+btn_card_control("#btn_open_gs", "#btn_close_gs", "#card_generate_sale", "success");
 
 function calculate_change(){
 	var total = parseFloat($("#total").val());

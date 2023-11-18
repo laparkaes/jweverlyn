@@ -398,12 +398,15 @@ class My_val{
 			}
 			
 			//stock validation
+			$type_prod = $this->CI->gm->unique("product_type", "type", "Producto", false);
 			foreach($prod_list as $p){
 				$prod = $this->CI->gm->unique("product", "product_id", $p["product_id"]);
-				$prod_op = $this->CI->gm->unique("product_option", "option_id", $p["option_id"]);
-				if ($prod_op){
-					if ($prod_op->stock < $p["qty"]) $msg = $this->CI->lang->line("e_product_no_stock").$prod->product.".";
-				}else $msg = $this->CI->lang->line("e_product_invalid_option").$prod->product.".";
+				if ($prod->type_id == $type_prod->type_id){//in case of a product type item
+					$prod_op = $this->CI->gm->unique("product_option", "option_id", $p["option_id"]);
+					if ($prod_op){
+						if ($prod_op->stock < $p["qty"]) $msg = $this->CI->lang->line("e_product_no_stock").$prod->product.".";
+					}else $msg = $this->CI->lang->line("e_product_invalid_option").$prod->product.".";	
+				}
 			}
 		}else $msg = $this->CI->lang->line("e_select_product");
 		

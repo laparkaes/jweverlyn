@@ -236,9 +236,11 @@ $("#form_select_product").submit(function(e) {
 $("#form_add_purchase").submit(function(e) {
 	e.preventDefault();
 	ajax_form_warning(this, b_url + "add_purchase", "add_purchase").done(function(res) {
-		set_msgs("#form_add_purchase", res.msgs);
 		if (res.type == "success") swal_redirection(res.type, res.msg, base_url + b_url + "detail/" + res.purchase_id);
-		else swal(res.type, res.msg);
+		else{
+			set_msgs("#form_add_purchase", res.msgs);
+			swal(res.type, res.msg);
+		}
 	});
 });
 
