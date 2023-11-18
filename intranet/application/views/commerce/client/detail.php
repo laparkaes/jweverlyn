@@ -22,7 +22,6 @@
 		<div class="col-md-4">
 			<div class="card">
 				<div class="card-body profile-card pt-4 d-flex flex-column align-items-center text-center">
-					<?php  ?>
 					<img src="<?= base_url() ?>uploads/client/<?= $client->image ?>" id="main_image" alt="Thumb" style="max-width: 80%;">
 					<h2><?= $client->name ?></h2>
 					<h3 class="mt-3 mb-0"><?= $client->doc_type ?></h3>

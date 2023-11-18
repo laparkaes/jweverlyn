@@ -4,6 +4,7 @@
 			<h1>Nueva Proforma</h1>
 			<nav>
 				<ol class="breadcrumb">
+					<li class="breadcrumb-item">Comercio</li>
 					<li class="breadcrumb-item">Proformas</li>
 					<li class="breadcrumb-item active">Nueva</li>
 				</ol>

@@ -11,7 +11,7 @@ class Proforma extends CI_Controller {
 		$this->js_init = "commerce/proforma.js";
 	}
 	
-	public function index(){
+	public function index(){//ok
 		if (!$this->session->userdata('username')) redirect("auth/login");
 		
 		$params = [
@@ -60,7 +60,7 @@ class Proforma extends CI_Controller {
 		$this->load->view('layout', $data);
 	}
 	
-	public function detail($proforma_id){
+	public function detail($proforma_id){//ok
 		if (!$this->session->userdata('username')) redirect("auth/login");
 
 		$proforma = $this->gm->unique("proforma", "proforma_id", $proforma_id, false);
@@ -189,7 +189,7 @@ class Proforma extends CI_Controller {
 		echo json_encode($result);
 	}
 
-	public function add_sale(){
+	public function add_sale(){//ok
 		$result = ["type" => "error", "msg" => null, "msg" => []];
 		
 		if ($this->session->userdata('username')){

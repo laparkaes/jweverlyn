@@ -22,7 +22,11 @@
 		<div class="col-md-4">
 			<div class="card">
 				<div class="card-body profile-card pt-4 d-flex flex-column align-items-center text-center">
-					<?php if ($client){ ?><h2 class="mb-3"><?= $client->name ?></h2><?php } ?>
+					<?php if ($client){ ?>
+					<h2><?= $client->name ?></h2>
+					<h3 class="mt-3 mb-0"><?= $client->doc_type ?></h3>
+					<h3 class="mt-1"><?= $client->doc_number ?></h3>
+					<?php } ?>
 					<?php if ($sale->proforma_id){ ?>
 					<div class="d-grid gap-2 w-100 mb-3">
 						<a href="<?= base_url() ?>commerce/proforma/detail/<?= $sale->proforma_id ?>" class="btn btn-primary" target="_blank">
@@ -266,30 +270,7 @@
 					</form>
 				</div>
 			</div>
-
-
-
-
-<div class="modal fade" id="md_" tabindex="-1">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<form id="">
-				
-				<div class="modal-body text-start">
-					<div class="row g-3">
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-					<button type="button" class="btn btn-primary" id="">Emitir</button>
-				</div>
-			</form>
-		</div>
-	</div>
-</div>
-<?php } ?>		
-
-
+			<?php } ?>
 			<div class="card d-none" id="card_add_note">
 				<div class="card-body">
 					<h5 class="card-title">Agregar Nota</h5>

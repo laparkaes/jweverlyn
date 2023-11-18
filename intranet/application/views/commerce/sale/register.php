@@ -166,7 +166,7 @@
 		</div>
 		<div class="card">
 			<div class="card-body">
-				<h5 class="card-title">Proveedor</h5>
+				<h5 class="card-title">Cliente</h5>
 				<div class="row g-3">
 					<div class="col-md-3">
 						<label class="form-label">Documento</label>

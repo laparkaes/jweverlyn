@@ -53,7 +53,7 @@ class Client extends CI_Controller {
 		if (!$this->session->userdata('username')) redirect("auth/login");
 		
 		$client = $this->gm->unique("client", "client_id", $client_id);
-		$client->doc_type = $this->gm->unique("client_doc_type", "doc_type_id", $client->doc_type_id, false)->short;
+		$client->doc_type = $this->gm->unique("client_doc_type", "doc_type_id", $client->doc_type_id, false)->doc_type;
 		
 		if ($client->image){
 			if (!file_exists("uploads/client/".$client->image)) $client->image = "no_img.png";

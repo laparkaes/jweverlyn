@@ -22,11 +22,15 @@
 		<div class="col-md-4">
 			<div class="card">
 				<div class="card-body profile-card pt-4 d-flex flex-column align-items-center text-center">
-					<?php if ($client){ ?><h2 class="mb-3"><?= $client->name ?></h2><?php } ?>
+					<?php if ($client){ ?>
+					<h2><?= $client->name ?></h2>
+					<h3 class="mt-3 mb-0"><?= $client->doc_type ?></h3>
+					<h3 class="mt-1"><?= $client->doc_number ?></h3>
+					<?php } ?>
 					<ul class="list-group w-100">
 						<li class="list-group-item d-flex justify-content-between align-items-center">
 							<strong>Monto</strong>
-							<span>S/. <?= number_format($proforma->amount, 2) ?></span>
+							<span>S/ <?= number_format($proforma->amount, 2) ?></span>
 						</li>
 						<li class="list-group-item d-flex justify-content-between align-items-center">
 							<strong>Estado</strong>
@@ -104,7 +108,29 @@
 					<form id="form_add_sale">
 						<input type="hidden" name="proforma_id" value="<?= $proforma->proforma_id ?>">
 						<div class="row g-3">
-							<div class="col-md-6">
+							<div class="col-md-12">
+								<label class="form-label">Recibido</label>
+								<div class="input-group has-validation">
+									<span class="input-group-text border-primary">S/</span>
+									<input type="text" class="form-control border-primary" id="pay_received" name="payment[received]" value="0.00">
+									<div class="invalid-feedback"></div>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<label class="form-label">Total</label>
+								<div class="input-group">
+									<span class="input-group-text">S/</span>
+									<input type="text" class="form-control" id="pay_total" name="payment[total]" value="<?= number_format($proforma->amount, 2) ?>" readonly>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<label class="form-label">Vuelto</label>
+								<div class="input-group">
+									<span class="input-group-text">S/</span>
+									<input type="text" class="form-control" id="pay_change" name="payment[change]" value="0.00" readonly>
+								</div>
+							</div>
+							<div class="col-md-4">
 								<label class="form-label">Medio de Pago</label>
 								<select class="form-select" name="payment[payment_method_id]">
 									<?php foreach($payment_methods as $p){ ?>
@@ -112,31 +138,6 @@
 									<?php } ?>
 								</select>
 								<div class="invalid-feedback"></div>
-							</div>
-							<div class="col-md-6">
-								<label class="form-label">Recibido</label>
-								<div class="input-group has-validation">
-									<span class="input-group-text">S/.</span>
-									<input type="hidden" id="received" name="payment[received]" value="0.00">
-									<input type="text" class="form-control" id="received_txt" name="payment[received_txt]" value="0.00">
-									<div class="invalid-feedback"></div>
-								</div>
-							</div>
-							<div class="col-md-6">
-								<label class="form-label">Total</label>
-								<div class="input-group">
-									<span class="input-group-text">S/.</span>
-									<input type="hidden" id="total" name="payment[total]" value="<?= $proforma->amount ?>" readonly>
-									<input type="text" class="form-control" id="total_txt" value="<?= number_format($proforma->amount, 2) ?>" disabled>
-								</div>
-							</div>
-							<div class="col-md-6">
-								<label class="form-label">Vuelto</label>
-								<div class="input-group">
-									<span class="input-group-text">S/.</span>
-									<input type="hidden"id="change" name="payment[change]" value="0.00" readonly>
-									<input type="text" class="form-control" id="change_txt" value="0.00" disabled>
-								</div>
 							</div>
 							<div class="col-md-12 pt-3 text-center">
 								<button type="button" class="btn btn-secondary" id="btn_close_gs">Cerrar</button>
@@ -155,8 +156,9 @@
 								<th scope="col">#</th>
 								<th scope="col">Producto</th>
 								<th scope="col">Cant.</th>
-								<th scope="col">P/U</th>
-								<th scope="col">Subtotal</th>
+								<th scope="col" class="text-end">P/U</th>
+								<th scope="col" class="text-end">Subtotal</th>
+								<th scope="col"></th>
 							</tr>
 						</thead>
 						<tbody id="tbody_images">
@@ -167,6 +169,9 @@
 								<td><?= number_format($p->qty) ?></td>
 								<td class="text-nowrap text-end">S/ <?= number_format($p->price, 2) ?></td>
 								<td class="text-nowrap text-end">S/ <?= number_format($p->price * $p->qty, 2) ?></td>
+								<td class="text-nowrap text-end">
+									<a href="<?= base_url() ?>stock/product/detail/<?= $p->product_id ?>" class="btn btn-outline-primary btn-sm border-0" target="_blank"><i class="bi bi-search"></i></a>
+								</td>
 							</tr>
 							<?php } ?>
 						</tbody>
