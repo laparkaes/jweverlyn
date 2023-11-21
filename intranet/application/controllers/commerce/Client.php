@@ -59,11 +59,12 @@ class Client extends CI_Controller {
 			if (!file_exists("uploads/client/".$client->image)) $client->image = "no_img.png";
 		}else $client->image = "no_img.png";
 		
-		$sale_w = ["client_id" => $client_id];
+		$w = ["client_id" => $client_id, "valid" => true];
 		$data = [
 			"client" => $client,
-			"sales" => $this->gm->filter("sale", $sale_w, null, null, [["registed_at", "desc"]], 25, 0),
-			"sales_paging" => $this->my_func->paging(1, $this->gm->qty("sale", $sale_w, null, null)),
+			"sales" => $this->gm->filter("sale", $w, null, null, [["registed_at", "desc"]], 25, 0),
+			"sales_paging" => $this->my_func->paging(1, $this->gm->qty("sale", $w, null, null)),
+			"notes" => $this->gm->filter("client_note", $w, null, null, [["registed_at", "desc"]]),
 			"main" => "commerce/client/detail",
 		];
 		
@@ -162,6 +163,46 @@ class Client extends CI_Controller {
 		
 		header('Content-Type: application/json');
 		echo json_encode($result);
+	}
+
+	public function add_note(){
+		$result = ["type" => "error", "msg" => null, "url" => null];
+		
+		if ($this->session->userdata('username')){
+			$note = $this->input->post();
+			
+			$this->load->library('my_val');
+			$result = $this->my_val->add_note($note);
+			
+			if ($result["type"] === "success"){
+				$note["note"] = trim($note["note"]);
+				$note["registed_at"] = date("Y-m-d H:i:s");
+				$this->gm->insert("client_note", $note);
+				
+				$result["msg"] = $this->lang->line("s_note_insert");
+				$result["url"] = base_url()."commerce/client/detail/".$note["client_id"];
+			}else $result["msg"] = $this->lang->line("e_check_datas");
+		}else $result["msg"] = $this->lang->line("e_finished_session");
+		
+		header('Content-Type: application/json');
+		echo json_encode($result);
+	}
+	
+	public function delete_note(){
+		$type = "error"; $msg = null; $url = null;
+		
+		if ($this->session->userdata('username')){
+			$note = $this->gm->unique("client_note", "note_id", $this->input->post('note_id'));
+			
+			$this->gm->update("client_note", ["note_id" => $note->note_id], ["valid" => false]);
+			
+			$type = "success";
+			$msg = $this->lang->line("s_note_delete");
+			$url = base_url()."commerce/client/detail/".$note->client_id;
+		}else $msg = $this->lang->line("e_finished_session");
+		
+		header('Content-Type: application/json');
+		echo json_encode(["type" => $type, "msg" => $msg, "url" => $url]);
 	}
 	
 	public function search_client_ajax(){

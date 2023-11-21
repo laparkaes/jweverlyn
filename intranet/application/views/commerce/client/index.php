@@ -37,9 +37,9 @@
 							<input type="text" class="form-control enter_on" name="doc" value="<?= $params["doc"] ?>">
 						</div>
 						<div class="text-center pt-3">
-							<button type="button" class="btn btn-secondary" id="btn_close_search_index">Cerrar</button>
-							<a href="<?= base_url() ?>commerce/client" class="btn btn-danger">Remover</a>
-							<button type="submit" class="btn btn-primary">Buscar</button>
+							<button type="submit" class="btn btn-primary"><i class="bi bi-search"></i></button>
+							<a href="<?= base_url() ?>commerce/client" class="btn btn-danger"><i class="bi bi-eraser"></i></a>
+							<button type="button" class="btn btn-secondary" id="btn_close_search_index"><i class="bi bi-x-lg"></i></button>
 						</div>
 					</form>
 				</div>

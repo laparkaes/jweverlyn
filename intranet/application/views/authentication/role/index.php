@@ -33,9 +33,9 @@
 							<input type="text" class="form-control enter_on" name="role" value="<?= $params["role"] ?>">
 						</div>
 						<div class="text-center pt-3">
-							<button type="button" class="btn btn-secondary" id="btn_close_search_index">Cerrar</button>
-							<a href="<?= base_url() ?>authentication/role" class="btn btn-danger">Remover</a>
-							<button type="submit" class="btn btn-primary">Buscar</button>
+							<button type="submit" class="btn btn-primary"><i class="bi bi-search"></i></button>
+							<a href="<?= base_url() ?>authentication/role" class="btn btn-danger"><i class="bi bi-eraser"></i></a>
+							<button type="button" class="btn btn-secondary" id="btn_close_search_index"><i class="bi bi-x-lg"></i></button>
 						</div>
 					</form>
 				</div>
@@ -61,8 +61,8 @@
 									<td class="text-end"><?= number_format($r->account_qty) ?></td>
 									<td class="text-end"><?= number_format($r->access_qty) ?></td>
 									<td class="text-end">
-										<a href="<?= base_url() ?>authentication/role/edit/<?= $r->role_id ?>" type="button" class="btn btn-outline-primary btn-sm border-0">
-											<i class="bi bi-pencil-fill"></i>
+										<a href="<?= base_url() ?>authentication/role/detail/<?= $r->role_id ?>" type="button" class="btn btn-outline-primary btn-sm border-0">
+											<i class="bi bi-search"></i>
 										</a>
 										<button type="button" class="btn btn-outline-danger btn-sm border-0 btn_delete_role" value="<?= $r->role_id ?>">
 											<i class="bi bi-x-lg"></i>

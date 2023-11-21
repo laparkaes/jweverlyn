@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- 생성 시간: 23-11-18 16:10
+-- 생성 시간: 23-11-21 18:33
 -- 서버 버전: 10.4.24-MariaDB
 -- PHP 버전: 7.4.29
 
@@ -547,7 +547,7 @@ INSERT INTO `account` (`account_id`, `role_id`, `username`, `password`, `image`,
 (466, 1, 'wilson.chloe@gmail.com', '$2y$10$v5Uvg4VaZj3n1Zlv7qFZ2.b18YgJX1SA8/W5R6zgg0WGsz5l7M4EO', NULL, 'Wilson Chloe', '', NULL, NULL, NULL, 1, NULL, '2023-08-15 04:44:02', '2023-08-15 04:44:02'),
 (467, 5022, 'wilson.daniel@gmail.com', '$2y$10$POFFVNK0EFCPKNF7cuM06.XMf9mx.e0MR8BPyUHdn69m4jZ9IpXwm', NULL, 'Wilson Daniel', '', NULL, NULL, NULL, 1, NULL, '2023-08-15 04:44:02', '2023-08-15 04:44:02'),
 (468, 5020, 'wilson.emma@gmail.com', '$2y$10$tfd6ytgVEtes3eDciXZFTeGwhVBZAu6SEXqtnMm6fGRQ1HOtDLjCK', NULL, 'Wilson Emma', '', NULL, NULL, NULL, 1, NULL, '2023-08-15 04:44:02', '2023-08-15 04:44:02'),
-(469, 5013, 'anderson.alice@gmail.com', '$2y$10$1l1NFim3oQ4qq1NE6mnXzOjHAKqoa3ZxXILGg21ZhKUJi/k/1W2Ci', NULL, 'Anderson Alice android', '323290', '', '', '', 1, NULL, '2023-11-10 19:57:33', '2023-08-15 04:44:02'),
+(469, 5013, 'anderson.alice@gmail.com', '$2y$10$1l1NFim3oQ4qq1NE6mnXzOjHAKqoa3ZxXILGg21ZhKUJi/k/1W2Ci', NULL, 'Anderson Alice android', '323290', '', '', '', 1, NULL, '2023-11-21 21:25:57', '2023-08-15 04:44:02'),
 (470, 5020, 'anderson.bob@gmail.com', '$2y$10$fOWBxN6TgmvWuEygkg70lu/THZP2HoGGxyi91cm30XkcBC5MoqU5C', NULL, 'Anderson Bob', '', NULL, NULL, NULL, 1, NULL, '2023-08-15 17:05:31', '2023-08-15 04:44:02'),
 (471, 5028, 'anderson.charlie@gmail.com', '$2y$10$5j7tFVwbBEXvQMI.6m9N7.5MwWYG0vzoWITiv7MHIk2XTsS8abywG', NULL, 'Anderson Charlie', '', NULL, NULL, NULL, 1, NULL, '2023-11-07 23:46:26', '2023-08-15 04:44:02'),
 (472, 5021, 'anderson.david@gmail.com', '$2y$10$bCD/RHj7hZM8/8CMFvHooObWJ.Gs49Na2LaqbnOSdhvf7Zt7XZvAC', NULL, 'Anderson David', '', NULL, NULL, NULL, 1, NULL, '2023-08-15 04:44:03', '2023-08-15 04:44:03'),
@@ -3200,7 +3200,8 @@ INSERT INTO `client` (`client_id`, `doc_type_id`, `doc_number`, `name`, `tel`, `
 (17, 4, '20387144901', 'RD HIDRAULICA S.R.L.', '', '', '', '', NULL, 1, '2023-11-02 23:13:11', '2023-11-02 23:13:11'),
 (18, 4, '20408058261', 'CLINICA EVERLYN S.A.C.', '', '', '', '', NULL, 1, '2023-11-02 23:17:29', '2023-11-02 23:17:29'),
 (19, 4, '20448426701', 'ALE BIENES Y SERVICIOS EN GENERAL SOCIEDAD ANONIMA CERRADA', NULL, NULL, NULL, NULL, '4_20448426701_20231109183244.jpg', 1, '2023-11-03 19:18:11', '2023-11-03 19:18:11'),
-(20, 3, '000765804', 'Henry Calle', '345-6785', '908-237-473', 'h.calle@pontafina.com', 'Cl. Mexico ciudad 283, Cercado de Lima', '3_000765804_20231104161853.jpg', 1, '2023-11-03 23:22:13', '2023-11-03 20:37:49');
+(20, 3, '000765804', 'Henry Calle', '345-6785', '908-237-473', 'h.calle@pontafina.com', 'Cl. Mexico ciudad 283, Cercado de Lima', '3_000765804_20231104161853.jpg', 1, '2023-11-03 23:22:13', '2023-11-03 20:37:49'),
+(21, 3, '000765802', 'Fulanito Mendoza', '992340382', '', '', '', NULL, 1, '2023-11-21 20:44:17', '2023-11-21 20:44:07');
 
 -- --------------------------------------------------------
 
@@ -3226,6 +3227,30 @@ INSERT INTO `client_doc_type` (`doc_type_id`, `doc_type`, `short`, `sunat`) VALU
 (4, 'RUC - Registro Unico de Contributentes', 'RUC', '6'),
 (5, 'Pasaporte', 'Pasaporte', '7'),
 (6, 'CDI - Cédula Diplomática de Identidad', 'CDI', 'A');
+
+-- --------------------------------------------------------
+
+--
+-- 테이블 구조 `client_note`
+--
+
+CREATE TABLE `client_note` (
+  `note_id` int(11) NOT NULL,
+  `client_id` int(11) NOT NULL,
+  `note` text NOT NULL,
+  `valid` tinyint(1) NOT NULL DEFAULT 1,
+  `registed_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- 테이블의 덤프 데이터 `client_note`
+--
+
+INSERT INTO `client_note` (`note_id`, `client_id`, `note`, `valid`, `registed_at`) VALUES
+(3, 20, 'muy tedioso el cliente', 1, '2023-11-21 21:06:34'),
+(4, 20, 'hola com oestas?', 1, '2023-11-21 21:07:11'),
+(5, 20, 'tu no?', 1, '2023-11-21 21:11:09'),
+(6, 20, 'Gerente gneral: Funanito tal, +51-22304293', 1, '2023-11-21 21:14:13');
 
 -- --------------------------------------------------------
 
@@ -3304,6 +3329,22 @@ CREATE TABLE `invoice_type` (
 INSERT INTO `invoice_type` (`type_id`, `type`, `letter`, `sunat`) VALUES
 (1, 'Boleta', 'B', '03'),
 (2, 'Factura', 'F', '01');
+
+-- --------------------------------------------------------
+
+--
+-- 테이블 구조 `in_outcome`
+--
+
+CREATE TABLE `in_outcome` (
+  `in_outcome_id` int(11) NOT NULL,
+  `type_id` int(11) NOT NULL,
+  `category_id` int(11) NOT NULL,
+  `description` varchar(250) NOT NULL,
+  `amount` double NOT NULL,
+  `valid` tinyint(1) NOT NULL DEFAULT 1,
+  `registed_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -3898,7 +3939,8 @@ INSERT INTO `proforma` (`proforma_id`, `client_id`, `amount`, `validity`, `remar
 (3, 11, 1000, '2024-01-30', 'Descuento por compra mayor', 0, '2023-10-10 22:38:14'),
 (4, 14, 280, '2023-11-30', 'Descuento por mayorista', 1, '2023-10-23 20:30:42'),
 (5, 15, 164, '2023-11-02', '- Termino de Pago: 30% adelanto / 70% dia de instalacion\r\n- Para una clinica\r\n- Descuento especial por mayor', 1, '2023-10-26 20:01:00'),
-(6, NULL, 198.9, '2023-11-18', '', 1, '2023-11-18 21:09:46');
+(6, NULL, 198.9, '2023-12-21', '', 1, '2023-11-18 21:09:46'),
+(7, 1, 4786, '2023-12-21', 'Descuento para Clinica Everlyn', 0, '2023-11-21 19:39:25');
 
 -- --------------------------------------------------------
 
@@ -3927,7 +3969,9 @@ INSERT INTO `proforma_product` (`proforma_product_id`, `proforma_id`, `product_i
 (5, 4, 1, 26, 14, 20),
 (6, 5, 1, 26, 14, 1),
 (7, 5, 197, 27, 50, 3),
-(8, 6, 1, 26, 15.3, 13);
+(8, 6, 1, 26, 15.3, 13),
+(9, 7, 197, 28, 50, 30),
+(10, 7, 254, 33, 62, 53);
 
 -- --------------------------------------------------------
 
@@ -4023,8 +4067,9 @@ CREATE TABLE `provider_note` (
 --
 
 INSERT INTO `provider_note` (`note_id`, `provider_id`, `note`, `valid`, `registed_at`) VALUES
-(1, 23, 'pide mucho descuento', 1, '2023-11-16 22:57:35'),
-(2, 23, 'este cliente\r\ncanta bien\r\ny toma poco', 0, '2023-11-16 22:57:46');
+(1, 23, 'pide mucho descuento', 0, '2023-11-16 22:57:35'),
+(2, 23, 'este cliente\r\ncanta bien\r\ny toma poco', 0, '2023-11-16 22:57:46'),
+(3, 23, 'ho ya', 1, '2023-11-21 21:10:53');
 
 -- --------------------------------------------------------
 
@@ -4365,8 +4410,8 @@ INSERT INTO `role_access` (`role_id`, `access_id`) VALUES
 (1, 7),
 (1, 5),
 (1, 4),
-(1, 1),
-(1, 2);
+(1, 2),
+(1, 1);
 
 -- --------------------------------------------------------
 
@@ -4425,7 +4470,11 @@ INSERT INTO `sale` (`sale_id`, `client_id`, `proforma_id`, `amount`, `paid`, `ba
 (32, NULL, NULL, 204.3, 204.3, 0, '2023-11-17 21:52:09', '2023-11-17 21:50:57', 0),
 (33, NULL, NULL, 1099.89, 1099.89, 0, '2023-11-17 23:00:12', '2023-11-17 21:52:41', 0),
 (34, 1, NULL, 1436.16, 1436.16, 0, '2023-11-17 23:06:41', '2023-11-17 23:06:41', 1),
-(35, NULL, 6, 198.9, 198.9, 0, '2023-11-18 21:10:07', '2023-11-18 21:10:07', 1);
+(35, NULL, 6, 198.9, 198.9, 0, '2023-11-18 21:10:07', '2023-11-18 21:10:07', 1),
+(36, 1, 7, 4786, 3, 4783, '2023-11-21 19:39:40', '2023-11-21 19:39:40', 1),
+(37, 1, 7, 4786, 3, 4783, '2023-11-21 19:39:45', '2023-11-21 19:39:45', 1),
+(38, 1, 7, 4786, 3000, 1786, '2023-11-21 19:41:27', '2023-11-21 19:41:27', 1),
+(39, 1, 7, 4786, 3000, 1786, '2023-11-21 19:41:45', '2023-11-21 19:41:45', 1);
 
 -- --------------------------------------------------------
 
@@ -4539,7 +4588,11 @@ INSERT INTO `sale_payment` (`payment_id`, `sale_id`, `payment_method_id`, `total
 (40, 32, 1, 204.3, 220, 15.7, '2023-11-17 21:50:57', 0),
 (41, 33, 1, 1099.89, 1100, 0.11, '2023-11-17 21:52:41', 0),
 (42, 34, 1, 1436.16, 1500, 63.84, '2023-11-17 23:06:41', 1),
-(43, 35, 1, 198.9, 200, 1.1, '2023-11-18 21:10:07', 1);
+(43, 35, 1, 198.9, 200, 1.1, '2023-11-18 21:10:07', 1),
+(44, 36, 1, 4, 3, 0, '2023-11-21 19:39:40', 1),
+(45, 37, 1, 4, 3, 0, '2023-11-21 19:39:45', 1),
+(46, 38, 1, 4786, 3000, 0, '2023-11-21 19:41:27', 1),
+(47, 39, 1, 4786, 3000, 0, '2023-11-21 19:41:45', 1);
 
 -- --------------------------------------------------------
 
@@ -4596,7 +4649,15 @@ INSERT INTO `sale_product` (`sale_product_id`, `sale_id`, `product_id`, `option_
 (35, 32, 254, 33, 3, 68.1, 204.3),
 (36, 33, 216, 30, 11, 99.99, 1099.89),
 (37, 34, 197, 28, 24, 59.84, 1436.16),
-(38, 35, 1, 26, 13, 15.3, 198.9);
+(38, 35, 1, 26, 13, 15.3, 198.9),
+(39, 36, 197, 28, 30, 50, 1500),
+(40, 36, 254, 33, 53, 62, 3286),
+(41, 37, 197, 28, 30, 50, 1500),
+(42, 37, 254, 33, 53, 62, 3286),
+(43, 38, 197, 28, 30, 50, 1500),
+(44, 38, 254, 33, 53, 62, 3286),
+(45, 39, 197, 28, 30, 50, 1500),
+(46, 39, 254, 33, 53, 62, 3286);
 
 -- --------------------------------------------------------
 
@@ -4730,6 +4791,13 @@ ALTER TABLE `client_doc_type`
   ADD PRIMARY KEY (`doc_type_id`);
 
 --
+-- 테이블의 인덱스 `client_note`
+--
+ALTER TABLE `client_note`
+  ADD PRIMARY KEY (`note_id`),
+  ADD KEY `fk_note_client` (`client_id`);
+
+--
 -- 테이블의 인덱스 `invoice`
 --
 ALTER TABLE `invoice`
@@ -4746,6 +4814,12 @@ ALTER TABLE `invoice_serie`
 --
 ALTER TABLE `invoice_type`
   ADD PRIMARY KEY (`type_id`);
+
+--
+-- 테이블의 인덱스 `in_outcome`
+--
+ALTER TABLE `in_outcome`
+  ADD PRIMARY KEY (`in_outcome_id`);
 
 --
 -- 테이블의 인덱스 `module`
@@ -4983,13 +5057,19 @@ ALTER TABLE `address_province`
 -- 테이블의 AUTO_INCREMENT `client`
 --
 ALTER TABLE `client`
-  MODIFY `client_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `client_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- 테이블의 AUTO_INCREMENT `client_doc_type`
 --
 ALTER TABLE `client_doc_type`
   MODIFY `doc_type_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- 테이블의 AUTO_INCREMENT `client_note`
+--
+ALTER TABLE `client_note`
+  MODIFY `note_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- 테이블의 AUTO_INCREMENT `invoice`
@@ -5008,6 +5088,12 @@ ALTER TABLE `invoice_serie`
 --
 ALTER TABLE `invoice_type`
   MODIFY `type_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- 테이블의 AUTO_INCREMENT `in_outcome`
+--
+ALTER TABLE `in_outcome`
+  MODIFY `in_outcome_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- 테이블의 AUTO_INCREMENT `module`
@@ -5055,13 +5141,13 @@ ALTER TABLE `product_type`
 -- 테이블의 AUTO_INCREMENT `proforma`
 --
 ALTER TABLE `proforma`
-  MODIFY `proforma_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `proforma_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- 테이블의 AUTO_INCREMENT `proforma_product`
 --
 ALTER TABLE `proforma_product`
-  MODIFY `proforma_product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `proforma_product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- 테이블의 AUTO_INCREMENT `provider`
@@ -5079,7 +5165,7 @@ ALTER TABLE `provider_doc_type`
 -- 테이블의 AUTO_INCREMENT `provider_note`
 --
 ALTER TABLE `provider_note`
-  MODIFY `note_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `note_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- 테이블의 AUTO_INCREMENT `provider_person`
@@ -5127,7 +5213,7 @@ ALTER TABLE `role`
 -- 테이블의 AUTO_INCREMENT `sale`
 --
 ALTER TABLE `sale`
-  MODIFY `sale_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `sale_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- 테이블의 AUTO_INCREMENT `sale_file`
@@ -5145,13 +5231,13 @@ ALTER TABLE `sale_note`
 -- 테이블의 AUTO_INCREMENT `sale_payment`
 --
 ALTER TABLE `sale_payment`
-  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- 테이블의 AUTO_INCREMENT `sale_product`
 --
 ALTER TABLE `sale_product`
-  MODIFY `sale_product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `sale_product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 
 --
 -- 테이블의 AUTO_INCREMENT `setting_company`
@@ -5192,6 +5278,12 @@ ALTER TABLE `account`
 --
 ALTER TABLE `client`
   ADD CONSTRAINT `fk_doc_type_id` FOREIGN KEY (`doc_type_id`) REFERENCES `client_doc_type` (`doc_type_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- 테이블의 제약사항 `client_note`
+--
+ALTER TABLE `client_note`
+  ADD CONSTRAINT `fk_note_client` FOREIGN KEY (`client_id`) REFERENCES `client` (`client_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- 테이블의 제약사항 `product`

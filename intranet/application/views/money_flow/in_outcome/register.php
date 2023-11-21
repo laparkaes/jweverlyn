@@ -1,17 +1,17 @@
 <div class="pagetitle">
 	<div class="d-flex justify-content-between align-items-start">
 		<div>
-			<h1>Nueva Proforma</h1>
+			<h1>Nueva Compra</h1>
 			<nav>
 				<ol class="breadcrumb">
-					<li class="breadcrumb-item">Comercio</li>
-					<li class="breadcrumb-item">Proformas</li>
+					<li class="breadcrumb-item">Stock</li>
+					<li class="breadcrumb-item">Compras</li>
 					<li class="breadcrumb-item active">Nueva</li>
 				</ol>
 			</nav>
 		</div>
 		<div>
-			<a href="<?= base_url() ?>commerce/proforma" type="button" class="btn btn-success">
+			<a href="<?= base_url() ?>stock/purchase" type="button" class="btn btn-success">
 				<i class="bi bi-arrow-left"></i>
 			</a>
 		</div>
@@ -89,7 +89,7 @@
 		</div>
 	</div>
 </div>
-<form class="row" id="form_add_proforma">
+<form class="row" id="form_add_purchase">
 	<div class="col-md-12">
 		<div class="card">
 			<div class="card-body">
@@ -126,81 +126,77 @@
 				</div>
 			</div>
 		</div>
-	</div>
-	<div class="col-md-6">
 		<div class="card">
 			<div class="card-body">
-				<h5 class="card-title">Proforma</h5>
+				<h5 class="card-title">Pago</h5>
 				<div class="row g-3">
-					<div class="col-md-6">
-						<label class="form-label">Monto</label>
-						<div class="input-group">
-							<span class="input-group-text">S/</span>
-							<input type="text" class="form-control" name="proforma[amount]" id="proforma_amount" value="0.00" readonly>
+					<div class="col-md-3">
+						<label class="form-label">Pagado</label>
+						<div class="input-group has-validation">
+							<span class="input-group-text border-primary">S/</span>
+							<input type="text" class="form-control border-primary" id="pay_paid" name="payment[paid]" value="0.00">
+							<div class="invalid-feedback"></div>
 						</div>
 					</div>
-					<div class="col-md-6">
-						<label class="form-label">Vigencia</label>
-						<select class="form-select" name="proforma[validity]">
-							<?php $today = date("Y-m-d"); ?>
-							<option value="<?= $today ?>">Solo hoy</option>
-							<?php $aux = date("Y-m-d", strtotime("+1 week", strtotime($today))); ?>
-							<option value="<?= $aux ?>">Hasta <?= $aux ?> (una semana)</option>
-							<?php $aux = date("Y-m-d", strtotime("+2 week", strtotime($today))); ?>
-							<option value="<?= $aux ?>">Hasta <?= $aux ?> (dos semanas)</option>
-							<?php $aux = date("Y-m-d", strtotime("+1 month", strtotime($today))); ?>
-							<option value="<?= $aux ?>">Hasta <?= $aux ?> (un mes)</option>
-							<?php $aux = date("Y-m-d", strtotime("+3 months", strtotime($today))); ?>
-							<option value="<?= $aux ?>">Hasta <?= $aux ?> (tres meses)</option>
-							<?php $aux = date("Y-m-d", strtotime("+6 months", strtotime($today))); ?>
-							<option value="<?= $aux ?>">Hasta <?= $aux ?> (seis meses)</option>
-							<?php $aux = date("Y-m-d", strtotime("+1 year", strtotime($today))); ?>
-							<option value="<?= $aux ?>">Hasta <?= $aux ?> (un año)</option>
-							<option value="">Indefinido</option>
-						</select>
+					<div class="col-md-3">
+						<label class="form-label">Total</label>
+						<div class="input-group">
+							<span class="input-group-text">S/</span>
+							<input type="text" class="form-control" id="pay_total" name="payment[total]" value="0.00" readonly>
+						</div>
 					</div>
-					<div class="col-md-12">
-						<label class="form-label">Observación</label>
-						<textarea class="form-control" name="proforma[remark]" rows="3"></textarea>
+					<div class="col-md-3">
+						<label class="form-label">Saldo</label>
+						<div class="input-group">
+							<span class="input-group-text">S/</span>
+							<input type="text" class="form-control" id="pay_balance" name="payment[balance]" value="0.00" readonly>
+						</div>
 					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="col-md-6">
-		<div class="card">
-			<div class="card-body">
-				<h5 class="card-title">Cliente</h5>
-				<div class="row g-3">
-					<div class="col-md-6">
-						<label class="form-label">Documento</label>
-						<select class="form-select" name="client[doc_type_id]" id="doc_type_id">
-							<?php foreach($client_doc_types as $dt){ ?>
-							<option value="<?= $dt->doc_type_id ?>"><?= $dt->doc_type ?></option>
+					<div class="col-md-3">
+						<label class="form-label">Medio de Pago</label>
+						<select class="form-select" name="payment[payment_method_id]">
+							<?php foreach($payment_methods as $p){ ?>
+							<option value="<?= $p->payment_method_id ?>"><?= $p->payment_method ?></option>
 							<?php } ?>
 						</select>
 						<div class="invalid-feedback"></div>
 					</div>
-					<div class="col-md-6">
+				</div>
+			</div>
+		</div>
+		<div class="card">
+			<div class="card-body">
+				<h5 class="card-title">Proveedor</h5>
+				<div class="row g-3">
+					<div class="col-md-3">
+						<label class="form-label">Documento</label>
+						<select class="form-select" name="provider[doc_type_id]" id="doc_type_id">
+							<?php foreach($provider_doc_types as $dt){ if ($dt->short){ ?>
+							<option value="<?= $dt->doc_type_id ?>"><?= $dt->doc_type ?></option>
+							<?php }} ?>
+						</select>
+						<div class="invalid-feedback"></div>
+					</div>
+					<div class="col-md-3">
 						<label class="form-label">Número</label>
 						<div class="input-group has-validation">
-							<input type="text" class="form-control" name="client[doc_number]" id="doc_number" disabled>
-							<button type="button" class="btn btn-primary" id="btn_search_person" disabled>
+							<input type="text" class="form-control" name="provider[doc_number]" id="doc_number">
+							<button type="button" class="btn btn-primary" id="btn_search_person">
 								<i class="bi bi-search"></i>
 							</button>
 							<div class="invalid-feedback"></div>
 						</div>
 					</div>
-					<div class="col-md-12">
+					<div class="col-md-6">
 						<label class="form-label">Nombre</label>
-						<textarea class="form-control" name="client[name]" id="client_name" rows="3" disabled></textarea>
+						<input type="text" class="form-control" name="provider[name]" id="provider_name">
 						<div class="invalid-feedback"></div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<div class="col-md-12 d-grid">
-		<button type="submit" class="btn btn-primary btn-lg mb-3">Agregar Proforma</button>
+	<div class="col-md-12 py-3 d-grid">
+		<button type="submit" class="btn btn-primary btn-lg">Agregar Compra</button>
 	</div>
 </form>

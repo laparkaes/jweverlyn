@@ -244,6 +244,28 @@
 				</ul>
 			</li>
 			<li class="nav-item">
+				<?php if ($this->nav_menu[0] === "money_flow"){ $c = ""; $c_ul = "show"; }else{ $c = "collapsed"; $c_ul = ""; } ?>
+				<a class="nav-link <?= $c ?>" data-bs-target="#money_flow-nav" data-bs-toggle="collapse" href="#">
+					<i class="bi bi-cash-coin"></i>
+					<span>Flujo de Caja</span>
+					<i class="bi bi-chevron-down ms-auto"></i>
+				</a>
+				<ul id="money_flow-nav" class="nav-content collapse <?= $c_ul ?>" data-bs-parent="#money_flow-nav">
+					<li>
+						<?php if ($this->nav_menu[1] === "balance") $c1 = "active"; else $c1 = ""; ?>
+						<a href="<?= base_url() ?>money_flow/balance" class="<?= $c1 ?>">
+							<i class="bi bi-circle"></i><span>Balance</span>
+						</a>
+					</li>
+					<li>
+						<?php if ($this->nav_menu[1] === "in_outcome") $c1 = "active"; else $c1 = ""; ?>
+						<a href="<?= base_url() ?>money_flow/in_outcome" class="<?= $c1 ?>">
+							<i class="bi bi-circle"></i><span>Ingreso y Egreso</span>
+						</a>
+					</li>
+				</ul>
+			</li>
+			<li class="nav-item">
 				<?php if ($this->nav_menu[0] === "authentication"){ $c = ""; $c_ul = "show"; }else{ $c = "collapsed"; $c_ul = ""; } ?>
 				<a class="nav-link <?= $c ?>" data-bs-target="#authentication-nav" data-bs-toggle="collapse" href="#">
 					<i class="bi bi-person-vcard"></i>

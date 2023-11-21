@@ -30,6 +30,25 @@
 			</div>
 		</div>
 		<div class="col-md-8">
+			<div class="card d-none" id="card_add_note">
+				<div class="card-body">
+					<h5 class="card-title">Agregar Nota</h5>
+					<form id="form_add_note">
+						<input type="hidden" name="client_id" value="<?= $client->client_id ?>">
+						<div class="row g-3">
+							<div class="col-md-12">
+								<label class="form-label">Nota</label>
+								<textarea class="form-control" name="note" rows="5"></textarea>
+								<div class="invalid-feedback"></div>
+							</div>
+							<div class="col-md-12 pt-3 text-center">
+								<button type="button" class="btn btn-secondary" id="btn_close_an">Cerrar</button>
+								<button type="submit" class="btn btn-primary">Agregar</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
 			<div class="card">
 				<div class="card-body pt-3">
 					<ul class="nav nav-tabs nav-tabs-bordered">
@@ -44,6 +63,9 @@
 						</li>
 						<li class="nav-item">
 							<button class="nav-link" data-bs-toggle="tab" data-bs-target="#sales">Ventas</button>
+						</li>
+						<li class="nav-item">
+							<button class="nav-link" data-bs-toggle="tab" data-bs-target="#notes">Notas</button>
 						</li>
 					</ul>
 					<div class="tab-content pt-4">
@@ -173,6 +195,38 @@
 									</li>
 									<?php } ?>
 								</ul>
+							</div>
+						</div>
+						<div class="tab-pane fade" id="notes">
+							<div class="table-responsive">
+								<table class="table align-middle">
+									<thead>
+										<tr>
+											<th scope="col">#</th>
+											<th scope="col">Fecha</th>
+											<th scope="col">Nota</th>
+											<th scope="col" class="text-end">
+												<button type="button" class="btn btn-success btn-sm border-0" id="btn_add_note">
+													<i class="bi bi-plus-lg"></i>
+												</button>
+											</th>
+										</tr>
+									</thead>
+									<tbody id="tbody_images">
+										<?php foreach($notes as $n_i => $n){ ?>
+										<tr>
+											<th scope="row"><?= number_format($n_i + 1) ?></th>
+											<td><?= $n->registed_at ?></td>
+											<td style="white-space: pre-line;"><?= $n->note ?></td>
+											<td class="text-end">
+												<button type="button" class="btn btn-outline-danger btn-sm border-0 btn_delete_note" value="<?= $n->note_id ?>">
+													<i class="bi bi-x-lg"></i>
+												</button>
+											</td>
+										</tr>
+										<?php } ?>
+									</tbody>
+								</table>
 							</div>
 						</div>
 					</div>

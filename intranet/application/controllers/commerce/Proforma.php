@@ -11,7 +11,7 @@ class Proforma extends CI_Controller {
 		$this->js_init = "commerce/proforma.js";
 	}
 	
-	public function index(){//ok
+	public function index(){
 		if (!$this->session->userdata('username')) redirect("auth/login");
 		
 		$params = [
@@ -60,7 +60,7 @@ class Proforma extends CI_Controller {
 		$this->load->view('layout', $data);
 	}
 	
-	public function detail($proforma_id){//ok
+	public function detail($proforma_id){
 		if (!$this->session->userdata('username')) redirect("auth/login");
 
 		$proforma = $this->gm->unique("proforma", "proforma_id", $proforma_id, false);
@@ -95,7 +95,7 @@ class Proforma extends CI_Controller {
 		$this->load->view('layout', $data);
 	}
 	
-	public function load_product(){//ok
+	public function load_product(){
 		$res = ["type" => "error", "msg" => null];
 		
 		$product = $this->gm->unique("product", "product_id", $this->input->post("product_id"));
@@ -127,7 +127,7 @@ class Proforma extends CI_Controller {
 		echo json_encode($res);
 	}
 	
-	public function check_stock(){//ok
+	public function check_stock(){
 		$res = ["type" => "success", "msg" => null];
 		
 		$prod = $this->input->post("prod");
@@ -162,7 +162,7 @@ class Proforma extends CI_Controller {
 		$this->load->view('layout', $data);
 	}
 	
-	public function search_product(){//ok
+	public function search_product(){
 		$type = "error"; $msg = ""; $products = [];
 		$keyword = $this->input->post("keyword");
 		
@@ -254,12 +254,16 @@ class Proforma extends CI_Controller {
 		echo json_encode($result);
 	}
 
-	public function add_sale(){//ok
+	public function add_sale(){
 		$result = ["type" => "error", "msg" => null, "msg" => []];
 		
 		if ($this->session->userdata('username')){
 			$proforma_id = $this->input->post("proforma_id");
 			$payment = $this->input->post("payment");
+			
+			$payment["received"] = round(str_replace(",", "", $payment["received"]), 2);
+			$payment["total"] = round(str_replace(",", "", $payment["total"]), 2);
+			$payment["change"] = round(str_replace(",", "", $payment["change"]), 2);
 			
 			$this->load->library('my_val');
 			$result = $this->my_val->add_sale_from_proforma($proforma_id, $payment);

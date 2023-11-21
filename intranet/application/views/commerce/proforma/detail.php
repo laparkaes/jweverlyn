@@ -11,7 +11,7 @@
 			</nav>
 		</div>
 		<div>
-			<a href="<?= base_url() ?>commerce/sale" type="button" class="btn btn-success">
+			<a href="<?= base_url() ?>commerce/proforma" type="button" class="btn btn-success">
 				<i class="bi bi-arrow-left"></i>
 			</a>
 		</div>

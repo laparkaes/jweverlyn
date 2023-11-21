@@ -1,4 +1,12 @@
-let b_url = "stock/provider/";
+let b_url = "money_flow/in_outcome/";
+
+set_dates_between("#f_from", "#f_to");
+
+
+
+
+////////////////////////
+
 
 set_search_provider_ajax();
 btn_card_control("#btn_open_ap", "#btn_close_ap", "#card_add_person", "success");

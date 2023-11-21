@@ -85,7 +85,7 @@ class Role extends CI_Controller {
 		echo json_encode($result);
 	}
 	
-	public function edit($role_id){
+	public function detail($role_id){
 		if (!$this->session->userdata('username')) redirect("auth/login");
 		
 		$modules = $this->gm->all("module", [["module", "asc"]]);
@@ -100,7 +100,7 @@ class Role extends CI_Controller {
 			"accounts" => $this->gm->filter("account", ["role_id" => $role_id], null, null, [["username", "asc"]]),
 			"modules" => $modules,
 			"access_ids" => $access_ids,
-			"main" => "authentication/role/edit",
+			"main" => "authentication/role/detail",
 		];
 		$this->load->view('layout', $data);
 	}
