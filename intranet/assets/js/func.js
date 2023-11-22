@@ -66,6 +66,8 @@ const warning_msg = {
 		delete_file: "¿Desea eliminar archivo?",
 		add_person: "¿Desea agregar persona?",
 		delete_person: "¿Desea eliminar persona?",
+		add_in_outcome: "¿Desea registrar datos ingresados?",
+		delete_in_outcome: "¿Desea eliminar registro?",
 	},
 }
 

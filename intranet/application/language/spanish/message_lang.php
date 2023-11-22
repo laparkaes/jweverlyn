@@ -11,6 +11,11 @@ $lang['e_no_result']			= 'No hay resultado de búsqueda.';
 $lang['e_enter_keyword']		= 'Ingrese palabra de búsqueda.';
 $lang['e_no_zero']				= 'Debe ser mayor que cero.';
 
+//in_outcome
+$lang['e_category_include_inout']	= 'No puede eliminar una categoría asignada a un egreso o ingreso.';
+$lang['s_add_in_outcome']			= "Datos han sido registrados.";
+$lang['s_delete_in_outcome']		= "Registro ha sido eliminado.";
+
 //purchase
 $lang['e_product_qty_zero']		= 'La cantidad de producto debe ser mayor a cero.';
 $lang['e_cancel_no_stock']		= 'No se puede cancelar la compra debido a la falta de stock de "%product%"';

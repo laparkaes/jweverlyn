@@ -231,6 +231,18 @@ class My_val{
 		return ["type" => $this->get_type($msgs), "msgs" => $msgs, "msg" => $msg];
 	}
 	
+	public function add_category_inout($data){
+		$msgs = $this->check_blank($data, ["type_id"], []);
+		
+		if ($data["category"]){
+			if (!$this->CI->gm->filter("in_outcome_category", $data)){
+				$msgs = $this->set_msg($msgs, "category");
+			}else $msgs = $this->set_msg($msgs, "category", "e_category_exists");
+		}else $msgs = $this->set_msg($msgs, "category", "e_required_field");
+		
+		return ["type" => $this->get_type($msgs), "msgs" => $msgs];
+	}
+	
 	public function delete_category($data){
 		$msgs = []; $msg = "";
 		
@@ -238,6 +250,18 @@ class My_val{
 			if (!$this->CI->gm->filter("product", $data)){
 				$msgs = $this->set_msg($msgs, "category_id");
 			}else $msgs = $this->set_msg($msgs, "category_id", "e_category_include_products");
+		}else $msgs = $this->set_msg($msgs, "category_id", "e_required_field");
+		
+		return ["type" => $this->get_type($msgs), "msgs" => $msgs, "msg" => $msg];
+	}
+	
+	public function delete_category_inout($data){
+		$msgs = []; $msg = "";
+		
+		if ($data["category_id"]){
+			if (!$this->CI->gm->filter("in_outcome", $data)){
+				$msgs = $this->set_msg($msgs, "category_id");
+			}else $msgs = $this->set_msg($msgs, "category_id", "e_category_include_inout");
 		}else $msgs = $this->set_msg($msgs, "category_id", "e_required_field");
 		
 		return ["type" => $this->get_type($msgs), "msgs" => $msgs, "msg" => $msg];
@@ -633,5 +657,15 @@ class My_val{
 		$msgs = $this->check_blank($person, ["name"], $msgs);
 		
 		return ["type" => $this->get_type($msgs), "msgs" => $msgs];
+	}
+
+	public function add_in_outcome($io){
+		$msgs = $this->check_blank($io, ["date", "type_id", "category_id", "description"], []);
+		
+		if ($io["amount"] > 0) $msgs = $this->set_msg($msgs, "amount");
+		else $msgs = $this->set_msg($msgs, "amount", "e_numeric_positive");
+		
+		return ["type" => $this->get_type($msgs), "msgs" => $msgs];
+		
 	}
 }

@@ -9,6 +9,7 @@ class Dashboard extends CI_Controller {
 		$this->lang->load("message", "spanish");
 		$this->load->model('general_model','gm');
 		$this->nav_menu = ["dashboard", ""];
+		$this->js_init = "dashboard.js";
 	}
 
 	public function index(){

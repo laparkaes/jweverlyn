@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- 생성 시간: 23-11-21 18:33
+-- 생성 시간: 23-11-22 18:17
 -- 서버 버전: 10.4.24-MariaDB
 -- PHP 버전: 7.4.29
 
@@ -3340,11 +3340,64 @@ CREATE TABLE `in_outcome` (
   `in_outcome_id` int(11) NOT NULL,
   `type_id` int(11) NOT NULL,
   `category_id` int(11) NOT NULL,
+  `date` date NOT NULL,
   `description` varchar(250) NOT NULL,
   `amount` double NOT NULL,
   `valid` tinyint(1) NOT NULL DEFAULT 1,
   `registed_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- 테이블의 덤프 데이터 `in_outcome`
+--
+
+INSERT INTO `in_outcome` (`in_outcome_id`, `type_id`, `category_id`, `date`, `description`, `amount`, `valid`, `registed_at`) VALUES
+(1, 2, 5, '2023-11-22', 'Diferencia en cuenta bancaria', 99, 1, '2023-11-22 22:45:57'),
+(2, 2, 1, '2023-11-22', 'Importacion 1 de A-Mi Global', 30, 0, '2023-11-22 22:46:39'),
+(3, 1, 2, '2023-08-16', 'para Gloria S.A. / Cheque 112846294', 333, 1, '2023-11-22 22:47:21');
+
+-- --------------------------------------------------------
+
+--
+-- 테이블 구조 `in_outcome_category`
+--
+
+CREATE TABLE `in_outcome_category` (
+  `category_id` int(11) NOT NULL,
+  `type_id` int(11) NOT NULL,
+  `category` varchar(200) NOT NULL,
+  `valid` tinyint(1) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- 테이블의 덤프 데이터 `in_outcome_category`
+--
+
+INSERT INTO `in_outcome_category` (`category_id`, `type_id`, `category`, `valid`) VALUES
+(1, 2, 'Pago de almacen de aduana', 1),
+(2, 1, 'Devolucion de pago extra al proveedor', 1),
+(3, 1, 'Ajuste de cuenta mensual', 1),
+(4, 2, 'Ajuste de cuenta mensual +', 0),
+(5, 2, 'Ajuste de cuenta mensual', 1);
+
+-- --------------------------------------------------------
+
+--
+-- 테이블 구조 `in_outcome_type`
+--
+
+CREATE TABLE `in_outcome_type` (
+  `type_id` int(11) NOT NULL,
+  `type` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- 테이블의 덤프 데이터 `in_outcome_type`
+--
+
+INSERT INTO `in_outcome_type` (`type_id`, `type`) VALUES
+(1, 'Egreso'),
+(2, 'Ingreso');
 
 -- --------------------------------------------------------
 
@@ -4819,7 +4872,22 @@ ALTER TABLE `invoice_type`
 -- 테이블의 인덱스 `in_outcome`
 --
 ALTER TABLE `in_outcome`
-  ADD PRIMARY KEY (`in_outcome_id`);
+  ADD PRIMARY KEY (`in_outcome_id`),
+  ADD KEY `fk_in_outcome_type` (`type_id`),
+  ADD KEY `fk_in_outcome_category` (`category_id`);
+
+--
+-- 테이블의 인덱스 `in_outcome_category`
+--
+ALTER TABLE `in_outcome_category`
+  ADD PRIMARY KEY (`category_id`),
+  ADD KEY `fk_type_category_in_outcome` (`type_id`);
+
+--
+-- 테이블의 인덱스 `in_outcome_type`
+--
+ALTER TABLE `in_outcome_type`
+  ADD PRIMARY KEY (`type_id`);
 
 --
 -- 테이블의 인덱스 `module`
@@ -5093,7 +5161,19 @@ ALTER TABLE `invoice_type`
 -- 테이블의 AUTO_INCREMENT `in_outcome`
 --
 ALTER TABLE `in_outcome`
-  MODIFY `in_outcome_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `in_outcome_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- 테이블의 AUTO_INCREMENT `in_outcome_category`
+--
+ALTER TABLE `in_outcome_category`
+  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- 테이블의 AUTO_INCREMENT `in_outcome_type`
+--
+ALTER TABLE `in_outcome_type`
+  MODIFY `type_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- 테이블의 AUTO_INCREMENT `module`
@@ -5284,6 +5364,19 @@ ALTER TABLE `client`
 --
 ALTER TABLE `client_note`
   ADD CONSTRAINT `fk_note_client` FOREIGN KEY (`client_id`) REFERENCES `client` (`client_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- 테이블의 제약사항 `in_outcome`
+--
+ALTER TABLE `in_outcome`
+  ADD CONSTRAINT `fk_in_outcome_category` FOREIGN KEY (`category_id`) REFERENCES `in_outcome_category` (`category_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_in_outcome_type` FOREIGN KEY (`type_id`) REFERENCES `in_outcome_type` (`type_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- 테이블의 제약사항 `in_outcome_category`
+--
+ALTER TABLE `in_outcome_category`
+  ADD CONSTRAINT `fk_type_category_in_outcome` FOREIGN KEY (`type_id`) REFERENCES `in_outcome_type` (`type_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- 테이블의 제약사항 `product`

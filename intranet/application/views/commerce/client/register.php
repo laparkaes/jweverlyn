@@ -4,6 +4,7 @@
 			<h1>Nuevo Cliente</h1>
 			<nav>
 				<ol class="breadcrumb">
+					<li class="breadcrumb-item">Comercio</li>
 					<li class="breadcrumb-item">Clientes</li>
 					<li class="breadcrumb-item active">Nuevo</li>
 				</ol>

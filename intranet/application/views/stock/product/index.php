@@ -16,7 +16,7 @@
 				<i class="bi bi-funnel-fill"></i>
 			</button>
 			<button type="button" class="btn btn-primary" id="btn_category_admin">
-				<i class="bi bi-tags"></i>
+				<i class="bi bi-tags-fill"></i>
 			</button>
 			<a href="<?= base_url() ?>stock/product/register" type="button" class="btn btn-success">
 				<i class="bi bi-plus-lg"></i>
