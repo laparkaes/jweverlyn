@@ -1,6 +1,6 @@
 let b_url = "stock/product/";
 
-btn_card_control("#btn_category_admin", ".btn_close_cat_admin", "#bl_cat_admin", "success");
+btn_card_control("#btn_category_admin", ".btn_close_cat_admin", "#bl_cat_admin", "primary");
 btn_card_control("#btn_open_ao", "#btn_close_ao", "#card_add_option", "success");
 btn_card_control("#btn_open_ai", "#btn_close_ai", "#card_add_image", "success");
 

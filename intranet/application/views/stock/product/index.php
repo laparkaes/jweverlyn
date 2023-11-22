@@ -15,7 +15,7 @@
 			<button type="submit" class="btn <?= $btn_search ?>" id="btn_search_index">
 				<i class="bi bi-funnel-fill"></i>
 			</button>
-			<button type="button" class="btn btn-success" id="btn_category_admin">
+			<button type="button" class="btn btn-primary" id="btn_category_admin">
 				<i class="bi bi-tags"></i>
 			</button>
 			<a href="<?= base_url() ?>stock/product/register" type="button" class="btn btn-success">
@@ -56,8 +56,8 @@
 									<div class="invalid-feedback"></div>
 								</div>
 								<div class="text-center pt-3">
-									<button type="button" class="btn btn-secondary btn_close_cat_admin">Cerrar</button>
-									<button type="submit" class="btn btn-primary">Agregar</button>
+									<button type="submit" class="btn btn-primary"><i class="bi bi-plus-lg"></i></button>
+									<button type="button" class="btn btn-secondary btn_close_cat_admin"><i class="bi bi-x-lg"></i></button>
 								</div>
 							</form>
 						</div>
@@ -75,8 +75,8 @@
 									<div class="invalid-feedback"></div>
 								</div>
 								<div class="text-center pt-3">
-									<button type="button" class="btn btn-secondary btn_close_cat_admin">Cerrar</button>
-									<button type="submit" class="btn btn-danger">Eliminar</button>
+									<button type="submit" class="btn btn-danger"><i class="bi bi-eraser"></i></button>
+									<button type="button" class="btn btn-secondary btn_close_cat_admin"><i class="bi bi-x-lg"></i></button>
 								</div>
 							</form>
 						</div>
@@ -103,8 +103,8 @@
 									<div class="invalid-feedback"></div>
 								</div>
 								<div class="col-12 text-center pt-3">
-									<button type="button" class="btn btn-secondary btn_close_cat_admin">Cerrar</button>
-									<button type="submit" class="btn btn-primary">Mover</button>
+									<button type="submit" class="btn btn-primary"><i class="bi bi-arrow-right"></i></button>
+									<button type="button" class="btn btn-secondary btn_close_cat_admin"><i class="bi bi-x-lg"></i></button>
 								</div>
 							</form>
 						</div>
