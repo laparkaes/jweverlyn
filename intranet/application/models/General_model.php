@@ -106,6 +106,15 @@ class General_model extends CI_Model{
 		$result = $query->result();
 		return $result[0];
 	}
+	
+	function only($tablename, $field, $where = null){
+		$this->db->select($field);
+		if ($where) $this->db->where($where);
+		$this->db->group_by($field);
+		$query = $this->db->get($tablename);
+		$result = $query->result();
+		return $result;
+	}
 
 	////////////////////////////////////////////
     function id($tablename, $id){
@@ -142,14 +151,6 @@ class General_model extends CI_Model{
 		return $query->num_rows();
 	}
 	
-	function only($tablename, $field, $where = null){
-		$this->db->select($field);
-		if ($where) $this->db->where($where);
-		$this->db->group_by($field);
-		$query = $this->db->get($tablename);
-		$result = $query->result();
-		return $result;
-	}
 	
 	function counter($tablename, $where = null, $like = null, $where_in = null, $group_by = null){
 		if ($where){ $this->db->group_start(); $this->db->where($where); $this->db->group_end(); }

@@ -156,7 +156,6 @@
 									<th scope="col">#</th>
 									<th scope="col">Fecha</th>
 									<th scope="col">Tipo</th>
-									<th scope="col">Categoría</th>
 									<th scope="col">Descripción</th>
 									<th scope="col" class="text-end">Monto</th>
 									<th scope="col"></th>
@@ -168,8 +167,7 @@
 									<th scope="row"><?= $base_page + $i_io + 1 ?></th>
 									<td><?= $io->date ?></td>
 									<td class="text-<?= $io->color ?>"><?= $io->type ?></td>
-									<td><?= $io->category ?></td>
-									<td><?= $io->description ?></td>
+									<td><?= $io->description ?><br/>> <?= $io->category ?></td>
 									<td class="text-end">S/ <?= number_format($io->amount, 2) ?></td>
 									<td class="text-end">
 										<button type="button" class="btn btn-outline-danger btn-sm border-0 btn_delete_io" value="<?= $io->in_outcome_id  ?>">
