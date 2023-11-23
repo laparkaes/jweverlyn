@@ -48,7 +48,7 @@
 					</div>
 					<div class="col-md-8">
 						<label class="form-label">Categoría</label>
-						<select class="form-select" name="category_id">
+						<select class="form-select" name="category_id" id="category_id">
 							<option value="">Elegir</option>
 							<?php foreach($categories as $c){ ?>
 							<option class="sl_cat sl_cat_<?= $c->type_id ?> d-none" value="<?= $c->category_id ?>"><?= $c->category ?></option>

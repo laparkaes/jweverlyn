@@ -39,14 +39,21 @@ $(".btn_delete_io").on('click',(function(e) {
 $("#type_id").on('change',(function(e) {
 	$(".sl_cat").addClass("d-none");
 	$(".sl_cat_" + $(this).val()).removeClass("d-none");
+	$("#category_id").val("");
 }));
 
-$("#amount").on('change',(function(e) {
-	var amount = nf_reverse($(this).val());
+function amount_validation(){
+	var amount = nf_reverse($("#amount").val());
 	if (isNaN(amount)) amount = 0;
 	else if (amount < 0) amount = 0;
 	
-	$(this).val(nf(amount));
+	$("#amount").val(nf(amount));
+}
+
+$("#amount").on('change',(function(e) {
+	amount_validation();
+})).on('keyup',(function(e) {
+	if (event.which === 13) amount_validation();
 }));
 
 ////////////////////////

@@ -141,4 +141,15 @@ class In_outcome extends CI_Controller {
 		header('Content-Type: application/json');
 		echo json_encode($result);
 	}
+
+	public function generate($num = 1000){
+		$s = strtotime('2023-01-01');
+		$e = time();
+		
+		for($i = 0; $i < $num; $i++){
+			$r_date = date('Y-m-d', mt_rand($s, $e));
+			echo $r_date."<br/>";
+		}
+		
+	}
 }

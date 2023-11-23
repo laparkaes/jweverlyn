@@ -111,7 +111,7 @@
 						</div>
 						<div class="col-md-6 col-12">
 							<label class="form-label">Categoría</label>
-							<select class="form-select" name="category">
+							<select class="form-select" name="category" id="category_id">
 								<option value="">Elegir</option>
 								<?php 
 								foreach($categories as $c){
