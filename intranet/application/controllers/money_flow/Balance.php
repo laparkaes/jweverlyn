@@ -17,44 +17,50 @@ class Balance extends CI_Controller {
 		$s_date = $this->input->get("s_date");
 		if (!$s_date) $s_date = date("Y-m");
 		
-		//define date limits
-		$aux1_lower = $this->gm->filter("sale", null, null, null, [["registed_at", "asc"]], 1, 0, true);
-		if ($aux1_lower) $aux1_lower = $aux1_lower[0]->registed_at; else $aux1_lower = date("Y-m");
+		$date_start = date("Y-m-01", strtotime($s_date))." 00:00:00";
+		$date_end = date("Y-m-t", strtotime($s_date))." 23:59:59";
 		
-		$aux2_lower = $this->gm->filter("purchase", null, null, null, [["registed_at", "asc"]], 1, 0, true);
-		if ($aux2_lower) $aux2_lower = $aux2_lower[0]->registed_at; else $aux2_lower = date("Y-m");
+		//calculate sale and purchase total amount
+		$w = [
+			"registed_at >=" => $date_start,
+			"registed_at <=" => $date_end,
+		];
 		
-		$aux3_lower = $this->gm->filter("in_outcome", null, null, null, [["date", "asc"]], 1, 0, true);
-		if ($aux3_lower) $aux3_lower = $aux3_lower[0]->date; else $aux3_lower = date("Y-m");
+		$other = [];
+		$other["Ingreso"] = [
+			"description" => "Venta ".$s_date, 
+			"total" => round($this->gm->sum("sale", "amount", $w)->amount, 2)
+		];
+		$other["Egreso"] = [
+			"description" => "Compra ".$s_date, 
+			"total" => round($this->gm->sum("purchase", "amount", $w)->amount, 2)
+		];
 		
-		$date_lower = date("Y-m", min(strtotime($aux1_lower), strtotime($aux2_lower), strtotime($aux3_lower)));
-		$date_upper = date("Y-m");
-		
-		$years = [];
-		$months = [];
-		$now = $date_lower;
-		while(strtotime($now) <= strtotime($date_upper)){
-			$years[] = date('Y', strtotime($now));
-			$months[] = $now;
-			$now = date('Y-m', strtotime($now . ' +1 month'));
-		}
-		$years = array_unique($years);
+		$b_total = $other["Ingreso"]["total"] - $other["Egreso"]["total"];
 		
 		//calculate income and outcome total amount
 		$w = [
-			"date >=" => date("Y-m-01", strtotime($s_date))." 00:00:00",
-			"date <=" => date("Y-m-t", strtotime($s_date))." 23:59:59",
+			"date >=" => $date_start,
+			"date <=" => $date_end,
+			"valid" => true,
 		];
 		
-		$b_total = 0;
 		$types = $this->gm->all_simple("in_outcome_type", "type", "desc");
 		foreach($types as $t){
 			$w["type_id"] = $t->type_id;
 			$t->total = round($this->gm->sum("in_outcome", "amount", $w)->amount, 2);
 			
 			switch ($t->type){
-				case "Ingreso": $b_total += $t->total; $t->color = "success"; break;
-				case "Egreso": $b_total -= $t->total; $t->color = "danger"; break;
+				case "Ingreso": 
+					$b_total += $t->total;
+					$t->total += $other[$t->type]["total"];
+					$t->color = "success";
+					break;
+				case "Egreso": 
+					$b_total -= $t->total;
+					$t->total += $other[$t->type]["total"];
+					$t->color = "danger";
+					break;
 			}
 			
 			$cat_ids_arr = [];
@@ -76,35 +82,43 @@ class Balance extends CI_Controller {
 			$t->categories = $categories;
 		}
 		
-		//calculate sale and purchase total amount
-		$w = [
-			"registed_at >=" => date("Y-m-01", strtotime($s_date))." 00:00:00",
-			"registed_at <=" => date("Y-m-t", strtotime($s_date))." 23:59:59",
-		];
-		
-		$other = [];
-		$other["Ingreso"] = [
-			"description" => "Venta ".$s_date, 
-			"total" => round($this->gm->sum("sale", "amount", $w)->amount, 2)
-		];
-		$other["Egreso"] = [
-			"description" => "Compra ".$s_date, 
-			"total" => round($this->gm->sum("purchase", "amount", $w)->amount, 2)
-		];
-		
-		$b_total = $b_total + $other["Ingreso"]["total"] - $other["Egreso"]["total"];
 		$balance = ["total" => $b_total];
 		switch(true){
-			case ($balance < 0): $balance["color"] = "danger"; break;
-			case ($balance == 0): $balance["color"] = "primary"; break;
-			case ($balance > 0): $balance["color"] = "success"; break;
+			case ($b_total < 0): $balance["color"] = "danger"; break;
+			case ($b_total == 0): $balance["color"] = "primary"; break;
+			case ($b_total > 0): $balance["color"] = "success"; break;
 		}
+		
+		//define date limits
+		$aux1_lower = $this->gm->filter("sale", null, null, null, [["registed_at", "asc"]], 1, 0, true);
+		if ($aux1_lower) $aux1_lower = $aux1_lower[0]->registed_at; else $aux1_lower = date("Y-m");
+		
+		$aux2_lower = $this->gm->filter("purchase", null, null, null, [["registed_at", "asc"]], 1, 0, true);
+		if ($aux2_lower) $aux2_lower = $aux2_lower[0]->registed_at; else $aux2_lower = date("Y-m");
+		
+		$aux3_lower = $this->gm->filter("in_outcome", null, null, null, [["date", "asc"]], 1, 0, true);
+		if ($aux3_lower) $aux3_lower = $aux3_lower[0]->date; else $aux3_lower = date("Y-m");
+		
+		$date_lower = date("Y-m", min(strtotime($aux1_lower), strtotime($aux2_lower), strtotime($aux3_lower)));
+		$date_upper = date("Y-m");
+		
+		$years = [];
+		$months = [];
+		$now = $date_upper;
+		while(strtotime($date_lower) <= strtotime($now)){
+			$years[] = date('Y', strtotime($now));
+			$months[] = $now;
+			$now = date('Y-m', strtotime($now . ' -1 month'));
+		}
+		$years = array_unique($years);
 		
 		$data = [
 			"s_date" => $s_date,
 			"balance" => $balance,
 			"types" => $types,
 			"other" => $other,
+			"years" => $years,
+			"months" => $months,
 			"main" => "money_flow/balance/index",
 		];
 		$this->load->view('layout', $data);

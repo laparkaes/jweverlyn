@@ -26,11 +26,13 @@
 				<div class="card-body">
 					<h5 class="card-title">Balance de <?= $s_date ?></h5>
 					<div class="table-responsive">
+						<div><?php print_r($years); ?></div>
+						<div><?php print_r($months); ?></div>
 						<table class="table align-middle">
 							<thead>
-								<tr class="table-warning">
+								<tr>
 									<th scope="col">Resultado</th>
-									<th scope="col" class="text-end text-<?= $balance["color"] ?>">S/ <?= number_format($balance["total"], 2) ?></th>
+									<th scope="col" class="text-end text-<?= $balance["color"] ?>">S/ <?= number_format(abs($balance["total"]), 2) ?></th>
 								</tr>
 							</thead>
 							<tbody>
