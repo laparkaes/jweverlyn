@@ -21,3 +21,15 @@ $(".btn_control_by_type").on('click',(function(e) {
 $(".btn_control_by_category").on('click',(function(e) {
 	row_control(this, "c");
 }));
+
+$("#sl_bt").on('change',(function(e) {
+	$("#sl_bp").val("");
+	$(".bt").addClass("d-none");
+	$(".bt_" + $(this).val()).removeClass("d-none");
+}));
+
+$("#sl_bp").on('change',(function(e) {
+	if ($(this).val() != ""){
+		location.href = base_url + "money_flow/balance?" + $.param(ob_from_form("#form_balane_filter"));
+	}
+}));

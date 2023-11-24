@@ -14,11 +14,33 @@ class Balance extends CI_Controller {
 	public function index(){
 		if (!$this->session->userdata('username')) redirect("auth/login");
 		
-		$s_date = $this->input->get("s_date");
-		if (!$s_date) $s_date = date("Y-m");
+		$params = [
+			"bt" => $this->input->get("bt"),//balance type: monthly or yearly
+			"bp" => $this->input->get("bp"),//balance period
+		];
 		
-		$date_start = date("Y-m-01", strtotime($s_date))." 00:00:00";
-		$date_end = date("Y-m-t", strtotime($s_date))." 23:59:59";
+		if (!$params["bp"]){//balance period no selected => show actual month balance
+			$params = [
+				"bt" => "m",
+				"bp" => date("Y-m"),
+			];
+			$from = "Y-m";
+			$to = "Y-m";
+		}else{//balance period selcted
+			switch($params["bt"]){
+				case "y":
+					$from = $params["bp"]."-01";
+					$to = $params["bp"]."-12";
+					break;
+				case "m":
+					$from = $params["bp"];
+					$to = $params["bp"];
+					break;
+			}
+		}
+		
+		$date_start = date($from."-01", strtotime($params["bp"]))." 00:00:00";
+		$date_end = date($to."-t", strtotime($params["bp"]))." 23:59:59";
 		
 		//calculate sale and purchase total amount
 		$w = [
@@ -28,11 +50,11 @@ class Balance extends CI_Controller {
 		
 		$other = [];
 		$other["Ingreso"] = [
-			"description" => "Venta ".$s_date, 
+			"description" => "Venta ".$params["bp"],
 			"total" => round($this->gm->sum("sale", "amount", $w)->amount, 2)
 		];
 		$other["Egreso"] = [
-			"description" => "Compra ".$s_date, 
+			"description" => "Compra ".$params["bp"],
 			"total" => round($this->gm->sum("purchase", "amount", $w)->amount, 2)
 		];
 		
@@ -113,7 +135,7 @@ class Balance extends CI_Controller {
 		$years = array_unique($years);
 		
 		$data = [
-			"s_date" => $s_date,
+			"params" => $params,
 			"balance" => $balance,
 			"types" => $types,
 			"other" => $other,
