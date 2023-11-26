@@ -85,7 +85,7 @@ class Balance extends CI_Controller {
 					break;
 			}
 			
-			$cat_ids_arr = [];
+			$cat_ids_arr = [-1];
 			$cat_ids = $this->gm->only("in_outcome", "category_id", $w);
 			foreach($cat_ids as $cat_id) $cat_ids_arr[] = $cat_id->category_id;
 			

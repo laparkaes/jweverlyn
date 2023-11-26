@@ -12,7 +12,7 @@
 		<div>
 			<?php if ($is_filtered){ $btn_search = "btn-outline-primary"; $bl_search = "";
 			}else{ $btn_search = "btn-primary"; $bl_search = "d-none"; } ?>
-			<button type="submit" class="btn <?= $btn_search ?>" id="btn_search_index">
+			<button type="button" class="btn <?= $btn_search ?>" id="btn_search_index">
 				<i class="bi bi-funnel-fill"></i>
 			</button>
 			<a href="<?= base_url() ?>commerce/proforma/register" type="button" class="btn btn-success">

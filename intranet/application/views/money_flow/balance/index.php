@@ -9,6 +9,11 @@
 				</ol>
 			</nav>
 		</div>
+		<div>
+			<button type="button" class="btn btn-primary" id="btn_excel">
+				<i class="bi bi-download"></i>
+			</button>
+		</div>
 	</div>
 </div>	
 <section class="section">
