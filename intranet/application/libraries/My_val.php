@@ -653,9 +653,7 @@ class My_val{
 	}
 
 	public function add_person($person){
-		$msgs = [];
-		$msgs = $this->check_blank($person, ["name"], $msgs);
-		
+		$msgs = $this->check_blank($person, ["name"], []);
 		return ["type" => $this->get_type($msgs), "msgs" => $msgs];
 	}
 
@@ -667,5 +665,15 @@ class My_val{
 		
 		return ["type" => $this->get_type($msgs), "msgs" => $msgs];
 		
+	}
+
+	public function download_excel_balance($data){
+		$msg = null;
+		
+		if (!$data["bp"]) $msg = $this->CI->lang->line("e_balance_period");
+		if (!$data["bt"]) $msg = $this->CI->lang->line("e_balance_type");
+		if ($msg) $type = "error"; else $type = "success";
+		
+		return ["type" => $type, "msg" => $msg];
 	}
 }

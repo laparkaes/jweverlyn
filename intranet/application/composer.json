@@ -2,6 +2,7 @@
     "require": {
         "greenter/lite": "^5.0",
         "luecano/numero-a-letras": "^3.0",
-        "dompdf/dompdf": "^2.0"
+        "dompdf/dompdf": "^2.0",
+        "phpoffice/phpspreadsheet": "^1.29"
     }
 }

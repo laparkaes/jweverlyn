@@ -1,6 +1,10 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
+
 class Balance extends CI_Controller {
 	
 	public function __construct(){
@@ -11,14 +15,7 @@ class Balance extends CI_Controller {
 		$this->js_init = "money_flow/balance.js";
 	}
 	
-	public function index(){
-		if (!$this->session->userdata('username')) redirect("auth/login");
-		
-		$params = [
-			"bt" => $this->input->get("bt"),//balance type: monthly or yearly
-			"bp" => $this->input->get("bp"),//balance period
-		];
-		
+	public function make_list($params){
 		if (!$params["bp"]){//balance period no selected => show actual month balance
 			$params = [
 				"bt" => "m",
@@ -111,6 +108,17 @@ class Balance extends CI_Controller {
 			case ($b_total > 0): $balance["color"] = "success"; break;
 		}
 		
+		return ["params" => $params, "balance" => $balance, "types" => $types, "other" => $other];
+	}
+	
+	public function index(){
+		if (!$this->session->userdata('username')) redirect("auth/login");
+		
+		$params = [
+			"bt" => $this->input->get("bt"),//balance type: monthly or yearly
+			"bp" => $this->input->get("bp"),//balance period
+		];
+		
 		//define date limits
 		$aux1_lower = $this->gm->filter("sale", null, null, null, [["registed_at", "asc"]], 1, 0, true);
 		if ($aux1_lower) $aux1_lower = $aux1_lower[0]->registed_at; else $aux1_lower = date("Y-m");
@@ -132,17 +140,107 @@ class Balance extends CI_Controller {
 			$months[] = $now;
 			$now = date('Y-m', strtotime($now . ' -1 month'));
 		}
-		$years = array_unique($years);
 		
-		$data = [
-			"params" => $params,
-			"balance" => $balance,
-			"types" => $types,
-			"other" => $other,
-			"years" => $years,
+		$data = array_merge($this->make_list($params) ,[
+			"years" => array_unique($years),
 			"months" => $months,
 			"main" => "money_flow/balance/index",
-		];
+		]);
 		$this->load->view('layout', $data);
+	}
+
+	public function download_excel(){
+		$params = $this->input->post();
+		
+		$this->load->library('my_val');
+		$result = $this->my_val->download_excel_balance($params);
+		
+		if ($result["type"] === "success"){
+			$data = $this->make_list($params);
+			$balance = $data["balance"];
+			$types = $data["types"];
+			$other = $data["other"];
+			
+			//basic data
+			$sheet_data[] = ["Balance ".($params["bt"] === "m" ? "Mensual" : "Anual")];
+			$sheet_data[] = ["Emisión", date("Y-m-d H:i:s")];
+			$sheet_data[] = ["Periodo", $params["bp"]];
+			$sheet_data[] = ["Resultado", (($balance["total"] > 0) ? "+" : "-")." S/ ".number_format(abs($balance["total"]), 2)];
+			
+			//headers
+			$sheet_data[] = [""];
+			$sheet_data[] = ["Tipo", "Fecha", "Categoría", "Descripción", "Monto (S/)"];
+			
+			//setting datas
+			foreach($types as $t){
+				$categories = $t->categories;
+				$sheet_data[] = [$t->type, $params["bp"], $other[$t->type]["description"], "", $other[$t->type]["total"]];
+				foreach($categories as $c){
+					$ios = $c->ios;
+					if ($t->type === "Egreso") $io->amount = -$io->amount;
+					foreach($ios as $io) $sheet_data[] = [$t->type, $io->date, $c->category, $io->description, $io->amount];
+				}
+			}
+			
+			$spreadsheet = new Spreadsheet();
+			
+			$sheet = $spreadsheet->getActiveSheet();
+			foreach($sheet_data as $ri => $row){
+				foreach ($row as $ci => $value){
+					$sheet->setCellValueByColumnAndRow($ci + 1, $ri + 1, $value);
+				}
+			}
+			
+			$ri++; $ci++;
+			
+			//set sheet title
+			$sheet->setTitle('Balance '.$params["bp"]);
+			
+			//set title font size
+			$sheet->mergeCells('A1:E1');
+			$sheet->getStyle("A1")->getFont()->setSize(18);
+			
+			//set report information
+			$sheet->getStyle("B2")->getAlignment()->setHorizontal('right');
+			$sheet->getStyle("B3")->getAlignment()->setHorizontal('right');
+			$sheet->getStyle("B4")->getAlignment()->setHorizontal('right');
+			
+			//set result marking
+			$t_color = ($balance["total"] >= 0) ? "198754" : "dc3545";
+			$sheet->getStyle("A4")->getFont()->getColor()->setRGB($t_color);
+			$sheet->getStyle("B4")->getFont()->getColor()->setRGB($t_color);
+			
+			//set column width
+			$sheet->getColumnDimension("A")->setWidth(15);
+			$sheet->getColumnDimension("B")->setWidth(20);
+			$sheet->getColumnDimension("C")->setWidth(50);
+			$sheet->getColumnDimension("D")->setWidth(50);
+			$sheet->getColumnDimension("E")->setWidth(20);
+			
+			//set bold text, white text color and dark blue fill color
+			$f_solid = \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID;
+			$cells = ["A1", "A6", "B6", "C6", "D6", "E6"];
+			foreach($cells as $c){
+				$sheet->getStyle($c)->getFont()->getColor()->setRGB('FFFFFF');
+				$sheet->getStyle($c)->getAlignment()->setHorizontal('center');
+				$sheet->getStyle($c)->getFill()->setFillType($f_solid)->getStartColor()->setRGB('012970');
+				$sheet->getStyle($c)->getFont()->setBold(true);
+			}
+			
+			//set text align to right on amount columns
+			for($i = $ri; $i >= 7; $i--){
+				$sheet->getStyle("E".$i)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
+				$sheet->getStyle("E".$i)->getAlignment()->setHorizontal('right');
+			}
+			
+			$filename = FCPATH.'uploads/balance/'.$params["bp"].'.xlsx';
+			$writer = new Xlsx($spreadsheet);
+			$writer->save($filename);
+			
+			$result["url"] = base_url()."uploads/balance/".$params["bp"].".xlsx";
+		}
+		
+		header('Content-Type: application/json');
+		echo json_encode($result);
 	}
 }

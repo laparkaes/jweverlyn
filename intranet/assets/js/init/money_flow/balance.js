@@ -1,9 +1,5 @@
 let b_url = "money_flow/balance/";
 
-//set_date(".datepicker", null)
-//set_dates_between("#f_from", "#f_to");
-//btn_card_control("#btn_category_admin", ".btn_close_cat_admin", "#bl_cat_admin", "primary");
-
 function row_control(dom, prefix){
 	if ($(dom).html().trim().includes("right")){//open
 		$("." + prefix + "_row_" + $(dom).val()).removeClass("d-none");
@@ -29,7 +25,12 @@ $("#sl_bt").on('change',(function(e) {
 }));
 
 $("#sl_bp").on('change',(function(e) {
-	if ($(this).val() != ""){
-		location.href = base_url + "money_flow/balance?" + $.param(ob_from_form("#form_balane_filter"));
-	}
+	if ($(this).val() != "") $("#form_balane_filter").submit();
+}));
+
+$("#btn_excel").on('click',(function(e) {
+	ajax_simple(ob_from_form("#form_balane_filter"), b_url + "download_excel").done(function(res) {
+		if (res.type == "success") location.href = res.url;
+		else swal(res.type, res.msg);
+	});
 }));

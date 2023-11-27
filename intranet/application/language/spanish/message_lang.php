@@ -11,6 +11,10 @@ $lang['e_no_result']			= 'No hay resultado de búsqueda.';
 $lang['e_enter_keyword']		= 'Ingrese palabra de búsqueda.';
 $lang['e_no_zero']				= 'Debe ser mayor que cero.';
 
+//balance excel
+$lang['e_balance_type']		= 'Elija tipo de balance.';
+$lang['e_balance_period']	= 'Elija plazo de balance.';
+
 //in_outcome
 $lang['e_category_include_inout']	= 'No puede eliminar una categoría asignada a un egreso o ingreso.';
 $lang['s_add_in_outcome']			= "Datos han sido registrados.";
