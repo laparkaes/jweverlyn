@@ -173,12 +173,15 @@ class Balance extends CI_Controller {
 			
 			//setting datas
 			foreach($types as $t){
-				$categories = $t->categories;
+				if ($t->type === "Egreso") $other[$t->type]["total"] = -$other[$t->type]["total"];
 				$sheet_data[] = [$t->type, $params["bp"], $other[$t->type]["description"], "", $other[$t->type]["total"]];
+				$categories = $t->categories;
 				foreach($categories as $c){
 					$ios = $c->ios;
-					if ($t->type === "Egreso") $io->amount = -$io->amount;
-					foreach($ios as $io) $sheet_data[] = [$t->type, $io->date, $c->category, $io->description, $io->amount];
+					foreach($ios as $io){
+						if ($t->type === "Egreso") $io->amount = -$io->amount;
+						$sheet_data[] = [$t->type, $io->date, $c->category, $io->description, $io->amount];
+					}
 				}
 			}
 			
