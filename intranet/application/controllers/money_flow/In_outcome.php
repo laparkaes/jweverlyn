@@ -141,32 +141,12 @@ class In_outcome extends CI_Controller {
 		header('Content-Type: application/json');
 		echo json_encode($result);
 	}
-	/*
-	public function generate($num = 100){
-		$s = strtotime('2023-01-01');
-		$e = time();
-
-		$ios = $this->gm->all("in_outcome");
-		$cates = $this->gm->all("in_outcome_category");
-		$types = $this->gm->all("in_outcome_type", [], "", "", false);
+	
+	/*public function methods(){
+		$cl = $this->router->fetch_class();
+		$aux = get_class_methods($this);
 		
-		print_r($ios); echo "<br/>======================<br/>";
-		//print_r($cates); echo "<br/>======================<br/>";
-		print_r($cates[array_rand($cates)]); echo "<br/>======================<br/>";
-		print_r($types); echo "<br/>======================<br/>";
-		
-		for($i = 0; $i < $num; $i++){
-			$cat = $cates[array_rand($cates)];
-			$data = [
-				"type_id" => $cat->type_id,
-				"category_id" => $cat->category_id,
-				"date" => date('Y-m-d', mt_rand($s, $e)), 
-				"description" => $this->my_func->randomString(50, "Diferencia en cuenta bancaria"), 
-				"amount" => mt_rand(1000, 1000000) / 100, 
-			];
-			//$this->gm->insert("in_outcome", $data);
-			print_r($data); echo "<br/>======================<br/>";
-			
-		}
+		$no_class = ["__construct", "methods", "get_instance"];
+		foreach($aux as $a) if (!in_array($a, $no_class)) echo $cl."_".$a."<br/>";
 	}*/
 }

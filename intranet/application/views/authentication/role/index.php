@@ -47,7 +47,7 @@
 							<thead>
 								<tr>
 									<th scope="col">#</th>
-									<th scope="col">Módulo</th>
+									<th scope="col">Rol</th>
 									<th scope="col" class="text-end">Usuarios</th>
 									<th scope="col" class="text-end">Accesos</th>
 									<th scope="col"></th>

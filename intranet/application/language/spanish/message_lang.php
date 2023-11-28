@@ -10,6 +10,7 @@ $lang['e_numeric_positive']		= 'Debe ser un número positivo.';
 $lang['e_no_result']			= 'No hay resultado de búsqueda.';
 $lang['e_enter_keyword']		= 'Ingrese palabra de búsqueda.';
 $lang['e_no_zero']				= 'Debe ser mayor que cero.';
+$lang['e_no_access']			= 'Usted no cuenta con privilegio suficiente para esta acción. Consulte al admin del sistema.';
 
 //balance excel
 $lang['e_balance_type']		= 'Elija tipo de balance.';

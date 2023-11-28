@@ -62,7 +62,7 @@ class My_val{
 		$msgs = []; $msg = "";
 		
 		if ($data["module"]){
-			if (!$this->CI->gm->unique("module", "module", $data["module"])) $msgs = $this->set_msg($msgs, "module");
+			if (!$this->CI->gm->unique("access_module", "module", $data["module"])) $msgs = $this->set_msg($msgs, "module");
 			else $msgs = $this->set_msg($msgs, "module", "e_module_exists");
 		}else $msgs = $this->set_msg($msgs, "module", "e_required_field");	
 		

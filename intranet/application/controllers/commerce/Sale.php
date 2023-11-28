@@ -662,8 +662,16 @@ class Sale extends CI_Controller {
 		echo json_encode($result);
 	}
 	
-	public function convert_pem(){//convert *.pfx cert to *.pem for facturacion electronica
+	/*public function convert_pem(){//convert *.pfx cert to *.pem for facturacion electronica
 		$this->load->library('my_greenter');
 		$this->my_greenter->convert_to_pem();
-	}
+	}*/
+
+	/*public function methods(){
+		$cl = $this->router->fetch_class();
+		$aux = get_class_methods($this);
+		
+		$no_class = ["__construct", "methods", "get_instance"];
+		foreach($aux as $a) if (!in_array($a, $no_class)) echo $cl."_".$a."<br/>";
+	}*/
 }

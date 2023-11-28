@@ -10,6 +10,35 @@ class My_func{
 		$this->CI = &get_instance();
 	}
 	
+	public function check_access($code = [], $add = "",$check_logged = true){
+		$result = ["type" => "success", "msg" => null, "url" => null];
+		$code[] = $add;
+		
+		$access = $this->CI->gm->unique("access", "code", implode("_", array_filter($code)), false);
+		if ($access){
+			if (!$this->CI->session->userdata('username')){
+				$result["type"] = "error";
+				$result["msg"] = $this->lang->line("e_finished_session");
+				$result["url"] = "auth/login";
+			}
+			
+			if ($result["type"] === "success"){
+				$f = [
+					"role_id" => $this->CI->session->userdata('rid'),
+					"access_id" => $access->access_id,
+				];
+				
+				if (!$this->CI->gm->filter("role_access", $f, null, null, [], "", "", false)){
+					$result["type"] = "error";
+					$result["msg"] = $this->CI->lang->line("e_no_access");
+					$result["url"] = "auth/no_access";
+				}
+			}
+		}
+		
+		return $result;
+	}
+	
 	public function paging($page, $qty){
 		$pages = [];
 		if ($qty){

@@ -13,10 +13,25 @@ class Dashboard extends CI_Controller {
 	}
 
 	public function index(){
+		//access check
+		$result = $this->my_func->check_access($this->nav_menu, $this->router->fetch_method());
+		if ($result["type"] === "error") redirect($result["url"]);
 		
 		$data = [
-			"main" => "dashboard/admin",
+			"main" => "dashboard/index",
 		];
 		$this->load->view('layout', $data);
+	}
+	
+	private function test_access(){
+		//1. normal access
+		$this->nav_menu[] = $this->router->fetch_method();
+		$result = $this->my_func->check_access($this->nav_menu);
+		if ($result["type"] === "error") redirect($result["url"]);
+		
+		//2. ajax access
+		$this->nav_menu[] = $this->router->fetch_method();
+		$result = $this->my_func->check_access($this->nav_menu);
+		if ($result["type"] === "success"){ /* codes here */ }
 	}
 }

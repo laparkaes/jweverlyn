@@ -25,6 +25,8 @@ class Auth extends CI_Controller {
 			//set session data
 			$account = $this->gm->unique("account", "username", $data["username"]);
 			$udata = [
+				"aid" => $account->account_id,
+				"rid" => $account->role_id,
 				"username" => $account->username,
 				"name" => $account->name,
 				"role" => $this->gm->unique("role", "role_id", $account->role_id, false)->role,
@@ -66,5 +68,10 @@ class Auth extends CI_Controller {
 	public function logout(){
 		$this->session->sess_destroy();
 		redirect("auth/login");
+	}
+
+	public function no_access(){
+		echo "No acceso";
+		//to develop
 	}
 }

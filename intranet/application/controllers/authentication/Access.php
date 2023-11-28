@@ -15,8 +15,8 @@ class Access extends CI_Controller {
 	public function index(){
 		if (!$this->session->userdata('username')) redirect("auth/login");
 		
-		$modules = $this->gm->all("module", [["module", "asc"]]);
-		foreach($modules as $m) $m->access = $this->gm->filter("access", ["module_id" => $m->module_id], null, null, [["access", "asc"]]);
+		$modules = $this->gm->all("access_module", [["module", "asc"]]);
+		foreach($modules as $m) $m->access = $this->gm->filter("access", ["module_id" => $m->module_id], null, null, [["code", "asc"]]);
 		
 		$data = [
 			"modules" => $modules,
@@ -29,7 +29,7 @@ class Access extends CI_Controller {
 		if (!$this->session->userdata('username')) redirect("auth/login");
 		
 		$data = [
-			"modules" => $this->gm->all("module", [["module", "asc"]]),
+			"modules" => $this->gm->all("access_module", [["module", "asc"]]),
 			"main" => "authentication/access/register",
 		];
 		$this->load->view('layout', $data);
@@ -43,7 +43,7 @@ class Access extends CI_Controller {
 			$result = $this->my_val->add_module($data);
 			
 			if ($result["type"] === "success")
-				if ($this->gm->insert("module", $data)) 
+				if ($this->gm->insert("access_module", $data)) 
 					$result["msg"] = $this->lang->line("s_module_insert");
 		}else $result = ["type" => "error", "msg" => $this->lang->line("e_finished_session")];
 		
@@ -98,4 +98,12 @@ class Access extends CI_Controller {
 		header('Content-Type: application/json');
 		echo json_encode($result);
 	}
+
+	/*public function methods(){
+		$cl = $this->router->fetch_class();
+		$aux = get_class_methods($this);
+		
+		$no_class = ["__construct", "methods", "get_instance"];
+		foreach($aux as $a) if (!in_array($a, $no_class)) echo $cl."_".$a."<br/>";
+	}*/
 }

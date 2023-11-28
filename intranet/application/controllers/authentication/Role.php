@@ -88,7 +88,7 @@ class Role extends CI_Controller {
 	public function detail($role_id){
 		if (!$this->session->userdata('username')) redirect("auth/login");
 		
-		$modules = $this->gm->all("module", [["module", "asc"]]);
+		$modules = $this->gm->all("access_module", [["module", "asc"]]);
 		foreach($modules as $m) $m->access = $this->gm->filter("access", ["module_id" => $m->module_id], null, null, [["access", "asc"]]);
 		
 		$access_ids = [];
@@ -144,12 +144,11 @@ class Role extends CI_Controller {
 		echo json_encode(["type" => $type, "msg" => $msg]);
 	}
 	
-	/* public function generate(){
-		for($i = 0; $i < 26; $i++){
-			$aux = $this->my_func->randomString(10);
-			if (!$this->gm->filter("role", ["role" => $aux])) $this->gm->insert("role", ["role" => $aux]);
-			echo $aux."<br/>";
-		}
-	} */
-	
+	/*public function methods(){
+		$cl = $this->router->fetch_class();
+		$aux = get_class_methods($this);
+		
+		$no_class = ["__construct", "methods", "get_instance"];
+		foreach($aux as $a) if (!in_array($a, $no_class)) echo $cl."_".$a."<br/>";
+	}*/
 }

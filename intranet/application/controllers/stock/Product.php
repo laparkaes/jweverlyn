@@ -410,4 +410,12 @@ class Product extends CI_Controller {
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msg" => $msg, "images" => $images, "image" => $img]);
 	}
+	
+	/*public function methods(){
+		$cl = $this->router->fetch_class();
+		$aux = get_class_methods($this);
+		
+		$no_class = ["__construct", "methods", "get_instance"];
+		foreach($aux as $a) if (!in_array($a, $no_class)) echo $cl."_".$a."<br/>";
+	}*/
 }

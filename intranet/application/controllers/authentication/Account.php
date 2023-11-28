@@ -12,7 +12,8 @@ class Account extends CI_Controller {
 	}
 
 	public function index(){
-		if (!$this->session->userdata('username')) redirect("auth/login");
+		$result = $this->my_func->check_access($this->nav_menu, $this->router->fetch_method());
+		if ($result["type"] === "error") redirect($result["url"]);
 		
 		$params = [
 			"page" => $this->input->get("page"),
@@ -45,7 +46,8 @@ class Account extends CI_Controller {
 	}
 	
 	public function register(){
-		if (!$this->session->userdata('username')) redirect("auth/login");
+		$result = $this->my_func->check_access($this->nav_menu, $this->router->fetch_method());
+		if ($result["type"] === "error") redirect($result["url"]);
 		
 		$data = [
 			"roles" => $this->gm->all("role", [["role", "asc"]]),
@@ -55,7 +57,8 @@ class Account extends CI_Controller {
 	}
 	
 	public function add(){
-		if ($this->session->userdata('username')){
+		$result = $this->my_func->check_access($this->nav_menu, $this->router->fetch_method());
+		if ($result["type"] === "success"){
 			$data = $this->input->post();
 			
 			$this->load->library('my_val');
@@ -69,14 +72,15 @@ class Account extends CI_Controller {
 				$result["account_id"] = $this->gm->insert("account", $data);
 				$result["msg"] = $this->lang->line("s_account_insert");
 			}
-		}else $result = ["type" => "error", "msg" => $this->lang->line("e_finished_session")];
+		}
 		
 		header('Content-Type: application/json');
 		echo json_encode($result);
 	}
 	
 	public function detail($account_id){
-		if (!$this->session->userdata('username')) redirect("auth/login");
+		$result = $this->my_func->check_access($this->nav_menu, $this->router->fetch_method());
+		if ($result["type"] === "error") redirect($result["url"]);
 		
 		$account = $this->gm->unique("account", "account_id", $account_id, false);
 		$account->role = $this->gm->unique("role", "role_id", $account->role_id)->role;
@@ -94,7 +98,8 @@ class Account extends CI_Controller {
 	}
 	
 	public function update(){
-		if ($this->session->userdata('username')){
+		$result = $this->my_func->check_access($this->nav_menu, $this->router->fetch_method());
+		if ($result["type"] === "success"){
 			$data = $this->input->post();
 			
 			$this->load->library('my_val');
@@ -106,16 +111,15 @@ class Account extends CI_Controller {
 				$result["account_id"] = $data["account_id"];
 				$result["msg"] = $this->lang->line("s_account_update");
 			}
-		}else $result = ["type" => "error", "msgs" => [], "msg" => $this->lang->line("e_finished_session")];
+		}
 		
 		header('Content-Type: application/json');
 		echo json_encode($result);
 	}
 	
 	public function update_image(){
-		$result = ["type" => "error", "msg" => null];
-		
-		if ($this->session->userdata('username')){
+		$result = $this->my_func->check_access($this->nav_menu, $this->router->fetch_method());
+		if ($result["type"] === "success"){
 			$data = $this->input->post();
 			$data["image"] = $_FILES["image"]["name"];
 			
@@ -149,14 +153,15 @@ class Account extends CI_Controller {
 					$result["url"] = base_url()."authentication/account/detail/".$account->account_id;
 				}else $result = ["type" => "error", "msg" => $this->upload->display_errors()];
 			}else $result["msg"] = $this->lang->line("e_check_datas");
-		}else $result["msg"] = $this->lang->line("e_finished_session");
+		}
 		
 		header('Content-Type: application/json');
 		echo json_encode($result);
 	}
 	
 	public function update_password(){
-		if ($this->session->userdata('username')){
+		$result = $this->my_func->check_access($this->nav_menu, $this->router->fetch_method());
+		if ($result["type"] === "success"){
 			$data = $this->input->post();
 			
 			$this->load->library('my_val');
@@ -172,14 +177,15 @@ class Account extends CI_Controller {
 				$result["account_id"] = $data["account_id"];
 				$result["msg"] = $this->lang->line("s_account_update");
 			}
-		}else $result = ["type" => "error", "msgs" => [], "msg" => $this->lang->line("e_finished_session")];
+		}
 		
 		header('Content-Type: application/json');
 		echo json_encode($result);
 	}
 	
 	public function deactivate(){
-		if ($this->session->userdata('username')){
+		$result = $this->my_func->check_access($this->nav_menu, $this->router->fetch_method());
+		if ($result["type"] === "success"){
 			$data = $this->input->post();
 			$data["is_confirmed"] = $this->input->post("is_confirmed");
 			
@@ -196,14 +202,15 @@ class Account extends CI_Controller {
 				$result["account_id"] = $data["account_id"];
 				$result["msg"] = $this->lang->line("s_account_deactivate");
 			}
-		}else $result = ["type" => "error", "msgs" => [], "msg" => $this->lang->line("e_finished_session")];
+		}
 		
 		header('Content-Type: application/json');
 		echo json_encode($result);
 	}
 	
 	public function activate(){
-		if ($this->session->userdata('username')){
+		$result = $this->my_func->check_access($this->nav_menu, $this->router->fetch_method());
+		if ($result["type"] === "success"){
 			$data = $this->input->post();
 			$data["is_confirmed"] = $this->input->post("is_confirmed");
 			
@@ -220,42 +227,17 @@ class Account extends CI_Controller {
 				$result["account_id"] = $data["account_id"];
 				$result["msg"] = $this->lang->line("s_account_deactivate");
 			}
-		}else $result = ["type" => "error", "msgs" => [], "msg" => $this->lang->line("e_finished_session")];
+		}
 		
 		header('Content-Type: application/json');
 		echo json_encode($result);
 	}
 	
-	/* public function generate(){
-		$names = [
-			"Alice", "Bob", "Charlie", "David", "Emily", "Frank", "Grace", "Henry", "Isabella",
-			"Jack", "Katherine", "Liam", "Mia", "Noah", "Olivia", "Penelope", "Quinn", "Ryan",
-			"Sophia", "Thomas", "Uma", "Victoria", "William", "Xander", "Yasmine", "Zachary",
-			"Ava", "Benjamin", "Chloe", "Daniel", "Emma"
-		];
+	/* public function methods(){
+		$cl = $this->router->fetch_class();
+		$aux = get_class_methods($this);
 		
-		$surnames = [
-			"Smith", "Johnson", "Williams", "Brown", "Jones", "Miller", "Davis", "Garcia", "Rodriguez",
-			"Martinez", "Hernandez", "Lopez", "Gonzalez", "Perez", "Wilson", "Anderson", "Thomas", "Lee",
-			"Moore", "Jackson", "White", "Harris", "Martin", "Thompson", "Garcia", "Young", "Hall", "King",
-			"Scott", "Morris", "Turner"
-		];
-		
-		$roles = $this->gm->all("role");
-		foreach($surnames as $s){
-			foreach($names as $n){
-				$now = date("Y-m-d H:i:s");
-				$data = [
-					"role_id" => $roles[array_rand($roles)]->role_id,
-					"name" => $s." ".$n,
-					"username" => strtolower($s.".".$n)."@gmail.com",
-					"password" => password_hash($n, PASSWORD_BCRYPT),
-					"updated_at" => $now,
-					"registed_at" => $now,
-				];
-				
-				$this->gm->insert("account", $data);
-			}	
-		}
+		$no_class = ["__construct", "methods", "get_instance"];
+		foreach($aux as $a) if (!in_array($a, $no_class)) echo $cl."_".$a."<br/>";
 	} */
 }

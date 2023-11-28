@@ -15,7 +15,7 @@ class Balance extends CI_Controller {
 		$this->js_init = "money_flow/balance.js";
 	}
 	
-	public function make_list($params){
+	private function make_list($params){
 		if (!$params["bp"]){//balance period no selected => show actual month balance
 			$params = [
 				"bt" => "m",
@@ -246,4 +246,12 @@ class Balance extends CI_Controller {
 		header('Content-Type: application/json');
 		echo json_encode($result);
 	}
+	
+	/*public function methods(){
+		$cl = $this->router->fetch_class();
+		$aux = get_class_methods($this);
+		
+		$no_class = ["__construct", "methods", "get_instance"];
+		foreach($aux as $a) if (!in_array($a, $no_class)) echo $cl."_".$a."<br/>";
+	}*/
 }
