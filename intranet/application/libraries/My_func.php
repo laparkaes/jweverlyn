@@ -10,7 +10,7 @@ class My_func{
 		$this->CI = &get_instance();
 	}
 	
-	public function check_access($code = [], $add = "",$check_logged = true){
+	public function check_access($code = [], $add = "", $check_logged = true){
 		$result = ["type" => "success", "msg" => null, "url" => null];
 		$code[] = $add;
 		
@@ -34,7 +34,7 @@ class My_func{
 					$result["url"] = "auth/no_access";
 				}
 			}
-		}
+		}else $result["type"] = "error";
 		
 		return $result;
 	}

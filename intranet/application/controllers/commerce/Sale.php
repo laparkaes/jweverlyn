@@ -184,11 +184,10 @@ class Sale extends CI_Controller {
 		header('Content-Type: application/json');
 		echo json_encode($result);
 	}
-	/////////////////////////////////continue with access validation
+	
 	public function add_payment(){//ok
-		$result = ["type" => "error", "msg" => null, "url" => null];
-		
-		if ($this->session->userdata('username')){
+		$result = $this->my_func->check_access($this->nav_menu, $this->router->fetch_method());
+		if ($result["type"] === "success"){
 			$payment = $this->input->post();
 			
 			$payment["received"] = round(str_replace(",", "", $payment["received"]), 2);
@@ -206,124 +205,129 @@ class Sale extends CI_Controller {
 				$result["msg"] = $this->lang->line("s_payment_insert");
 				$result["url"] = base_url()."commerce/sale/detail/".$payment["sale_id"];
 			}
-		}else $result["msg"] = $this->lang->line("e_finished_session");
+		}
 		
 		header('Content-Type: application/json');
 		echo json_encode($result);
 	}
 	
 	public function delete_payment(){//ok
-		$type = "error"; $msg = null; $url = null;
-		$payment = $this->gm->unique("sale_payment", "payment_id", $this->input->post('payment_id'));
-		
-		if ($this->session->userdata('username')){
+		$result = $this->my_func->check_access($this->nav_menu, $this->router->fetch_method());
+		if ($result["type"] === "success"){
+			$payment = $this->gm->unique("sale_payment", "payment_id", $this->input->post('payment_id'));
 			if ($payment){
 				$this->gm->update("sale_payment", ["payment_id" => $payment->payment_id], ["valid" => false]);
 				$this->update_balance($payment->sale_id);
 				
-				$type = "success";
-				$msg = $this->lang->line("s_payment_delete");
-				$url = base_url()."commerce/sale/detail/".$payment->sale_id;
-			}else $msg = $this->lang->line("e_no_payment_record");
-		}else $msg = $this->lang->line("e_finished_session");
+				$result["msg"] = $this->lang->line("s_payment_delete");
+				$result["url"] = base_url()."commerce/sale/detail/".$payment->sale_id;
+			}else $result["msg"] = $this->lang->line("e_no_payment_record");
+		}
 		
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msg" => $msg, "url" => $url]);
 	}
 	
 	public function search_product(){//ok
-		$type = "error"; $msg = ""; $products = [];
-		$keyword = $this->input->post("keyword");
-		
-		if ($keyword){
-			$products_rec = $this->gm->filter("product", [], [["field" => "product", "values" => explode(" ", $keyword)]], null, [["product", "asc"]]);
-			
-			if ($products_rec){
-				$categories = [];
-				$categories_rec = $this->gm->all("product_category", [], "", "", true);
-				foreach($categories_rec as $c) $categories[$c->category_id] = $c->category;
+		$result = $this->my_func->check_access($this->nav_menu, $this->router->fetch_method());
+		if ($result["type"] === "success"){
+			$result["type"] = "error";
+			$keyword = $this->input->post("keyword");
+			if ($keyword){
+				$products_rec = $this->gm->filter("product", [], [["field" => "product", "values" => explode(" ", $keyword)]], null, [["product", "asc"]]);
 				
-				$type_prod = $this->gm->unique("product_type", "type", "Producto", false);
-				
-				$products = [];
-				foreach($products_rec as $p){
-					if ($p->type_id == $type_prod->type_id){
-						$stock = $this->gm->sum("product_option", "stock", ["product_id" => $p->product_id, "valid" => true])->stock;
-						if ($stock) $stock = number_format($stock)." disponibles";
-						else $stock = "<span class='text-danger'>No disponible</span>";	
-					}else $stock = "-";
+				if ($products_rec){
+					$categories = [];
+					$categories_rec = $this->gm->all("product_category", [], "", "", true);
+					foreach($categories_rec as $c) $categories[$c->category_id] = $c->category;
 					
+					$type_prod = $this->gm->unique("product_type", "type", "Producto", false);
 					
-					$products[] = ["product_id" => $p->product_id, "category" => $categories[$p->category_id], "product" => $p->product, "price" => number_format($p->price, 2), "code" => $p->code, "stock" => $stock];
-				}
-				
-				$type = "success";
-			}else $msg = $this->lang->line("e_no_result");
-		}else $msg = $this->lang->line("e_enter_keyword");
+					$products = [];
+					foreach($products_rec as $p){
+						if ($p->type_id == $type_prod->type_id){
+							$stock = $this->gm->sum("product_option", "stock", ["product_id" => $p->product_id, "valid" => true])->stock;
+							if ($stock) $stock = number_format($stock)." disponibles";
+							else $stock = "<span class='text-danger'>No disponible</span>";	
+						}else $stock = "-";
+						
+						
+						$products[] = ["product_id" => $p->product_id, "category" => $categories[$p->category_id], "product" => $p->product, "price" => number_format($p->price, 2), "code" => $p->code, "stock" => $stock];
+					}
+					
+					$result["type"] = "success";
+					$result["products"] = $products;
+				}else $result["msg"] = $this->lang->line("e_no_result");
+			}else $result["msg"] = $this->lang->line("e_enter_keyword");
+		}
 		
 		header('Content-Type: application/json');
-		echo json_encode(["type" => $type, "msg" => $msg, "products" => $products]);
+		echo json_encode($result);
 	}
 	
 	public function load_product(){//ok
-		$res = ["type" => "error", "msg" => null];
-		
-		$product = $this->gm->unique("product", "product_id", $this->input->post("product_id"));
-		if ($product){
-			unset($product->category_id);
-			unset($product->image);
-			unset($product->valid);
-			unset($product->updated_at);
-			unset($product->registed_at);
-			
-			$type_prod = $this->gm->unique("product_type", "type", "Producto", false);
-			if ($product->type_id == $type_prod->type_id){//Product
-				$options = $this->gm->filter("product_option", ["product_id" => $product->product_id], null, null, [["option_id", "asc"]]);
-				foreach($options as $i_o => $op) if (!$op->stock) unset($options[$i_o]);
+		$result = $this->my_func->check_access($this->nav_menu, $this->router->fetch_method());
+		if ($result["type"] === "success"){
+			$result["type"] = "error";
+			$product = $this->gm->unique("product", "product_id", $this->input->post("product_id"));
+			if ($product){
+				unset($product->category_id);
+				unset($product->image);
+				unset($product->valid);
+				unset($product->updated_at);
+				unset($product->registed_at);
 				
-				if ($options){
-					$res["type"] = "success";
-					$res["product"] = $product;
-					$res["options"] = $options;
-				}else $res["msg"] = $this->lang->line("e_product_no_stock");
-			}else{//Service
-				$res["type"] = "success";
-				$res["product"] = $product;
-				$res["options"] = [];
-			}
-		}else $res["msg"] = $this->lang->line("e_no_product_registed");
+				$type_prod = $this->gm->unique("product_type", "type", "Producto", false);
+				if ($product->type_id == $type_prod->type_id){//Product
+					$options = $this->gm->filter("product_option", ["product_id" => $product->product_id], null, null, [["option_id", "asc"]]);
+					foreach($options as $i_o => $op) if (!$op->stock) unset($options[$i_o]);
+					
+					if ($options){
+						$result["type"] = "success";
+						$result["product"] = $product;
+						$result["options"] = $options;
+					}else $result["msg"] = $this->lang->line("e_product_no_stock");
+				}else{//Service
+					$result["type"] = "success";
+					$result["product"] = $product;
+					$result["options"] = [];
+				}
+			}else $result["msg"] = $this->lang->line("e_no_product_registed");
+		}
 		
 		header('Content-Type: application/json');
-		echo json_encode($res);
+		echo json_encode($result);
 	}
 	
 	public function check_stock(){//ok
-		$res = ["type" => "success", "msg" => null];
-		
-		$prod = $this->input->post("prod");
-		$product = $this->gm->unique("product", "product_id", $prod["product_id"]);
-		$type = $this->gm->unique("product_type", "type_id", $product->type_id, false);
-		
-		if ($type->type === "Producto"){
-			if ($prod["option_id"]){
-				$option = $this->gm->unique("product_option", "option_id", $prod["option_id"]);
-				
-				if ($prod["qty"] > $option->stock){
-					$res["type"] = "error";
-					$res["msg"] = $this->lang->line("e_product_no_stock")." (Max: ".number_format($option->stock).")";
-				}	
-			}else{
-				$res["type"] = "error";
-				$res["msg"] = $this->lang->line("e_option_select");
+		$result = $this->my_func->check_access($this->nav_menu, $this->router->fetch_method());
+		if ($result["type"] === "success"){
+			$prod = $this->input->post("prod");
+			$product = $this->gm->unique("product", "product_id", $prod["product_id"]);
+			$type = $this->gm->unique("product_type", "type_id", $product->type_id, false);
+			
+			if ($type->type === "Producto"){
+				if ($prod["option_id"]){
+					$option = $this->gm->unique("product_option", "option_id", $prod["option_id"]);
+					
+					if ($prod["qty"] > $option->stock){
+						$result["type"] = "error";
+						$result["msg"] = $this->lang->line("e_product_no_stock")." (Max: ".number_format($option->stock).")";
+					}	
+				}else{
+					$result["type"] = "error";
+					$result["msg"] = $this->lang->line("e_option_select");
+				}
 			}
 		}
 		
 		header('Content-Type: application/json');
-		echo json_encode($res);
+		echo json_encode($result);
 	}
 	
 	public function register(){//ok
-		if (!$this->session->userdata('username')) redirect("auth/login");
+		$result = $this->my_func->check_access($this->nav_menu, $this->router->fetch_method());
+		if ($result["type"] === "error") redirect($result["url"]);
 		
 		$data = [
 			"payment_methods" => $this->gm->all_simple("payment_method", "payment_method_id", "asc"),
@@ -334,9 +338,8 @@ class Sale extends CI_Controller {
 	}
 	
 	public function add_sale(){//ok
-		$result = ["type" => "error", "msg" => null];
-		
-		if ($this->session->userdata('username')){
+		$result = $this->my_func->check_access($this->nav_menu, $this->router->fetch_method());
+		if ($result["type"] === "success"){
 			$products_json = $this->input->post("products");
 			$payment = $this->input->post("payment");
 			$client = $this->input->post("client");	 
@@ -407,16 +410,16 @@ class Sale extends CI_Controller {
 				$result["sale_id"] = $sale_id;
 				$result["msg"] = $this->lang->line("s_sale_insert");
 			}
-		}else $result["msg"] = $this->lang->line("e_finished_session");
+		}
 		
 		header('Content-Type: application/json');
 		echo json_encode($result);
 	}
 	
 	public function cancel_sale(){//ok
-		$type = "error"; $msg = null; $url = "";
-		
-		if ($this->session->userdata('username')){
+		$result = $this->my_func->check_access($this->nav_menu, $this->router->fetch_method());
+		if ($result["type"] === "success"){
+			$result["type"] = "error";
 			$sale_id = $this->input->post("sale_id");
 			
 			if (!$this->gm->unique("invoice", "sale_id", $sale_id)){
@@ -426,20 +429,19 @@ class Sale extends CI_Controller {
 				$this->gm->update("sale_payment", $f, ["valid" => false]);
 				$this->gm->update("sale", $f, ["updated_at" => date("Y-m-d H:i:s"), "valid" => false]);
 				
-				$type = "success";
-				$msg = $this->lang->line("s_sale_cancel");
-				$url = base_url()."commerce/sale";	
-			}else $msg = $this->lang->line("e_invoice_issued");
-		}else $msg = $this->lang->line("e_finished_session");
+				$result["type"] = "success";
+				$result["msg"] = $this->lang->line("s_sale_cancel");
+				$result["url"] = base_url()."commerce/sale";	
+			}else $result["msg"] = $this->lang->line("e_invoice_issued");
+		}
 		
 		header('Content-Type: application/json');
-		echo json_encode(["type" => $type, "msg" => $msg, "url" => $url]);
+		echo json_encode($result);
 	}
 
 	public function add_note(){//ok
-		$result = ["type" => "error", "msg" => null, "url" => null];
-		
-		if ($this->session->userdata('username')){
+		$result = $this->my_func->check_access($this->nav_menu, $this->router->fetch_method());
+		if ($result["type"] === "success"){
 			$note = $this->input->post();
 			
 			$this->load->library('my_val');
@@ -453,30 +455,27 @@ class Sale extends CI_Controller {
 				$result["msg"] = $this->lang->line("s_note_insert");
 				$result["url"] = base_url()."commerce/sale/detail/".$note["sale_id"];
 			}else $result["msg"] = $this->lang->line("e_check_datas");
-		}else $result["msg"] = $this->lang->line("e_finished_session");
+		}
 		
 		header('Content-Type: application/json');
 		echo json_encode($result);
 	}
 	
 	public function delete_note(){//ok
-		$type = "error"; $msg = null; $url = null;
-		
-		if ($this->session->userdata('username')){
+		$result = $this->my_func->check_access($this->nav_menu, $this->router->fetch_method());
+		if ($result["type"] === "success"){
 			$note = $this->gm->unique("sale_note", "note_id", $this->input->post('note_id'));
-			
 			$this->gm->update("sale_note", ["note_id" => $note->note_id], ["valid" => false]);
 			
-			$type = "success";
-			$msg = $this->lang->line("s_note_delete");
-			$url = base_url()."commerce/sale/detail/".$note->sale_id;
-		}else $msg = $this->lang->line("e_finished_session");
+			$result["msg"] = $this->lang->line("s_note_delete");
+			$result["url"] = base_url()."commerce/sale/detail/".$note->sale_id;
+		}
 		
 		header('Content-Type: application/json');
-		echo json_encode(["type" => $type, "msg" => $msg, "url" => $url]);
+		echo json_encode($result);
 	}
 
-	public function send_to_sunat($invoice_id){
+	private function send_to_sunat($invoice_id){
 		$this->load->library('my_greenter');
 		$result = $this->my_greenter->issue_invoice($invoice_id);
 		
@@ -504,9 +503,9 @@ class Sale extends CI_Controller {
 	}
 
 	public function issue_invoice(){//ok
-		$result = ["type" => "error", "msg" => "", "url" => null];
-		
-		if ($this->session->userdata('username')){
+		$result = $this->my_func->check_access($this->nav_menu, $this->router->fetch_method());
+		if ($result["type"] === "success"){
+			$result["type"] = "error";
 			$invoice = $this->input->post("invoice");
 			$client = $this->input->post("client");
 			
@@ -557,22 +556,24 @@ class Sale extends CI_Controller {
 					}
 				}else $result["msg"] = $this->lang->line("e_check_datas");
 			}else $result["msg"] = $this->lang->line("e_invoice_issued");
-		}else $result["msg"] = $this->lang->line("e_finished_session");
+		}
 		
 		header('Content-Type: application/json');
 		echo json_encode($result);
 	}
 	
 	public function send_invoice(){//ok
-		if ($this->session->userdata('username')) $result = $this->send_to_sunat($this->input->post("invoice_id"));
-		else $result = ["type" => "error", "msg" => $this->lang->line("e_finished_session")];
-		
+		$result = $this->my_func->check_access($this->nav_menu, $this->router->fetch_method());
+		if ($result["type"] === "success")
+			$result = $this->send_to_sunat($this->input->post("invoice_id"));
+	
 		header('Content-Type: application/json');
 		echo json_encode($result);
 	}
 	
 	public function view_invoice($invoice_id){//ok
-		if (!$this->session->userdata('username')) redirect("auth/login");
+		$result = $this->my_func->check_access($this->nav_menu, $this->router->fetch_method());
+		if ($result["type"] === "error") redirect($result["url"]);
 		
 		$invoice = $this->gm->unique("invoice", "invoice_id", $invoice_id);
 		if (!$invoice){
@@ -620,9 +621,8 @@ class Sale extends CI_Controller {
 	}
 	
 	public function void_invoice(){//ok
-		$result = ["type" => "error", "msg" => ""];
-		
-		if ($this->session->userdata('username')){
+		$result = $this->my_func->check_access($this->nav_menu, $this->router->fetch_method());
+		if ($result["type"] === "success"){
 			$invoice_id = $this->input->post("invoice_id");
 			$invoice = $this->gm->unique("invoice", "invoice_id", $invoice_id);
 			
@@ -655,7 +655,7 @@ class Sale extends CI_Controller {
 			
 			unset($result["xml"]);
 			unset($result["cdr"]);
-		}else $result["msg"] = $this->lang->line("e_finished_session");
+		}
 		
 		header('Content-Type: application/json');
 		echo json_encode($result);
