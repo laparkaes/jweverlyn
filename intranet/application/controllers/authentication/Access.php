@@ -13,7 +13,8 @@ class Access extends CI_Controller {
 
 	/* Access list */
 	public function index(){
-		if (!$this->session->userdata('username')) redirect("auth/login");
+		$result = $this->my_func->check_access($this->nav_menu, $this->router->fetch_method());
+		if ($result["type"] === "error") redirect($result["url"]);
 		
 		$modules = $this->gm->all("access_module", [["module", "asc"]]);
 		foreach($modules as $m) $m->access = $this->gm->filter("access", ["module_id" => $m->module_id], null, null, [["code", "asc"]]);
@@ -26,7 +27,8 @@ class Access extends CI_Controller {
 	}
 	
 	public function register(){
-		if (!$this->session->userdata('username')) redirect("auth/login");
+		$result = $this->my_func->check_access($this->nav_menu, $this->router->fetch_method());
+		if ($result["type"] === "error") redirect($result["url"]);
 		
 		$data = [
 			"modules" => $this->gm->all("access_module", [["module", "asc"]]),
@@ -36,7 +38,8 @@ class Access extends CI_Controller {
 	}
 	
 	public function add_module(){
-		if ($this->session->userdata('username')){
+		$result = $this->my_func->check_access($this->nav_menu, $this->router->fetch_method());
+		if ($result["type"] === "success"){
 			$data = $this->input->post();
 			
 			$this->load->library('my_val');
@@ -45,14 +48,15 @@ class Access extends CI_Controller {
 			if ($result["type"] === "success")
 				if ($this->gm->insert("access_module", $data)) 
 					$result["msg"] = $this->lang->line("s_module_insert");
-		}else $result = ["type" => "error", "msg" => $this->lang->line("e_finished_session")];
+		}
 		
 		header('Content-Type: application/json');
 		echo json_encode($result);
 	}
 	
 	public function delete_module(){
-		if ($this->session->userdata('username')){
+		$result = $this->my_func->check_access($this->nav_menu, $this->router->fetch_method());
+		if ($result["type"] === "success"){
 			$data = $this->input->post();
 			
 			$this->load->library('my_val');
@@ -61,14 +65,15 @@ class Access extends CI_Controller {
 			if ($result["type"] === "success")
 				if ($this->gm->update("module", ["module_id" => $data["module_id"]], ["valid" => false]))
 					$result["msg"] = $this->lang->line("s_module_delete");
-		}else $result = ["type" => "error", "msg" => $this->lang->line("e_finished_session")];
+		}
 		
 		header('Content-Type: application/json');
 		echo json_encode($result);
 	}
 	
 	public function add_access(){
-		if ($this->session->userdata('username')){
+		$result = $this->my_func->check_access($this->nav_menu, $this->router->fetch_method());
+		if ($result["type"] === "success"){
 			$data = $this->input->post();
 			
 			$this->load->library('my_val');
@@ -77,14 +82,15 @@ class Access extends CI_Controller {
 			if ($result["type"] === "success")
 				if ($this->gm->insert("access", $data)) 
 					$result["msg"] = $this->lang->line("s_access_insert");
-		}else $result = ["type" => "error", "msg" => $this->lang->line("e_finished_session")];
+		}else
 			
 		header('Content-Type: application/json');
 		echo json_encode($result);
 	}
 	
 	public function delete_access(){
-		if ($this->session->userdata('username')){
+		$result = $this->my_func->check_access($this->nav_menu, $this->router->fetch_method());
+		if ($result["type"] === "success"){
 			$data = $this->input->post();
 			
 			$this->load->library('my_val');
@@ -93,7 +99,7 @@ class Access extends CI_Controller {
 			if ($result["type"] === "success")
 				if ($this->gm->update("access", ["access_id" => $data["access_id"]], ["valid" => false]))
 					$result["msg"] = $this->lang->line("s_access_delete");
-		}else $result = ["type" => "error", "msg" => $this->lang->line("e_finished_session")];
+		}
 			
 		header('Content-Type: application/json');
 		echo json_encode($result);

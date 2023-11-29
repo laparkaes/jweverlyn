@@ -12,7 +12,8 @@ class Sale extends CI_Controller {
 	}
 	
 	public function index(){
-		if (!$this->session->userdata('username')) redirect("auth/login");
+		$result = $this->my_func->check_access($this->nav_menu, $this->router->fetch_method());
+		if ($result["type"] === "error") redirect($result["url"]);
 		
 		$params = [
 			"page" => $this->input->get("page"),
@@ -61,8 +62,9 @@ class Sale extends CI_Controller {
 		$this->load->view('layout', $data);
 	}
 	
-	public function detail($sale_id){//ok
-		if (!$this->session->userdata('username')) redirect("auth/login");
+	public function detail($sale_id){
+		$result = $this->my_func->check_access($this->nav_menu, $this->router->fetch_method());
+		if ($result["type"] === "error") redirect($result["url"]);
 
 		$sale = $this->gm->unique("sale", "sale_id", $sale_id, false);
 		if (!$sale) redirect("no_page");
@@ -135,9 +137,8 @@ class Sale extends CI_Controller {
 	}
 	
 	public function add_file(){//ok
-		$result = ["type" => "error", "msg" => null, "url" => null];
-		
-		if ($this->session->userdata('username')){
+		$result = $this->my_func->check_access($this->nav_menu, $this->router->fetch_method());
+		if ($result["type"] === "success"){
 			$data = $this->input->post();
 			$data["filename"] = $_FILES["upload"]["name"];
 			
@@ -164,28 +165,26 @@ class Sale extends CI_Controller {
 					$result["url"] = base_url()."commerce/sale/detail/".$data["sale_id"];
 				}else $result = ["type" => "error", "msg" => $this->upload->display_errors()];
 			}else $result["msg"] = $this->lang->line("e_check_datas");
-		}else $result["msg"] = $this->lang->line("e_finished_session");
+		}
 		
 		header('Content-Type: application/json');
 		echo json_encode($result);
 	}
 	
 	public function delete_file(){//ok
-		$type = "error"; $msg = null; $url = null;
-		
-		if ($this->session->userdata('username')){
+		$result = $this->my_func->check_access($this->nav_menu, $this->router->fetch_method());
+		if ($result["type"] === "success"){
 			$file = $this->gm->unique("sale_file", "file_id", $this->input->post('file_id'));
 			$this->gm->update("sale_file", ["file_id" => $file->file_id], ["valid" => false]);
 			
-			$type = "success";
-			$msg = $this->lang->line("s_file_delete");
-			$url = base_url()."commerce/sale/detail/".$file->sale_id;
-		}else $msg = $this->lang->line("e_finished_session");
+			$result["msg"] = $this->lang->line("s_file_delete");
+			$result["url"] = base_url()."commerce/sale/detail/".$file->sale_id;
+		}
 		
 		header('Content-Type: application/json');
-		echo json_encode(["type" => $type, "msg" => $msg, "url" => $url]);
+		echo json_encode($result);
 	}
-	
+	/////////////////////////////////continue with access validation
 	public function add_payment(){//ok
 		$result = ["type" => "error", "msg" => null, "url" => null];
 		

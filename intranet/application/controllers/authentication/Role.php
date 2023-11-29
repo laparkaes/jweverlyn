@@ -12,7 +12,8 @@ class Role extends CI_Controller {
 	}
 
 	public function index(){
-		if (!$this->session->userdata('username')) redirect("auth/login");
+		$result = $this->my_func->check_access($this->nav_menu, $this->router->fetch_method());
+		if ($result["type"] === "error") redirect($result["url"]);
 		
 		$params = [
 			"page" => $this->input->get("page"),
@@ -40,7 +41,8 @@ class Role extends CI_Controller {
 	}
 	
 	public function register(){
-		if (!$this->session->userdata('username')) redirect("auth/login");
+		$result = $this->my_func->check_access($this->nav_menu, $this->router->fetch_method());
+		if ($result["type"] === "error") redirect($result["url"]);
 		
 		$data = [
 			"main" => "authentication/role/register",
@@ -49,7 +51,8 @@ class Role extends CI_Controller {
 	}
 	
 	public function add(){
-		if ($this->session->userdata('username')){
+		$result = $this->my_func->check_access($this->nav_menu, $this->router->fetch_method());
+		if ($result["type"] === "success"){
 			$data = $this->input->post();
 			
 			$this->load->library('my_val');
@@ -59,14 +62,15 @@ class Role extends CI_Controller {
 				$result["role_id"] = $this->gm->insert("role", $data);
 				$result["msg"] = $this->lang->line("s_role_insert");
 			}
-		}else $result = ["type" => "error", "msg" => $this->lang->line("e_finished_session")];
+		}
 		
 		header('Content-Type: application/json');
 		echo json_encode($result);
 	}
 	
 	public function delete(){
-		if ($this->session->userdata('username')){
+		$result = $this->my_func->check_access($this->nav_menu, $this->router->fetch_method());
+		if ($result["type"] === "success"){
 			$data = $this->input->post();
 			
 			$this->load->library('my_val');
@@ -79,14 +83,15 @@ class Role extends CI_Controller {
 					$this->gm->delete("role_access", $aux);
 				}	
 			}
-		}else $result = ["type" => "error", "msg" => $this->lang->line("e_finished_session")];
+		}
 		
 		header('Content-Type: application/json');
 		echo json_encode($result);
 	}
 	
 	public function detail($role_id){
-		if (!$this->session->userdata('username')) redirect("auth/login");
+		$result = $this->my_func->check_access($this->nav_menu, $this->router->fetch_method());
+		if ($result["type"] === "error") redirect($result["url"]);
 		
 		$modules = $this->gm->all("access_module", [["module", "asc"]]);
 		foreach($modules as $m) $m->access = $this->gm->filter("access", ["module_id" => $m->module_id], null, null, [["access", "asc"]]);
@@ -106,7 +111,8 @@ class Role extends CI_Controller {
 	}
 	
 	public function update(){
-		if ($this->session->userdata('username')){
+		$result = $this->my_func->check_access($this->nav_menu, $this->router->fetch_method());
+		if ($result["type"] === "success"){
 			$data = $this->input->post();
 			
 			$this->load->library('my_val');
@@ -117,31 +123,28 @@ class Role extends CI_Controller {
 				$result["role_id"] = $data["role_id"];
 				$result["msg"] = $this->lang->line("s_role_update");
 			}
-		}else $result = ["type" => "error", "msgs" => [], "msg" => $this->lang->line("e_finished_session")];
+		}else $result["msgs"] = [];
 		
 		header('Content-Type: application/json');
 		echo json_encode($result);
 	}
 	
 	public function access_control(){
-		$type = "error"; $msg = null;
-		
-		if ($this->session->userdata('username')){
+		$result = $this->my_func->check_access($this->nav_menu, $this->router->fetch_method());
+		if ($result["type"] === "success"){
 			$data = $this->input->post();
 			$action = $data["action"]; unset($data["action"]);
 			if ($action == "add"){
-				$result = $this->gm->insert("role_access", $data);
-				$msg = $this->lang->line("s_role_access_assigned");
+				$this->gm->insert("role_access", $data);
+				$result["msg"] = $this->lang->line("s_role_access_assigned");
 			}else{
-				$result = $this->gm->delete("role_access", $data);
-				$msg = $this->lang->line("s_role_access_designated");
+				$this->gm->delete("role_access", $data);
+				$result["msg"] = $this->lang->line("s_role_access_designated");
 			}
-			
-			$type = "success";
-		}else $msg = $this->lang->line("e_finished_session");
+		}
 		
 		header('Content-Type: application/json');
-		echo json_encode(["type" => $type, "msg" => $msg]);
+		echo json_encode($result);
 	}
 	
 	/*public function methods(){

@@ -12,7 +12,8 @@ class Proforma extends CI_Controller {
 	}
 	
 	public function index(){
-		if (!$this->session->userdata('username')) redirect("auth/login");
+		$result = $this->my_func->check_access($this->nav_menu, $this->router->fetch_method());
+		if ($result["type"] === "error") redirect($result["url"]);
 		
 		$params = [
 			"page" => $this->input->get("page"),
@@ -61,7 +62,8 @@ class Proforma extends CI_Controller {
 	}
 	
 	public function detail($proforma_id){
-		if (!$this->session->userdata('username')) redirect("auth/login");
+		$result = $this->my_func->check_access($this->nav_menu, $this->router->fetch_method());
+		if ($result["type"] === "error") redirect($result["url"]);
 
 		$proforma = $this->gm->unique("proforma", "proforma_id", $proforma_id, false);
 		if (!$proforma) redirect("no_page");
@@ -96,64 +98,69 @@ class Proforma extends CI_Controller {
 	}
 	
 	public function load_product(){
-		$res = ["type" => "error", "msg" => null];
-		
-		$product = $this->gm->unique("product", "product_id", $this->input->post("product_id"));
-		if ($product){
-			unset($product->category_id);
-			unset($product->image);
-			unset($product->valid);
-			unset($product->updated_at);
-			unset($product->registed_at);
+		$result = $this->my_func->check_access($this->nav_menu, $this->router->fetch_method());
+		if ($result["type"] === "success"){
+			$result["type"] = "error";
 			
-			$type_prod = $this->gm->unique("product_type", "type", "Producto", false);
-			if ($product->type_id == $type_prod->type_id){//Product
-				$options = $this->gm->filter("product_option", ["product_id" => $product->product_id], null, null, [["option_id", "asc"]]);
-				foreach($options as $i_o => $op) if (!$op->stock) unset($options[$i_o]);
+			$product = $this->gm->unique("product", "product_id", $this->input->post("product_id"));
+			if ($product){
+				unset($product->category_id);
+				unset($product->image);
+				unset($product->valid);
+				unset($product->updated_at);
+				unset($product->registed_at);
 				
-				if ($options){
-					$res["type"] = "success";
-					$res["product"] = $product;
-					$res["options"] = $options;
-				}else $res["msg"] = $this->lang->line("e_product_no_stock");
-			}else{//Service
-				$res["type"] = "success";
-				$res["product"] = $product;
-				$res["options"] = [];
-			}
-		}else $res["msg"] = $this->lang->line("e_no_product_registed");
+				$type_prod = $this->gm->unique("product_type", "type", "Producto", false);
+				if ($product->type_id == $type_prod->type_id){//Product
+					$options = $this->gm->filter("product_option", ["product_id" => $product->product_id], null, null, [["option_id", "asc"]]);
+					foreach($options as $i_o => $op) if (!$op->stock) unset($options[$i_o]);
+					
+					if ($options){
+						$result["type"] = "success";
+						$result["product"] = $product;
+						$result["options"] = $options;
+					}else $result["msg"] = $this->lang->line("e_product_no_stock");
+				}else{//Service
+					$result["type"] = "success";
+					$result["product"] = $product;
+					$result["options"] = [];
+				}
+			}else $result["msg"] = $this->lang->line("e_no_product_registed");	
+		}
 		
 		header('Content-Type: application/json');
-		echo json_encode($res);
+		echo json_encode($result);
 	}
 	
 	public function check_stock(){
-		$res = ["type" => "success", "msg" => null];
-		
-		$prod = $this->input->post("prod");
-		$product = $this->gm->unique("product", "product_id", $prod["product_id"]);
-		$type = $this->gm->unique("product_type", "type_id", $product->type_id, false);
-		
-		if ($type->type === "Producto"){
-			if ($prod["option_id"]){
-				$option = $this->gm->unique("product_option", "option_id", $prod["option_id"]);
-				
-				if ($prod["qty"] > $option->stock){
-					$res["type"] = "error";
-					$res["msg"] = $this->lang->line("e_product_no_stock")." (Max: ".number_format($option->stock).")";
-				}	
-			}else{
-				$res["type"] = "error";
-				$res["msg"] = $this->lang->line("e_option_select");
+		$result = $this->my_func->check_access($this->nav_menu, $this->router->fetch_method());
+		if ($result["type"] === "success"){
+			$prod = $this->input->post("prod");
+			$product = $this->gm->unique("product", "product_id", $prod["product_id"]);
+			$type = $this->gm->unique("product_type", "type_id", $product->type_id, false);
+			
+			if ($type->type === "Producto"){
+				if ($prod["option_id"]){
+					$option = $this->gm->unique("product_option", "option_id", $prod["option_id"]);
+					
+					if ($prod["qty"] > $option->stock){
+						$result["type"] = "error";
+						$result["msg"] = $this->lang->line("e_product_no_stock")." (Max: ".number_format($option->stock).")";
+					}	
+				}else{
+					$result["type"] = "error";
+					$result["msg"] = $this->lang->line("e_option_select");
+				}
 			}
 		}
 		
 		header('Content-Type: application/json');
-		echo json_encode($res);
+		echo json_encode($result);
 	}
 	
 	public function register(){
-		if (!$this->session->userdata('username')) redirect("auth/login");
+		$result = $this->my_func->check_access($this->nav_menu, $this->router->fetch_method());
+		if ($result["type"] === "error") redirect($result["url"]);
 		
 		$data = [
 			"client_doc_types" => $this->gm->all_simple("client_doc_type", "doc_type_id", "asc"),
@@ -163,43 +170,46 @@ class Proforma extends CI_Controller {
 	}
 	
 	public function search_product(){
-		$type = "error"; $msg = ""; $products = [];
-		$keyword = $this->input->post("keyword");
-		
-		if ($keyword){
-			$products_rec = $this->gm->filter("product", [], [["field" => "product", "values" => explode(" ", $keyword)]], null, [["product", "asc"]]);
+		$result = $this->my_func->check_access($this->nav_menu, $this->router->fetch_method());
+		if ($result["type"] === "success"){
+			$products = [];
+			$keyword = $this->input->post("keyword");
 			
-			if ($products_rec){
-				$categories = [];
-				$categories_rec = $this->gm->all("product_category", [], "", "", true);
-				foreach($categories_rec as $c) $categories[$c->category_id] = $c->category;
+			if ($keyword){
+				$products_rec = $this->gm->filter("product", [], [["field" => "product", "values" => explode(" ", $keyword)]], null, [["product", "asc"]]);
 				
-				$type_prod = $this->gm->unique("product_type", "type", "Producto", false);
-				
-				$products = [];
-				foreach($products_rec as $p){
-					if ($p->type_id == $type_prod->type_id){
-						$stock = $this->gm->sum("product_option", "stock", ["product_id" => $p->product_id, "valid" => true])->stock;
-						if ($stock) $stock = number_format($stock)." disponibles";
-						else $stock = "<span class='text-danger'>No disponible</span>";	
-					}else $stock = "-";
+				if ($products_rec){
+					$categories = [];
+					$categories_rec = $this->gm->all("product_category", [], "", "", true);
+					foreach($categories_rec as $c) $categories[$c->category_id] = $c->category;
 					
+					$type_prod = $this->gm->unique("product_type", "type", "Producto", false);
 					
-					$products[] = ["product_id" => $p->product_id, "category" => $categories[$p->category_id], "product" => $p->product, "price" => number_format($p->price, 2), "code" => $p->code, "stock" => $stock];
-				}
-				
-				$type = "success";
-			}else $msg = $this->lang->line("e_no_result");
-		}else $msg = $this->lang->line("e_enter_keyword");
-		
+					$products = [];
+					foreach($products_rec as $p){
+						if ($p->type_id == $type_prod->type_id){
+							$stock = $this->gm->sum("product_option", "stock", ["product_id" => $p->product_id, "valid" => true])->stock;
+							if ($stock) $stock = number_format($stock)." disponibles";
+							else $stock = "<span class='text-danger'>No disponible</span>";	
+						}else $stock = "-";
+						
+						
+						$products[] = ["product_id" => $p->product_id, "category" => $categories[$p->category_id], "product" => $p->product, "price" => number_format($p->price, 2), "code" => $p->code, "stock" => $stock];
+					}
+					
+					$result["type"] = "success";
+					$result["products"] = $products;
+				}else $result["msg"] = $this->lang->line("e_no_result");
+			}else $result["msg"] = $this->lang->line("e_enter_keyword");
+		}
+			
 		header('Content-Type: application/json');
-		echo json_encode(["type" => $type, "msg" => $msg, "products" => $products]);
+		echo json_encode($result);
 	}
 	
 	public function add_proforma(){
-		$result = ["type" => "error", "msg" => null];
-		
-		if ($this->session->userdata('username')){
+		$result = $this->my_func->check_access($this->nav_menu, $this->router->fetch_method());
+		if ($result["type"] === "success"){
 			$products_json = $this->input->post("products");
 			$proforma = $this->input->post("proforma");
 			$client = $this->input->post("client");	
@@ -247,17 +257,18 @@ class Proforma extends CI_Controller {
 				
 				$result["proforma_id"] = $proforma_id;
 				$result["msg"] = $this->lang->line("s_proforma_insert");
-			}
-		}else $result["msg"] = $this->lang->line("e_finished_session");
+			}else $result["msg"] = $this->lang->line("e_check_datas");
+		}
 		
 		header('Content-Type: application/json');
 		echo json_encode($result);
 	}
 
 	public function add_sale(){
-		$result = ["type" => "error", "msg" => null, "msg" => []];
-		
-		if ($this->session->userdata('username')){
+		$result = $this->my_func->check_access($this->nav_menu, $this->router->fetch_method());
+		if ($result["type"] === "success"){
+			$result["msgs"] = [];
+			
 			$proforma_id = $this->input->post("proforma_id");
 			$payment = $this->input->post("payment");
 			
@@ -310,14 +321,15 @@ class Proforma extends CI_Controller {
 					$result["msg"] = $this->lang->line("e_internal_again");
 				}
 			}else $result["msg"] = $this->lang->line("e_check_datas");
-		}else $result["msg"] = $this->lang->line("e_finished_session");
-		
+		}
+			
 		header('Content-Type: application/json');
 		echo json_encode($result);
 	}
 
 	public function view($proforma_id){
-		if (!$this->session->userdata('username')) redirect("auth/login");
+		$result = $this->my_func->check_access($this->nav_menu, $this->router->fetch_method());
+		if ($result["type"] === "error") redirect($result["url"]);
 		
 		$proforma = $this->gm->unique("proforma", "proforma_id", $proforma_id, false);
 		if ($proforma){
@@ -350,27 +362,29 @@ class Proforma extends CI_Controller {
 	}
 
 	public function update_proforma(){
-		$type = "error"; $msg = null;
-		$data = $this->input->post();
-		if (!$data["validity"]) $data["validity"] = null;
-		
-		if ($this->gm->update("proforma", ["proforma_id" => $data["proforma_id"]], $data)){
-			$type = "success";
-			$msg = $this->lang->line("s_proforma_update");
-		}else $msg = $this->lang->line("e_unknown_refresh");
+		$result = $this->my_func->check_access($this->nav_menu, $this->router->fetch_method());
+		if ($result["type"] === "success"){
+			$data = $this->input->post();
+			if (!$data["validity"]) $data["validity"] = null;
+			
+			$this->gm->update("proforma", ["proforma_id" => $data["proforma_id"]], $data)
+			$result["msgs"] = $this->lang->line("s_proforma_update");
+		}
 		
 		header('Content-Type: application/json');
-		echo json_encode(["type" => $type, "msg" => $msg]);
+		echo json_encode($result);
 	}
 	
 	public function void_proforma(){
-		$type = "error"; $msg = null;
-		$proforma_id = $this->input->post("proforma_id");
-		
-		if ($this->gm->update("proforma", ["proforma_id" => $proforma_id], ["valid" => false])){
-			$type = "success";
-			$msg = $this->lang->line("s_proforma_void");
-		}else $msg = $this->lang->line("e_unknown_refresh");
+		$result = $this->my_func->check_access($this->nav_menu, $this->router->fetch_method());
+		if ($result["type"] === "success"){
+			if ($this->gm->update("proforma", ["proforma_id" => $this->input->post("proforma_id")], ["valid" => false])){
+				$result["msg"] = $this->lang->line("s_proforma_void");
+			}else{
+				$result["type"] == "error";
+				$result["msg"] = $this->lang->line("e_unknown_refresh");
+			}
+		}
 		
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msg" => $msg]);

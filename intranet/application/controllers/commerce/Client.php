@@ -12,7 +12,8 @@ class Client extends CI_Controller {
 	}
 	
 	public function index(){
-		if (!$this->session->userdata('username')) redirect("auth/login");
+		$result = $this->my_func->check_access($this->nav_menu, $this->router->fetch_method());
+		if ($result["type"] === "error") redirect($result["url"]);
 		
 		$params = [
 			"page" => $this->input->get("page"),
@@ -50,7 +51,8 @@ class Client extends CI_Controller {
 	}
 	
 	public function detail($client_id){
-		if (!$this->session->userdata('username')) redirect("auth/login");
+		$result = $this->my_func->check_access($this->nav_menu, $this->router->fetch_method());
+		if ($result["type"] === "error") redirect($result["url"]);
 		
 		$client = $this->gm->unique("client", "client_id", $client_id);
 		$client->doc_type = $this->gm->unique("client_doc_type", "doc_type_id", $client->doc_type_id, false)->doc_type;
@@ -72,7 +74,8 @@ class Client extends CI_Controller {
 	}
 	
 	public function register(){
-		if (!$this->session->userdata('username')) redirect("auth/login");
+		$result = $this->my_func->check_access($this->nav_menu, $this->router->fetch_method());
+		if ($result["type"] === "error") redirect($result["url"]);
 		
 		$data = [
 			"doc_types" =>$this->gm->all_simple("client_doc_type", "doc_type_id", "asc"),
@@ -82,9 +85,8 @@ class Client extends CI_Controller {
 	}
 	
 	public function add(){
-		$result = ["type" => "error", "msg" => null];
-		
-		if ($this->session->userdata('username')){
+		$result = $this->my_func->check_access($this->nav_menu, $this->router->fetch_method());
+		if ($result["type"] === "success"){
 			$client = $this->input->post("client");
 			
 			$this->load->library('my_val');
@@ -97,16 +99,15 @@ class Client extends CI_Controller {
 				$result["msg"] = $this->lang->line("s_client_insert");
 				$result["url"] = base_url()."commerce/client/detail/".$client_id;
 			}else $result["msg"] = $this->lang->line("e_check_datas");
-		}else $result["msg"] = $this->lang->line("e_finished_session");
+		}
 		
 		header('Content-Type: application/json');
 		echo json_encode($result);
 	}
 	
 	public function update_data(){
-		$result = ["type" => "error", "msg" => null];
-		
-		if ($this->session->userdata('username')){
+		$result = $this->my_func->check_access($this->nav_menu, $this->router->fetch_method());
+		if ($result["type"] === "success"){
 			$client = $this->input->post();
 			$client["updated_at"] = date("Y-m-d H:i:s");
 			
@@ -116,16 +117,15 @@ class Client extends CI_Controller {
 			$result["type"] = "success";
 			$result["msg"] = $this->lang->line("s_client_update");
 			$result["url"] = base_url()."commerce/client/detail/".$client["client_id"];
-		}else $result["msg"] = $this->lang->line("e_finished_session");
+		}
 		
 		header('Content-Type: application/json');
 		echo json_encode($result);
 	}
 	
 	public function update_image(){
-		$result = ["type" => "error", "msg" => null];
-		
-		if ($this->session->userdata('username')){
+		$result = $this->my_func->check_access($this->nav_menu, $this->router->fetch_method());
+		if ($result["type"] === "success"){
 			$data = $this->input->post();
 			$data["image"] = $_FILES["image"]["name"];
 			
@@ -159,16 +159,15 @@ class Client extends CI_Controller {
 					$result["url"] = base_url()."commerce/client/detail/".$client->client_id;
 				}else $result = ["type" => "error", "msg" => $this->upload->display_errors()];
 			}else $result["msg"] = $this->lang->line("e_check_datas");
-		}else $result["msg"] = $this->lang->line("e_finished_session");
+		}
 		
 		header('Content-Type: application/json');
 		echo json_encode($result);
 	}
 
 	public function add_note(){
-		$result = ["type" => "error", "msg" => null, "url" => null];
-		
-		if ($this->session->userdata('username')){
+		$result = $this->my_func->check_access($this->nav_menu, $this->router->fetch_method());
+		if ($result["type"] === "success"){
 			$note = $this->input->post();
 			
 			$this->load->library('my_val');
@@ -182,61 +181,60 @@ class Client extends CI_Controller {
 				$result["msg"] = $this->lang->line("s_note_insert");
 				$result["url"] = base_url()."commerce/client/detail/".$note["client_id"];
 			}else $result["msg"] = $this->lang->line("e_check_datas");
-		}else $result["msg"] = $this->lang->line("e_finished_session");
+		}else $result["url"] = null;
 		
 		header('Content-Type: application/json');
 		echo json_encode($result);
 	}
 	
 	public function delete_note(){
-		$type = "error"; $msg = null; $url = null;
-		
-		if ($this->session->userdata('username')){
+		$result = $this->my_func->check_access($this->nav_menu, $this->router->fetch_method());
+		if ($result["type"] === "success"){
 			$note = $this->gm->unique("client_note", "note_id", $this->input->post('note_id'));
 			
 			$this->gm->update("client_note", ["note_id" => $note->note_id], ["valid" => false]);
 			
-			$type = "success";
-			$msg = $this->lang->line("s_note_delete");
-			$url = base_url()."commerce/client/detail/".$note->client_id;
-		}else $msg = $this->lang->line("e_finished_session");
+			$result["msg"] = $this->lang->line("s_note_delete");
+			$result["url"] = base_url()."commerce/client/detail/".$note->client_id;
+		}else $result["url"] = null;
 		
 		header('Content-Type: application/json');
-		echo json_encode(["type" => $type, "msg" => $msg, "url" => $url]);
+		echo json_encode($result);
 	}
 	
 	public function search_client_ajax(){
-		$type = "error"; $msg = ""; $person = null;
-		$data = $this->input->post();
-		
-		if ($data["doc_number"]){
-			$person = $this->gm->filter("client", $data);
-			if ($person) $person = $person[0];
-			else{
-				$name = "";
-				switch($data["doc_type_id"]){
-					case 2: //dni
-						$aux = $this->my_func->utildatos("dni", $data["doc_number"]);
-						if ($aux->status) $name = $aux->data->nombres." ".$aux->data->apellidoPaterno." ".$aux->data->apellidoMaterno;
-						break;
-					case 4: //ruc
-						$aux = $this->my_func->utildatos("ruc", $data["doc_number"]);
-						if ($aux->status) $name = $aux->data->razon_social;
-						break;
+		$result = $this->my_func->check_access($this->nav_menu, $this->router->fetch_method());
+		if ($result["type"] === "success"){
+			$data = $this->input->post();
+			if ($data["doc_number"]){
+				$person = $this->gm->filter("client", $data);
+				if ($person) $person = $person[0];
+				else{
+					$name = "";
+					switch($data["doc_type_id"]){
+						case 2: //dni
+							$aux = $this->my_func->utildatos("dni", $data["doc_number"]);
+							if ($aux->status) $name = $aux->data->nombres." ".$aux->data->apellidoPaterno." ".$aux->data->apellidoMaterno;
+							break;
+						case 4: //ruc
+							$aux = $this->my_func->utildatos("ruc", $data["doc_number"]);
+							if ($aux->status) $name = $aux->data->razon_social;
+							break;
+					}
+					
+					$person = $this->gm->structure("client");
+					$person->name = $name;
 				}
 				
-				$person = $this->gm->structure("client");
-				$person->name = $name;
-			}
+				if ($person->name){
+					$person->doc_type_id = $data["doc_type_id"];
+					$person->doc_number = $data["doc_number"];
+					
+					$result["person"] = $person;
+				}else $result["msg"] = $this->lang->line("e_no_result");
+			}else $result["msg"] = $this->lang->line("e_doc_number_enter");
+		}else $result["person"] = null;
 			
-			if ($person->name){
-				$person->doc_type_id = $data["doc_type_id"];
-				$person->doc_number = $data["doc_number"];
-				
-				$type = "success";
-			}else $msg = $this->lang->line("e_no_result");
-		}else $msg = $this->lang->line("e_doc_number_enter");
-		
 		header('Content-Type: application/json');
 		echo json_encode(["type" => $type, "msg" => $msg, "person" => $person]);
 	}
